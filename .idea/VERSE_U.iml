@@ -7,6 +7,10 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/svelte/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/assets-manager/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/assets-manager/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.branches" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.temp" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/svelte/dist" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
