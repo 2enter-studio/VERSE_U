@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import deepEqual from 'deep-equal';
 	import { type TableName, TABLES_INFO } from '@/config';
 	import Forms from '@/components/form';
@@ -28,7 +29,9 @@
 
 {description}
 
-<div class="center-content flex-col">
+<form action="?/update" method="post" use:enhance class="center-content flex-col">
+	<input type="text" name="table" value={table} readonly hidden />
+
 	{#each Object.entries(metadata) as [name, content]}
 		{@const form = returnComponent(Forms[content.type])}
 		{name}
@@ -44,4 +47,4 @@
 	{#if data?.storage}
 		storage
 	{/if}
-</div>
+</form>
