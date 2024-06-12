@@ -1,7 +1,7 @@
 <script lang="ts">
-  type Props = { value: boolean }
-  let { value = $bindable() }: Props = $props();
+	import type { Props } from '@/components/form/types';
+
+	let { name, data = $bindable() }: Props<any> = $props();
 </script>
 
-
-<input type="text" bind:value>
+<input type="text" bind:value={data} {name} />

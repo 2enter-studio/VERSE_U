@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { LOCALES } from '@/config';
-  import type { Tables } from '@repo/supabase';
+	import { LOCALES } from '@/config';
+	import type { Tables } from '@repo/supabase';
+	import type { Props } from '@/components/form/types';
 
-  type Props = { data: Tables<'ml_texts'> };
-	let { data = $bindable() }: Props = $props();
+	let { data = $bindable() }: Props<Tables<'ml_texts'>> = $props();
 </script>
 
 {#each LOCALES as locale}
