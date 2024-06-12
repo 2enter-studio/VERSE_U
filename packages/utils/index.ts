@@ -1,10 +1,6 @@
-import dotenv from 'dotenv';
 import rfdc from 'rfdc';
 
-dotenv.config({ path: '../../.env' });
-
-const { env } = process;
-
 const deepClone = rfdc();
+const typeOverRide = <T>(input: any) => input as T;
 
-export { deepClone, env };
+export { deepClone, typeOverRide };
