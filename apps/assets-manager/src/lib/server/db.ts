@@ -19,4 +19,9 @@ async function loadTables() {
 	return tables as Record<TableName, Tables<TableName>[]>;
 }
 
-export { admin as db, loadTables };
+async function loadMLTexts() {
+	const { data, error } = await admin.from('ml_texts').select('*').returns<Tables<'ml_texts'>[]>();
+	if (error) return [];
+	return data;
+}
+export { admin as db, loadTables, loadMLTexts };
