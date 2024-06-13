@@ -48,7 +48,13 @@ const ID = {
 // Type definitions for table info
 type MetaDataInfo = { type: MetaDataType; readonly?: boolean };
 type ReferenceInfo = { type: ReferenceType; target: TableName; readonly?: boolean };
-type StorageInfo = { type: StorageType; bucket: BucketName; path: string; readonly?: boolean };
+type StorageInfo = {
+	type: StorageType;
+	bucket: BucketName;
+	path: string;
+	suffix?: string;
+	readonly?: boolean;
+};
 type TableContent = {
 	description: string;
 	metadata: Record<string, MetaDataInfo>;
@@ -106,22 +112,26 @@ const TABLES_INFO: TableInfo = {
 			texture_basecolor: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture_basecolor'
+				path: 'texture',
+				suffix: '_basecolor'
 			},
 			texture_metallic: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture_metallic'
+				path: 'texture',
+				suffix: '_metallic'
 			},
 			texture_roughness: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture_roughness'
+				path: 'texture',
+				suffix: '_roughness'
 			},
 			texture_normal: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture_normal'
+				path: 'texture',
+				suffix: '_normal'
 			}
 		}
 	},
@@ -159,7 +169,7 @@ const TABLES_INFO: TableInfo = {
 			...VALUE
 		}
 	}
-} as const
+} as const;
 
 export type {
 	Locale,
