@@ -4,10 +4,10 @@ const LOCALES = ['zh', 'en'] as const;
 const TABLE_NAMES = [
 	'regions',
 	'wearings',
-	'wearing_types',
-	'body_parts',
 	'meshes',
-	'texture_types'
+	'wearing_types',
+	'texture_types',
+	'body_parts'
 ] as const;
 const BUCKET_NAMES = ['wearings', 'regions', 'meshes'] as const;
 const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts'] as const;
@@ -146,12 +146,14 @@ const TABLES_INFO: TableInfo = {
 	body_parts: {
 		description: '',
 		metadata: {
+			...ID,
 			...VALUE
 		}
 	},
 	meshes: {
 		description: '',
 		metadata: {
+			...ID,
 			...VALUE,
 			...NAME_AND_DESCRIPTION
 		},
@@ -166,6 +168,7 @@ const TABLES_INFO: TableInfo = {
 	texture_types: {
 		description: '',
 		metadata: {
+			...ID,
 			...VALUE
 		}
 	}
