@@ -38,6 +38,13 @@ const VALUE = {
 	}
 } as const;
 
+const ID = {
+	id: {
+		type: 'plain_text',
+		readonly: true
+	}
+} as const;
+
 // Type definitions for table info
 type MetaDataInfo = { type: MetaDataType; readonly?: boolean };
 type ReferenceInfo = { type: ReferenceType; target: TableName; readonly?: boolean };
@@ -54,6 +61,7 @@ const TABLES_INFO: TableInfo = {
 	regions: {
 		description: '',
 		metadata: {
+			...ID,
 			...NAME_AND_DESCRIPTION,
 			enabled: {
 				type: 'toggle'
@@ -81,6 +89,7 @@ const TABLES_INFO: TableInfo = {
 	wearings: {
 		description: '',
 		metadata: {
+			...ID,
 			...NAME_AND_DESCRIPTION
 		},
 		reference: {
@@ -119,6 +128,7 @@ const TABLES_INFO: TableInfo = {
 	wearing_types: {
 		description: '',
 		metadata: {
+			...ID,
 			...VALUE,
 			...NAME_AND_DESCRIPTION
 		}
