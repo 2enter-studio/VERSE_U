@@ -164,6 +164,7 @@ const TABLES_INFO: TableInfo = {
 export type {
 	Locale,
 	TableName,
+	BucketName,
 	MetaDataType,
 	StorageType,
 	ReferenceType,
