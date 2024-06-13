@@ -1,12 +1,7 @@
-import { admin } from '@repo/utils/db';
-import { loadTables } from '@/server/db';
-
-const { data, error } = await admin.from('regions').select('*');
-if (error) console.error(error);
-console.log(data);
+import { loadMLTexts, loadTables } from '@/server/db';
 
 export const load = async () => {
-	const tables = await loadTables();
-	if ('error' in tables) return {};
-	return { tables };
+	const tables = loadTables();
+	const ml_texts = await loadMLTexts();
+	return { tables, ml_texts };
 };
