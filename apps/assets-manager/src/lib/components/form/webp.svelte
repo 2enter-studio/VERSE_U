@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { StorageInfo } from '@/config';
+	import type { Props } from '@/components/form/types';
+	import type { BucketName } from '@/config';
 
-  type Props = { id: string, value: boolean, info: StorageInfo }
-  let { id, value = $bindable(), info }: Props = $props();
-  const { bucket, path } = info;
-  const filepath = `${path}/${id}`;
+	let { data = $bindable(), name }: Props<{ id: string; bucket: BucketName; path: string }> =
+		$props();
+	const { bucket, path } = data;
+	const filepath = `${path}/${data.id}`;
 </script>
 
-
-<input type="file" accept="image/*" bind:value>
+<input type="file" accept="image/*" bind:value={data} />
