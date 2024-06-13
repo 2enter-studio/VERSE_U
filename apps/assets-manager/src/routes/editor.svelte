@@ -42,11 +42,12 @@
 		{@const form = returnComponent(Forms[content.type])}
 		{name}
 		{#if content.type !== 'ml_texts'}
-			{#if content.readonly}
-				<svelte:component this={form} bind:data={data[name]} {name} class="bg-gray-500 pointer-events-none" />
-			{:else}
-				<svelte:component this={form} data={data[name]} {name} />
-			{/if}
+			<svelte:component
+				this={form}
+				data={data[name]}
+				{name}
+				class={content.readonly ? 'bg-gray-500 pointer-events-none' : ''}
+			/>
 		{:else}
 			<svelte:component this={Forms.ml_texts} data={{ row_id: data.id, column_name: name }} />
 		{/if}
