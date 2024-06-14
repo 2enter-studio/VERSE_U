@@ -65,7 +65,7 @@ type TableInfo = Record<TableName, TableContent>;
 
 const TABLES_INFO: TableInfo = {
 	regions: {
-		description: '',
+		description: '地點',
 		metadata: {
 			...ID,
 			...NAME_AND_DESCRIPTION,
@@ -93,7 +93,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	wearings: {
-		description: '',
+		description: '服裝與表情',
 		metadata: {
 			...ID,
 			...NAME_AND_DESCRIPTION
@@ -136,7 +136,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	wearing_types: {
-		description: '',
+		description: '服裝類別',
 		metadata: {
 			...ID,
 			...VALUE,
@@ -144,14 +144,14 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	body_parts: {
-		description: '',
+		description: '身體部位',
 		metadata: {
 			...ID,
 			...VALUE
 		}
 	},
 	meshes: {
-		description: '',
+		description: '3D 模型',
 		metadata: {
 			...ID,
 			...VALUE,
@@ -166,7 +166,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	texture_types: {
-		description: '',
+		description: '材質類別',
 		metadata: {
 			...ID,
 			...VALUE
