@@ -11,6 +11,8 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.temp" />
       <excludeFolder url="file://$MODULE_DIR$/packages/svelte/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/.svelte-kit" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
