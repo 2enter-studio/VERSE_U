@@ -1,0 +1,21 @@
+{
+	"name": "exhib-machine",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"dev-helper": "bun run --watch ./bunServer.ts",
+		"build": "vite build",
+		"start": "bun ./build/index.js",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@types/sha256": "^0.2.2",
+		"sha256": "^0.2.0"
+	},
+	"type": "module"
+}
