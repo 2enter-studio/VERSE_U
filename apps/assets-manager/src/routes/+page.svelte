@@ -1,8 +1,11 @@
 <script lang="ts">
-	import Editor from './editor.svelte';
 	import type { PageData } from './$types';
-	import { type TableContent, type TableName, TABLES_INFO } from '@/config';
-	import { editing } from '@/stores/edit_history';
+	import type { Tables } from '@repo/supabase';
+
+	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
+	import { snakeCaseToCapitalize } from '@repo/utils/text';
+	import { editing, setEditing } from '@/stores/edit_history';
+	import Editor from './editor.svelte';
 
 	let { data }: { data: PageData } = $props();
 

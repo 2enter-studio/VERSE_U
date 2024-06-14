@@ -4,7 +4,7 @@
 	import deepEqual from 'deep-equal';
 	import { type TableName, TABLES_INFO } from '@/config';
 	import Forms from '@/components/form';
-	import { typeOverRide } from '@repo/utils';
+	import { typeOverRide } from '@repo/utils/types';
 	import type { Tables } from '@repo/supabase';
 
 	type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
