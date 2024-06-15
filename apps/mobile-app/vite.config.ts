@@ -6,5 +6,8 @@ export default defineConfig({
 	ssr: { noExternal: ['three'] },
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	server: {
+		port: 5173
 	}
 });
