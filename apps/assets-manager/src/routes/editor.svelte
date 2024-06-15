@@ -1,13 +1,16 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
-	import { enhance } from '$app/forms';
-	import deepEqual from 'deep-equal';
-	import { type TableName, TABLES_INFO } from '@/config';
-	import Forms from '@/components/form';
-	import { typeOverRide } from '@repo/utils/types';
-	import type { Tables } from '@repo/supabase';
+  import type { Component } from 'svelte';
+  import { enhance } from '$app/forms';
+  import deepEqual from 'deep-equal';
 
-	type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
+  import type { Tables } from '@repo/supabase';
+  import { typeOverRide } from '@repo/utils/types';
+
+  import { type TableName, TABLES_INFO } from '@/config';
+  import Forms from '@/components/form';
+  import { HiddenInput } from '@/components';
+
+  type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
 	let { tableName, tableData, class: className }: Props = $props();
 
 	const tableInfo = TABLES_INFO[tableName];
@@ -34,23 +37,29 @@
 	action="?/update"
 	method="post"
 	use:enhance
-	class="flex flex-col items-start text-center {className}"
+	class="flex flex-col gap-3 items-start text-center {className}"
 >
-	<input type="text" name="table" value={tableName} readonly hidden />
+	<HiddenInput name="table" value={tableName} />
 
 	{#each Object.entries(metadata) as [name, content]}
 		{@const form = returnComponent(Forms[content.type])}
-		{name}
-		{#if content.type !== 'ml_texts'}
-			<svelte:component
-				this={form}
-				data={data[name]}
-				{name}
-				class={content.readonly ? 'bg-gray-500 pointer-events-none' : ''}
-			/>
-		{:else}
-			<svelte:component this={Forms.ml_texts} data={{ row_id: data.id, column_name: name }} />
-		{/if}
+		<div class="flex flex-col items-start">
+			<h2 class="text-bold">- {name}</h2>
+			{#if content.type !== 'ml_texts'}
+				<svelte:component
+					this={form}
+					bind:data={data[name]}
+					{name}
+					class="{content.readonly ? 'bg-gray-500 pointer-events-none' : ''} "
+				/>
+			{:else}
+				<svelte:component
+					this={Forms.ml_texts}
+					data={{ row_id: data.id, column_name: name }}
+					{name}
+				/>
+			{/if}
+		</div>
 	{/each}
 
 	{#if tableInfo?.reference}

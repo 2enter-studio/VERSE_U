@@ -60,7 +60,7 @@
 					(table) => table.id === $editing?.id
 				)}
 				<Editor
-					class="fixed top-0 right-0 h-screen w-[30vw] border-l-2 border-white px-3"
+					class="fixed top-0 right-0 h-screen w-[40vw] border-l-2 border-white px-3"
 					{tableName}
 					tableData={tablesData[tableName][index]}
 				/>
