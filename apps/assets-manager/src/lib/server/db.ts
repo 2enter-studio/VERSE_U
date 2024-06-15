@@ -25,10 +25,4 @@ async function loadMLTexts() {
 	return data;
 }
 
-async function createRow(tableName: TableName) {
-	const { data, error } = await admin.from(tableName).insert({}).select('id').returns<{id: string}[]>().single()
-	if (error) return { error };
-	return data
-}
-
-export { admin as db, loadTables, loadMLTexts, createRow };
+export { admin as db, loadTables, loadMLTexts };
