@@ -15,6 +15,8 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/build" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/android" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/ios" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
