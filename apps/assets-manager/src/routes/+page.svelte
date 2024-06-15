@@ -6,6 +6,8 @@
 	import { snakeCaseToCapitalize } from '@repo/utils/text';
 	import { editing, setEditing } from '@/stores/edit_history';
 	import Editor from './editor.svelte';
+	import Icon from '@iconify/svelte';
+	import { HiddenInput } from '@/components/index.js';
 
 	let { data }: { data: PageData } = $props();
 	const { ml_texts } = data;
@@ -40,16 +42,33 @@
 						{@const selected = $editing?.id === row.id}
 						{@const { id } = row}
 						{@const name = getRowName(row)}
-						<button
-							class="hover:bg-white hover:text-black border-white border-2 px-2 text-left {selected
-								? 'bg-white text-black'
-								: ''}"
-							onclick={() => setEditing({ tableName, id })}
-						>
-							{name}
-						</button>
+						<div class="flex flex-row">
+							<button
+								class="hover:bg-white hover:text-black border-white border-2 px-2 text-left w-full {selected
+									? 'bg-white text-black'
+									: ''}"
+								onclick={() => setEditing({ tableName, id })}
+							>
+								{name}
+							</button>
+							{#if selected}
+								<form action="?/remove" method="post" class="center-content">
+									<button type="submit">
+										<Icon icon="mdi:trashcan-outline" class="text-2xl hover:bg-red-500 hover:text-white" />
+									</button>
+								</form>
+							{/if}
+						</div>
 					{/each}
 				</div>
+				{#if !TABLES_INFO[tableName].readonly}
+					<form action="?/create" class="text-right" method="post">
+						<HiddenInput name="table" value={tableName} />
+						<button type="submit">
+							<Icon icon="memory:plus-box" class="text-2xl" />
+						</button>
+					</form>
+				{/if}
 			{/each}
 		</div>
 
@@ -60,7 +79,7 @@
 					(table) => table.id === $editing?.id
 				)}
 				<Editor
-					class="fixed top-0 right-0 h-screen w-[40vw] border-l-2 border-white px-3"
+					class="fixed top-0 right-0 h-screen w-[40vw]"
 					{tableName}
 					tableData={tablesData[tableName][index]}
 				/>
