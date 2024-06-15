@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+		<title>VERSE U</title>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>
+
+<style>
+	html, body {
+			padding: 0;
+			margin: 0;
+			overflow: hidden;
+	}
+
+	input {
+			text-align: center;
+	}
+
+	:root {
+			touch-action: pan-x pan-y;
+	}
+
+	.full-screen {
+			width: 100vw;
+			height: 100vh;
+      top: 0;
+			left: 0;
+			position: fixed;
+	}
+
+	.center-content {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+	}
+</style>
