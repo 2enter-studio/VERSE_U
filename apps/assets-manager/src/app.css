@@ -16,6 +16,8 @@ body {
 input {
 	background-color: white;
 	color: black;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
 }
 
 .center-content {
