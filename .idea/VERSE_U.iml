@@ -13,6 +13,8 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/svelte/dist" />
       <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/build" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/.svelte-kit" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
