@@ -1,5 +1,5 @@
 {
-	"name": "app",
+	"name": "mobile-app",
 	"version": "0.1.1",
 	"private": true,
 	"scripts": {
@@ -18,15 +18,12 @@
 		"@capacitor/assets": "^3.0.5",
 		"@capacitor/preferences": "^6.0.1",
 		"@capacitor/screen-orientation": "^6.0.1",
-		"@dimforge/rapier3d-compat": "^0.13.1",
 		"@sveltejs/adapter-static": "^3.0.2",
-		"@types/three": "^0.165.0",
 		"base64-arraybuffer": "^1.0.2",
 		"postcss-load-config": "^6.0.1",
 		"random-item": "^4.0.1",
 		"serve": "^14.2.3",
 		"shadcn-svelte": "^0.10.6",
-		"three": "^0.165.0",
 		"vitest": "^1.6.0"
 	},
 	"type": "module",
