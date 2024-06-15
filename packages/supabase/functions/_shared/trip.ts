@@ -1,6 +1,6 @@
 import { admin } from "./db.ts";
 import { Tables, TablesInsert } from "../types.ts";
-import { genRegionOptions, getArriveTime, regions } from "./region.ts";
+import { genRegionOptions, getArriveTime, regions } from './region.ts';
 import moment from "npm:moment";
 
 async function getTripByUserId(user_id: string) {
