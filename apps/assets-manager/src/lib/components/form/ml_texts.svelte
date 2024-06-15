@@ -18,7 +18,7 @@
 	{#each LOCALES as locale}
 		{@const i = targetMLTexts.findIndex((text) => text.locale === locale)}
 		<HiddenInput name="table" value="ml_texts" />
-		<HiddenInput {name} value={targetMLTexts[i].value ?? ''} />
+		<HiddenInput {name} value={targetMLTexts[i]?.value ?? ''} />
 		<div class="flex flex-row gap-1">
 			{locale}
 			{#if targetMLTexts[i]}
