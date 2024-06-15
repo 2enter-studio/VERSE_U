@@ -56,6 +56,7 @@ type StorageInfo = {
 	readonly?: boolean;
 };
 type TableContent = {
+	readonly?: boolean;
 	description: string;
 	metadata: Record<string, MetaDataInfo>;
 	reference?: Record<string, ReferenceInfo>;
@@ -144,6 +145,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	body_parts: {
+		readonly: true,
 		description: '身體部位',
 		metadata: {
 			...ID,
@@ -166,6 +168,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	texture_types: {
+		readonly: true,
 		description: '材質類別',
 		metadata: {
 			...ID,
