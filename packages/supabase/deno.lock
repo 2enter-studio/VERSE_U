@@ -1,0 +1,28 @@
+{
+  "version": "3",
+  "redirects": {
+    "https://esm.sh/@supabase/supabase-js@2": "https://esm.sh/@supabase/supabase-js@2.43.1"
+  },
+  "remote": {
+    "https://deno.land/x/momentjs@2.29.1-deno/mod.ts": "f0c8542988b812d2aeaabe4fe3d86e7638ba6dd469ac9dd252eb2d9a765b8b49",
+    "https://deno.land/x/momentjs@2.29.1-deno/node_modules/moment/moment.js": "7ba0da6b25146fe95a948b47ec8a7707b4bcf6a87390d4b655a0663e107f7845",
+    "https://esm.sh/@supabase/supabase-js@2.42.4": "f7af44a8699234ff67d5f8c53dea4682fc796ff2e5ca9a6057e5d7680316e254",
+    "https://esm.sh/@supabase/supabase-js@2.43.1": "f19daf94eb61eada6bee3326014126d83e80d1885986db3f2ef8dd5d00bfabe0",
+    "https://esm.sh/v135/@supabase/auth-js@2.63.0/denonext/auth-js.mjs": "626ae8dd2177c4437d6ba38f9aa1f97bd8e19c59386bd7edda465cc71d34e3f1",
+    "https://esm.sh/v135/@supabase/auth-js@2.64.2/denonext/auth-js.mjs": "f87ccfa4e23123f7ab122f814fa37ce26c00457a3e32cea718a726d72fec1f37",
+    "https://esm.sh/v135/@supabase/functions-js@2.3.0/denonext/functions-js.mjs": "00d7dfe7a1fbde96a2f8ef5c8c36d71a1d87f6d826cee8e1b1248cd5cd8a0f1e",
+    "https://esm.sh/v135/@supabase/functions-js@2.3.1/denonext/functions-js.mjs": "c10a0bbd935fc12cae58918b8e23cb339d54c443983caeb597dd8cd76a76f940",
+    "https://esm.sh/v135/@supabase/node-fetch@2.6.15/denonext/node-fetch.mjs": "efad00ea3d4cbe1bee688836ef75339d49a1981bc5728a13e9ad5f26791d5efb",
+    "https://esm.sh/v135/@supabase/postgrest-js@1.15.2/denonext/postgrest-js.mjs": "1d36cf3106c6dd6ce21473b57d88478802ceef6d22e67af1f92c508607302e50",
+    "https://esm.sh/v135/@supabase/realtime-js@2.9.4/denonext/realtime-js.mjs": "5a4443e535c1ef8c469c281442a976f47735b3ee378c9e6d8b9a379c56b2f852",
+    "https://esm.sh/v135/@supabase/realtime-js@2.9.5/denonext/realtime-js.mjs": "a8648545237fed582a2a01d72d2d9ed9fa28b6adbcba8a844c58cc90d526760d",
+    "https://esm.sh/v135/@supabase/storage-js@2.5.5/denonext/storage-js.mjs": "66e29e4e55c7d396503e2d1d9376cfbc34f046b962bce4524c2d80b209fff413",
+    "https://esm.sh/v135/@supabase/supabase-js@2.42.4/denonext/supabase-js.mjs": "8c4d8072e1c81c6323e9ec8405ccb8d4ff675ab20e5f4708130f9b7462cde64f",
+    "https://esm.sh/v135/@supabase/supabase-js@2.43.1/denonext/supabase-js.mjs": "8134a5997d5645059258acfee575ff9869fb87c99ce05e2f37f3e57b115764c1",
+    "https://esm.sh/v135/bufferutil@4.0.8/denonext/bufferutil.mjs": "60a4618cbd1a5cb24935c55590b793d4ecb33862357d32e1d4614a0bbb90947f",
+    "https://esm.sh/v135/node-gyp-build@4.6.1/denonext/node-gyp-build.mjs": "5d28b312f145a6cb2ec0dbdd80a7d34c0e0e6b5dcada65411d8bcff6c8991cc6",
+    "https://esm.sh/v135/utf-8-validate@6.0.3/denonext/utf-8-validate.mjs": "410c48d66840e987e474a4849cd25829817415cedd25466280effb1287d05aa5",
+    "https://esm.sh/v135/ws@8.16.0/denonext/ws.mjs": "0fa0c00b69577ba36d0a36001329b2cec91498cb2e33e329fc76aa6d51a0d54d",
+    "https://esm.sh/v135/ws@8.17.0/denonext/ws.mjs": "098384c6d6b787c4074dae8141a61bfa93a271ccb699b4b426c75141c9ef5560"
+  }
+}
