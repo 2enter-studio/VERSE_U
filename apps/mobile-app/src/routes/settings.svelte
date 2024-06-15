@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import deepCopy from 'deepcopy';
+	import { deepClone } from '@repo/utils';
 	import { page } from '$app/stores';
 	import { version } from '$app/environment';
 
@@ -17,7 +17,7 @@
 	let { open = $bindable() }: Props = $props();
 
 	let values = $state({
-		profile: deepCopy($profile),
+		profile: deepClone($profile),
 		locale: $locale
 	});
 	const submittable = $derived(
