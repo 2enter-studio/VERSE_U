@@ -4,4 +4,4 @@
 	let { name, data = $bindable(), class: className }: Props<number> = $props();
 </script>
 
-<input type="number" bind:value={data} class={className} step="0.00000001" />
+<input type="number" bind:value={data} class={className} step="0.000001" />
