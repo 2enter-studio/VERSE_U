@@ -5,6 +5,9 @@
 	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/utils/text';
 	import { editing, setEditing } from '@/stores/edit_history';
+	import { SubmitBtn } from '@/components/index.js';
+	import { invalidateAll } from '$app/navigation';
+
 	import Editor from './editor.svelte';
 	import Icon from '@iconify/svelte';
 	import { HiddenInput } from '@/components/index.js';
@@ -52,22 +55,27 @@
 								{name}
 							</button>
 							{#if selected}
-								<form action="?/remove" method="post" class="center-content">
-									<button type="submit">
-										<Icon icon="mdi:trashcan-outline" class="text-2xl hover:bg-red-500 hover:text-white" />
-									</button>
-								</form>
+								<SubmitBtn
+									action="?/remove"
+									data={{ table: tableName, id }}
+									icon="mdi:trashcan-outline"
+									class="center-content hover:bg-red-500 hover:text-white p-1 border-2 border-white"
+									needConfirm
+									afterSubmit={async () => {
+										await invalidateAll();
+									}}
+								/>
 							{/if}
 						</div>
 					{/each}
 				</div>
 				{#if !TABLES_INFO[tableName].readonly}
-					<form action="?/create" class="text-right" method="post">
-						<HiddenInput name="table" value={tableName} />
-						<button type="submit">
-							<Icon icon="memory:plus-box" class="text-2xl" />
-						</button>
-					</form>
+					<SubmitBtn
+						action="?/create"
+						data={{ table: tableName }}
+						icon="memory:plus-box"
+						class="text-right"
+					/>
 				{/if}
 			{/each}
 		</div>
