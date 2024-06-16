@@ -48,10 +48,11 @@
 		</div>
 		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
 			{#each Object.entries(metadata) as [name, content]}
+				{@const isMLTexts = content.type === 'ml_texts'}
 				{@const form = returnComponent(Forms[content.type])}
-				<div class="flex flex-col items-start gap-0.5">
+				<div class="flex items-start gap-0.5 {isMLTexts ? 'flex-col' : 'flex-row flex-wrap'}">
 					<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
-					{#if content.type !== 'ml_texts'}
+					{#if !isMLTexts}
 						<svelte:component
 							this={form}
 							bind:data={data[name]}
