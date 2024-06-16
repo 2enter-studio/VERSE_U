@@ -1,2 +1,2 @@
 export * from './submitting';
-export * from './notification';
+export * from './system_log';

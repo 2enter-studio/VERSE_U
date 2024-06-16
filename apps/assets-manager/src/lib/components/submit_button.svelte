@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { submitting, setNotification } from '@/stores';
+	import { submitting, setSystemLog } from '@/stores';
 	import Icon from '@iconify/svelte';
 	import type { Snippet } from 'svelte';
 	import { enhance } from '$app/forms';
@@ -45,9 +45,9 @@
 			if (!data) return;
 			const { type, message, detail } = data;
 			if (type === 'error') {
-				setNotification('error', message, detail);
+				setSystemLog('error', message, detail);
 			} else if (type === 'success') {
-				setNotification('success', message, detail);
+				setSystemLog('success', message, detail);
 				if (afterSubmit) afterSubmit();
 			}
 		};

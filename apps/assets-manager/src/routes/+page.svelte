@@ -8,8 +8,7 @@
 	import { SubmitBtn } from '@/components/index.js';
 	import { invalidateAll } from '$app/navigation';
 
-	import Editor from './editor.svelte';
-	import Notifications from './notification.svelte';
+	import { Editor, SystemLog } from './';
 
 	let { data }: { data: PageData } = $props();
 	const { ml_texts } = data;
@@ -31,10 +30,6 @@
 		return (row as { value?: string })?.value ?? '?';
 	}
 </script>
-
-<div class="fixed left-0 top-0">
-	<Notifications />
-</div>
 
 {#await data.tables}
 	loading
@@ -83,18 +78,20 @@
 			{/each}
 		</div>
 
-		{#key $editing}
-			{#if $editing?.id}
-				{@const { tableName } = $editing}
-				{@const index = tablesData[$editing.tableName].findIndex(
-					(table) => table.id === $editing?.id
-				)}
-				<Editor
-					class="fixed top-0 right-0 h-screen w-[40vw]"
-					{tableName}
-					tableData={tablesData[tableName][index]}
-				/>
-			{/if}
-		{/key}
+		<div class="fixed right-0 top-0 w-[40vw]">
+			<SystemLog
+				class="bg-white p-1 max-h-[13vh] overflow-y-auto overflow-x-hidden"
+			/>
+
+			{#key $editing}
+				{#if $editing?.id}
+					{@const { tableName } = $editing}
+					{@const index = tablesData[$editing.tableName].findIndex(
+						(table) => table.id === $editing?.id
+					)}
+					<Editor {tableName} tableData={tablesData[tableName][index]} class="border-2" />
+				{/if}
+			{/key}
+		</div>
 	{/if}
 {/await}
