@@ -27,7 +27,7 @@
 			?.filter((ml_text) => ml_text.row_id === row.id && ml_text.column_name === 'name')
 			?.map((texts) => texts.value);
 		if (texts.length > 0) return texts.join('/');
-		return (row as { value?: string })?.value ?? '?';
+		return (row as { value?: string })?.value ?? '?????????';
 	}
 </script>
 
