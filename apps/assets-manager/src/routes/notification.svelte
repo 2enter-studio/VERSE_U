@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { notifications } from '@/stores/notification';
+	import { fly } from 'svelte/transition';
 	import moment from 'moment';
-	import { NOTIFICATION_LAST_TIME } from '@/config';
 	import { onMount } from 'svelte';
-	let showDetail = $state(true);
+
+	import { deleteNotification, notifications } from '@/stores/notification';
+	import { NOTIFICATION_LAST_TIME } from '@/config';
+
+	let showDetail = $state<number | null>(null);
+
 	onMount(() => {
 		const interval = setInterval(() => {
 			const now = Date.now();
 			notifications.update((notification) =>
 				notification.filter((n) => n.created_at > now - NOTIFICATION_LAST_TIME)
 			);
-		}, 3000);
+		}, 1000);
 
 		return () => {
 			clearInterval(interval);
@@ -19,15 +23,21 @@
 </script>
 
 <div class="flex flex-col">
-	{#each $notifications as { message, detail, created_at, type }}
-		<button onclick={() => (showDetail = true)}>
-			{moment(created_at).format('hh:mm:ss A')} -
-			{message}
-		</button>
+	{#each $notifications.reverse() as { message, detail, created_at, type }}
+		<div transition:fly={{ x: -100 }} class="flex flex-row">
+			<button onclick={() => (showDetail = created_at)} class="flex flex-row">
+				<span class="bg-white text-black px-1">
+					{moment(created_at).format('HH:mm:ss')}
+				</span>
+				<span class="{type} px-1">{message}</span>
+			</button>
+			<button onclick={() => deleteNotification(created_at)} class="bg-red-300 text-black">X</button
+			>
+		</div>
 
-		{#if showDetail}
-			<div class="fixed flex-col full-screen center-content bg-transparent {type}">
-				<button onclick={() => (showDetail = false)} class="text-right bg-white text-black">
+		{#if showDetail === created_at}
+			<div class="fixed flex-col full-screen center-content bg-transparent">
+				<button onclick={() => (showDetail = null)} class="text-right bg-white text-black">
 					X
 				</button>
 				<div class="center-content size-[30vw] flex-col backdrop-blur-xl rounded-2xl bg-white/10">
@@ -42,11 +52,15 @@
 </div>
 
 <style>
-	button.success {
-		background-color: green;
-	}
-
-	.error {
-		background-color: red;
+	span {
+		&.error {
+			background-color: red;
+		}
+		&.success {
+			background-color: green;
+		}
+		&.warning {
+			background-color: orange;
+		}
 	}
 </style>
