@@ -1,5 +1,5 @@
 import { db, loadMLTexts, loadTables } from '@/server/db';
-import { type Action, type Actions, fail } from '@sveltejs/kit';
+import { type Action, type Actions } from '@sveltejs/kit';
 import { TABLE_NAMES, type TableName } from '@/config';
 import validator from 'validator';
 
