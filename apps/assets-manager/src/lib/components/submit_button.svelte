@@ -26,7 +26,7 @@
 		children
 	}: Props = $props();
 
-	const dataMap = Object.entries(data);
+	const dataMap = $derived(Object.entries(data));
 
 	const enhanceHandler: SubmitFunction = () => {
 		if (confirmMessage) {
