@@ -20,15 +20,21 @@ export const load = async () => {
 const create: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const tableName = formData.get('table') as TableName;
-	const data = formData.get('data');
+	const data = formData.get('data') as string;
 
 	if (!ALL_TABLE_NAMES.includes(tableName)) {
 		return makeFormDataResponse('error', `invalid table name ${tableName}`);
 	}
 
+	if (data) {
+		if (!validator.isJSON(data)) {
+			return makeFormDataResponse('error', `invalid init data ${data}`);
+		}
+	}
+
 	const { data: result, error } = await db
 		.from(tableName)
-		.insert(data ?? {})
+		.insert(JSON.parse(data) ?? {})
 		.select('id')
 		.returns<{ id: string }[]>()
 		.single();

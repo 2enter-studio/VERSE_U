@@ -39,7 +39,11 @@
 {#if data}
 	<div class="flex flex-row items-start divide-white divide-x-2 {className}">
 		<div class="flex flex-col p-0.5">
-			<Icon icon="lets-icons:back" class="text-2xl center-content hover:bg-violet-600" onclick={backEditing} />
+			<Icon
+				icon="lets-icons:back"
+				class="text-2xl center-content hover:bg-violet-600"
+				onclick={backEditing}
+			/>
 			<SubmitBtn
 				action="?/update"
 				data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
@@ -63,11 +67,7 @@
 							class="{content.readonly ? 'bg-gray-500 pointer-events-none' : ''} "
 						/>
 					{:else}
-						<svelte:component
-							this={Forms.ml_texts}
-							data={{ row_id: data.id, column_name: name }}
-							{name}
-						/>
+						<svelte:component this={Forms.ml_texts} data={{ row_id: data.id }} {name} />
 					{/if}
 				</div>
 			{/each}
