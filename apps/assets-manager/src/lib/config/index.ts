@@ -156,7 +156,6 @@ const TABLES_INFO: TableInfo = {
 		description: '3D 模型',
 		metadata: {
 			...ID,
-			...VALUE,
 			...NAME_AND_DESCRIPTION
 		},
 		storage: {
