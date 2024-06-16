@@ -72,7 +72,7 @@ const remove: Action = async ({ request }) => {
 		return makeFormDataResponse('error', 'invalid id or table name');
 	}
 
-	const { data: result, error } = await db.from(tableName).delete().eq('id', id);
+	const { error } = await db.from(tableName).delete().eq('id', id);
 	if (error) return makeFormDataResponse('error', `failed to delete ${tableName}`, error.message);
 	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `- row id: ${id}`);
 };
