@@ -50,8 +50,8 @@
 									action="?/remove"
 									data={{ table: tableName, id }}
 									icon="mdi:trashcan-outline"
-									class="center-content hover:bg-red-500 hover:text-white p-1 border-2 border-white"
-									needConfirm
+									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 p-1"
+									confirmMessage="You're about to delete a row from {tableName}, sure?"
 									afterSubmit={async () => {
 										await invalidateAll();
 									}}
@@ -61,12 +61,15 @@
 					{/each}
 				</div>
 				{#if !TABLES_INFO[tableName].readonly}
-					<SubmitBtn
-						action="?/create"
-						data={{ table: tableName }}
-						icon="memory:plus-box"
-						class="text-right"
-					/>
+					<div class="flex flex-row justify-end">
+						<SubmitBtn
+							action="?/create"
+							data={{ table: tableName }}
+							icon="memory:plus-box"
+							class="hover:text-amber-400"
+							confirmMessage="You're about to insert a row into {tableName}, sure?"
+						/>
+					</div>
 				{/if}
 			{/each}
 		</div>

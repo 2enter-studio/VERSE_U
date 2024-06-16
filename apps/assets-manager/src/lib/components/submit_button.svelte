@@ -9,7 +9,7 @@
 	type Props = {
 		action: string;
 		data?: Record<string, string>;
-		needConfirm?: boolean;
+		confirmMessage?: string;
 		afterSubmit?: Function;
 		class?: string;
 		icon?: string;
@@ -19,7 +19,7 @@
 	let {
 		action,
 		data = {},
-		needConfirm,
+		confirmMessage,
 		afterSubmit,
 		class: className,
 		icon,
@@ -29,8 +29,8 @@
 	const dataMap = Object.entries(data);
 
 	const enhanceHandler: SubmitFunction = () => {
-		if (needConfirm) {
-			const confirm = window.confirm('Are you sure?');
+		if (confirmMessage) {
+			const confirm = window.confirm(confirmMessage);
 			if (!confirm) return;
 		}
 
