@@ -101,6 +101,10 @@ const TABLES_INFO: TableInfo = {
 			...NAME_AND_DESCRIPTION
 		},
 		reference: {
+			category: {
+				type: 'single_ref',
+				target: 'wearing_types'
+			},
 			mesh: {
 				type: 'single_ref',
 				target: 'meshes'
