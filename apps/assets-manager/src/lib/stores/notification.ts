@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 type NotificationType = 'success' | 'warning' | 'error';
 type Notification = {
@@ -29,4 +29,8 @@ function setNotification(type: NotificationType, message: string, detail?: strin
 	]);
 }
 
-export { notifications, setNotification };
+function deleteNotification(created_at: number) {
+	notifications.update((notification) => notification.filter((n) => n.created_at !== created_at));
+}
+
+export { notifications, setNotification, deleteNotification };
