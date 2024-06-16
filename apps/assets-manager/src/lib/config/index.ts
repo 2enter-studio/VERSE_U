@@ -9,12 +9,13 @@ const TABLE_NAMES = [
 	'texture_types',
 	'body_parts'
 ] as const;
+const ALL_TABLE_NAMES = [...TABLE_NAMES, 'ml_texts'] as const;
 const BUCKET_NAMES = ['wearings', 'regions', 'meshes'] as const;
 const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts'] as const;
 const STORAGE_TYPES = ['webp', 'fbx', 'glb'] as const;
 const REFERENCE_TYPES = ['single_ref', 'multi_ref'] as const;
 
-type AllTable = keyof Database['public']['Tables'];
+type AllTable = (typeof ALL_TABLE_NAMES)[number];
 type Locale = (typeof LOCALES)[number];
 type TableName = (typeof TABLE_NAMES)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
@@ -193,4 +194,4 @@ export type {
 
 const NOTIFICATION_LAST_TIME = 10000;
 
-export { TABLE_NAMES, TABLES_INFO, LOCALES, BUCKET_NAMES, NOTIFICATION_LAST_TIME };
+export { TABLE_NAMES, ALL_TABLE_NAMES, TABLES_INFO, LOCALES, BUCKET_NAMES, NOTIFICATION_LAST_TIME };

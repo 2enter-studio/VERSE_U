@@ -7,6 +7,8 @@
 
 	import Forms from '@/components/form';
 	import { SubmitBtn } from '@/components';
+	import Icon from '@iconify/svelte';
+	import { backEditing } from '@/stores/edit_history';
 
 	type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
 	let { tableName, tableData, class: className }: Props = $props();
@@ -37,6 +39,7 @@
 {#if data}
 	<div class="flex flex-row items-start divide-white divide-x-2 {className}">
 		<div class="flex flex-col p-0.5">
+			<Icon icon="lets-icons:back" class="text-2xl center-content hover:bg-violet-600" onclick={backEditing} />
 			<SubmitBtn
 				action="?/update"
 				data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
