@@ -8,14 +8,7 @@ type Notification = {
 	detail?: string;
 };
 
-const notifications = writable<Notification[]>([
-	{
-		created_at: Date.now(),
-		type: 'success',
-		message: 'fuck you',
-		detail: 'fuck you fuck you!'
-	}
-]);
+const notifications = writable<Notification[]>([]);
 
 function setNotification(type: NotificationType, message: string, detail?: string) {
 	notifications.update((notification) => [
