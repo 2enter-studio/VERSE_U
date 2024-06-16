@@ -1,6 +1,6 @@
 import { db, loadMLTexts, loadTables } from '@/server/db';
 import { type Action, type Actions } from '@sveltejs/kit';
-import { TABLE_NAMES, type TableName } from '@/config';
+import { ALL_TABLE_NAMES, type TableName } from '@/config';
 import validator from 'validator';
 
 function makeFormDataResponse(
@@ -22,7 +22,7 @@ const create: Action = async ({ request }) => {
 	const tableName = formData.get('table') as TableName;
 	const data = formData.get('data');
 
-	if (!TABLE_NAMES.includes(tableName)) {
+	if (!ALL_TABLE_NAMES.includes(tableName)) {
 		return makeFormDataResponse('error', `invalid table name ${tableName}`);
 	}
 
@@ -48,7 +48,7 @@ const update: Action = async ({ request }) => {
 	const data = formData.get('data') as string;
 	const id = formData.get('id') as string;
 
-	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id) || !validator.isJSON(data)) {
+	if (!ALL_TABLE_NAMES.includes(tableName) || !validator.isUUID(id) || !validator.isJSON(data)) {
 		return makeFormDataResponse(
 			'error',
 			'invalid data input, id or table name',
@@ -72,7 +72,7 @@ const remove: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const tableName = formData.get('table') as TableName;
 	const id = formData.get('id') as string;
-	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id)) {
+	if (!ALL_TABLE_NAMES.includes(tableName) || !validator.isUUID(id)) {
 		return makeFormDataResponse(
 			'error',
 			'invalid id or table name',
