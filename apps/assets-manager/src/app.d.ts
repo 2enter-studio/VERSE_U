@@ -8,6 +8,10 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	type FormDataResponse = {
+		message: string;
+		detail?: string;
+	};
 }
 
 export {};
