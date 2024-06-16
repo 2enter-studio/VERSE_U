@@ -69,10 +69,10 @@ const TABLES_INFO: TableInfo = {
 		description: '地點',
 		metadata: {
 			...ID,
-			...NAME_AND_DESCRIPTION,
 			enabled: {
 				type: 'toggle'
 			},
+			...NAME_AND_DESCRIPTION,
 			x: {
 				type: 'number'
 			},
