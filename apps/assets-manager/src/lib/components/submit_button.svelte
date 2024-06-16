@@ -10,7 +10,7 @@
 		action: string;
 		data?: Record<string, string>;
 		needConfirm?: boolean;
-		afterSubmit?: () => {};
+		afterSubmit?: Function;
 		class?: string;
 		icon?: string;
 		children?: Snippet;
@@ -39,21 +39,20 @@
 			await update({ reset: false });
 			$submitting = false;
 
-			if (result.type === 'success') {
-				if (afterSubmit) afterSubmit();
+			console.log(result);
+			if (result.type !== 'success') return;
+			if (!result?.data) return;
+			const data = result.data;
+			if ('error' in data) {
+				console.error(data.error);
 			} else {
-				return;
+				if (afterSubmit) afterSubmit();
 			}
 		};
 	};
 </script>
 
-<form
-	action="?/{action}"
-	method="post"
-	use:enhance={enhanceHandler}
-	class="center-content {className}"
->
+<form {action} method="post" use:enhance={enhanceHandler} class={className}>
 	{#if dataMap.length > 0}
 		{#each dataMap as [key, value]}
 			<HiddenInput name={key} {value} />
