@@ -30,8 +30,7 @@
 
 	const enhanceHandler: SubmitFunction = () => {
 		if (confirmMessage) {
-			const confirm = window.confirm(confirmMessage);
-			if (!confirm) return;
+			if (!window.confirm(confirmMessage)) return;
 		}
 
 		return async ({ update, result }) => {
@@ -39,10 +38,12 @@
 			await update({ reset: false });
 			$submitting = false;
 
-			console.log(result);
+			// console.log(result);
 			if (result.type !== 'success') return;
+
 			const data = result.data;
 			if (!data) return;
+
 			const { type, message, detail } = data;
 			if (type === 'error') {
 				setSystemLog('error', message, detail);
