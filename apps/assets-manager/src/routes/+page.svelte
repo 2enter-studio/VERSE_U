@@ -11,6 +11,7 @@
 	import Icon from '@iconify/svelte';
 
 	let { data }: { data: PageData } = $props();
+	let showSysLog = $state(true);
 	const { ml_texts } = data;
 
 	// const TablesMap = Object.entries(TABLES_INFO) as Array<[TableName, TableContent]>;
@@ -75,7 +76,16 @@
 		</div>
 
 		<div class="fixed right-0 top-0 w-[40vw]">
-			<SystemLog class="bg-black p-1 max-h-[10vh] overflow-y-auto overflow-x-hidden" />
+			<div class="flex flex-row justify-between">
+				<Icon
+					icon={showSysLog ? 'mingcute:eye-fill' : 'mingcute:eye-close-fill'}
+					onclick={() => (showSysLog = !showSysLog)}
+					class="text-2xl center-content hover:bg-orange-600"
+				/>
+				{#if showSysLog}
+					<SystemLog class="bg-black p-1 max-h-[10vh] overflow-y-auto overflow-x-hidden" />
+				{/if}
+			</div>
 
 			{#key $editing}
 				{#if $editing?.id}
