@@ -6,9 +6,9 @@
 	import { snakeCaseToCapitalize } from '@repo/utils/text';
 	import { backEditing, editing, setEditing } from '@/stores/edit_history';
 	import { SubmitBtn } from '@/components/index.js';
-	import { invalidateAll } from '$app/navigation';
 
 	import { Editor, SystemLog } from './';
+	import Icon from '@iconify/svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { ml_texts } = data;
@@ -25,7 +25,9 @@
 </script>
 
 {#await data.tables}
-	loading
+	<div class="full-screen center-content">
+		<Icon icon="mingcute:loading-fill" class="text-6xl animate-spin" />
+	</div>
 {:then tablesData}
 	{#if tablesData}
 		<div class="flex flex-col gap-3 w-[50vw]">
