@@ -15,7 +15,7 @@
 	let { tableName, tableData, class: className }: Props = $props();
 
 	const tableInfo = TABLES_INFO[tableName];
-	const { description, metadata } = tableInfo;
+	const { metadata } = tableInfo;
 
 	let data = $state(tableData);
 	let dataCopy = $state.snapshot(data);
@@ -24,7 +24,9 @@
 		const result: any = {};
 		const dynaData = $state.snapshot(data);
 		for (const name of Object.keys(metadata)) {
-			if (dynaData[name] !== dataCopy[name]) {
+			// @ts-ignore
+			if (dynaData?.[name] !== dataCopy?.[name]) {
+				// @ts-ignore
 				result[name] = dynaData[name];
 			}
 		}
@@ -37,14 +39,8 @@
 		console.log(modified);
 	});
 
-	async function onSubmit() {
-		dataCopy = $state.snapshot(data);
-	}
-
 	const returnComponent = (c: any) => typeOverRide<Component>(c);
 </script>
-
-{description}
 
 <div class="flex flex-row items-start {className}">
 	{#if modified}
