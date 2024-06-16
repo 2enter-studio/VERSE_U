@@ -49,8 +49,8 @@
 		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
 			{#each Object.entries(metadata) as [name, content]}
 				{@const form = returnComponent(Forms[content.type])}
-				<div class="flex flex-col items-start">
-					<h2 class="text-bold">- {name}</h2>
+				<div class="flex flex-col items-start gap-0.5">
+					<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 					{#if content.type !== 'ml_texts'}
 						<svelte:component
 							this={form}
