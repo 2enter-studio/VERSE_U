@@ -83,7 +83,11 @@
 					{@const index = tablesData[$editing.tableName].findIndex(
 						(table) => table.id === $editing?.id
 					)}
-					<Editor {tableName} tableData={tablesData[tableName][index]} class="border-2" />
+					<Editor
+						{tableName}
+						tableData={tablesData[tableName][index]}
+						class="border-2 border-white"
+					/>
 				{/if}
 			{/key}
 		</div>

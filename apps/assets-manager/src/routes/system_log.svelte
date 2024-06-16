@@ -31,7 +31,7 @@
 			{@const { type, message, detail, created_at } = data}
 			<div class="flex-col full-screen center-content bg-transparent pointer-events-none">
 				<div
-					class="w-[30vw] max-h-[30vw] flex-col justify-between items-start backdrop-blur-2xl rounded-md bg-white/10 overflow-y-auto overflow-x-hidden"
+					class="w-[60vw] max-h-[30vw] flex-col justify-between items-start backdrop-blur-2xl rounded-md bg-white/10 overflow-y-auto overflow-x-hidden"
 				>
 					<div class="flex flex-row w-full justify-between items-center pl-3 pointer-events-auto">
 						<span class="text-sm">

@@ -39,15 +39,17 @@
 </script>
 
 {#if data}
-	<div class="flex flex-row items-start {className}">
-		{#if modified}
+	<div class="flex flex-row items-start divide-white divide-x-2 {className}">
+		<div class="flex flex-col p-0.5">
 			<SubmitBtn
 				action="?/update"
 				data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
 				icon="mingcute:save-2-line"
-				class="center-content"
+				class="center-content {modified
+					? 'pointer-events-auto hover:bg-cyan-800'
+					: 'pointer-events-none text-white/30'}"
 			/>
-		{/if}
+		</div>
 		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
 			{#each Object.entries(metadata) as [name, content]}
 				{@const form = returnComponent(Forms[content.type])}
