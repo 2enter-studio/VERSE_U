@@ -11,6 +11,8 @@
 		"lint": "prettier --check .",
 		"format": "prettier --write ."
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"@repo/supabase": "*"
+	},
 	"type": "module"
 }
