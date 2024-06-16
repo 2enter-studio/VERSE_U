@@ -48,9 +48,7 @@
 				class="center-content"
 			/>
 		{/if}
-		<div
-			class="flex flex-col gap-3 items-start text-center border-l-2 border-b-2 border-white w-full p-2"
-		>
+		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
 			{#each Object.entries(metadata) as [name, content]}
 				{@const form = returnComponent(Forms[content.type])}
 				<div class="flex flex-col items-start">

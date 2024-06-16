@@ -37,7 +37,7 @@ const create: Action = async ({ request }) => {
 	return makeFormDataResponse(
 		'success',
 		`inserted 1 row into ${tableName}`,
-		`row id: ${result.id}`
+		`- row id: ${result.id}`
 	);
 };
 
@@ -56,11 +56,12 @@ const update: Action = async ({ request }) => {
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 
-	return makeFormDataResponse(
-		'success',
-		`updated 1 row from ${tableName}`,
-		JSON.stringify(data, null, 2)
-	);
+	let formatData = 'updated fields: <br/>';
+	for (const [key, value] of Object.entries(JSON.parse(data))) {
+		formatData += `- ${key}: ${value} <br/>`;
+	}
+
+	return makeFormDataResponse('success', `updated 1 row from ${tableName}`, formatData);
 };
 
 const remove: Action = async ({ request }) => {
@@ -73,7 +74,7 @@ const remove: Action = async ({ request }) => {
 
 	const { data: result, error } = await db.from(tableName).delete().eq('id', id);
 	if (error) return makeFormDataResponse('error', `failed to delete ${tableName}`, error.message);
-	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `row id: ${id}`);
+	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `- row id: ${id}`);
 };
 
 const actions: Actions = { create, update, remove };
