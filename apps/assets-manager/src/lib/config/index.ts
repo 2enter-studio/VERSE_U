@@ -14,7 +14,7 @@ const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts'] as const;
 const STORAGE_TYPES = ['webp', 'fbx', 'glb'] as const;
 const REFERENCE_TYPES = ['single_ref', 'multi_ref'] as const;
 
-type AllTables = keyof Database['public']['Tables'];
+type AllTable = keyof Database['public']['Tables'];
 type Locale = (typeof LOCALES)[number];
 type TableName = (typeof TABLE_NAMES)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
@@ -179,6 +179,7 @@ const TABLES_INFO: TableInfo = {
 
 export type {
 	Locale,
+	AllTable,
 	TableName,
 	BucketName,
 	MetaDataType,
