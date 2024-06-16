@@ -31,9 +31,22 @@
 	</div>
 {:then tablesData}
 	{#if tablesData}
-		<div class="flex flex-col gap-3 w-[50vw]">
+		<div class="flex flex-col w-[50vw]">
 			{#each TABLE_NAMES as tableName}
-				{snakeCaseToCapitalize(tableName)} - {TABLES_INFO[tableName].description}
+				<div class="flex flex-row justify-between mt-5 items-center">
+					{snakeCaseToCapitalize(tableName)} - {TABLES_INFO[tableName].description}
+					{#if !TABLES_INFO[tableName].readonly}
+						<div class="flex flex-row justify-end">
+							<SubmitBtn
+								action="?/create"
+								data={{ table: tableName }}
+								icon="memory:plus-box"
+								class="hover:text-amber-400 center-content"
+								confirmMessage="You're about to insert a row into {tableName}, sure?"
+							/>
+						</div>
+					{/if}
+				</div>
 				<div class="flex flex-col gap-1">
 					{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
 						{@const selected = $editing?.id === row.id}
@@ -61,21 +74,10 @@
 						</div>
 					{/each}
 				</div>
-				{#if !TABLES_INFO[tableName].readonly}
-					<div class="flex flex-row justify-end">
-						<SubmitBtn
-							action="?/create"
-							data={{ table: tableName }}
-							icon="memory:plus-box"
-							class="hover:text-amber-400"
-							confirmMessage="You're about to insert a row into {tableName}, sure?"
-						/>
-					</div>
-				{/if}
 			{/each}
 		</div>
 
-		<div class="fixed right-0 top-0 w-[40vw]">
+		<div class="fixed right-0 top-0 w-[45vw]">
 			<div class="flex flex-row justify-between">
 				<Icon
 					icon={showSysLog ? 'mingcute:eye-fill' : 'mingcute:eye-close-fill'}
