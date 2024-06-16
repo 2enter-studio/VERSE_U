@@ -32,7 +32,9 @@
 	}
 </script>
 
-<Notifications />
+<div class="fixed left-0 top-0">
+	<Notifications />
+</div>
 
 {#await data.tables}
 	loading
