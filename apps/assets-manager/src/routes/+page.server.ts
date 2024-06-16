@@ -20,6 +20,7 @@ export const load = async () => {
 const create: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const tableName = formData.get('table') as TableName;
+	const data = formData.get('data');
 
 	if (!TABLE_NAMES.includes(tableName)) {
 		return makeFormDataResponse('error', `invalid table name ${tableName}`);
@@ -27,7 +28,7 @@ const create: Action = async ({ request }) => {
 
 	const { data: result, error } = await db
 		.from(tableName)
-		.insert({})
+		.insert(data ?? {})
 		.select('id')
 		.returns<{ id: string }[]>()
 		.single();
