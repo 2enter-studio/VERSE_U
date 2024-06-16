@@ -31,10 +31,6 @@
 		return result;
 	});
 
-	// $effect(() => {
-	// 	console.log(modified);
-	// });
-
 	const returnComponent = (c: any) => typeOverRide<Component>(c);
 </script>
 
