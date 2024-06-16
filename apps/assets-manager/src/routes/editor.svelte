@@ -14,7 +14,7 @@
 	const tableInfo = TABLES_INFO[tableName];
 	const { metadata } = tableInfo;
 
-	let data = $state(tableData);
+	let data = $state({ ...tableData });
 	let dataCopy = $state.snapshot(data);
 
 	const modified = $derived.by(() => {
