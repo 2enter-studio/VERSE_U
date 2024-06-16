@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { LOCALES } from '@/config';
-	import type { Props } from '@/components/form/types';
+	import type { MetaDataProps } from '@/components/form/types';
 	import MLText from './ml_text.svelte';
 
-	let { data, name, class: className }: Props<{ row_id: string }> = $props();
+	let { data, name, class: className }: MetaDataProps<{ row_id: string }> = $props();
 
 	const { row_id } = data;
 </script>

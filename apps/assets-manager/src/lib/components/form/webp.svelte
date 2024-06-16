@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Props } from '@/components/form/types';
+	import type { MetaDataProps } from '@/components/form/types';
 	import type { BucketName } from '@/config';
 
-	let { data = $bindable(), name }: Props<{ id: string; bucket: BucketName; path: string }> =
+	let { data = $bindable(), name }: MetaDataProps<{ id: string; bucket: BucketName; path: string }> =
 		$props();
 	const { bucket, path } = data;
 	const filepath = `${path}/${data.id}`;
