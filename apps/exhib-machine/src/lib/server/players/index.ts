@@ -4,11 +4,18 @@ import type { Player, UEPlayer } from '@/config';
 async function getLeaderBoard() {
 	const { data, error } = await db
 		.from('profiles')
-		.select('user, wearings(id,mesh)')
+		.select('user, owned_wearings(wearing(id,mesh),equipped)')
+		.eq('owned_wearings.equipped', true)
 		.order('last_active')
 		.limit(10)
-		.returns<Player[]>();
+		.returns<(Player & { owned_wearings: { wearing: any }[] })[]>();
 
+	if (!data) return [];
+	data.forEach((player) => {
+		player.wearings = player.owned_wearings.map((w) => w.wearing);
+	});
+
+	// console.log(error);
 	if (error) return { error };
 	return data;
 }

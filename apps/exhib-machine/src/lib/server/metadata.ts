@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import validator from 'validator';
 import moment from 'moment';
 import { db } from '@/server/db';

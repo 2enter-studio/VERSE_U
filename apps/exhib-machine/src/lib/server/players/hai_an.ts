@@ -18,12 +18,17 @@ async function callHaiAnPlayer() {
 			.from('hai_an_players')
 			.delete()
 			.eq('id', target_id)
-			.select('player(user, wearings(id,mesh))')
-			.returns<{ player: Player }[]>()
+			.select('player(user, owned_wearings(wearing(id,mesh),equipped))')
+			.returns<{ player: Player & { owned_wearings: { equipped: boolean; wearing: any }[] } }[]>()
 			.single();
 
+		if (!data) return;
+
+		const { player } = data;
+		player.wearings = player.owned_wearings.filter((w) => w.equipped).map((w) => w.wearing);
+
 		if (error || !data) return;
-		const uePlayer = genUEPlayer(data.player);
+		const uePlayer = genUEPlayer(player);
 		const message: UEPlayerBundle = { avatars: [uePlayer] };
 
 		broadcastMessage(JSON.stringify(message));

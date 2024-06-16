@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import config, { type BucketName } from '@/config';
 import { db } from './db';
 import chalk from 'chalk';
