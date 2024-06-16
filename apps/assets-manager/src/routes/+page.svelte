@@ -9,8 +9,7 @@
 	import { invalidateAll } from '$app/navigation';
 
 	import Editor from './editor.svelte';
-	import Icon from '@iconify/svelte';
-	import { HiddenInput } from '@/components/index.js';
+	import Notifications from './notification.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { ml_texts } = data;
@@ -32,6 +31,8 @@
 		return (row as { value?: string })?.value ?? '?';
 	}
 </script>
+
+<Notifications />
 
 {#await data.tables}
 	loading
