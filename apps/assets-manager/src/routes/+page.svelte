@@ -9,20 +9,13 @@
 
 	import { Editor, SystemLog } from './';
 	import Icon from '@iconify/svelte';
+	import { getRowName } from '@/index';
 
 	let { data }: { data: PageData } = $props();
 	let showSysLog = $state(true);
-	const { ml_texts } = data;
 
 	// const TablesMap = Object.entries(TABLES_INFO) as Array<[TableName, TableContent]>;
 
-	function getRowName(row: Tables<TableName>) {
-		const texts = ml_texts
-			?.filter((ml_text) => ml_text.row_id === row.id && ml_text.column_name === 'name')
-			?.map((texts) => texts.value);
-		if (texts.length > 0) return texts.join('/');
-		return (row as { value?: string })?.value ?? '?????????';
-	}
 </script>
 
 {#await data.tables}
@@ -66,7 +59,7 @@
 									action="?/remove"
 									data={{ table: tableName, id }}
 									icon="mdi:trashcan-outline"
-									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 p-1"
+									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 px-1"
 									confirmMessage="You're about to delete a row from {tableName}, sure?"
 									afterSubmit={backEditing}
 								/>
