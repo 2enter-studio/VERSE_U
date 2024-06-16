@@ -1,15 +1,14 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
-	import { enhance } from '$app/forms';
-	import deepEqual from 'deep-equal';
-	import Icon from '@iconify/svelte';
-
 	import type { Tables } from '@repo/supabase';
-	import { typeOverRide } from '@repo/utils/types';
-
 	import { type TableName, TABLES_INFO } from '@/config';
-	import Forms from '@/components/form';
+
+	import { enhance } from '$app/forms';
+	import { typeOverRide } from '@repo/utils/types';
 	import { HiddenInput } from '@/components';
+
+	import Forms from '@/components/form';
+	import { SubmitBtn } from '@/components/index.js';
 
 	type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
 	let { tableName, tableData, class: className }: Props = $props();
@@ -44,9 +43,12 @@
 
 <div class="flex flex-row items-start {className}">
 	{#if modified}
-		<button type="submit" form="editor" class="center-content">
-			<Icon icon="mingcute:save-2-line" class="text-2xl center-content" />
-		</button>
+		<SubmitBtn
+			action="?/update"
+			data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
+			icon="mingcute:save-2-line"
+			class="center-content"
+		/>
 	{/if}
 	<form
 		id="editor"
