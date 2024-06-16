@@ -4,7 +4,7 @@
 
 	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/utils/text';
-	import { editing, setEditing } from '@/stores/edit_history';
+	import { backEditing, editing, setEditing } from '@/stores/edit_history';
 	import { SubmitBtn } from '@/components/index.js';
 	import { invalidateAll } from '$app/navigation';
 
@@ -52,9 +52,7 @@
 									icon="mdi:trashcan-outline"
 									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 p-1"
 									confirmMessage="You're about to delete a row from {tableName}, sure?"
-									afterSubmit={async () => {
-										await invalidateAll();
-									}}
+									afterSubmit={backEditing}
 								/>
 							{/if}
 						</div>
