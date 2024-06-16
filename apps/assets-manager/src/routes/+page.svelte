@@ -13,13 +13,6 @@
 	let { data }: { data: PageData } = $props();
 	const { ml_texts } = data;
 
-	// console.log(getStores());
-	// onMount(()=>{
-	// 	setTimeout(() => {
-	// 		invalidateAll();
-	// 	}, 5000)
-	// })
-
 	// const TablesMap = Object.entries(TABLES_INFO) as Array<[TableName, TableContent]>;
 
 	function getRowName(row: Tables<TableName>) {
@@ -79,9 +72,7 @@
 		</div>
 
 		<div class="fixed right-0 top-0 w-[40vw]">
-			<SystemLog
-				class="bg-white p-1 max-h-[13vh] overflow-y-auto overflow-x-hidden"
-			/>
+			<SystemLog class="bg-black p-1 max-h-[10vh] overflow-y-auto overflow-x-hidden" />
 
 			{#key $editing}
 				{#if $editing?.id}
