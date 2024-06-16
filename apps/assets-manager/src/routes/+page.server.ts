@@ -48,15 +48,18 @@ const update: Action = async ({ request }) => {
 	const id = formData.get('id') as string;
 
 	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id) || !validator.isJSON(data)) {
-		return makeFormDataResponse('error', 'invalid data input, id or table name');
+		return makeFormDataResponse(
+			'error',
+			'invalid data input, id or table name',
+			`-table: ${tableName} <br/>- id: ${id} <br/>- data: ${data}`
+		);
 	}
 
 	const { error } = await db.from(tableName).update(JSON.parse(data)).eq('id', id);
-	// const { error } = await db.from('fuck you').update(JSON.parse(data)).eq('id', id);
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 
-	let formatData = 'updated fields: <br/>';
+	let formatData = `updated fields: <br/>- id: ${id} <br/>`;
 	for (const [key, value] of Object.entries(JSON.parse(data))) {
 		formatData += `- ${key}: ${value} <br/>`;
 	}
@@ -69,7 +72,11 @@ const remove: Action = async ({ request }) => {
 	const tableName = formData.get('table') as TableName;
 	const id = formData.get('id') as string;
 	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id)) {
-		return makeFormDataResponse('error', 'invalid id or table name');
+		return makeFormDataResponse(
+			'error',
+			'invalid id or table name',
+			`-table: ${tableName} <br/>- id: ${id}`
+		);
 	}
 
 	const { error } = await db.from(tableName).delete().eq('id', id);
