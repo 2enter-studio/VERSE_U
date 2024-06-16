@@ -7,7 +7,7 @@ type MetaDataProps<T> = {
 };
 
 type RefProps = {
-	name: string;
+	name?: string;
 	base?: TableName;
 	target: TableName;
 	class?: string;

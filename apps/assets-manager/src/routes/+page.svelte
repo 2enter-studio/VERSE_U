@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Tables } from '@repo/supabase';
 
-	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
+	import { TABLE_NAMES, TABLES_INFO } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/utils/text';
 	import { backEditing, editing, setEditing } from '@/stores/edit_history';
 	import { SubmitBtn } from '@/components/index.js';
@@ -15,7 +14,6 @@
 	let showSysLog = $state(true);
 
 	// const TablesMap = Object.entries(TABLES_INFO) as Array<[TableName, TableContent]>;
-
 </script>
 
 {#await data.tables}
