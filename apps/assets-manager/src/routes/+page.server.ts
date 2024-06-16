@@ -1,6 +1,15 @@
 import { db, loadMLTexts, loadTables } from '@/server/db';
-import type { Action, Actions } from '@sveltejs/kit';
+import { type Action, type Actions, fail } from '@sveltejs/kit';
 import { TABLE_NAMES, type TableName } from '@/config';
+import validator from 'validator';
+
+function makeFormDataResponse(
+	type: 'success' | 'error' = 'success',
+	message: string,
+	detail?: string
+): FormDataResponse {
+	return { type, message, detail };
+}
 
 export const load = async () => {
 	const tables = loadTables();
@@ -13,48 +22,58 @@ const create: Action = async ({ request }) => {
 	const tableName = formData.get('table') as TableName;
 
 	if (!TABLE_NAMES.includes(tableName)) {
-		return { message: 'invalid table name' };
+		return makeFormDataResponse('error', `invalid table name ${tableName}`);
 	}
 
-	const { data, error } = await db
+	const { data: result, error } = await db
 		.from(tableName)
 		.insert({})
 		.select('id')
 		.returns<{ id: string }[]>()
 		.single();
-	if (error) return { error };
 
-	console.log(data.id);
+	if (error) return makeFormDataResponse('error', `failed to create ${tableName}`, error.message);
+
+	return makeFormDataResponse(
+		'success',
+		`inserted 1 row into ${tableName}`,
+		`row id: ${result.id}`
+	);
 };
 
 const update: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const tableName = formData.get('table') as TableName;
-	const data = formData.get('data');
-	const id = formData.get('id');
-	if (!TABLE_NAMES.includes(tableName) || !data || !id) return;
+	const data = formData.get('data') as string;
+	const id = formData.get('id') as string;
 
-	const { data: result, error } = await db
-		.from(tableName)
-		.update(data)
-		.eq('id', id)
-		.select('*')
-		.single();
-	if (error) return { error };
+	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id) || !validator.isJSON(data)) {
+		return makeFormDataResponse('error', 'invalid data input, id or table name');
+	}
 
-	console.log(data);
+	const { error } = await db.from(tableName).update(JSON.parse(data)).eq('id', id);
+	// const { error } = await db.from('fuck you').update(JSON.parse(data)).eq('id', id);
+
+	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
+
+	return makeFormDataResponse(
+		'success',
+		`updated 1 row from ${tableName}`,
+		JSON.stringify(data, null, 2)
+	);
 };
 
 const remove: Action = async ({ request }) => {
 	const formData = await request.formData();
-	const data = Object.fromEntries(formData);
 	const tableName = formData.get('table') as TableName;
 	const id = formData.get('id') as string;
-	if (!TABLE_NAMES.includes(tableName) || !id) return { message: 'invalid data' };
+	if (!TABLE_NAMES.includes(tableName) || !validator.isUUID(id)) {
+		return makeFormDataResponse('error', 'invalid id or table name');
+	}
 
 	const { data: result, error } = await db.from(tableName).delete().eq('id', id);
-	if (error) return { error };
-	return data;
+	if (error) return makeFormDataResponse('error', `failed to delete ${tableName}`, error.message);
+	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `row id: ${id}`);
 };
 
 const actions: Actions = { create, update, remove };

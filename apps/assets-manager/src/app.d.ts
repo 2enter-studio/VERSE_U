@@ -9,6 +9,7 @@ declare global {
 		// interface Platform {}
 	}
 	type FormDataResponse = {
+		type: 'error' | 'success';
 		message: string;
 		detail?: string;
 	};
