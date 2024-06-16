@@ -22,7 +22,7 @@
 	const modified = $derived.by(() => {
 		const result: any = {};
 		const dynaData = $state.snapshot(data);
-		for (const name of Object.keys(metadata)) {
+		for (const name of Object.keys(tableData)) {
 			// @ts-ignore
 			if (dynaData?.[name] !== dataCopy?.[name]) {
 				// @ts-ignore
@@ -73,7 +73,20 @@
 			{/each}
 
 			{#if tableInfo?.reference}
-				reference
+				{#each Object.entries(tableInfo.reference) as [name, content]}
+					<div class="flex items-start gap-0.5 flex-col">
+						<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
+						{#if content.type === 'single_ref'}
+							<svelte:component
+								this={Forms[content.type]}
+								base={tableName}
+								target={content.target}
+								{name}
+								bind:selected={data[name]}
+							/>
+						{/if}
+					</div>
+				{/each}
 			{/if}
 
 			{#if tableInfo?.storage}
