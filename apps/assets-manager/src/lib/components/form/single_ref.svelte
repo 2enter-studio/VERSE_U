@@ -18,7 +18,7 @@
 
 {#await tablePromise then tables}
 	{@const options = tables[target]}
-	<div class="flex flex-col gap-0.5 text-left {className}">
+	<div class="flex flex-col text-left {className}">
 		{#each options as option}
 			{@const { id } = option}
 			{@const isSelected = id === selected}
@@ -32,7 +32,7 @@
 			/>
 			<label
 				for="option-{id}"
-				class="{isSelected ? 'bg-white text-black' : 'bg-black text-white'} cursor-pointer"
+				class="{isSelected ? 'bg-white text-black' : 'bg-black text-white'} cursor-pointer hover:border-white border-white/0 border-2 px-1"
 			>
 				{getRowName(option)}
 			</label>

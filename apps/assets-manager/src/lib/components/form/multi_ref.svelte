@@ -39,7 +39,7 @@
 	{#each options as option}
 		{@const isSelected = selected.includes(option.id)}
 		<input id="option-{option.id}" type="checkbox" bind:group={selected} value={option.id} hidden />
-		<label for="option-{option.id}" class="{isSelected ? 'bg-white text-black' : ''} px-1 cursor-pointer">
+		<label for="option-{option.id}" class="{isSelected ? 'bg-white text-black' : ''} px-1 cursor-pointer hover:border-white border-white/0 border-2">
 			{getRowName(option)}
 		</label>
 	{/each}
