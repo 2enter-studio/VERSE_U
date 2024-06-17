@@ -9,6 +9,7 @@ type MetaDataProps<T> = {
 type RefProps = {
 	name?: string;
 	base?: TableName;
+	base_id?: string;
 	target: TableName;
 	class?: string;
 	selected?: string;
