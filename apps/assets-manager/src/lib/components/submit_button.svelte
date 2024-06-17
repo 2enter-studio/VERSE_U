@@ -41,21 +41,22 @@
 			// console.log(result);
 			if (result.type !== 'success') return;
 
-			const data = result.data;
+			const data = result.data as FormDataResponse;
 			if (!data) return;
 
 			const { type, message, detail } = data;
+
 			if (type === 'error') {
 				setSystemLog('error', message, detail);
 			} else if (type === 'success') {
 				setSystemLog('success', message, detail);
-				if (afterSubmit) afterSubmit();
+				if (afterSubmit) afterSubmit(data.data ?? {});
 			}
 		};
 	};
 </script>
 
-<form {action} method="post" use:enhance={enhanceHandler} class={className}>
+<form {action} method="POST" use:enhance={enhanceHandler} class={className}>
 	{#if dataMap.length > 0}
 		{#each dataMap as [key, value]}
 			<HiddenInput name={key} {value} />

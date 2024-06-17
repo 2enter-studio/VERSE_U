@@ -6,9 +6,10 @@ import validator from 'validator';
 function makeFormDataResponse(
 	type: 'success' | 'error' = 'success',
 	message: string,
-	detail?: string
+	detail?: string,
+	data?: any
 ): FormDataResponse {
-	return { type, message, detail };
+	return { type, message, detail, data };
 }
 
 export const load = async () => {
@@ -44,7 +45,8 @@ const create: Action = async ({ request }) => {
 	return makeFormDataResponse(
 		'success',
 		`inserted 1 row into ${tableName}`,
-		`- row id: ${result.id}`
+		`- row id: ${result.id}`,
+		{ id: result.id }
 	);
 };
 

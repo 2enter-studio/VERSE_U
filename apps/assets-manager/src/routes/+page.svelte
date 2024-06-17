@@ -34,6 +34,9 @@
 								icon="memory:plus-box"
 								class="hover:text-amber-400 center-content"
 								confirmMessage="You're about to insert a row into {tableName}, sure?"
+								afterSubmit={(data) => {
+									setEditing({ tableName, id: data.id });
+								}}
 							/>
 						</div>
 					{/if}

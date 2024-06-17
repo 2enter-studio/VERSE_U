@@ -12,6 +12,7 @@ declare global {
 		type: 'error' | 'success';
 		message: string;
 		detail?: string;
+		data?: any;
 	};
 }
 
