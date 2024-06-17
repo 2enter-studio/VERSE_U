@@ -100,7 +100,17 @@
 			{/if}
 
 			{#if tableInfo?.storage}
-				storage
+				{#each Object.entries(tableInfo.storage) as [name, content]}
+					{@const { path, suffix, type, bucket } = content}
+					<h2 class="text-bold bg-cyan-700 px-1">{name}</h2>
+					{#if type === 'webp'}
+						<svelte:component
+							this={Forms[type]}
+							{bucket}
+							filename="{path}/{tableData.id}{suffix ?? ''}"
+						/>
+					{/if}
+				{/each}
 			{/if}
 		</div>
 	</div>
