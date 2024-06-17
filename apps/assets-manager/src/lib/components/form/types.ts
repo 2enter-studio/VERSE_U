@@ -7,12 +7,12 @@ type MetaDataProps<T> = {
 };
 
 type RefProps = {
-	name?: string;
-	id?: string;
 	base: TableName;
 	target: TableName;
-	class?: string;
 	selected?: string;
+	name?: string;
+	id?: string;
+	class?: string;
 };
 
 export type { MetaDataProps, RefProps };
