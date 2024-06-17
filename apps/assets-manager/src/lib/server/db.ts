@@ -1,6 +1,6 @@
 import { admin } from '@repo/utils/db';
 import type { Tables } from '@repo/supabase';
-import { TABLE_NAMES, type TableName } from '@/config';
+import { type BucketName, TABLE_NAMES, type TableName } from '@/config';
 
 async function loadTables() {
 	const tables: any = {};
@@ -25,4 +25,13 @@ async function loadMLTexts() {
 	return data;
 }
 
-export { admin as db, loadTables, loadMLTexts };
+async function getFile(bucket: BucketName, filename: string) {
+	const { data, error } = await admin.storage.from(bucket).download(filename);
+	if (error) {
+		return null
+		// throw new Error('Error while downloading image: ' + error.message);
+	}
+	return data;
+}
+
+export { admin as db, loadTables, loadMLTexts, getFile };
