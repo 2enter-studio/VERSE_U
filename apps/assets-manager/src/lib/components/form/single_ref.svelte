@@ -30,7 +30,10 @@
 				class="text-white"
 				hidden
 			/>
-			<label for="option-{id}" class={isSelected ? 'bg-white text-black' : 'bg-black text-white'}>
+			<label
+				for="option-{id}"
+				class="{isSelected ? 'bg-white text-black' : 'bg-black text-white'} cursor-pointer"
+			>
 				{getRowName(option)}
 			</label>
 		{/each}

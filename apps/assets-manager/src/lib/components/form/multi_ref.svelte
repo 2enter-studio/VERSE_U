@@ -13,6 +13,7 @@
 	const { tables } = $page.data as PageData;
 
 	let { base, target, class: className, id }: RefProps = $props();
+
 	let options = $state<{ id: string; value?: string }[]>([]);
 	let selected = $state<string[]>([]);
 	let selectedCopy = $state<string[]>([]);
@@ -38,7 +39,7 @@
 	{#each options as option}
 		{@const isSelected = selected.includes(option.id)}
 		<input id="option-{option.id}" type="checkbox" bind:group={selected} value={option.id} hidden />
-		<label for="option-{option.id}" class="{isSelected ? 'bg-white text-black' : ''} px-1">
+		<label for="option-{option.id}" class="{isSelected ? 'bg-white text-black' : ''} px-1 cursor-pointer">
 			{getRowName(option)}
 		</label>
 	{/each}
