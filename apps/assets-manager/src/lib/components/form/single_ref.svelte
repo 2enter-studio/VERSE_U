@@ -3,16 +3,14 @@
 	import { page } from '$app/stores';
 	import type { PageData } from '../../../routes/$types';
 	import { getRowName } from '@/index';
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 
 	let { target, class: className, selected = $bindable() }: RefProps = $props();
 
 	const selectedCopy = selected;
 
-	onMount(() => {
-		return () => {
-			selected = selectedCopy;
-		};
+	onDestroy(() => {
+		selected = selectedCopy;
 	});
 
 	const tablePromise = ($page.data as PageData).tables;
