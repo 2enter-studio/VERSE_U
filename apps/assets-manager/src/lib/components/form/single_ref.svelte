@@ -5,7 +5,7 @@
 	import { getRowName } from '@/index';
 	import { onDestroy } from 'svelte';
 
-	let { target, class: className, selected = $bindable() }: RefProps = $props();
+	let { base, target, class: className, selected = $bindable() }: RefProps = $props();
 
 	const selectedCopy = selected;
 

@@ -9,13 +9,18 @@ const TABLE_NAMES = [
 	'texture_types',
 	'body_parts'
 ] as const;
-const ALL_TABLE_NAMES = [...TABLE_NAMES, 'ml_texts'] as const;
+const ALL_TABLE_NAMES = [
+	...TABLE_NAMES,
+	'ml_texts',
+	'j-wearings-texture_types',
+	'j-wearings-body_parts'
+] as const;
 const BUCKET_NAMES = ['wearings', 'regions', 'meshes'] as const;
 const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts'] as const;
 const STORAGE_TYPES = ['webp', 'fbx', 'glb'] as const;
 const REFERENCE_TYPES = ['single_ref', 'multi_ref'] as const;
 
-type AllTable = (typeof ALL_TABLE_NAMES)[number];
+type AllTableName = (typeof ALL_TABLE_NAMES)[number];
 type Locale = (typeof LOCALES)[number];
 type TableName = (typeof TABLE_NAMES)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
@@ -183,7 +188,7 @@ const TABLES_INFO: TableInfo = {
 
 export type {
 	Locale,
-	AllTable,
+	AllTableName,
 	TableName,
 	BucketName,
 	MetaDataType,

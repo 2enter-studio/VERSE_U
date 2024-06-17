@@ -90,7 +90,7 @@
 								base={tableName}
 								target={content.target}
 								{name}
-								base_id={data.id}
+								id={data.id}
 							/>
 						{/if}
 					</div>

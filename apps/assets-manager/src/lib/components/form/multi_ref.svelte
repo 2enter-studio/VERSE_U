@@ -1,30 +1,54 @@
 <script lang="ts">
-	import type { RefProps } from '@/components/form/types';
-	import { getRowName } from '@/index';
 	import pluralize from 'pluralize';
-	let { base, target, class: className, base_id }: RefProps = $props();
+	import { onMount } from 'svelte';
 
+	import type { RefProps } from '@/components/form/types';
+	import type { PageData } from '../../../routes/$types';
+
+	import { getRowName } from '@/index';
+	import { page } from '$app/stores';
+	import { SubmitBtn } from '@/components/index.js';
+	import deepEqual from 'deep-equal';
+
+	const { tables } = $page.data as PageData;
+
+	let { base, target, class: className, id }: RefProps = $props();
+	let options = $state<{ id: string; value?: string }[]>([]);
 	let selected = $state<string[]>([]);
+	let selectedCopy = $state<string[]>([]);
+
+	const modified = $derived(!deepEqual(selected, selectedCopy));
+
+	onMount(async () => {
+		const tablesData = await tables;
+		const selectedData = await fetchOptions();
+		options = tablesData[target];
+		selected = selectedData;
+		selectedCopy = $state.snapshot(selected);
+	});
 
 	async function fetchOptions() {
-		const res = await fetch(`/api/j/${base}-${target}/${base_id}`);
-		return res.json();
+		const res = await fetch(`/api/j/${base}-${target}/${id}`);
+		const json = (await res.json()) as any[];
+		return json.map((d) => d[pluralize.singular(target)].id);
 	}
 </script>
 
-{#await fetchOptions() then data}
-	{@const options = data.map((d) => d[pluralize.singular(target)])}
-	<div class="flex flex-col">
-		{#each options as option}
-			{@const isSelected = selected.includes(option.id)}
-			<input
-				id="option-{option.id}"
-				type="checkbox"
-				bind:group={selected}
-				value={option.id}
-				hidden
-			/>
-			<label for="option-{option.id}" class={isSelected ? 'bg-white text-black' : ''}>{getRowName(option)}</label>
-		{/each}
-	</div>
-{/await}
+<div class="flex flex-col text-left">
+	{#each options as option}
+		{@const isSelected = selected.includes(option.id)}
+		<input id="option-{option.id}" type="checkbox" bind:group={selected} value={option.id} hidden />
+		<label for="option-{option.id}" class="{isSelected ? 'bg-white text-black' : ''} px-1">
+			{getRowName(option)}
+		</label>
+	{/each}
+
+	{#if modified}
+		<SubmitBtn
+			action="?/junction"
+			icon="mingcute:save-2-line"
+			data={{ base, target, data: JSON.stringify({ selected, id }) }}
+			class="hover:bg-rose-500 text-left w-fit center-content"
+		/>
+	{/if}
+</div>

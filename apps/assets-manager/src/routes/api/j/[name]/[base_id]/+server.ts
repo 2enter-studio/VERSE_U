@@ -7,7 +7,10 @@ export const GET = async ({ params }) => {
 
 	const [base, target] = name.split('-');
 
-	const { data, error } = await db.from(`j-${name}`).select(`${pluralize.singular(base)}(*),${pluralize.singular(target)}(*)`).eq(pluralize.singular(base), base_id);
+	const { data, error } = await db
+		.from(`j-${name}`)
+		.select(`${pluralize.singular(base)}(*),${pluralize.singular(target)}(*)`)
+		.eq(pluralize.singular(base), base_id);
 
 	if (error) return json(error);
 

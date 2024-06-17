@@ -46,7 +46,7 @@
 						</button>
 					</div>
 					<h2 class="bg-white/20 text-white px-3">{message}</h2>
-					<p class="px-3 bg-white/40">{@html detail}</p>
+					<p class="px-3 bg-white/40">{@html detail ?? 'no detail found'}</p>
 				</div>
 			</div>
 		{/if}
