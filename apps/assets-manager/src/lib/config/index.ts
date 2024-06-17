@@ -123,25 +123,25 @@ const TABLES_INFO: TableInfo = {
 			texture_basecolor: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture',
+				path: 'textures',
 				suffix: '_basecolor'
 			},
 			texture_metallic: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture',
+				path: 'textures',
 				suffix: '_metallic'
 			},
 			texture_roughness: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture',
+				path: 'textures',
 				suffix: '_roughness'
 			},
 			texture_normal: {
 				type: 'webp',
 				bucket: 'wearings',
-				path: 'texture',
+				path: 'textures',
 				suffix: '_normal'
 			}
 		}
