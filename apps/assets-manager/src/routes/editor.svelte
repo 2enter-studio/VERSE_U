@@ -58,8 +58,8 @@
 				{@const isMLTexts = content.type === 'ml_texts'}
 				{@const form = returnComponent(Forms[content.type])}
 				<div class="flex items-start gap-0.5 {isMLTexts ? 'flex-col' : 'flex-row flex-wrap'}">
-					<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 					{#if !isMLTexts}
+						<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 						<svelte:component
 							this={form}
 							bind:data={data[name]}
@@ -67,6 +67,7 @@
 							class="{content.readonly ? 'bg-gray-500 pointer-events-none' : ''} "
 						/>
 					{:else}
+						<h2 class="text-bold bg-cyan-600 px-1">{name}</h2>
 						<svelte:component this={Forms.ml_texts} data={{ row_id: data.id }} {name} />
 					{/if}
 				</div>
@@ -75,8 +76,8 @@
 			{#if tableInfo?.reference}
 				{#each Object.entries(tableInfo.reference) as [name, content]}
 					<div class="flex items-start gap-0.5 flex-col">
-						<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 						{#if content.type === 'single_ref'}
+							<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 							<svelte:component
 								this={Forms[content.type]}
 								base={tableName}
@@ -85,6 +86,7 @@
 								bind:selected={data[name]}
 							/>
 						{:else if content.type === 'multi_ref'}
+							<h2 class="text-bold bg-cyan-700 px-1">{name}</h2>
 							<svelte:component
 								this={Forms[content.type]}
 								base={tableName}
