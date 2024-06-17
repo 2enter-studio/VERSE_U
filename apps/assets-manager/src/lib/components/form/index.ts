@@ -4,6 +4,7 @@ import plain_text from '@/components/form/plain_text.svelte';
 import ml_texts from '@/components/form/ml_texts.svelte';
 import webp from '@/components/form/webp.svelte';
 import single_ref from '@/components/form/single_ref.svelte';
+import multi_ref from '@/components/form/multi_ref.svelte';
 
 export default {
 	toggle,
@@ -11,5 +12,6 @@ export default {
 	plain_text,
 	ml_texts,
 	webp,
-	single_ref
+	single_ref,
+	multi_ref
 };

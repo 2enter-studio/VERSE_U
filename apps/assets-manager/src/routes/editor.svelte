@@ -84,6 +84,14 @@
 								{name}
 								bind:selected={data[name]}
 							/>
+						{:else if content.type === 'multi_ref'}
+							<svelte:component
+								this={Forms[content.type]}
+								base={tableName}
+								target={content.target}
+								{name}
+								base_id={data.id}
+							/>
 						{/if}
 					</div>
 				{/each}
