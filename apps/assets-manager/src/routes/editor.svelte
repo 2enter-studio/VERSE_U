@@ -79,7 +79,7 @@
 						{#if content.type === 'single_ref'}
 							<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
 							<svelte:component
-								this={Forms[content.type]}
+								this={Forms.single_ref}
 								base={tableName}
 								target={content.target}
 								{name}
@@ -88,7 +88,7 @@
 						{:else if content.type === 'multi_ref'}
 							<h2 class="text-bold bg-cyan-700 px-1">{name}</h2>
 							<svelte:component
-								this={Forms[content.type]}
+								this={Forms.multi_ref}
 								base={tableName}
 								target={content.target}
 								{name}
