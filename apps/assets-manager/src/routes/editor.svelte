@@ -37,7 +37,7 @@
 </script>
 
 {#if data}
-	<div class="flex flex-row items-start divide-white divide-x-2 {className}">
+	<div class="flex flex-row items-start divide-white divide-x-2 overflow-y-auto {className}">
 		<div class="flex flex-col p-0.5">
 			<Icon
 				icon="lets-icons:back"

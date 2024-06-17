@@ -92,7 +92,7 @@
 					<Editor
 						{tableName}
 						tableData={tablesData[tableName][index]}
-						class="border-2 border-white"
+						class="border-2 border-white max-h-[80vh]"
 					/>
 				{/if}
 			{/key}
