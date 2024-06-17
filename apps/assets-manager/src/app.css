@@ -34,3 +34,24 @@ input {
 	left: 0;
 	position: fixed;
 }
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: cyan;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: red;
+	cursor: pointer;
+}
