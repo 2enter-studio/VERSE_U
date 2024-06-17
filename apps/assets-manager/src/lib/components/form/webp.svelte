@@ -6,16 +6,22 @@
 
 	type Props = { bucket: BucketName; filename: string };
 	let { bucket, filename }: Props = $props();
-	console.log(filename);
-
 	let modified = $state(false);
 	let imageUrl = $state<string>();
+	let defaultImageUrl = $state<string>();
 
 	onMount(async () => {
 		const res = await fetch(`/api/storage/${bucket}/${filename}`);
-		console.log(res);
-		const blob = await res.blob();
-		imageUrl = await blobToBase64(blob);
+		if (res.ok) {
+			const blob = await res.blob();
+			imageUrl = await blobToBase64(blob);
+		}
+
+		{
+			const res = await fetch('https://api.thecatapi.com/v1/images/search');
+			const json = await res.json();
+			defaultImageUrl = json[0].url;
+		}
 	});
 
 	function onFileChange(event: Event) {
@@ -36,7 +42,7 @@
 	<label
 		for="image-{bucket}-{filename}"
 		class="size-48 bg-white bg-center bg-contain bg-no-repeat"
-		style="background-image: url({imageUrl})"
+		style="background-image: url({imageUrl}), url({defaultImageUrl})"
 	></label>
 
 	<SubmitBtn
