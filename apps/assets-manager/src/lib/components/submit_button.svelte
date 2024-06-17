@@ -62,11 +62,12 @@
 			<HiddenInput name={key} {value} />
 		{/each}
 	{/if}
+	{#if children}
+		{@render children()}
+	{/if}
 	<button type="submit">
 		{#if icon}
 			<Icon {icon} class="text-2xl center-content" />
-		{:else if children}
-			{@render children()}
 		{/if}
 	</button>
 </form>
