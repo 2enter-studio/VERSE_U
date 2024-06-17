@@ -2,7 +2,7 @@ import { page } from '$app/stores';
 import { get } from 'svelte/store';
 
 import type { PageData } from '../routes/$types';
-import { LOCALES, type TableName } from '@/config';
+import { LOCALES } from '@/config';
 
 function getRowName(row: { id: string; value?: string }) {
 	const texts = (get(page).data as PageData).ml_texts?.filter(
@@ -16,4 +16,13 @@ function getRowName(row: { id: string; value?: string }) {
 	return (row as { value?: string })?.value ?? '?????????';
 }
 
-export { getRowName };
+async function blobToBase64(blob: Blob) {
+	return new Promise<string>((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(reader.result as string);
+		reader.onerror = reject;
+		reader.readAsDataURL(blob);
+	});
+}
+
+export { getRowName, blobToBase64 };
