@@ -1,6 +1,6 @@
 import { db, loadMLTexts, loadTables } from '@/server/db';
 import { type Action, type Actions } from '@sveltejs/kit';
-import { ALL_TABLE_NAMES, type AllTableName, type TableName } from '@/config';
+import { ALL_TABLE_NAMES, type AllTableName, type BucketName, type TableName } from '@/config';
 import validator from 'validator';
 import pluralize from 'pluralize';
 
@@ -161,6 +161,25 @@ const junction: Action = async ({ request, fetch }) => {
 	);
 };
 
-const actions: Actions = { create, update, remove, junction };
+const storage: Action = async ({ request }) => {
+	const formData = await request.formData();
+	const bucketName = formData.get('bucket') as BucketName;
+	const filename = formData.get('filename') as string;
+	const file = formData.get('file') as File;
+
+	const { error } = await db.storage.from(bucketName).upload(filename, file, {
+		upsert: true
+	});
+	if (error) {
+		return makeFormDataResponse('error', 'failed to update file', error.message);
+	}
+	return makeFormDataResponse(
+		'success',
+		'file uploaded',
+		`-bucket: ${bucketName}<br/>- filename: ${filename}<br/>- filesize: ${file.size}`
+	);
+};
+
+const actions: Actions = { create, update, remove, junction, storage };
 
 export { actions };
