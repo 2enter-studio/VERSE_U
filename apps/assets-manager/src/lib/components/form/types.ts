@@ -1,4 +1,4 @@
-import type { TableName } from '@/config';
+import type { BucketName, TableName } from '@/config';
 
 type MetaDataProps<T> = {
 	name: string;
@@ -15,4 +15,9 @@ type RefProps = {
 	class?: string;
 };
 
-export type { MetaDataProps, RefProps };
+type StorageProps = {
+	bucket: BucketName;
+	filename: string;
+};
+
+export type { MetaDataProps, RefProps, StorageProps };
