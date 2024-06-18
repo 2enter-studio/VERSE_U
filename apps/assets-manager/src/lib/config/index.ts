@@ -1,5 +1,3 @@
-import type { Database } from '@repo/supabase';
-
 const LOCALES = ['zh', 'en'] as const;
 const TABLE_NAMES = [
 	'regions',
@@ -209,6 +207,4 @@ export type {
 	ReferenceInfo
 };
 
-const NOTIFICATION_LAST_TIME = 10000;
-
-export { TABLE_NAMES, ALL_TABLE_NAMES, TABLES_INFO, LOCALES, BUCKET_NAMES, NOTIFICATION_LAST_TIME };
+export { TABLE_NAMES, ALL_TABLE_NAMES, TABLES_INFO, LOCALES, BUCKET_NAMES };
