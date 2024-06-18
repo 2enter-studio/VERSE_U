@@ -19,7 +19,8 @@ const config = {
 			// precompress: true
 		}),
 		alias: {
-			'@/*': './src/lib/*'
+			'@/*': './src/lib/*',
+			'$routes': './src/routes/*'
 		},
 		version: {
 			name: version
