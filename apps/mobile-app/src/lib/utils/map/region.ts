@@ -5,6 +5,7 @@ import { db } from '@/db';
 import { createError } from '@/utils/error';
 import { peopleNearby, regions, trip, user } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
+import type { Tables } from '@repo/supabase';
 
 async function loadRegions() {
 	const { data, error } = await db.from('regions').select().eq('enabled', true).returns<Region[]>();
@@ -25,7 +26,7 @@ async function loadPeopleNearby() {
 		.from('trips')
 		.select('profiles(*), arrive_at')
 		.eq('to', region_id)
-		.returns<{ profiles: Profile; arrive_at: string }[]>();
+		.returns<{ profiles: Tables<'profiles'>; arrive_at: string }[]>();
 
 	if (error) return createError('Failed to get users in region');
 
@@ -39,7 +40,7 @@ async function loadPeopleNearby() {
 	peopleNearby.set(result.map((r) => r.profiles));
 }
 
-function subscribeToRegion(callback: (payload: Payload<Profile>) => void) {
+function subscribeToRegion(callback: (payload: Payload<Tables<'profiles'>>) => void) {
 	const region_id = get(trip)?.to;
 	if (!region_id) return createError('No destination found');
 

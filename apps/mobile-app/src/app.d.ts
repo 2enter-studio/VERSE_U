@@ -12,14 +12,15 @@ declare global {
 	type Named = { name: string };
 	type Described = { description: string };
 
-	type Profile = Tables<'profiles'>;
 	type Region = Tables<'regions'> & { name?: string; description?: string };
 
-	type ChatMessage = Tables<'chat_messages'>;
-	type ChatMember = { agree: boolean; profiles: Profile };
-	type Chatroom = { id: string; chat_members: ChatMember[]; chat_messages: ChatMessage[] };
+	type ChatMember = { agree: boolean; profiles: Tables<'profiles'> };
+	type Chatroom = {
+		id: string;
+		chat_members: ChatMember[];
+		chat_messages: Tables<'chat_messages'>[];
+	};
 
-	type WearingType = { id: string; value: string } & Named;
 	type Wearing = Tables<'wearings'> &
 		Named &
 		Described & {

@@ -9,7 +9,7 @@ type TripStatus = {
 
 const trip = writable<null | Tables<'trips'>>(null);
 const regions = writable<Region[]>([]);
-const peopleNearby = writable<Profile[]>([]);
+const peopleNearby = writable<Tables<'profiles'>[]>([]);
 
 function updateTripStatus(update: (value: TripStatus) => void) {
 	const currentTrip = get(trip);

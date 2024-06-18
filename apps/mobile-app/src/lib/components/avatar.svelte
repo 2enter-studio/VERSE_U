@@ -2,13 +2,15 @@
 	import { onMount } from 'svelte';
 	import { getFileUrl } from '@/utils/storage/download';
 	import { selfieUpdated } from '@/stores';
+	import type { Tables } from '@repo/supabase';
 
-	type Props = { profile?: Profile; class?: string; readonly?: boolean };
+	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };
 	let { profile, class: className = 'size-12', readonly = false }: Props = $props();
 
 	let selfieUrl = $state<string>();
 	function reloadSelfie() {
-		if (profile) selfieUrl = getFileUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
+		if (profile)
+			selfieUrl = getFileUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
 	}
 
 	if (!readonly) {

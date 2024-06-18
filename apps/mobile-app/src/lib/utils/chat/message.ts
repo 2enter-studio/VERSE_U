@@ -6,12 +6,17 @@ import { chat, chatId, chats, user } from '@/stores';
 import { createError } from '@/utils/error';
 import { getCurrentYearMonth } from '@/utils/time';
 import { loadChats } from './chat_info';
+import type { Tables } from '@repo/supabase';
 
 async function getMessages() {
 	const chat_id = get(chat)?.id;
 	if (!chat_id) return createError('no chat found');
 
-	const { data, error } = await db.from('chat_messages').select('*').eq('chat', chat_id).returns<ChatMessage[]>();
+	const { data, error } = await db
+		.from('chat_messages')
+		.select('*')
+		.eq('chat', chat_id)
+		.returns<Tables<'chat_messages'>[]>();
 	if (error) return { error };
 	return data;
 }
@@ -27,7 +32,12 @@ async function sendMessage(content: string, reply_to?: string) {
 		reply_to
 	};
 
-	const { data, error } = await db.from('chat_messages').insert(insertData).select().returns<ChatMessage[]>().single();
+	const { data, error } = await db
+		.from('chat_messages')
+		.insert(insertData)
+		.select()
+		.returns<Tables<'chat_messages'>[]>()
+		.single();
 
 	if (error) return { error };
 
@@ -54,7 +64,7 @@ function subscribeToMessages() {
 				table: tableName,
 				filter: `sender=neq.${get(user)?.id}`
 			},
-			async (payload: RealtimePostgresInsertPayload<ChatMessage>) => {
+			async (payload: RealtimePostgresInsertPayload<Tables<'chat_messages'>>) => {
 				console.log('received new message', payload);
 				const newMessage = payload.new;
 				const messageChatId = newMessage.chat;

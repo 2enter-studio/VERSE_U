@@ -12,7 +12,12 @@ async function loadProfile(user_id?: string) {
 	// const user_id = get(user)?.id;
 	if (!user_id) return createError('No auth found');
 
-	const { data, error } = await db.from('profiles').select('*').eq('user', user_id).returns<Profile[]>().single();
+	const { data, error } = await db
+		.from('profiles')
+		.select('*')
+		.eq('user', user_id)
+		.returns<Tables<'profiles'>[]>()
+		.single();
 
 	if (error) {
 		console.error(error.message);
@@ -66,7 +71,13 @@ async function modifyProfile(args: { name: string }) {
 
 	const user_id = get(user)?.id;
 	if (!user_id) return createError('No auth found');
-	const { data, error } = await db.from('profiles').update({ name }).eq('user', user_id).select('*').returns<Profile[]>().single();
+	const { data, error } = await db
+		.from('profiles')
+		.update({ name })
+		.eq('user', user_id)
+		.select('*')
+		.returns<Tables<'profiles'>[]>()
+		.single();
 	if (error) {
 		console.error(error.message);
 		return { error };
