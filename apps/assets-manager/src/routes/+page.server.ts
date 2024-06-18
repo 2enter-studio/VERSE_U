@@ -94,7 +94,7 @@ const remove: Action = async ({ request }) => {
 	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `- row id: ${id}`);
 };
 
-const junction: Action = async ({ request, fetch }) => {
+const junction: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const data = formData.get('data') as string;
 	const base = formData.get('base') as TableName;

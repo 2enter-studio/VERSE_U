@@ -6,7 +6,7 @@
 	import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { FileViewer } from '@/components';
 
 	let { bucket, filename, filetype }: StorageProps & { filetype: 'glb' | 'fbx' } = $props();
