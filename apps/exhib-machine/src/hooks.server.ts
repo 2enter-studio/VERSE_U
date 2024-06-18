@@ -6,9 +6,7 @@ import { initMetaData } from '@/server/metadata';
 import { callHaiAnPlayer } from '@/server/players/hai_an';
 import { wsHandler } from '@/server/ws';
 import { serverState } from '@/server/state';
-import config from '@/config';
-
-const { HAI_AN_CALL_TIMEOUT } = config;
+import { HAI_AN_CALL_TIMEOUT } from '@/config';
 
 async function serverInit() {
 	initFileStorage();

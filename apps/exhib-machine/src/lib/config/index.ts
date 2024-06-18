@@ -24,12 +24,13 @@ type UEPlayerBundle = {
 
 export type { Tables, MetaData, BucketName, UEPlayerBundle, UEPlayer, Player };
 
-export default {
+const HAI_AN_CALL_TIMEOUT = 3000;
+
+export {
 	BUCKET_NAMES,
 	STORAGE_BASE,
 	METADATA_FILE,
 	TEXTURE_TYPES,
 	EMPTY_METADATA,
-	HAI_AN_CALL_TIMEOUT: 3000
-	// META_DATA_UPDATE_TIMEOUT: 3000
-} as const;
+	HAI_AN_CALL_TIMEOUT
+};
