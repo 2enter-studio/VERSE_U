@@ -1,8 +1,6 @@
 import { get, writable } from 'svelte/store';
 import type { Tables } from '@repo/supabase';
-import config from '@/config';
-
-const { MIN_STAY_TIME } = config;
+import { MIN_STAY_TIME } from '@/config';
 
 type TripStatus = {
 	progress: number;

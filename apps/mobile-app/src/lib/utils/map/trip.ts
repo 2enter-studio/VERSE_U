@@ -8,7 +8,12 @@ import { createError, handleEFResponse } from '@/utils/error';
 async function loadTrip() {
 	const user_id = get(user)?.id;
 	if (!user_id) return createError('You must be logged in to get your trip');
-	const { data, error } = await db.from('trips').select().eq('user', user_id).returns<Tables<'trips'>[]>().single();
+	const { data, error } = await db
+		.from('trips')
+		.select()
+		.eq('user', user_id)
+		.returns<Tables<'trips'>[]>()
+		.single();
 
 	if (error) return { error };
 	trip.set(data);

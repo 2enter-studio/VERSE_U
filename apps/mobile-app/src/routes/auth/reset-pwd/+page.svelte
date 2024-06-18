@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { setPwd, signOut } from '@/utils/auth';
 	import validate from '@/utils/validate';
-	import config from '@/config';
-
-	const { DEFAULT_ROUTE } = config;
+	import { DEFAULT_ROUTE } from '@/config';
 
 	let pwd = $state('');
 	let pwdConfirm = $state('');

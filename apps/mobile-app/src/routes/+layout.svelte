@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import type { PageData } from './auth/reset-pwd/$types';
 	import { onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
@@ -14,10 +15,8 @@
 	import { loadWearings } from '@/utils/dress/wearing';
 	import { loggedIn, profile, platform, showMenu } from '@/stores';
 	import { Menu, Login, MyProfile, Error, SideMenu } from './';
-	import config from '@/config';
+	import { DEFAULT_ROUTE } from '@/config';
 	// import { Notifications } from './index.js';
-
-	const { DEFAULT_ROUTE } = config;
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
@@ -101,11 +100,16 @@
 	{#if $loggedIn}
 		{#if loaded}
 			<div class="flex w-full">
-				<MyProfile class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]" />
+				<MyProfile
+					class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
+				/>
 			</div>
 			{@render children()}
 		{:else}
-			<div transition:fade={{ duration: 1000 }} class="full-screen center-content bg-black/30 backdrop-blur-lg">
+			<div
+				transition:fade={{ duration: 1000 }}
+				class="full-screen center-content bg-black/30 backdrop-blur-lg"
+			>
 				<Icon icon="mingcute:loading-fill" class="size-20 animate-spin"></Icon>
 			</div>
 		{/if}
@@ -133,6 +137,7 @@
 
 <style>
 	#layout {
-		padding: var(--safe-area-inset-top) var(--safe-area-inset-right) var(--safe-area-inset-bottom) var(--safe-area-inset-left);
+		padding: var(--safe-area-inset-top) var(--safe-area-inset-right) var(--safe-area-inset-bottom)
+			var(--safe-area-inset-left);
 	}
 </style>

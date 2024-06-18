@@ -3,11 +3,9 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { onMount } from 'svelte';
 	import type { CharacterAnimation } from '@/config';
-	import config from '@/config';
+	import { FRAME_RATE, DEFAULT_CAMERA_POS } from '@/config';
 	import { wearings } from '@/stores';
 	import { getFileUrl } from '@/utils/storage/download';
-
-	const { FRAME_RATE, DEFAULT_CAMERA_POS } = config;
 
 	type Props = {
 		wearingIds: string[];
@@ -17,7 +15,13 @@
 		cameraPosition?: [number, number, number];
 	};
 
-	let { wearingIds, animation, cameraPosition = [...DEFAULT_CAMERA_POS], class: className, readonly = false }: Props = $props();
+	let {
+		wearingIds,
+		animation,
+		cameraPosition = [...DEFAULT_CAMERA_POS],
+		class: className,
+		readonly = false
+	}: Props = $props();
 
 	let mixer: THREE.AnimationMixer;
 	let skeleton: THREE.Skeleton;
@@ -27,7 +31,9 @@
 	let body = $state<THREE.Object3D<THREE.Object3DEventMap>>();
 	let modelLoaded = $state(false);
 
-	const animating = $derived(body?.animations?.some((a) => mixer?.clipAction(a).isRunning()) || false);
+	const animating = $derived(
+		body?.animations?.some((a) => mixer?.clipAction(a).isRunning()) || false
+	);
 
 	let frame = 0;
 	const loader = new GLTFLoader();
@@ -224,4 +230,7 @@
 	});
 </script>
 
-<div bind:this={dom} class="{className} {modelLoaded && animating ? 'opacity-100' : 'opacity-0'}"></div>
+<div
+	bind:this={dom}
+	class="{className} {modelLoaded && animating ? 'opacity-100' : 'opacity-0'}"
+></div>

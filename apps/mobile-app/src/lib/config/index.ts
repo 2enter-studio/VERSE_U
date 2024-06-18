@@ -16,22 +16,32 @@ const CHARACTER_ANIMATIONS = [
 	'Macarena_Dance'
 ] as const;
 
-export type Locale = (typeof LOCALES)[number];
-export type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
-export type Bucket = (typeof BUCKETS)[number];
-export type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
+type Locale = (typeof LOCALES)[number];
+type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
+type BucketName = (typeof BUCKETS)[number];
+type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
-export default {
+const DEFAULT_ROUTE = '/me';
+const MIN_STAY_TIME = 1000 * 3;
+const MAX_STAY_TIME = 1000 * 60 * 60 * 8;
+const MAP_SIZE = 3200;
+const FRAME_RATE = 12;
+const DEFAULT_CAMERA_POS = [0, 2.0, 2.0] as const;
+const ZOOM_IN_CAMERA_POS = [0, 2.3, 0.5] as const;
+
+export {
 	UI_TEXTS,
 	LOCALES,
 	OAUTH_PROVIDERS,
 	BUCKETS,
 	CHARACTER_ANIMATIONS,
-	DEFAULT_ROUTE: '/me',
-	MIN_STAY_TIME: 1000 * 3,
-	MAX_STAY_TIME: 1000 * 60 * 60 * 8,
-	MAP_SIZE: 3200,
-	FRAME_RATE: 12,
-	DEFAULT_CAMERA_POS: [0, 2.0, 2.0],
-	ZOOM_IN_CAMERA_POS: [0, 2.3, 0.5]
-} as const;
+	DEFAULT_ROUTE,
+	MIN_STAY_TIME,
+	MAX_STAY_TIME,
+	MAP_SIZE,
+	FRAME_RATE,
+	DEFAULT_CAMERA_POS,
+	ZOOM_IN_CAMERA_POS
+};
+
+export type { Locale, OAuthProvider, BucketName, CharacterAnimation };

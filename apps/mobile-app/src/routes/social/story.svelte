@@ -5,9 +5,7 @@
 	import { UModel } from '@/components/index.js';
 	import { showMenu } from '@/stores';
 	import Icon from '@iconify/svelte';
-	import config from '@/config';
-
-	const { CHARACTER_ANIMATIONS } = config;
+	import { CHARACTER_ANIMATIONS } from '@/config';
 
 	type Props = {
 		user_id: string;
@@ -51,6 +49,11 @@
 		<button class="mb-10 flex flex-row" onclick={startChat}>
 			<Icon icon="solar:chat-dots-bold" class="size-14 rounded-full bg-rose-600 p-3" />
 		</button>
-		<UModel class="full-screen z-[-10] text-black" animation={CHARACTER_ANIMATIONS[0]} {wearingIds} readonly></UModel>
+		<UModel
+			class="full-screen z-[-10] text-black"
+			animation={CHARACTER_ANIMATIONS[0]}
+			{wearingIds}
+			readonly
+		></UModel>
 	{/await}
 </div>

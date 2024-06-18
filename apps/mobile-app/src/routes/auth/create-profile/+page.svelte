@@ -5,9 +5,7 @@
 	import { loggedIn, profile, showMenu } from '@/stores';
 	import { createProfile } from '@/utils/auth/profile';
 	import { Dialog } from '@/components';
-	import config from '@/config';
-
-	const { DEFAULT_ROUTE } = config;
+	import { DEFAULT_ROUTE } from '@/config';
 
 	let name = $state('');
 
@@ -36,7 +34,12 @@
 </script>
 
 <Dialog title="Create Profile" open={true} closable={false} class="center-content">
-	<input type="text" bind:value={name} class="rounded-lg bg-black py-1 text-white" placeholder="enter your name" />
+	<input
+		type="text"
+		bind:value={name}
+		class="rounded-lg bg-black py-1 text-white"
+		placeholder="enter your name"
+	/>
 
 	<button class="p-0" disabled={name.trim() === ''} onclick={submit}>
 		<Icon icon="carbon:next-outline" class="size-[10vw] text-rose-500/80" />

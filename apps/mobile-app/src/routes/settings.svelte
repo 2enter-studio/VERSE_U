@@ -9,9 +9,7 @@
 	import { modifyProfile, signOut } from '@/utils/auth';
 	import preferences from '@/utils/preferences';
 
-	import config from '@/config';
-
-	const { LOCALES, UI_TEXTS } = config;
+	import { LOCALES, UI_TEXTS } from '@/config';
 
 	type Props = { open: boolean };
 	let { open = $bindable() }: Props = $props();
@@ -21,7 +19,8 @@
 		locale: $locale
 	});
 	const submittable = $derived(
-		JSON.stringify({ profile: $profile, locale: $locale }) !== JSON.stringify(values) && values.profile?.name.trim() !== ''
+		JSON.stringify({ profile: $profile, locale: $locale }) !== JSON.stringify(values) &&
+			values.profile?.name.trim() !== ''
 	);
 
 	$effect(() => {
@@ -51,7 +50,11 @@
 	}
 </script>
 
-<Dialog bind:open title={$uiTexts.settings} class="max-h-1/3 center-content flex-col gap-3 text-sm text-black">
+<Dialog
+	bind:open
+	title={$uiTexts.settings}
+	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
+>
 	current url: {$page.url.href}
 	<div class="flex flex-row gap-2">
 		{$uiTexts.version}: {version}
@@ -76,7 +79,10 @@
 		</div>
 		{#if values.profile}
 			<div class="flex flex-row">
-				<label for="my-name" class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900">
+				<label
+					for="my-name"
+					class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900"
+				>
 					{$uiTexts.name}
 				</label>
 				<input
@@ -97,7 +103,9 @@
 			{#each LOCALES as lang}
 				{@const selected = lang === values.locale}
 				<input id="{lang}-option" type="radio" value={lang} bind:group={values.locale} hidden />
-				<label for="{lang}-option" class="{selected ? 'bg-black text-white' : ''} px-1">{UI_TEXTS[lang].locale}</label>
+				<label for="{lang}-option" class="{selected ? 'bg-black text-white' : ''} px-1"
+					>{UI_TEXTS[lang].locale}</label
+				>
 			{/each}
 		</div>
 	</div>
