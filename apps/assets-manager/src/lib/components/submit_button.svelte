@@ -13,6 +13,7 @@
 		afterSubmit?: Function;
 		class?: string;
 		icon?: string;
+		enctype?: string;
 		children?: Snippet;
 	};
 
@@ -23,8 +24,7 @@
 		afterSubmit,
 		class: className,
 		icon,
-		children,
-		...props
+		children
 	}: Props = $props();
 
 	const dataMap = $derived(Object.entries(data));
@@ -57,7 +57,7 @@
 	};
 </script>
 
-<form {action} method="POST" use:enhance={enhanceHandler} class={className} {...props}>
+<form {action} method="POST" use:enhance={enhanceHandler} class={className}>
 	{#if dataMap.length > 0}
 		{#each dataMap as [key, value]}
 			<HiddenInput name={key} {value} />
