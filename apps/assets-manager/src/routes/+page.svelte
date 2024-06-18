@@ -79,7 +79,7 @@
 					class="text-2xl center-content hover:bg-orange-600"
 				/>
 				{#if showSysLog}
-					<SystemLog class="bg-black p-1 max-h-[10vh] overflow-y-auto overflow-x-hidden" />
+					<SystemLog class="bg-black p-1 h-[10vh] overflow-y-auto overflow-x-hidden" />
 				{/if}
 			</div>
 
