@@ -2,7 +2,15 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { equippedWearings, wearings, wearingTypes, trip, tripStatus, errorMessage, selfieUpdated } from '@/stores';
+	import {
+		equippedWearings,
+		wearings,
+		wearingTypes,
+		trip,
+		tripStatus,
+		errorMessage,
+		selfieUpdated
+	} from '@/stores';
 	import config, { type CharacterAnimation } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
@@ -11,7 +19,7 @@
 	// import randomItem from 'random-item';
 
 	const { CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } = config;
-	const expressions = $wearingTypes.filter((type) => ['eyes'].includes(type.value)).map((type) => type.id);
+	const expressions = $wearingTypes.filter((type) => type.is_expression).map((type) => type.id);
 
 	let animation = $state<CharacterAnimation>('idle');
 	let dressing = $state(false);
@@ -19,7 +27,9 @@
 	let selectedWearings: Record<string, string> = $state({});
 	let selfieUrl = $state('');
 
-	const filteredSelectedWearings = $derived(Object.values(selectedWearings).filter((w) => w !== ''));
+	const filteredSelectedWearings = $derived(
+		Object.values(selectedWearings).filter((w) => w !== '')
+	);
 	const zoomIn = $derived(expressions.includes(selectedWearingType));
 
 	function takeSelfie() {
@@ -65,7 +75,10 @@
 
 {#if $tripStatus.progress === 1}
 	{@const regionBgUrl = getFileUrl('regions', `backgrounds/${$trip?.to}`)}
-	<div class="full-screen z-[-11] bg-cover bg-center bg-no-repeat" style="background-image: url({regionBgUrl})"></div>
+	<div
+		class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
+		style="background-image: url({regionBgUrl})"
+	></div>
 {/if}
 
 {#if dressing}
@@ -74,7 +87,8 @@
 
 {#if zoomIn}
 	<div class="center-content fixed bottom-32 w-full">
-		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}></button>
+		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}
+		></button>
 	</div>
 {/if}
 
@@ -86,8 +100,16 @@
 />
 
 {#if selfieUrl !== ''}
-	<Dialog title="Selfie" class="center-content flex-col text-black" open={true} onclose={() => (selfieUrl = '')}>
-		<div class="size-64 bg-green-500 bg-cover bg-center bg-no-repeat" style="background-image:url({selfieUrl})"></div>
+	<Dialog
+		title="Selfie"
+		class="center-content flex-col text-black"
+		open={true}
+		onclose={() => (selfieUrl = '')}
+	>
+		<div
+			class="size-64 bg-green-500 bg-cover bg-center bg-no-repeat"
+			style="background-image:url({selfieUrl})"
+		></div>
 		you just took a selfie, upload it?
 		<button
 			onclick={async () => {
