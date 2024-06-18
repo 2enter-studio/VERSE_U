@@ -8,8 +8,6 @@
 
 	import { onDestroy, onMount } from 'svelte';
 	import { FileViewer } from '@/components';
-	import { setSystemLog } from '@/stores';
-	import { makeTableMessage } from '@/index';
 
 	let { bucket, filename, filetype }: StorageProps & { filetype: 'glb' | 'fbx' } = $props();
 
@@ -50,29 +48,8 @@
 		setModel(newModel);
 	}
 
-	onMount(async () => {
-		if (!parentDom) return;
-		const res = await fetch(`/api/storage/${bucket}/${filename}`);
-		if (res.ok) {
-			const blob = await res.blob();
-			if (blob) await reloadFile(blob);
-			else {
-				setSystemLog(
-					'error',
-					'failed to load model, no blob found',
-					makeTableMessage({ file: `${bucket}/${filename}` })
-				);
-			}
-		} else {
-			setSystemLog(
-				'error',
-				'failed to load model, no remote data found',
-				makeTableMessage({ file: `${bucket}/${filename}` })
-			);
-		}
-
-		if (!model) return;
-
+	function init() {
+		if (!model || !parentDom) return;
 		camera.position.set(1, 2, 2);
 		camera.lookAt(1, 1, 1);
 		light.position.set(10, 20, 0).normalize();
@@ -94,7 +71,7 @@
 		}
 
 		animate();
-	});
+	}
 
 	onDestroy(() => {
 		if (frame) cancelAnimationFrame(frame);
@@ -110,5 +87,5 @@
 	>
 	</label>
 
-	<FileViewer {bucket} {filename} accept=".{filetype}" {reloadFile} />
+	<FileViewer {bucket} {filename} accept=".{filetype}" {reloadFile} {init} />
 </div>
