@@ -16,13 +16,12 @@ function getRowName(row: { id: string; value?: string }) {
 	return (row as { value?: string })?.value ?? '?????????';
 }
 
-async function blobToBase64(blob: Blob) {
-	return new Promise<string>((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = () => resolve(reader.result as string);
-		reader.onerror = reject;
-		reader.readAsDataURL(blob);
+function makeTableMessage(data: Record<string, string | number | boolean>, sep = '<br/>') {
+	const lines: string[] = [];
+	Object.entries(data).forEach(([key, value]) => {
+		lines.push(`- ${key}: ${value}`);
 	});
+	return lines.join(sep);
 }
 
-export { getRowName, blobToBase64 };
+export { getRowName, makeTableMessage };
