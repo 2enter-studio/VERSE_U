@@ -28,7 +28,7 @@
 	async function blobToModel(blob: Blob) {
 		const url = URL.createObjectURL(blob);
 		const result = await loader.loadAsync(url);
-		return (filetype === 'fbx' ? result : result.scene) as THREE.Group;
+		return (result as { scene: THREE.Group }).scene ?? (result as THREE.Group);
 	}
 
 	function setModel(newModel: THREE.Group) {
