@@ -36,8 +36,8 @@ input {
 }
 
 ::-webkit-scrollbar {
-	width: 5px;
-	height: 10px;
+	width: 12px;
+	/*height: 10px;*/
 }
 
 /* Track */
@@ -47,11 +47,12 @@ input {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: cyan;
+	background: gray;
+	border: white solid 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: red;
+	background: white;
 	cursor: pointer;
 }
