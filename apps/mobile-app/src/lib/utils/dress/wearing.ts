@@ -6,7 +6,10 @@ import { createError } from '@/utils/error';
 import type { Tables } from '@repo/supabase';
 
 async function loadWearingTypes() {
-	const { data, error } = await db.from('wearing_types').select('id,value').returns<WearingType[]>();
+	const { data, error } = await db
+		.from('wearing_types')
+		.select('*')
+		.returns<Tables<'wearing_types'>[]>();
 	if (error) return { error };
 
 	const newData = await assignMLTexts(data);
@@ -16,7 +19,10 @@ async function loadWearingTypes() {
 
 async function loadWearings() {
 	await loadWearingTypes();
-	const { data, error } = await db.from('wearings').select('*, texture_types(value), body_parts(value)').returns<Wearing[]>();
+	const { data, error } = await db
+		.from('wearings')
+		.select('*, texture_types(value), body_parts(value)')
+		.returns<Wearing[]>();
 
 	if (error) return { error };
 
@@ -61,13 +67,21 @@ async function equipWearings(wearing_ids: string[]) {
 	if (!user_id) return createError('You must be logged in to equip wearings');
 
 	// un-equip all wearings
-	const { error } = await db.from('owned_wearings').update({ equipped: false }).eq('owner', user_id).eq('equipped', true);
+	const { error } = await db
+		.from('owned_wearings')
+		.update({ equipped: false })
+		.eq('owner', user_id)
+		.eq('equipped', true);
 
 	if (error) return { error };
 
 	{
 		// equip new wearings
-		const { error } = await db.from('owned_wearings').update({ equipped: true }).eq('owner', user_id).in('wearing', wearing_ids);
+		const { error } = await db
+			.from('owned_wearings')
+			.update({ equipped: true })
+			.eq('owner', user_id)
+			.in('wearing', wearing_ids);
 		if (error) return { error };
 	}
 
