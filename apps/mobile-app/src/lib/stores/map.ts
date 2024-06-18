@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import type { Tables } from '@/types/supabase';
+import type { Tables } from '@repo/supabase';
 import config from '@/config';
 
 const { MIN_STAY_TIME } = config;

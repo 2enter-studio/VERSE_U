@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import type { Tables } from '@/types/supabase';
+import type { Tables } from '@repo/supabase';
 
 import { db } from '@/db';
 import { user, trip, tripStatus, peopleNearby } from '@/stores';

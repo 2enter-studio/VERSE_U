@@ -1,7 +1,8 @@
 import { derived, writable } from 'svelte/store';
+import type { Tables } from '@repo/supabase';
 
 const wearings = writable<Wearing[]>([]);
-const wearingTypes = writable<WearingType[]>([]);
+const wearingTypes = writable<Tables<'wearing_types'>[]>([]);
 const ownedWearings = writable<{ wearing: string; equipped: boolean }[]>([]);
 
 const equippedWearings = derived(ownedWearings, ($ownedWearings) => {

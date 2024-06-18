@@ -3,6 +3,7 @@ import { db } from '@/db';
 import { ownedWearings, user, wearings, wearingTypes } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
 import { createError } from '@/utils/error';
+import type { Tables } from '@repo/supabase';
 
 async function loadWearingTypes() {
 	const { data, error } = await db.from('wearing_types').select('id,value').returns<WearingType[]>();

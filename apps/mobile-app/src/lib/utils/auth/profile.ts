@@ -5,7 +5,7 @@ import { get } from 'svelte/store';
 import { db } from '@/db';
 import { profile, user, regions, trip } from '@/stores';
 import { createError } from '../error';
-import type { Tables } from '@/types/supabase';
+import type { Tables } from '@repo/supabase';
 
 async function loadProfile(user_id?: string) {
 	if (!user_id) user_id = get(user)?.id;
