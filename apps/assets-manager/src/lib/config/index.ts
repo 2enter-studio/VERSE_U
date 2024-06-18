@@ -95,7 +95,7 @@ const TABLES_INFO: TableInfo = {
 			background: {
 				type: 'webp',
 				bucket: 'regions',
-				path: 'background'
+				path: 'backgrounds'
 			}
 		}
 	},
@@ -169,6 +169,11 @@ const TABLES_INFO: TableInfo = {
 			...NAME_AND_DESCRIPTION
 		},
 		storage: {
+			glb: {
+				type: 'glb',
+				bucket: 'meshes',
+				path: 'glb'
+			},
 			fbx: {
 				type: 'fbx',
 				bucket: 'meshes',
