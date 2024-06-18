@@ -3,6 +3,7 @@ import { type Action, type Actions } from '@sveltejs/kit';
 import { ALL_TABLE_NAMES, type AllTableName, type BucketName, type TableName } from '@/config';
 import validator from 'validator';
 import pluralize from 'pluralize';
+import { makeTableMessage } from '@/index';
 
 function makeFormDataResponse(
 	type: 'success' | 'error' = 'success',
@@ -61,7 +62,7 @@ const update: Action = async ({ request }) => {
 		return makeFormDataResponse(
 			'error',
 			'invalid data input, id or table name',
-			`-table: ${tableName} <br/>- id: ${id} <br/>- data: ${data}`
+			makeTableMessage({ table: tableName, id, data })
 		);
 	}
 
@@ -69,12 +70,11 @@ const update: Action = async ({ request }) => {
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 
-	let formatData = `updated fields: <br/>- id: ${id} <br/>`;
-	for (const [key, value] of Object.entries(JSON.parse(data))) {
-		formatData += `- ${key}: ${value} <br/>`;
-	}
-
-	return makeFormDataResponse('success', `updated 1 row from ${tableName}`, formatData);
+	return makeFormDataResponse(
+		'success',
+		`updated 1 row from ${tableName}`,
+		makeTableMessage({ id, ...JSON.parse(data) })
+	);
 };
 
 const remove: Action = async ({ request }) => {
@@ -85,7 +85,7 @@ const remove: Action = async ({ request }) => {
 		return makeFormDataResponse(
 			'error',
 			'invalid id or table name',
-			`-table: ${tableName} <br/>- id: ${id}`
+			makeTableMessage({ table: tableName, id })
 		);
 	}
 
@@ -108,7 +108,7 @@ const junction: Action = async ({ request, fetch }) => {
 		return makeFormDataResponse(
 			'success',
 			`invalid data or junction name`,
-			`- base: ${base}<br/>- junction: ${junctionName}`
+			makeTableMessage({ base, junction: junctionName })
 		);
 	}
 
@@ -157,7 +157,7 @@ const junction: Action = async ({ request, fetch }) => {
 	return makeFormDataResponse(
 		'success',
 		`success update multi ref of ${base}->${target}`,
-		`- id: ${id}<br/>- created: ${createIds.join(',')}<br/>- deleted: ${deleteIds.join(',')}`
+		makeTableMessage({ id, created: createIds.join(','), delete: deleteIds.join(',') })
 	);
 };
 
@@ -176,7 +176,7 @@ const storage: Action = async ({ request }) => {
 	return makeFormDataResponse(
 		'success',
 		'file uploaded',
-		`-bucket: ${bucketName}<br/>- filename: ${filename}<br/>- filesize: ${file.size}`
+		makeTableMessage({ bucket: bucketName, filename, filesize: file.size })
 	);
 };
 
