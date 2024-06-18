@@ -9,7 +9,7 @@ export const GET = async ({ params }) => {
 
 	const { data, error } = await admin.storage.from(bucket).download(filename);
 	if (error) {
-		serverError(500, 'failed to get file');
+		serverError(404, 'failed to get file');
 	}
 	return new Response(data);
 };
