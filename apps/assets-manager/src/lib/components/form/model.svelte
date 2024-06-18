@@ -1,16 +1,19 @@
 <script lang="ts">
 	import type { StorageProps } from '@/components/form/types';
+
 	import * as THREE from 'three';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 	import { onDestroy, onMount } from 'svelte';
 	import { FileViewer } from '@/components';
+	import { setSystemLog } from '@/stores';
+	import { makeTableMessage } from '@/index';
+
 	let { bucket, filename, filetype }: StorageProps & { filetype: 'glb' | 'fbx' } = $props();
 
-	const loadingManager = new THREE.LoadingManager();
-	const loader =
-		filetype === 'fbx' ? new FBXLoader(loadingManager) : new GLTFLoader(loadingManager);
+	const loader = filetype === 'fbx' ? new FBXLoader() : new GLTFLoader();
 
 	const renderer = new THREE.WebGLRenderer({ alpha: true });
 	const scene = new THREE.Scene();
@@ -51,9 +54,21 @@
 		if (!parentDom) return;
 		const res = await fetch(`/api/storage/${bucket}/${filename}`);
 		if (res.ok) {
-			const blob = await res.blob()
-			const newModel = await blobToModel(blob);
-			setModel(newModel);
+			const blob = await res.blob();
+			if (blob) await reloadFile(blob);
+			else {
+				setSystemLog(
+					'error',
+					'failed to load model, no blob found',
+					makeTableMessage({ file: `${bucket}/${filename}` })
+				);
+			}
+		} else {
+			setSystemLog(
+				'error',
+				'failed to load model, no remote data found',
+				makeTableMessage({ file: `${bucket}/${filename}` })
+			);
 		}
 
 		if (!model) return;
