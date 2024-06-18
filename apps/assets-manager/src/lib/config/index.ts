@@ -150,6 +150,9 @@ const TABLES_INFO: TableInfo = {
 		description: '服裝類別',
 		metadata: {
 			...ID,
+			is_expression: {
+				type: 'toggle'
+			},
 			...VALUE,
 			...NAME_AND_DESCRIPTION
 		}
