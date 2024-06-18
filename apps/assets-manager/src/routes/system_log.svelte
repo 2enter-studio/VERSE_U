@@ -15,7 +15,7 @@
 		{#each $systemLogs.sort((a, b) => b.created_at - a.created_at) as { message, created_at, type }}
 			<button
 				onclick={() => (showDetail = created_at)}
-				class="flex flex-row justify-end hover:before:content-['->'] border-black/0 border-2"
+				class="flex flex-row justify-end hover:before:content-['->'] border-black/0 border-2 whitespace-nowrap"
 			>
 				<span class="{type} px-1">{message}</span>
 				<span class="bg-white text-black px-1">
