@@ -3,7 +3,7 @@ import UI_TEXTS from './ui_texts';
 const LOCALES = ['en', 'zh'] as const;
 // const OAUTH_PROVIDERS = ['facebook', 'google', 'apple'] as const;
 const OAUTH_PROVIDERS = [] as const;
-const BUCKETS_NAME = ['meshes', 'regions', 'stickers', 'wearings', 'user_data'] as const;
+const BUCKET_NAMES = ['meshes', 'regions', 'stickers', 'wearings', 'user_data'] as const;
 const CHARACTER_ANIMATIONS = [
 	'chicken_dance',
 	'idle',
@@ -18,7 +18,7 @@ const CHARACTER_ANIMATIONS = [
 
 type Locale = (typeof LOCALES)[number];
 type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
-type BucketName = (typeof BUCKETS)[number];
+type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
 const DEFAULT_ROUTE = '/me';
@@ -33,7 +33,7 @@ export {
 	UI_TEXTS,
 	LOCALES,
 	OAUTH_PROVIDERS,
-	BUCKETS_NAME,
+	BUCKET_NAMES,
 	CHARACTER_ANIMATIONS,
 	DEFAULT_ROUTE,
 	MIN_STAY_TIME,
