@@ -696,16 +696,19 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          is_expression: boolean
           value: string
         }
         Insert: {
           created_at?: string
           id?: string
+          is_expression?: boolean
           value?: string
         }
         Update: {
           created_at?: string
           id?: string
+          is_expression?: boolean
           value?: string
         }
         Relationships: []
