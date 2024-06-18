@@ -83,7 +83,7 @@
 	<label
 		bind:this={parentDom}
 		for="{bucket}-{filename}"
-		class="size-60 bg-white/40 bg-center bg-contain bg-no-repeat cursor-pointer hover:opacity-80"
+		class="size-60 bg-white/30 bg-center bg-contain bg-no-repeat cursor-pointer hover:opacity-80"
 	>
 	</label>
 
