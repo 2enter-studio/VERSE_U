@@ -25,22 +25,10 @@
 	let frame = $state<number>();
 	let skeletonHelper = $state<THREE.SkeletonHelper>();
 
-	async function bufferToModel(buffer: ArrayBuffer) {
-		return new Promise<THREE.Group>((resolve, reject) => {
-			loader.parse(
-				buffer,
-				'',
-				(res) => {
-					console.log(filetype, ' loaded');
-					console.log(res.scene);
-					resolve(res.scene);
-				},
-				(err) => {
-					console.log('error while buffer to model');
-					reject(err);
-				}
-			);
-		});
+	async function blobToModel(blob: Blob) {
+		const url = URL.createObjectURL(blob);
+		const result = await loader.loadAsync(url);
+		return (filetype === 'fbx' ? result : result.scene) as THREE.Group;
 	}
 
 	function setModel(newModel: THREE.Group) {
@@ -54,15 +42,19 @@
 		scene.add(model);
 	}
 
-	async function reloadFile(input: ArrayBuffer) {
-		const newModel = await bufferToModel(input);
+	async function reloadFile(input: Blob) {
+		const newModel = await blobToModel(input);
 		setModel(newModel);
 	}
 
 	onMount(async () => {
 		if (!parentDom) return;
-		const result = await loader.loadAsync(`/api/storage/${bucket}/${filename}`);
-		setModel(filetype === 'glb' ? result.scene : result);
+		const res = await fetch(`/api/storage/${bucket}/${filename}`);
+		if (res.ok) {
+			const blob = await res.blob()
+			const newModel = await blobToModel(blob);
+			setModel(newModel);
+		}
 
 		if (!model) return;
 

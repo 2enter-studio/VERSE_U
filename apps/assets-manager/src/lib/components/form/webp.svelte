@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import type { StorageProps } from '@/components/form/types';
 	import { FileViewer } from '@/components/index.js';
-	import { encode } from 'base64-arraybuffer';
 
 	let { bucket, filename }: StorageProps = $props();
 	let imageUrl = $state<string>();
@@ -10,8 +9,8 @@
 	onMount(async () => {
 		const res = await fetch(`/api/storage/${bucket}/${filename}`);
 		if (res.ok) {
-			const buffer = await res.arrayBuffer();
-			await reloadFile(buffer);
+			const blob = await res.blob();
+			await reloadFile(blob);
 		}
 
 		if (!imageUrl) {
@@ -21,10 +20,8 @@
 		}
 	});
 
-	async function reloadFile(input: ArrayBuffer) {
-		const base64 = encode(input);
-
-		imageUrl = `data:image/png;base64,${base64}`;
+	async function reloadFile(input: Blob) {
+		imageUrl = URL.createObjectURL(input);
 	}
 </script>
 

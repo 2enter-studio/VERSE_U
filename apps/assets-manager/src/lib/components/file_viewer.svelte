@@ -5,7 +5,7 @@
 	type Props = {
 		bucket: BucketName;
 		filename: string;
-		reloadFile: (input: ArrayBuffer) => Promise<void>;
+		reloadFile: (input: Blob) => Promise<void>;
 		accept: string;
 	};
 	let { bucket, filename, reloadFile, accept }: Props = $props();
@@ -16,8 +16,8 @@
 		const file = input.files?.[0];
 		if (!file) return;
 
-		const buffer = await file.arrayBuffer();
-		await reloadFile(buffer);
+		const blob = new Blob([file]);
+		await reloadFile(blob);
 
 		modified = true;
 	}
