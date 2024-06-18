@@ -3,7 +3,7 @@ import UI_TEXTS from './ui_texts';
 const LOCALES = ['en', 'zh'] as const;
 // const OAUTH_PROVIDERS = ['facebook', 'google', 'apple'] as const;
 const OAUTH_PROVIDERS = [] as const;
-const BUCKETS = ['meshes', 'regions', 'stickers', 'wearings', 'user_data'] as const;
+const BUCKETS_NAME = ['meshes', 'regions', 'stickers', 'wearings', 'user_data'] as const;
 const CHARACTER_ANIMATIONS = [
 	'chicken_dance',
 	'idle',
@@ -33,7 +33,7 @@ export {
 	UI_TEXTS,
 	LOCALES,
 	OAUTH_PROVIDERS,
-	BUCKETS,
+	BUCKETS_NAME,
 	CHARACTER_ANIMATIONS,
 	DEFAULT_ROUTE,
 	MIN_STAY_TIME,
