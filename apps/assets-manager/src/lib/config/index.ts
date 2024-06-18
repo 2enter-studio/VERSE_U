@@ -85,7 +85,7 @@ const TABLES_INFO: TableInfo = {
 			}
 		},
 		storage: {
-			stickers: {
+			sticker: {
 				type: 'webp',
 				bucket: 'regions',
 				path: 'stickers'
