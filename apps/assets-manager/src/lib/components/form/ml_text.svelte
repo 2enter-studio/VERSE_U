@@ -15,7 +15,7 @@
 			ml_text.row_id === row_id && ml_text.column_name === column_name && ml_text.locale === locale
 	);
 
-	const valueCopy = ml_texts[index]?.value ?? '';
+	let valueCopy = $state(ml_texts[index]?.value ?? '');
 	const modified = $derived(ml_texts[index]?.value !== valueCopy);
 
 	onMount(() => {
@@ -24,6 +24,10 @@
 			ml_texts[index].value = valueCopy;
 		};
 	});
+
+	function afterSubmit() {
+		valueCopy = ml_texts[index]?.value ?? '';
+	}
 </script>
 
 <div class="flex flex-row gap-1">
@@ -42,6 +46,7 @@
 					id: ml_texts[index]?.id ?? ''
 				}}
 				class="hover:bg-amber-700 center-content"
+				{afterSubmit}
 			/>
 		{/if}
 	{:else}
