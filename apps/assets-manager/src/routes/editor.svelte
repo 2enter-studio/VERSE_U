@@ -17,21 +17,24 @@
 	const { metadata } = tableInfo;
 
 	let data = $state({ ...tableData });
-	let dataCopy = $state.snapshot(data);
+	let dataCopy = $state($state.snapshot(data));
 
 	const modified = $derived.by(() => {
 		const result: any = {};
-		const dynaData = $state.snapshot(data);
-		for (const name of Object.keys(tableData)) {
+		for (const name of Object.keys(data)) {
 			// @ts-ignore
-			if (dynaData?.[name] !== dataCopy?.[name]) {
+			if (data?.[name] !== dataCopy?.[name]) {
 				// @ts-ignore
-				result[name] = dynaData[name];
+				result[name] = data[name];
 			}
 		}
 		if (Object.keys(result).length === 0) return null;
 		return result;
 	});
+
+	function afterSubmit() {
+		dataCopy = $state.snapshot(data);
+	}
 
 	const returnComponent = (c: any) => typeOverRide<Component>(c);
 </script>
@@ -44,14 +47,15 @@
 				class="text-2xl center-content hover:bg-violet-600"
 				onclick={backEditing}
 			/>
-			<SubmitBtn
-				action="?/update"
-				data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
-				icon="mingcute:save-2-line"
-				class="center-content {modified
-					? 'pointer-events-auto hover:bg-cyan-800'
-					: 'pointer-events-none text-white/30'}"
-			/>
+			{#if modified}
+				<SubmitBtn
+					action="?/update"
+					data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
+					icon="mingcute:save-2-line"
+					class="center-content	pointer-events-auto hover:bg-cyan-800"
+					{afterSubmit}
+				/>
+			{/if}
 		</div>
 		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
 			{#each Object.entries(metadata) as [name, content]}
