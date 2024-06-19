@@ -14,6 +14,7 @@
 		class?: string;
 		icon?: string;
 		enctype?: string;
+		reload?: boolean;
 		children?: Snippet;
 	};
 
@@ -24,6 +25,7 @@
 		afterSubmit,
 		class: className,
 		icon,
+		reload = false,
 		children
 	}: Props = $props();
 
@@ -36,10 +38,9 @@
 
 		return async ({ update, result }) => {
 			$submitting = true;
-			await update({ reset: false });
+			await update({ reset: false, invalidateAll: reload });
 			$submitting = false;
 
-			// console.log(result);
 			if (result.type !== 'success') return;
 
 			const data = result.data as FormDataResponse;
