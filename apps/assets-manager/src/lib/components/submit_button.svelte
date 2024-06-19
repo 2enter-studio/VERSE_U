@@ -52,7 +52,10 @@
 				setSystemLog('error', message, detail);
 			} else if (type === 'success') {
 				setSystemLog('success', message, detail);
-				if (afterSubmit) afterSubmit(data.data ?? {});
+				if (afterSubmit) {
+					if (data.data) afterSubmit(data.data ?? {});
+					else afterSubmit();
+				}
 			}
 		};
 	};
