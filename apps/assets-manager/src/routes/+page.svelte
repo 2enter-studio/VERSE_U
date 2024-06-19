@@ -33,7 +33,7 @@
 								data={{ table: tableName }}
 								icon="memory:plus-box"
 								class="hover:text-amber-400 center-content"
-								confirmMessage="You're about to insert a row into {tableName}, sure?"
+								reload
 								afterSubmit={(data) => {
 									setEditing({ tableName, id: data.id });
 								}}
@@ -63,6 +63,7 @@
 									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 px-1"
 									confirmMessage="You're about to delete a row from {tableName}, sure?"
 									afterSubmit={backEditing}
+									reload
 								/>
 							{/if}
 						</div>

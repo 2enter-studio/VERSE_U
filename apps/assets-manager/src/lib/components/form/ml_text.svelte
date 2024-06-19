@@ -53,6 +53,7 @@
 		<SubmitBtn
 			icon="memory:plus-box"
 			action="?/create"
+			reload
 			data={{
 				table: 'ml_texts',
 				data: JSON.stringify({
