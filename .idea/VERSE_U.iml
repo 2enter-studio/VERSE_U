@@ -18,6 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/android" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/ios" />
       <excludeFolder url="file://$MODULE_DIR$/packages/supabase/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/local_assets" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
