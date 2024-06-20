@@ -2,9 +2,7 @@
 	import { chatId, chats, getMemberFromChat } from '@/stores';
 	import { Avatar } from '@/components';
 
-	type Props = {
-		chatrooms: Chatroom[];
-	};
+	type Props = { chatrooms: Chatroom[] };
 
 	let { chatrooms }: Props = $props();
 </script>

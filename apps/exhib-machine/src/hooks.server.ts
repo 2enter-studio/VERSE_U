@@ -25,9 +25,10 @@ const handle: Handle = async ({ event, resolve }) => {
 		// console.table(serverState);
 	}
 
-	const res = await resolve(event);
-	// console.log(event);
-	return res;
+	// const res = await resolve(event);
+	// // console.log(event);
+	// return res;
+	return resolve(event);
 };
 
 export const handleWebsocket = wsHandler;

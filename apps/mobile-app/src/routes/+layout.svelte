@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import type { PageData } from './auth/reset-pwd/$types';
 	import { onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
