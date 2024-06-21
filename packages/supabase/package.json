@@ -2,7 +2,9 @@
 	"name": "@repo/supabase",
 	"type": "module",
 	"exports": {
-		"types": "./functions/types.ts"
+		".": "./index.ts",
+		"./types": "./functions/types.ts",
+		"./config": "./functions/config.ts"
 	},
 	"module": "index.ts"
 }
