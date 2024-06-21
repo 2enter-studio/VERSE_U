@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { ownedWearings, user, wearings, wearingTypes } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
 import { createError } from '@/utils/error';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 
 async function loadWearingTypes() {
 	const { data, error } = await db

@@ -1,5 +1,5 @@
 import { admin } from '@repo/utils/db';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 import { type BucketName, TABLE_NAMES, type TableName } from '@/config';
 
 async function loadTables() {

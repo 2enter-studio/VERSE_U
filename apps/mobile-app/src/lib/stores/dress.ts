@@ -1,5 +1,5 @@
 import { derived, writable } from 'svelte/store';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 
 const wearings = writable<Wearing[]>([]);
 const wearingTypes = writable<Tables<'wearing_types'>[]>([]);

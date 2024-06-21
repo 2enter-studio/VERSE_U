@@ -5,7 +5,7 @@ import { createError } from '@/utils/error';
 
 import { db } from '@/db';
 import { loadProfile } from '@/utils/auth/profile';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 
 const profile = writable<Tables<'profiles'> | null>(null);
 const session = writable<Session | null>(null);

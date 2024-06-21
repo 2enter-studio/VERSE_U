@@ -1,4 +1,4 @@
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
