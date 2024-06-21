@@ -6,12 +6,14 @@ import webp from '@/components/form/webp.svelte';
 import single_ref from '@/components/form/single_ref.svelte';
 import multi_ref from '@/components/form/multi_ref.svelte';
 import model from '@/components/form/model.svelte';
+import datetime from '@/components/form/datetime.svelte';
 
 export default {
 	toggle,
 	number,
 	plain_text,
 	ml_texts,
+	datetime,
 	webp,
 	single_ref,
 	multi_ref,

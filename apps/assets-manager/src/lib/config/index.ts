@@ -14,7 +14,7 @@ const ALL_TABLE_NAMES = [
 	'j-wearings-body_parts'
 ] as const;
 const BUCKET_NAMES = ['wearings', 'regions', 'meshes'] as const;
-const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts'] as const;
+const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts', 'datetime'] as const;
 const STORAGE_TYPES = ['webp', 'fbx', 'glb'] as const;
 const REFERENCE_TYPES = ['single_ref', 'multi_ref'] as const;
 
