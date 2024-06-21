@@ -1,4 +1,6 @@
+import moment from 'npm:moment';
 import { admin } from './db.ts';
+import { MAX_STAY_TIME } from '../config.ts';
 import type { Tables, TablesInsert } from '../types.ts';
 import { genRegionOptions, getArriveTime, regions } from './region.ts';
 import moment from 'npm:moment';
@@ -13,7 +15,7 @@ async function getTripByUserId(user_id: string) {
 	return data as Tables<'trips'>;
 }
 
-function tripReady(trip: Tables<'trips'>, minStayTime = 3 * 1000) {
+function tripReady(trip: Tables<'trips'>, minStayTime = MAX_STAY_TIME) {
 	const now = moment();
 	const arriveAt = moment(trip.arrive_at);
 	const stayTime = now.diff(arriveAt);
