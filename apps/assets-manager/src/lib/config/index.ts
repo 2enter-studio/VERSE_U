@@ -1,5 +1,6 @@
 const LOCALES = ['zh', 'en'] as const;
 const TABLE_NAMES = [
+	'app_versions',
 	'regions',
 	'wearings',
 	'meshes',
@@ -83,6 +84,21 @@ type TableContent = {
 type TableInfo = Record<TableName, TableContent>;
 
 const TABLES_INFO: TableInfo = {
+	app_versions: {
+		description: 'App 版本更新資訊',
+		metadata: {
+			...ID,
+			...CREATED_AT,
+			...VALUE,
+			maintenance_start: {
+				type: 'datetime'
+			},
+			maintenance_end: {
+				type: 'datetime'
+			},
+			...NAME_AND_DESCRIPTION
+		}
+	},
 	regions: {
 		description: '地點',
 		metadata: {
