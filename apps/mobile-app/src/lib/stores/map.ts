@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 import { MIN_STAY_TIME } from '@/config';
 
 type TripStatus = {

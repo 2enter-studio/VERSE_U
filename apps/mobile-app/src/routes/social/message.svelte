@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import { user, chat } from '@/stores';
 	import { Avatar } from '@/components';
-	import type { Tables } from '@repo/supabase';
+	import type { Tables } from '@repo/config/supatypes';
 
 	export let message: Tables<'chat_messages'>;
 	const isMine = message.sender === $user?.id;

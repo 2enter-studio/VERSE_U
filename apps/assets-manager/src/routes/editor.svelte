@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
-	import type { Tables } from '@repo/supabase';
+	import type { Tables } from '@repo/config/supatypes';
 	import { type TableName, TABLES_INFO } from '@/config';
 
 	import { typeOverRide } from '@repo/utils/types';

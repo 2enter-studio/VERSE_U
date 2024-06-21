@@ -6,7 +6,7 @@ import { chat, chatId, chats, user } from '@/stores';
 import { createError } from '@/utils/error';
 import { getCurrentYearMonth } from '@/utils/time';
 import { loadChats } from './chat_info';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 
 async function getMessages() {
 	const chat_id = get(chat)?.id;
