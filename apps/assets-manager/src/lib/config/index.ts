@@ -49,6 +49,20 @@ const ID = {
 	}
 } as const;
 
+const CREATED_AT = {
+	created_at: {
+		type: 'datetime',
+		readonly: true
+	}
+} as const;
+
+const UPDATED_AT = {
+	updated_at: {
+		type: 'datetime',
+		readonly: true
+	}
+} as const;
+
 // Type definitions for table info
 type MetaDataInfo = { type: MetaDataType; readonly?: boolean };
 type ReferenceInfo = { type: ReferenceType; target: TableName; readonly?: boolean };
@@ -73,6 +87,8 @@ const TABLES_INFO: TableInfo = {
 		description: '地點',
 		metadata: {
 			...ID,
+			...CREATED_AT,
+			...UPDATED_AT,
 			enabled: {
 				type: 'toggle'
 			},
@@ -101,6 +117,8 @@ const TABLES_INFO: TableInfo = {
 		description: '服裝與表情',
 		metadata: {
 			...ID,
+			...CREATED_AT,
+			...UPDATED_AT,
 			...NAME_AND_DESCRIPTION
 		},
 		reference: {
@@ -148,6 +166,7 @@ const TABLES_INFO: TableInfo = {
 		description: '服裝類別',
 		metadata: {
 			...ID,
+			...CREATED_AT,
 			is_expression: {
 				type: 'toggle'
 			},
@@ -158,6 +177,7 @@ const TABLES_INFO: TableInfo = {
 	body_parts: {
 		readonly: true,
 		description: '身體部位',
+		...CREATED_AT,
 		metadata: {
 			...ID,
 			...VALUE
@@ -167,6 +187,8 @@ const TABLES_INFO: TableInfo = {
 		description: '3D 模型',
 		metadata: {
 			...ID,
+			...CREATED_AT,
+			...UPDATED_AT,
 			...NAME_AND_DESCRIPTION
 		},
 		storage: {
