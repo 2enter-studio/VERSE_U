@@ -7,6 +7,7 @@
 	let datetime = $state<string>();
 
 	onMount(() => {
+		if (!data) return;
 		let utcDate = $state(new Date(data));
 		const TIMEZONE_OFFSET = utcDate.getTimezoneOffset() * 60000;
 		const localDate = new Date(new Date(utcDate.getTime() - TIMEZONE_OFFSET));
@@ -15,7 +16,7 @@
 	});
 
 	$effect(() => {
-		console.table({ data, datetime });
+		// console.table({ data, datetime });
 
 		if (!datetime) return;
 		data = new Date(datetime).toISOString();
