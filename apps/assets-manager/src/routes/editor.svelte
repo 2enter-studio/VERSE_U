@@ -68,7 +68,7 @@
 							this={form}
 							bind:data={data[name]}
 							{name}
-							class="{content.readonly ? 'bg-gray-500 pointer-events-none' : ''} "
+							class="{content.readonly ? 'bg-gray-500 pointer-events-none text-sm' : ''} "
 						/>
 					{:else}
 						<h2 class="text-bold bg-cyan-600 px-1">{name}</h2>
