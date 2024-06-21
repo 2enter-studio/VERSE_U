@@ -7,9 +7,6 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/svelte/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/assets-manager/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/assets-manager/build" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.branches" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.idea/dataSources" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/.temp" />
       <excludeFolder url="file://$MODULE_DIR$/packages/svelte/dist" />
       <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/apps/exhib-machine/build" />
@@ -17,8 +14,11 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/build" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/android" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/ios" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/supabase/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/local_assets" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.branches" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.temp" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/migrations" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

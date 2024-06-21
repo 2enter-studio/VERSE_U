@@ -5,7 +5,7 @@ import { db } from '@/db';
 import { createError } from '@/utils/error';
 import { peopleNearby, regions, trip, user } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
-import type { Tables } from '@repo/supabase';
+import type { Tables } from '@repo/config/supatypes';
 
 async function loadRegions() {
 	const { data, error } = await db.from('regions').select().eq('enabled', true).returns<Region[]>();
