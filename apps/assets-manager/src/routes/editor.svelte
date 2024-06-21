@@ -64,12 +64,20 @@
 				<div class="flex items-start gap-0.5 {isMLTexts ? 'flex-col' : 'flex-row flex-wrap'}">
 					{#if !isMLTexts}
 						<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
-						<svelte:component
-							this={form}
-							bind:data={data[name]}
-							{name}
-							class="{content.readonly ? 'bg-gray-500 pointer-events-none text-sm' : ''} "
-						/>
+						{#if content.readonly}
+							<svelte:component
+								this={form}
+								data={data[name]}
+								{name}
+								class="bg-gray-500 pointer-events-none text-sm"
+							/>
+						{:else}
+							<svelte:component
+								this={form}
+								bind:data={data[name]}
+								{name}
+							/>
+						{/if}
 					{:else}
 						<h2 class="text-bold bg-cyan-600 px-1">{name}</h2>
 						<svelte:component this={Forms.ml_texts} data={{ row_id: data.id }} {name} />
