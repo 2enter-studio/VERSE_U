@@ -22,7 +22,7 @@ export type Database = {
           id?: string
           maintenance_end?: string | null
           maintenance_start?: string | null
-          value: string
+          value?: string
         }
         Update: {
           created_at?: string
