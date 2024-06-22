@@ -1,6 +1,14 @@
 import type { Tables, TablesInsert } from '../../types.ts';
 import { MAX_TRAVEL_TIME, MIN_STAY_TIME } from '../../config.ts';
 import moment from 'moment';
+import sha256 from 'sha256';
+
+function genHaiAnPasscode(key: string) {
+	const now = moment.utc().format('YYYY-MM-DD HH');
+	return sha256(now + key)
+		.slice(0, 5)
+		.toUpperCase();
+}
 
 function getDist(x1: number, y1: number, x2: number, y2: number) {
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -61,4 +69,4 @@ function genNextTrip(
 	};
 }
 
-export { genRegionOptions, getDist, addTime, genNextTrip, tripReady };
+export { genRegionOptions, getDist, addTime, genNextTrip, tripReady, genHaiAnPasscode };

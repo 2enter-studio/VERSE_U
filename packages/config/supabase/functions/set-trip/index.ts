@@ -3,7 +3,7 @@ import { admin, validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
 import { getRegions } from '../_shared/region.ts';
 import { getTripByUserId } from '../_shared/trip.ts';
-import { tripReady, genNextTrip } from '../_shared/utils.ts';
+import { tripReady, genNextTrip } from '../_shared/utils/index.ts';
 
 // @ts-ignore
 Deno.serve(async (req) => {

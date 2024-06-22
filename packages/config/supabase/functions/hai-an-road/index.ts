@@ -5,8 +5,10 @@ import { corsHeaders } from '../_shared/cors.ts';
 import { validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
 import { admin } from '../_shared/db.ts';
+import { genHaiAnPasscode } from '../_shared/utils/index.ts';
 
-const key = '12345';
+// @ts-ignore
+const key = Deno.env.get('HAI_AN_KEY');
 
 // @ts-ignore
 Deno.serve(async (req) => {
@@ -23,13 +25,9 @@ Deno.serve(async (req) => {
 	const body = await req.json();
 	const passcode = body.passcode as string;
 
-	const now = moment().format('YYYY-MM-DD HH');
-	const correctCode = sha256(now + key)
-		.slice(0, 5)
-		.toUpperCase();
-
-	// const success = passcode.toUpperCase() === correctCode;
-	const success = true;
+	const correctCode = genHaiAnPasscode(key);
+	const success = passcode.toUpperCase() === correctCode;
+	// const success = true;
 
 	if (!success) {
 		return createError(`psych, that's the wrong number, (The right one is: ${correctCode})`);
