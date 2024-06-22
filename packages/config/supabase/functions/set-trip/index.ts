@@ -1,8 +1,9 @@
 import { corsHeaders } from '../_shared/cors.ts';
 import { admin, validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
-import { loadRegions } from '../_shared/region.ts';
-import { tripReady, genNextTrip, getTripByUserId } from '../_shared/trip.ts';
+import { loadRegions, regions } from '../_shared/region.ts';
+import { getTripByUserId } from '../_shared/trip.ts';
+import { tripReady, genNextTrip } from '../_shared/utils.ts';
 
 Deno.serve(async (req) => {
 	// handle preflight request
@@ -20,6 +21,7 @@ Deno.serve(async (req) => {
 	if (![0, 1].includes(option)) return createError('invalid option');
 
 	await loadRegions();
+	if (!regions) return createError('failed to load regions');
 
 	// get current trip
 	console.log(`Processing request made by user ${user.id}`);
@@ -30,8 +32,7 @@ Deno.serve(async (req) => {
 	if (!tripReady(currentTrip)) return createError('cannot start new trip yet');
 
 	// generate new trip
-	const destination = currentTrip[`next_${option}`];
-	const nextTrip = genNextTrip(user.id, currentTrip.to, destination);
+	const nextTrip = genNextTrip(currentTrip, regions, option);
 	console.log(nextTrip);
 
 	// update current trip
@@ -43,4 +44,3 @@ Deno.serve(async (req) => {
 
 	return createSuccess({ nextTrip });
 });
-
