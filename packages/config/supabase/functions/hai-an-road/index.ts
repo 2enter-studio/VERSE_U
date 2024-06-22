@@ -1,7 +1,7 @@
 import { corsHeaders } from '../_shared/cors.ts';
-import { validateUser } from '../_shared/db.ts';
+import { validateUser } from '../_shared/utils/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
-import { admin } from '../_shared/db.ts';
+import { admin } from '../_shared/utils/db.ts';
 import { genHaiAnPasscode } from '../_shared/utils/index.ts';
 
 // @ts-ignore
