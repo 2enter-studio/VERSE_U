@@ -23,8 +23,8 @@ function tripReady(trip: Tables<'trips'>) {
 	return stayTime > MIN_STAY_TIME;
 }
 
-function genRegionOptions(trip: Tables<'trips'>, regions: Tables<'regions'>[]) {
-	let searchRegions = regions.map((r) => r.id).filter((r) => r !== trip.to);
+function genRegionOptions(regions: Tables<'regions'>[]) {
+	let searchRegions = regions.map((r) => r.id);
 
 	const num_0 = Math.floor(Math.random() * searchRegions.length);
 	const next_0 = searchRegions[num_0];
@@ -47,7 +47,7 @@ function genNextTrip(
 	const duration = getDuration(dist);
 	const start_at = new Date().toISOString();
 	const arrive_at = addTime(start_at, duration);
-	const { next_0, next_1 } = genRegionOptions(trip, regions);
+	const { next_0, next_1 } = genRegionOptions(regions.filter((r) => r.id !== to.id));
 	const { id, user } = trip;
 	return {
 		id,
