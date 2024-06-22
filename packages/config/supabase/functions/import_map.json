@@ -1,6 +1,6 @@
 {
 	"imports": {
-		"supabase": "npm:@supabase/supabase-js@2",
+		"@supabase/supabase-js": "npm:@supabase/supabase-js@2",
 		"moment": "npm:moment@latest",
 		"sha256": "npm:sha256@latest"
 	}
