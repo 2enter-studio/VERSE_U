@@ -5,6 +5,7 @@ import { loadRegions, regions } from '../_shared/region.ts';
 import { getTripByUserId } from '../_shared/trip.ts';
 import { tripReady, genNextTrip } from '../_shared/utils.ts';
 
+// @ts-ignore
 Deno.serve(async (req) => {
 	// handle preflight request
 	if (req.method === 'OPTIONS') {
