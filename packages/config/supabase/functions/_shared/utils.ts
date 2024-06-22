@@ -24,16 +24,14 @@ function tripReady(trip: Tables<'trips'>) {
 }
 
 function genRegionOptions(trip: Tables<'trips'>, regions: Tables<'regions'>[]) {
-	let regionsCopy = structuredClone(regions);
-	const currentRegion = trip.to;
+	let searchRegions = regions.map((r) => r.id).filter((r) => r !== trip.to);
 
-	regionsCopy = regionsCopy.filter((region) => region.id !== currentRegion);
-	const num_0 = Math.floor(Math.random() * regionsCopy.length);
-	const next_0 = regionsCopy[num_0].id;
+	const num_0 = Math.floor(Math.random() * searchRegions.length);
+	const next_0 = searchRegions[num_0];
 
-	regionsCopy = regionsCopy.filter((region) => region.id !== next_0);
-	const num_1 = Math.floor(Math.random() * regionsCopy.length);
-	const next_1 = regionsCopy[num_1].id;
+	searchRegions = searchRegions.filter((r) => r !== next_0);
+	const num_1 = Math.floor(Math.random() * searchRegions.length);
+	const next_1 = searchRegions[num_1];
 
 	return { next_0, next_1 };
 }

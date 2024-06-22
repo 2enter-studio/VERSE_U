@@ -1,16 +1,16 @@
 import { admin } from './db.ts';
 import type { Tables } from '../types.ts';
 
-export let regions: Tables<'regions'>[] | null = null;
-
-async function loadRegions() {
-	const { data, error } = await admin.from('regions').select('id, x, y').eq('enabled', true);
+async function getRegions() {
+	const { data, error } = await admin
+		.from('regions')
+		.select('id, x, y')
+		.eq('enabled', true)
+		.returns<Tables<'regions'>[]>();
 	if (error) {
 		console.error(error);
-		regions = null;
 	}
-	console.log(data);
-	regions = data as unknown as Tables<'regions'>[];
+	return data;
 }
 
-export { loadRegions };
+export { getRegions };
