@@ -1,17 +1,23 @@
-import { createClient } from '@supabase/supabase-js';
 import {
-	PUBLIC_LOCAL_SUPABASE_KEY,
-	PUBLIC_LOCAL_SUPABASE_URL,
-	PUBLIC_SUPABASE_KEY,
-	PUBLIC_SUPA_PROJ_ID,
-	PUBLIC_NODE_ENV
+	LOCAL_SUPABASE_ANON_KEY,
+	LOCAL_SUPABASE_URL,
+	SUPABASE_ANON_KEY,
+	SUPABASE_URL,
+	DEVELOPING
 } from '$env/static/public';
+import { makeSupaClient } from '@repo/config/utils';
 
-const developing = PUBLIC_NODE_ENV === 'development';
+function getEnv(key: string) {
+	const ENVS = {
+		LOCAL_SUPABASE_URL,
+		SUPABASE_ANON_KEY,
+		SUPABASE_URL,
+		LOCAL_SUPABASE_ANON_KEY,
+		DEVELOPING
+	} as Record<string, string>;
+	return ENVS[key];
+}
 
-const url = developing ? PUBLIC_LOCAL_SUPABASE_URL : `https://${PUBLIC_SUPA_PROJ_ID}.supabase.co`;
-const key = developing ? PUBLIC_LOCAL_SUPABASE_KEY : PUBLIC_SUPABASE_KEY;
+const db = makeSupaClient('anon', getEnv);
 
-const db = createClient(url, key);
-
-export { db, url as dbUrl };
+export { db };

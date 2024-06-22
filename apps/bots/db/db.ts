@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { makeSupaClient } from '@repo/config/utils';
 
-const db = makeSupaClient('admin');
+const admin = makeSupaClient('admin');
 
-export { db };
+export { admin };

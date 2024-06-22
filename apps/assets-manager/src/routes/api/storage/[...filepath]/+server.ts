@@ -1,4 +1,4 @@
-import { admin } from '@repo/utils/db';
+import { admin } from '@/server/db';
 import { error as serverError } from '@sveltejs/kit';
 import type { BucketName } from '@/config';
 

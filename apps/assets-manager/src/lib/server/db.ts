@@ -1,6 +1,9 @@
-import { admin } from '@repo/utils/db';
+import 'dotenv/config';
+import { makeSupaClient } from '@repo/config/utils';
 import type { Tables } from '@repo/config/supatypes';
 import { type BucketName, TABLE_NAMES, type TableName } from '@/config';
+
+const admin = makeSupaClient('admin');
 
 async function loadTables() {
 	const tables: any = {};
@@ -28,10 +31,10 @@ async function loadMLTexts() {
 async function getFile(bucket: BucketName, filename: string) {
 	const { data, error } = await admin.storage.from(bucket).download(filename);
 	if (error) {
-		return null
+		return null;
 		// throw new Error('Error while downloading image: ' + error.message);
 	}
 	return data;
 }
 
-export { admin as db, loadTables, loadMLTexts, getFile };
+export { admin, loadTables, loadMLTexts, getFile };
