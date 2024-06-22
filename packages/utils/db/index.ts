@@ -15,4 +15,4 @@ const url = developing ? PUBLIC_LOCAL_SUPA_URL : `https://${PUBLIC_SUPA_PROJ_ID}
 const key = developing ? LOCAL_SUPA_SERVICE_KEY : REMOTE_SUPA_SERVICE_KEY;
 
 const admin = createClient(url ?? '', key ?? '');
-export { admin };
+export { admin, url, key };

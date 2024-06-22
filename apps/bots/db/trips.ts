@@ -1,7 +1,7 @@
 import { MAX_STAY_TIME } from '@repo/config';
 import { admin } from '@repo/utils/db';
 import { genNextTrip } from '@repo/config/utils';
-import type { Tables, TablesInsert } from '@repo/config/supatypes';
+import type { Tables } from '@repo/config/supatypes';
 
 function getMinArriveAt() {
   return new Date(new Date().getTime() - MAX_STAY_TIME).toISOString();
