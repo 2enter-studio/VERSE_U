@@ -11,6 +11,6 @@
   "exports": {
     ".": "./supabase/functions/config.ts",
     "./supatypes": "./supabase/functions/types.ts",
-    "./utils": "./supabase/functions/_shared/utils.ts"
+    "./utils": "./supabase/functions/_shared/utils/index.ts"
   }
 }

@@ -1,5 +1,5 @@
-import type { Tables, TablesInsert } from '../types.ts';
-import { MAX_TRAVEL_TIME, MIN_STAY_TIME } from '../config.ts';
+import type { Tables, TablesInsert } from '../../types.ts';
+import { MAX_TRAVEL_TIME, MIN_STAY_TIME } from '../../config.ts';
 import moment from 'moment';
 
 function getDist(x1: number, y1: number, x2: number, y2: number) {
