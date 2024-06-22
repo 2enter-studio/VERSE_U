@@ -1,0 +1,3 @@
+const TRIP_UPDATE_TIMEOUT = 10 * 1000;
+
+export { TRIP_UPDATE_TIMEOUT };
