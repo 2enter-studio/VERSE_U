@@ -1,7 +1,7 @@
 {
-  "imports": {
-    "supabase": "https://esm.sh/@supabase/supabase-js@2",
-    "moment": "https://deno.land/x/momentjs@2.29.1-deno/mod.ts",
-    "sha256": "https://denopkg.com/chiefbiiko/sha256@v1.0.0/mod.ts"
-  }
+	"imports": {
+		"supabase": "npm:@supabase/supabase-js@2",
+		"moment": "npm:moment@latest",
+		"sha256": "npm:sha256@latest"
+	}
 }
