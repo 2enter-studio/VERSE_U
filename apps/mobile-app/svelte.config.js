@@ -20,7 +20,10 @@ const config = {
 		}),
 		alias: {
 			'@/*': './src/lib/*',
-			'$routes': './src/routes/*'
+			$routes: './src/routes/*'
+		},
+		env: {
+			publicPrefix: ''
 		},
 		version: {
 			name: version

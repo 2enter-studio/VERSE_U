@@ -1,5 +1,5 @@
 import { corsHeaders } from '../_shared/cors.ts';
-import { admin, validateUser } from '../_shared/db.ts';
+import { admin, validateUser } from '../_shared/utils/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
 import { getRegions } from '../_shared/region.ts';
 import { getTripByUserId } from '../_shared/trip.ts';

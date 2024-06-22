@@ -1,5 +1,5 @@
 import type { BucketName } from '@/config';
-import { db, dbUrl } from '@/db';
+import { db } from '@/db';
 
 async function downloadImage(bucket: BucketName, filename: string) {
 	const { data, error } = await db.storage.from(bucket).download(filename);
@@ -8,7 +8,7 @@ async function downloadImage(bucket: BucketName, filename: string) {
 }
 
 function getFileUrl(bucket: BucketName, filename: string) {
-	return `${dbUrl}/storage/v1/object/public/${bucket}/${filename}`;
+	return db.storage.from(bucket).getPublicUrl(filename);
 }
 
 export { downloadImage, getFileUrl };

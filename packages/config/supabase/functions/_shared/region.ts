@@ -1,4 +1,4 @@
-import { admin } from './db.ts';
+import { admin } from './utils/db.ts';
 import type { Tables } from '../types.ts';
 
 async function getRegions() {

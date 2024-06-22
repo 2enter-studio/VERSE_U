@@ -1,4 +1,4 @@
-import { db } from '@/server/db';
+import { admin } from '@/server/db';
 import { json } from '@sveltejs/kit';
 import pluralize from 'pluralize';
 
@@ -7,7 +7,7 @@ export const GET = async ({ params }) => {
 
 	const [base, target] = name.split('-');
 
-	const { data, error } = await db
+	const { data, error } = await admin
 		.from(`j-${name}`)
 		.select(`${pluralize.singular(base)}(*),${pluralize.singular(target)}(*)`)
 		.eq(pluralize.singular(base), base_id);

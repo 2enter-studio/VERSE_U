@@ -1,5 +1,5 @@
 import { MAX_STAY_TIME } from '@repo/config';
-import { admin } from '@repo/utils/db';
+import { admin } from './db';
 import { genNextTrip } from '@repo/config/utils';
 import type { Tables } from '@repo/config/supatypes';
 
