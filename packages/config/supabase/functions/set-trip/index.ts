@@ -1,7 +1,7 @@
 import { corsHeaders } from '../_shared/cors.ts';
 import { admin, validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
-import { loadRegions, regions } from '../_shared/region.ts';
+import { getRegions } from '../_shared/region.ts';
 import { getTripByUserId } from '../_shared/trip.ts';
 import { tripReady, genNextTrip } from '../_shared/utils.ts';
 
@@ -21,23 +21,23 @@ Deno.serve(async (req) => {
 	const option = body.option as 0 | 1;
 	if (![0, 1].includes(option)) return createError('invalid option');
 
-	await loadRegions();
+	const regions = await getRegions();
 	if (!regions) return createError('failed to load regions');
 
 	// get current trip
 	console.log(`Processing request made by user ${user.id}`);
-	const currentTrip = await getTripByUserId(user.id);
-	if (!currentTrip) return createError('error fetching current trip');
+	const trip = await getTripByUserId(user.id);
+	if (!trip) return createError(`failed to load trip of user ${user.id}`);
 
 	// check if trip's arrive_at is less than 10 minutes from now, if not, return error
-	if (!tripReady(currentTrip)) return createError('cannot start new trip yet');
+	if (!tripReady(trip)) return createError('cannot start new trip yet');
 
 	// generate new trip
-	const nextTrip = genNextTrip(currentTrip, regions, option);
+	const nextTrip = genNextTrip(trip, regions, option);
 	console.log(nextTrip);
 
 	// update current trip
-	const { error } = await admin.from('trips').update(nextTrip).eq('id', currentTrip.id);
+	const { error } = await admin.from('trips').update(nextTrip).eq('id', trip.id);
 
 	if (error) {
 		return createError(error.message, { status: 500 });
