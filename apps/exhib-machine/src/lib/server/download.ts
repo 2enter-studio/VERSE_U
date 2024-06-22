@@ -1,9 +1,7 @@
 import fs from 'fs-extra';
-import config, { type BucketName } from '@/config';
+import { type BucketName, STORAGE_BASE, TEXTURE_TYPES } from '@/config';
 import { db } from './db';
 import chalk from 'chalk';
-
-const { STORAGE_BASE, TEXTURE_TYPES } = config;
 
 function initFileStorage() {
 	if (!fs.existsSync(STORAGE_BASE)) {
