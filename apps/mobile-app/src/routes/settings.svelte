@@ -5,7 +5,7 @@
 	import { version } from '$app/environment';
 
 	import { Dialog } from '@/components';
-	import { errorMessage, locale, auth, uiTexts } from '@/stores';
+	import { auth, general } from '@/stores';
 	import { modifyProfile, signOut } from '@/utils/auth';
 	import preferences from '@/utils/preferences';
 
@@ -16,10 +16,10 @@
 
 	let values = $state({
 		profile: deepClone(auth.profile),
-		locale: $locale
+		locale: general.locale
 	});
 	const submittable = $derived(
-		JSON.stringify({ profile: auth.profile, locale: $locale }) !== JSON.stringify(values) &&
+		JSON.stringify({ profile: auth.profile, locale: general.locale }) !== JSON.stringify(values) &&
 			values.profile?.name.trim() !== ''
 	);
 
@@ -29,7 +29,7 @@
 	});
 	async function save() {
 		if (!submittable) return;
-		const localeChanged = values.locale !== $locale;
+		const localeChanged = values.locale !== general.locale;
 		const profileChanged = JSON.stringify(auth.profile) !== JSON.stringify(values.profile);
 
 		if (localeChanged) {
@@ -38,7 +38,7 @@
 
 		if (values.profile && profileChanged) {
 			const res = await modifyProfile({ name: values.profile.name });
-			if (res?.error) $errorMessage = res.error.message;
+			if (res?.error) general.errorMessage = res.error.message;
 		}
 
 		if (localeChanged) {
@@ -52,20 +52,20 @@
 
 <Dialog
 	bind:open
-	title={$uiTexts.settings}
+	title={general.uiTexts.settings}
 	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
 >
 	current url: {$page.url.href}
 	<div class="flex flex-row gap-2">
-		{$uiTexts.version}: {version}
+		{general.uiTexts.version}: {version}
 		<button onclick={signOut} class="flex flex-row bg-black text-white">
-			{$uiTexts.signout}
+			{general.uiTexts.signout}
 			<Icon icon="mdi:exit-run" class="text-xl" />
 		</button>
 	</div>
 	<div class="flex flex-col text-black">
 		<div class="center-content flex-row gap-2">
-			<h2>{$uiTexts.profile}</h2>
+			<h2>{general.uiTexts.profile}</h2>
 			<div class="flex w-fit flex-row rounded-sm bg-gray-600 px-1 text-xs text-white/80">
 				{auth.profile?.public_id}
 				<button
@@ -83,7 +83,7 @@
 					for="my-name"
 					class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900"
 				>
-					{$uiTexts.name}
+					{general.uiTexts.name}
 				</label>
 				<input
 					id="my-name"
@@ -97,9 +97,9 @@
 		{/if}
 	</div>
 	<div class="center-content flex-col">
-		<h2>{$uiTexts.system}</h2>
+		<h2>{general.uiTexts.system}</h2>
 		<div class="flex flex-row">
-			<h3>{$uiTexts.language}</h3>
+			<h3>{general.uiTexts.language}</h3>
 			{#each LOCALES as lang}
 				{@const selected = lang === values.locale}
 				<input id="{lang}-option" type="radio" value={lang} bind:group={values.locale} hidden />

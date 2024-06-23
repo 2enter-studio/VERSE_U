@@ -22,6 +22,7 @@ type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
 const DEFAULT_ROUTE = '/me';
+const DEFAULT_LOCALE = 'zh';
 const MIN_STAY_TIME = 1000 * 3;
 const MAX_STAY_TIME = 1000 * 60 * 60 * 8;
 const MAP_SIZE = 3200;
@@ -36,6 +37,7 @@ export {
 	BUCKET_NAMES,
 	CHARACTER_ANIMATIONS,
 	DEFAULT_ROUTE,
+	DEFAULT_LOCALE,
 	MIN_STAY_TIME,
 	MAX_STAY_TIME,
 	MAP_SIZE,

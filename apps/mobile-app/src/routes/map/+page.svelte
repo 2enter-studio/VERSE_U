@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { MAP_SIZE } from '@/config';
-	import { trip, tripStatus, regions, peopleNearby, uiTexts } from '@/stores';
+	import { trip, tripStatus, regions, peopleNearby, general } from '@/stores';
 	import { getFileUrl } from '@/utils/storage/download';
 	import { secToMin } from '@/utils/time';
 	import { loadPeopleNearby, startNextTrip } from '@/utils/map';
@@ -62,7 +62,7 @@
 
 	<Dialog
 		bind:open={chooseNext}
-		title={$uiTexts.where_are_you_going}
+		title={general.uiTexts.where_are_you_going}
 		class="divide-x divide-black/60"
 	>
 		{#each tripOptions as num}

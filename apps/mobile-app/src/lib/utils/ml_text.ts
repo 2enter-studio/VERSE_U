@@ -1,7 +1,5 @@
-import { get } from 'svelte/store';
-
 import { db } from '@/db';
-import { locale } from '@/stores';
+import { general } from '@/stores';
 
 async function getMLText(row_id: string, column_name: string) {
 	const { data, error } = await db
@@ -9,7 +7,7 @@ async function getMLText(row_id: string, column_name: string) {
 		.select('value')
 		.eq('row_id', row_id)
 		.eq('column_name', column_name)
-		.eq('locale', get(locale))
+		.eq('locale', general.locale)
 		.returns<{ value: string }[]>()
 		.single();
 
@@ -26,7 +24,7 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 		.select('*')
 		.in('row_id', row_ids)
 		.in('column_name', column_names)
-		.eq('locale', get(locale))
+		.eq('locale', general.locale)
 		.returns<{ value: string; row_id: string; column_name: string }[]>();
 	if (error) {
 		// console.error(error.message);
@@ -35,7 +33,10 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 	return data;
 }
 
-async function assignMLTexts<T extends any[]>(data: T, column_names: string[] = ['name', 'description']) {
+async function assignMLTexts<T extends any[]>(
+	data: T,
+	column_names: string[] = ['name', 'description']
+) {
 	const mlTexts = await getMLTexts(
 		data.map((d) => d.id),
 		column_names
@@ -44,7 +45,9 @@ async function assignMLTexts<T extends any[]>(data: T, column_names: string[] = 
 
 	for (const d of data) {
 		for (const column_name of column_names) {
-			d[column_name] = mlTexts.find((m) => m.row_id === d.id && m.column_name === column_name)?.value;
+			d[column_name] = mlTexts.find(
+				(m) => m.row_id === d.id && m.column_name === column_name
+			)?.value;
 		}
 	}
 

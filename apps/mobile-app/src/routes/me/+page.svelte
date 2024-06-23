@@ -2,15 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import {
-		equippedWearings,
-		wearings,
-		wearingTypes,
-		trip,
-		tripStatus,
-		errorMessage,
-		selfieUpdated
-	} from '@/stores';
+	import { equippedWearings, wearings, wearingTypes, trip, tripStatus, general } from '@/stores';
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
@@ -113,11 +105,11 @@
 		<button
 			onclick={async () => {
 				const res = await uploadSelfie(selfieUrl.split('base64,')[1]);
-				if (res?.error) $errorMessage = res.error.message;
+				if (res?.error) general.errorMessage = res.error.message;
 				else {
 					console.log('selfie uploaded');
 				}
-				$selfieUpdated = true;
+				general.selfieUpdated = true;
 				selfieUrl = '';
 			}}
 		>

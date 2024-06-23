@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { auth, showMenu } from '@/stores';
+	import { auth, general } from '@/stores';
 	import { createProfile } from '@/utils/auth/profile';
 	import { Dialog } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';
@@ -14,10 +14,10 @@
 			console.log(auth.loggedIn, auth.profile);
 			window.location.assign(DEFAULT_ROUTE);
 		}
-		$showMenu = false;
+		general.showMenu = false;
 
 		return () => {
-			$showMenu = true;
+			general.showMenu = true;
 		};
 	});
 

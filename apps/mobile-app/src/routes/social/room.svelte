@@ -4,7 +4,7 @@
 
 	import { agreeFriendShip } from '@/utils/chat';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { auth, chat, chatId, showMenu, getMemberFromChat, errorMessage } from '@/stores';
+	import { auth, chat, chatId, general, getMemberFromChat } from '@/stores';
 	import { Avatar } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
@@ -15,9 +15,9 @@
 	onMount(() => {
 		if (!$chat?.id || !auth.user?.id) return;
 		onsend();
-		$showMenu = false;
+		general.showMenu = false;
 		return () => {
-			$showMenu = true;
+			general.showMenu = true;
 		};
 	});
 
@@ -49,7 +49,7 @@
 					onclick={async () => {
 						const result = await agreeFriendShip();
 						if (result?.error) {
-							$errorMessage = result.error.message;
+							general.errorMessage = result.error.message;
 							console.error(result.error);
 						} else console.log('yeah!');
 					}}

@@ -1,13 +1,15 @@
 import { db } from '@/db';
 import type { OAuthProvider } from '@/config';
-import { platform } from '@/stores';
+import { general } from '@/stores';
 import validate from '@/utils/validate';
 import { createError } from '@/utils/error';
 import { get } from 'svelte/store';
 import { page } from '$app/stores';
 
 async function providerSignIn(provider: OAuthProvider) {
-	const options = { redirectTo: get(platform) === 'web' ? get(page).url.origin : 'verseuapp://' };
+	const options = {
+		redirectTo: general.platform === 'web' ? get(page).url.origin : 'verseuapp://'
+	};
 	const { error } = await db.auth.signInWithOAuth({ provider, options });
 	if (error) return { error };
 }

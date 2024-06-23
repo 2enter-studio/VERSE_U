@@ -12,9 +12,10 @@
 	import { loadPeopleNearby, loadRegions, loadTrip } from '@/utils/map';
 	import { loadChats } from '@/utils/chat';
 	import { loadWearings } from '@/utils/dress/wearing';
-	import { auth, platform, showMenu } from '@/stores';
+	import { auth, general } from '@/stores';
 	import { Menu, Login, MyProfile, Error, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
+	import preferences from '@/utils/preferences';
 	// import { Notifications } from './index.js';
 
 	type Props = { children: Snippet };
@@ -23,6 +24,8 @@
 	let loaded = $state(false);
 
 	async function init() {
+		general.locale = await preferences.locale.get();
+
 		if (auth.loggedIn) {
 			await loadRegions();
 
@@ -45,14 +48,14 @@
 	}
 
 	onMount(async () => {
-		if ($platform !== 'web') {
+		if (general.platform !== 'web') {
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
 		}
 
-		[loaded, $showMenu] = [false, false];
+		[loaded, general.showMenu] = [false, false];
 		await init();
-		[loaded, $showMenu] = [true, true];
+		[loaded, general.showMenu] = [true, true];
 
 		const url = $page.url.href;
 		const Url = new URL(url);
@@ -109,7 +112,7 @@
 			</div>
 		{/if}
 
-		{#if $showMenu}
+		{#if general.showMenu}
 			<Menu />
 			<SideMenu />
 		{/if}

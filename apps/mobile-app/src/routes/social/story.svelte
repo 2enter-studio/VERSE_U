@@ -3,7 +3,7 @@
 
 	import { getWearingsByUserId } from '@/utils/dress/wearing';
 	import { UModel } from '@/components/index.js';
-	import { showMenu } from '@/stores';
+	import { general } from '@/stores';
 	import Icon from '@iconify/svelte';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 
@@ -28,9 +28,9 @@
 	}
 
 	onMount(() => {
-		$showMenu = false;
+		general.showMenu = false;
 		return () => {
-			$showMenu = true;
+			general.showMenu = true;
 		};
 	});
 </script>

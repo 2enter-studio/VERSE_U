@@ -6,7 +6,7 @@
 	import { subscribeToRegion } from '@/utils/map';
 	import { startChat, subscribeToAgree, subscribeToMessages } from '@/utils/chat';
 
-	import { chat, chatId, friends, strangers, peopleNearby, uiTexts, errorMessage } from '@/stores';
+	import { chat, chatId, friends, strangers, peopleNearby, general } from '@/stores';
 	import { Chatroom, ChatList, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 
@@ -37,11 +37,15 @@
 	<Chatroom />
 {:else}
 	<div class="center-content mb-3 mt-12 flex-col">
-		<h1>{$uiTexts.people_nearby}</h1>
+		<h1>{general.uiTexts.people_nearby}</h1>
 		<div class="flex w-[88vw] flex-row gap-2">
 			{#each $peopleNearby as person, i}
-				{@const friend = $friends.find((f) => f.chat_members.some((c) => c.profiles.user === person.user))}
-				{@const stranger = $strangers.find((s) => s.chat_members.some((c) => c.profiles.user === person.user))}
+				{@const friend = $friends.find((f) =>
+					f.chat_members.some((c) => c.profiles.user === person.user)
+				)}
+				{@const stranger = $strangers.find((s) =>
+					s.chat_members.some((c) => c.profiles.user === person.user)
+				)}
 
 				<button
 					onclick={() => {
@@ -75,7 +79,13 @@
 	<div class="b flex h-full w-[88vw] flex-col items-start justify-center">
 		<div class="flex w-full flex-row justify-between">
 			{#each chatTypes as option}
-				<input type="radio" id="option-{option}" value={option} bind:group={selectedChatType} hidden />
+				<input
+					type="radio"
+					id="option-{option}"
+					value={option}
+					bind:group={selectedChatType}
+					hidden
+				/>
 				{@const selected = option === selectedChatType}
 				<label
 					for="option-{option}"
@@ -83,7 +93,7 @@
 						? 'bg-opacity-100'
 						: 'bg-opacity-60 shadow-inner shadow-yellow-800/40'}"
 				>
-					{$uiTexts[option]}
+					{general.uiTexts[option]}
 				</label>
 			{/each}
 		</div>
@@ -96,12 +106,17 @@
 {/if}
 
 <Dialog title="start" bind:open={startingNewChat} class="center-content">
-	<input bind:value={firstMessage} class="rounded-lg bg-black text-white" id="first-message" type="text" />
+	<input
+		bind:value={firstMessage}
+		class="rounded-lg bg-black text-white"
+		id="first-message"
+		type="text"
+	/>
 	<button
 		onclick={() => {
 			if (firstMessage.trim() === '') return;
 			startChat(storyUserId, firstMessage).then((res) => {
-				if (res?.error) $errorMessage = res.error.message;
+				if (res?.error) general.errorMessage = res.error.message;
 				else {
 					startingNewChat = false;
 					storyUserId = '';

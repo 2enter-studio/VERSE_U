@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { errorMessage, uiTexts, auth } from '@/stores';
+	import { general, auth } from '@/stores';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
 	import validate from '@/utils/validate';
 	import { OAUTH_PROVIDERS } from '@/config';
@@ -60,7 +60,7 @@
 		const res = await submitMethods[formMode](...(args as [string, string]));
 		if (res?.error) {
 			console.error(res.error);
-			$errorMessage = res.error.message;
+			general.errorMessage = res.error.message;
 			return;
 		}
 		window.location.assign('/map');
@@ -75,7 +75,7 @@
 		{#if auth.loggedIn}
 			Account Center
 		{:else}
-			{$uiTexts.welcome}
+			{general.uiTexts.welcome}
 		{/if}
 	</h1>
 
@@ -90,7 +90,7 @@
 					? 'bg-gradient-to-l from-white/80 to-white text-black'
 					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-xs transition-colors duration-200"
 			>
-				{$uiTexts[choice]}
+				{general.uiTexts[choice]}
 			</label>
 		{/each}
 	</div>
@@ -103,7 +103,7 @@
 			<div transition:slide={{ duration: 500 }} class="flex w-full flex-col">
 				<div class="flex w-full items-end text-left">
 					<span class="py-0.5 pl-0.5">
-						{$uiTexts[field]}
+						{general.uiTexts[field]}
 					</span>
 				</div>
 				{#if field === 'email'}
