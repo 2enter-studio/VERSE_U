@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import type { OAuthProvider } from '@/config';
-import { general } from '@/stores';
+import { general } from '../../states';
 import validate from '@/utils/validate';
 import { createError } from '@/utils/error';
 import { get } from 'svelte/store';

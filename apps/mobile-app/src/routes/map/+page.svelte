@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { MAP_SIZE } from '@/config';
-	import { trip, tripStatus, regions, peopleNearby, general } from '@/stores';
+	import { trip, tripStatus, regions, peopleNearby, general } from '../../lib/states';
 	import { getFileUrl } from '@/utils/storage/download';
 	import { secToMin } from '@/utils/time';
 	import { loadPeopleNearby, startNextTrip } from '@/utils/map';

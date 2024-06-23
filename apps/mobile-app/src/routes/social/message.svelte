@@ -1,8 +1,8 @@
 <script lang="ts">
 	import moment from 'moment';
 	import { fly } from 'svelte/transition';
-	import { chat } from '@/stores';
-	import { auth } from '@/stores';
+	import { chat } from '../../lib/states';
+	import { auth } from '../../lib/states';
 	import { Avatar } from '@/components';
 	import type { Tables } from '@repo/config/supatypes';
 

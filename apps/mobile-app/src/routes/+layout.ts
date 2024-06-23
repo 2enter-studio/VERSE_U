@@ -1,6 +1,6 @@
 // import { updateActiveStatus } from '@/utils/auth';
 import type { Load } from '@sveltejs/kit';
-import { auth } from '@/stores';
+import { auth } from '../lib/states';
 
 export const prerender = true;
 export const ssr = false;

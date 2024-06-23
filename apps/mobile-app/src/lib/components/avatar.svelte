@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getFileUrl } from '@/utils/storage/download';
-	import { general } from '@/stores';
+	import { general } from '../states';
 	import type { Tables } from '@repo/config/supatypes';
 
 	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };

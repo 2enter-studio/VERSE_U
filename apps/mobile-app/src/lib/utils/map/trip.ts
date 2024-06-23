@@ -2,8 +2,8 @@ import { get } from 'svelte/store';
 import type { Tables } from '@repo/config/supatypes';
 
 import { db } from '@/db';
-import { trip, tripStatus, peopleNearby } from '@/stores';
-import { auth } from '@/stores';
+import { trip, tripStatus, peopleNearby } from '../../states';
+import { auth } from '../../states';
 import { createError, handleEFResponse } from '@/utils/error';
 
 async function loadTrip() {

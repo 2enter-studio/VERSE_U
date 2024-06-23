@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { wearings, wearingTypes, ownedWearings, general } from '@/stores';
+	import { wearings, wearingTypes, ownedWearings, general } from '../../lib/states';
 	import { buyWearing, equipWearings } from '@/utils/dress/wearing';
 	import { Drawer } from '@/components/index.js';
 

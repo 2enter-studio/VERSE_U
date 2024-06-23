@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { general, auth } from '@/stores';
+	import { general, auth } from '../lib/states';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
 	import validate from '@/utils/validate';
 	import { OAUTH_PROVIDERS } from '@/config';

@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 import { db } from '@/db';
-import { ownedWearings, wearings, wearingTypes } from '@/stores';
-import { auth } from '@/stores';
+import { ownedWearings, wearings, wearingTypes } from '../../states';
+import { auth } from '../../states';
 import { assignMLTexts } from '@/utils/ml_text';
 import { createError } from '@/utils/error';
 import type { Tables } from '@repo/config/supatypes';

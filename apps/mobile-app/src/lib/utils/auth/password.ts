@@ -1,6 +1,6 @@
 import validate from '@/utils/validate';
 import { db } from '@/db';
-import { auth } from '@/stores';
+import { auth } from '../../states';
 import { createError } from '../error';
 
 // Send a password reset email to the given email address

@@ -12,7 +12,7 @@
 	import { loadPeopleNearby, loadRegions, loadTrip } from '@/utils/map';
 	import { loadChats } from '@/utils/chat';
 	import { loadWearings } from '@/utils/dress/wearing';
-	import { auth, general } from '@/stores';
+	import { auth, general } from '../lib/states';
 	import { Menu, Login, MyProfile, Error, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	import preferences from '@/utils/preferences';

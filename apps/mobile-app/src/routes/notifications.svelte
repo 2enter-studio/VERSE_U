@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { general } from '@/stores';
+	import { general } from '../lib/states';
 	import { onMount } from 'svelte';
 	onMount(() => {
 		setInterval(() => {

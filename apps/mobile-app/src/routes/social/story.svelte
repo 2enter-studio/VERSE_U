@@ -3,7 +3,7 @@
 
 	import { getWearingsByUserId } from '@/utils/dress/wearing';
 	import { UModel } from '@/components/index.js';
-	import { general } from '@/stores';
+	import { general } from '../../lib/states';
 	import Icon from '@iconify/svelte';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 

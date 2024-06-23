@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import type { CharacterAnimation } from '@/config';
 	import { FRAME_RATE, DEFAULT_CAMERA_POS } from '@/config';
-	import { wearings } from '@/stores';
+	import { wearings } from '../states';
 	import { getFileUrl } from '@/utils/storage/download';
 
 	type Props = {

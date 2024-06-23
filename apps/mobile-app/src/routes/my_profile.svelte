@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 
-	import { general, auth } from '@/stores';
+	import { general, auth } from '../lib/states';
 	import { Avatar } from '@/components';
 	import { Settings } from './';
 

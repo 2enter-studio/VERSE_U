@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { auth, general } from '@/stores';
+	import { auth, general } from '../../../lib/states';
 	import { createProfile } from '@/utils/auth/profile';
 	import { Dialog } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';

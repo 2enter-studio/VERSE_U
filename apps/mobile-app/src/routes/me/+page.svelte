@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { equippedWearings, wearings, wearingTypes, trip, tripStatus, general } from '@/stores';
+	import { equippedWearings, wearings, wearingTypes, trip, tripStatus, general } from '../../lib/states';
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
