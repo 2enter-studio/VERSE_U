@@ -71,6 +71,7 @@ db.auth.onAuthStateChange(async (e: AuthChangeEvent, s) => {
 	console.log(`auth state: ${e}`);
 
 	switch (e) {
+		// e:  'INITIAL_SESSION' | 'PASSWORD_RECOVERY' | 'SIGNED_IN' | 'SIGNED_OUT' | 'TOKEN_REFRESHED' | 'USER_UPDATED' | "MFA_CHALLENGE_VERIFIED"
 		case 'SIGNED_OUT':
 			clearStore();
 			break;
