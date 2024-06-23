@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { errorMessage, loggedIn, uiTexts, user } from '@/stores';
+	import { errorMessage, uiTexts, auth } from '@/stores';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
 	import validate from '@/utils/validate';
 	import { OAUTH_PROVIDERS } from '@/config';
@@ -23,11 +23,11 @@
 	let pwdConfirm = $state('');
 	let pwdNew = $state('');
 	let pwdVisible = $state(false);
-	let email = $state($user?.email || '');
+	let email = $state(auth.user?.email || '');
 
-	// const formChoices = $derived($loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login', 'signup', 'forgot_pwd'] as const));
+	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login', 'signup', 'forgot_pwd'] as const));
 	const formChoices = $derived(
-		$loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login'] as const)
+		auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login'] as const)
 	);
 
 	const submittable = $derived(
@@ -72,7 +72,7 @@
 
 <div class="center-content w-[60vw] flex-col gap-1">
 	<h1 class="mb-3 border-black text-2xl font-extrabold text-black">
-		{#if $loggedIn}
+		{#if auth.loggedIn}
 			Account Center
 		{:else}
 			{$uiTexts.welcome}
@@ -112,7 +112,7 @@
 						type="email"
 						class={inputClasses}
 						bind:value={email}
-						readonly={$loggedIn}
+						readonly={auth.loggedIn}
 						required
 					/>
 				{/if}
@@ -168,7 +168,7 @@
 			</div>
 		</div>
 	</form>
-	{#if !$loggedIn && OAUTH_PROVIDERS.length > 0}
+	{#if !auth.loggedIn && OAUTH_PROVIDERS.length > 0}
 		<div
 			class="mt-2 flex flex-row justify-around gap-5 rounded-full bg-red-500 p-1 shadow-inner shadow-red-800/80"
 		>

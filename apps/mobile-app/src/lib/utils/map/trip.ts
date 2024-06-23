@@ -2,11 +2,12 @@ import { get } from 'svelte/store';
 import type { Tables } from '@repo/config/supatypes';
 
 import { db } from '@/db';
-import { user, trip, tripStatus, peopleNearby } from '@/stores';
+import { trip, tripStatus, peopleNearby } from '@/stores';
+import { auth } from '@/stores';
 import { createError, handleEFResponse } from '@/utils/error';
 
 async function loadTrip() {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('You must be logged in to get your trip');
 	const { data, error } = await db
 		.from('trips')

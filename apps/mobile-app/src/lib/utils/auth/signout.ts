@@ -1,10 +1,8 @@
 import { db } from '@/db';
-// import { PUBLIC_SUPA_PROJ_ID as supaId } from '$env/static/public';
-import { session, profile } from '@/stores/auth';
+import { auth } from '@/stores';
 
 function clearStore() {
-	session.set(null);
-	profile.set(null);
+	auth.clear();
 }
 
 async function signOut() {

@@ -2,7 +2,8 @@ import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import { get } from 'svelte/store';
 
 import { db } from '@/db';
-import { chat, chatId, chats, user } from '@/stores';
+import { chat, chatId, chats} from '@/stores';
+import {auth} from '@/stores';
 import { createError } from '@/utils/error';
 import { getCurrentYearMonth } from '@/utils/time';
 import { loadChats } from './chat_info';
@@ -23,7 +24,7 @@ async function getMessages() {
 
 async function sendMessage(content: string, reply_to?: string) {
 	const chat_id = get(chatId);
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!chat_id || !user_id) return createError('no chat found');
 
 	const insertData = {
@@ -62,7 +63,7 @@ function subscribeToMessages() {
 				event: 'INSERT',
 				schema: 'public',
 				table: tableName,
-				filter: `sender=neq.${get(user)?.id}`
+				filter: `sender=neq.${auth.user?.id}`
 			},
 			async (payload: RealtimePostgresInsertPayload<Tables<'chat_messages'>>) => {
 				console.log('received new message', payload);

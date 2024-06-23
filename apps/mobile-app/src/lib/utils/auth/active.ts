@@ -1,11 +1,9 @@
-import { get } from 'svelte/store';
-
 import { db } from '@/db';
-import { user } from '@/stores/auth';
+import { auth } from '@/stores';
 import { createError } from '@/utils/error';
 
 async function updateActiveStatus() {
-	const currentUser = get(user);
+	const currentUser = auth.user;
 	const user_id = currentUser?.id;
 	if (!user_id) return createError('no auth found');
 

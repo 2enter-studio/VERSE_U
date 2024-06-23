@@ -4,7 +4,7 @@
 
 	import { agreeFriendShip } from '@/utils/chat';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { chat, chatId, user, showMenu, getMemberFromChat, errorMessage } from '@/stores';
+	import { auth, chat, chatId, showMenu, getMemberFromChat, errorMessage } from '@/stores';
 	import { Avatar } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
@@ -13,7 +13,7 @@
 	const inputHeight = $derived(chatInput?.clientHeight ?? 0);
 
 	onMount(() => {
-		if (!$chat?.id || !$user?.id) return;
+		if (!$chat?.id || !auth.user?.id) return;
 		onsend();
 		$showMenu = false;
 		return () => {
@@ -41,7 +41,7 @@
 			<Icon icon="mdi:arrow-back" />
 		</button>
 		<Avatar profile={person?.profiles} class="size-8" />
-		{#if $chat.chat_messages.some((m) => m.sender === $user?.id) && $chat.chat_messages.some((m) => m.sender === person?.profiles?.user) && !me?.agree}
+		{#if $chat.chat_messages.some((m) => m.sender === auth.user?.id) && $chat.chat_messages.some((m) => m.sender === person?.profiles?.user) && !me?.agree}
 			<div class="center-content">
 				<span class="text-xs">add to friends?</span>
 				<button

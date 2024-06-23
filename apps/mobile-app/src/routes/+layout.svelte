@@ -12,7 +12,7 @@
 	import { loadPeopleNearby, loadRegions, loadTrip } from '@/utils/map';
 	import { loadChats } from '@/utils/chat';
 	import { loadWearings } from '@/utils/dress/wearing';
-	import { loggedIn, profile, platform, showMenu } from '@/stores';
+	import { auth, platform, showMenu } from '@/stores';
 	import { Menu, Login, MyProfile, Error, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	// import { Notifications } from './index.js';
@@ -23,15 +23,15 @@
 	let loaded = $state(false);
 
 	async function init() {
-		if ($loggedIn) {
+		if (auth.loggedIn) {
 			await loadRegions();
 
-			if (!$profile && $page.url.pathname !== '/auth/create-profile') {
+			if (!auth.profile && $page.url.pathname !== '/auth/create-profile') {
 				console.log('profile not found');
 				window.location.assign('/auth/create-profile');
 			}
 
-			if ($profile) {
+			if (auth.profile) {
 				await loadTrip();
 				await loadPeopleNearby();
 				await loadChats();
@@ -54,13 +54,9 @@
 		await init();
 		[loaded, $showMenu] = [true, true];
 
-		const url = window.location.href;
+		const url = $page.url.href;
 		const Url = new URL(url);
 		await handleOAuthCallback(Url);
-	});
-
-	$effect(() => {
-		console.log($page.url.href);
 	});
 
 	App.addListener('appUrlOpen', async (event) => {
@@ -96,7 +92,7 @@
 <!--<div class="fixed top-20">{$page.url.pathname}</div>-->
 
 <div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-	{#if $loggedIn}
+	{#if auth.loggedIn}
 		{#if loaded}
 			<div class="flex w-full">
 				<MyProfile

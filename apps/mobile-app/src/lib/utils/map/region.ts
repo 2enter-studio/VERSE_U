@@ -3,7 +3,8 @@ import { get } from 'svelte/store';
 
 import { db } from '@/db';
 import { createError } from '@/utils/error';
-import { peopleNearby, regions, trip, user } from '@/stores';
+import { peopleNearby, regions, trip } from '@/stores';
+import { auth } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
 import type { Tables } from '@repo/config/supatypes';
 
@@ -31,7 +32,7 @@ async function loadPeopleNearby() {
 	if (error) return createError('Failed to get users in region');
 
 	const result = data.filter((d) => {
-		if (d.profiles.user === get(user)?.id) return false;
+		if (d.profiles.user === auth.user?.id) return false;
 		const arrive_at = new Date(d.arrive_at).getTime();
 		const now = new Date().getTime();
 		return now > arrive_at;

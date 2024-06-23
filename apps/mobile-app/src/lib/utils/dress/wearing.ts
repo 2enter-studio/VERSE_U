@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { db } from '@/db';
-import { ownedWearings, user, wearings, wearingTypes } from '@/stores';
+import { ownedWearings, wearings, wearingTypes } from '@/stores';
+import { auth } from '@/stores';
 import { assignMLTexts } from '@/utils/ml_text';
 import { createError } from '@/utils/error';
 import type { Tables } from '@repo/config/supatypes';
@@ -33,7 +34,7 @@ async function loadWearings() {
 }
 
 async function loadOwnedWearings() {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return;
 
 	const { data, error } = await db
@@ -48,7 +49,7 @@ async function loadOwnedWearings() {
 }
 
 async function buyWearing(wearing_id: string) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('You must be logged in to buy wearings');
 
 	const { data, error } = await db
@@ -63,7 +64,7 @@ async function buyWearing(wearing_id: string) {
 }
 
 async function equipWearings(wearing_ids: string[]) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('You must be logged in to equip wearings');
 
 	// un-equip all wearings
