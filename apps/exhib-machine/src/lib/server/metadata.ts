@@ -1,12 +1,11 @@
 import fs from 'fs-extra';
 import validator from 'validator';
 import moment from 'moment';
-import { db } from '@/server/db';
-import config, { type BucketName, type MetaData } from '@/config';
-import { metadata, serverState } from '@/server/state';
-import { deepClone } from '@repo/utils';
 
-const { BUCKET_NAMES, METADATA_FILE, EMPTY_METADATA } = config;
+import { db } from '@/server/db';
+import type { BucketName, MetaData } from '@/config';
+import { BUCKET_NAMES, EMPTY_METADATA, METADATA_FILE } from '@/config';
+import { metadata, serverState } from '@/server/state';
 
 function initMetaData() {
 	metadata.old = getMetaDataBackUp();
@@ -15,13 +14,13 @@ function initMetaData() {
 function getMetaDataBackUp() {
 	const exist = fs.existsSync(METADATA_FILE);
 	if (!exist) {
-		return deepClone(EMPTY_METADATA);
+		return structuredClone(EMPTY_METADATA);
 	}
 	const data = fs.readFileSync(METADATA_FILE).toString();
 	if (validator.isJSON(data)) {
 		return JSON.parse(data) as MetaData;
 	}
-	return deepClone(EMPTY_METADATA);
+	return structuredClone(EMPTY_METADATA);
 }
 
 function setMetaDataBackUp(data: MetaData) {
