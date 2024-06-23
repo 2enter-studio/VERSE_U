@@ -23,8 +23,6 @@ type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
 const DEFAULT_ROUTE = '/social';
 const DEFAULT_LOCALE = 'zh';
-const MIN_STAY_TIME = 1000 * 3;
-const MAX_STAY_TIME = 1000 * 60 * 60 * 8;
 const MAP_SIZE = 3200;
 const FRAME_RATE = 12;
 const DEFAULT_CAMERA_POS = [0, 2.0, 2.0] as const;
@@ -38,8 +36,6 @@ export {
 	CHARACTER_ANIMATIONS,
 	DEFAULT_ROUTE,
 	DEFAULT_LOCALE,
-	MIN_STAY_TIME,
-	MAX_STAY_TIME,
 	MAP_SIZE,
 	FRAME_RATE,
 	DEFAULT_CAMERA_POS,
