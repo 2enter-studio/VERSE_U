@@ -1,5 +1,5 @@
 import { decode } from 'base64-arraybuffer';
-import { auth } from '@/stores';
+import { auth } from '@/states';
 import { db } from '@/db';
 
 // import { handleEFResponse } from '@/utils/error';

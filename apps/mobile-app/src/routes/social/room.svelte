@@ -4,7 +4,7 @@
 
 	import { agreeFriendShip } from '@/utils/chat';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { auth, chat, chatId, general, getMemberFromChat } from '@/stores';
+	import { auth, chat, chatId, general, getMemberFromChat } from '@/states';
 	import { Avatar } from '@/components';
 
 	let chatInput = $state<HTMLElement>();

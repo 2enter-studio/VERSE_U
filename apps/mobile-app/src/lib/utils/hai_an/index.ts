@@ -1,6 +1,6 @@
 import { createError, handleEFResponse } from '@/utils/error';
 import { db } from '@/db';
-import { auth } from '@/stores';
+import { auth } from '@/states';
 
 async function triggerHaiAn(passcode: string) {
 	const user_id = auth.user?.id;

@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { general } from '@/stores';
+	import { general } from '@/states';
 
 	type Props = { children: Snippet; class?: string; open: boolean; onclose?: () => void };
 	let { children, class: className, open = $bindable(false), onclose }: Props = $props();

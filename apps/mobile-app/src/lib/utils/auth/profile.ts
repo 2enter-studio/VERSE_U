@@ -3,8 +3,7 @@ import randomItem from 'random-item';
 import { get } from 'svelte/store';
 
 import { db } from '@/db';
-import { regions, trip } from '@/stores';
-import { auth } from '@/stores';
+import { auth, regions, trip } from '@/states';
 import { createError } from '../error';
 import type { Tables } from '@repo/config/supatypes';
 

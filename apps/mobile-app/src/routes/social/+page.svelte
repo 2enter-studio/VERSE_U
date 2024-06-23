@@ -6,7 +6,7 @@
 	import { subscribeToRegion } from '@/utils/map';
 	import { startChat, subscribeToAgree, subscribeToMessages } from '@/utils/chat';
 
-	import { chat, chatId, friends, strangers, peopleNearby, general } from '@/stores';
+	import { chat, chatId, friends, strangers, peopleNearby, general } from '@/states';
 	import { Chatroom, ChatList, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 

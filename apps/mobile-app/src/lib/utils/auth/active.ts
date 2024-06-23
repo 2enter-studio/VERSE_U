@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { auth } from '@/stores';
+import { auth } from '@/states';
 import { createError } from '@/utils/error';
 
 async function updateActiveStatus() {

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { general } from '@/stores';
 	import { onMount } from 'svelte';
+	import { general } from '@/states';
+
 	onMount(() => {
 		setInterval(() => {
 			general.notifications = [...general.notifications, `${~~(Math.random() * 1000)}`];

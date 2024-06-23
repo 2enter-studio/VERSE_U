@@ -1,8 +1,7 @@
 import { get } from 'svelte/store';
 import { createError } from '@/utils/error';
 import { db } from '@/db';
-import { chats, chat, chatId } from '@/stores';
-import { auth } from '@/stores';
+import { auth, chat, chatId, chats } from '@/states';
 import validate from '@/utils/validate';
 import { sendMessage } from '@/utils/chat/message';
 

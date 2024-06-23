@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { chatId, chats, getMemberFromChat } from '@/stores';
+	import { chatId, chats, getMemberFromChat } from '@/states';
 	import { Avatar } from '@/components';
 
 	type Props = { chatrooms: Chatroom[] };

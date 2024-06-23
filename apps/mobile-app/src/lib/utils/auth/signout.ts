@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { auth } from '@/stores';
+import { auth } from '@/states';
 
 function clearStore() {
 	auth.clear();

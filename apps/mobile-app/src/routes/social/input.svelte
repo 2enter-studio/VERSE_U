@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { sendMessage } from '@/utils/chat';
-	import { general } from '@/stores';
+	import { general } from '@/states';
 
 	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } =
 		$props();

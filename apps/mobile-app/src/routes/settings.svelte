@@ -5,7 +5,7 @@
 	import { version } from '$app/environment';
 
 	import { Dialog } from '@/components';
-	import { auth, general } from '@/stores';
+	import { auth, general } from '@/states';
 	import { modifyProfile, signOut } from '@/utils/auth';
 	import preferences from '@/utils/preferences';
 

@@ -2,8 +2,7 @@ import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import { get } from 'svelte/store';
 
 import { db } from '@/db';
-import { chat, chatId, chats} from '@/stores';
-import {auth} from '@/stores';
+import { auth, chat, chatId, chats } from '@/states';
 import { createError } from '@/utils/error';
 import { getCurrentYearMonth } from '@/utils/time';
 import { loadChats } from './chat_info';

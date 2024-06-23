@@ -3,8 +3,8 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { onMount } from 'svelte';
 	import type { CharacterAnimation } from '@/config';
-	import { FRAME_RATE, DEFAULT_CAMERA_POS } from '@/config';
-	import { wearings } from '@/stores';
+	import { DEFAULT_CAMERA_POS, FRAME_RATE } from '@/config';
+	import { wearings } from '@/states';
 	import { getFileUrl } from '@/utils/storage/download';
 
 	type Props = {

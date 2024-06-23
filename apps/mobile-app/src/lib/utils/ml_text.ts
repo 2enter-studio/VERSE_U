@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { general } from '@/stores';
+import { general } from '@/states';
 
 async function getMLText(row_id: string, column_name: string) {
 	const { data, error } = await db

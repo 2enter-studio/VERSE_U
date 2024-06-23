@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { general } from '@/stores';
+	import { general } from '@/states';
 	import { Dialog } from '@/components';
 </script>
 

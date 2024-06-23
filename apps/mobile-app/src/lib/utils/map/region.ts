@@ -3,8 +3,7 @@ import { get } from 'svelte/store';
 
 import { db } from '@/db';
 import { createError } from '@/utils/error';
-import { peopleNearby, regions, trip } from '@/stores';
-import { auth } from '@/stores';
+import { auth, peopleNearby, regions, trip } from '@/states';
 import { assignMLTexts } from '@/utils/ml_text';
 import type { Tables } from '@repo/config/supatypes';
 
