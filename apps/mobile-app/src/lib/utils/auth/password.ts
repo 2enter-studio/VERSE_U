@@ -1,8 +1,6 @@
-import { get } from 'svelte/store';
-
 import validate from '@/utils/validate';
 import { db } from '@/db';
-import { session } from '@/stores/auth';
+import { auth } from '@/stores';
 import { createError } from '../error';
 
 // Send a password reset email to the given email address
@@ -31,7 +29,7 @@ async function changePwd(oldPassword: string, newPassword: string) {
 	if (!validate.password(oldPassword) || !validate.password(newPassword))
 		return createError('invalid password');
 
-	const sessionBackup = get(session);
+	const sessionBackup = auth.session;
 
 	// Return an error if there is no session found
 	if (!sessionBackup) {
@@ -50,7 +48,7 @@ async function changePwd(oldPassword: string, newPassword: string) {
 
 	if (error) {
 		// To prevent auto logout, restore the session
-		session.set(sessionBackup);
+		auth.session = sessionBackup;
 		return { error };
 	} else {
 		const result = await setPwd(newPassword);

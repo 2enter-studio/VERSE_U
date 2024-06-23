@@ -1,12 +1,11 @@
 import { decode } from 'base64-arraybuffer';
-import { get } from 'svelte/store';
-import { user } from '@/stores';
+import { auth } from '@/stores';
 import { db } from '@/db';
 
 // import { handleEFResponse } from '@/utils/error';
 
 async function uploadSelfie(image: string) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return;
 
 	// const { data, error } = await db.functions.invoke('upload-selfie', {

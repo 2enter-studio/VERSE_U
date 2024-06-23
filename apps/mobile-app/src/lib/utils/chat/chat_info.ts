@@ -1,12 +1,13 @@
 import { get } from 'svelte/store';
 import { createError } from '@/utils/error';
 import { db } from '@/db';
-import { chats, chat, chatId, user } from '@/stores';
+import { chats, chat, chatId } from '@/stores';
+import { auth } from '@/stores';
 import validate from '@/utils/validate';
 import { sendMessage } from '@/utils/chat/message';
 
 async function loadChats(chat_ids?: string[]) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('no user found');
 
 	const setAll = chat_ids === undefined;
@@ -72,7 +73,7 @@ async function loadChats(chat_ids?: string[]) {
 }
 
 async function startChat(target_user_id: string, firstMessage: string) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('no user found');
 
 	if (!validate.uuid(target_user_id)) return createError('invalid target user id');
@@ -101,7 +102,7 @@ async function startChat(target_user_id: string, firstMessage: string) {
 
 async function agreeFriendShip() {
 	const chat_id = get(chat)?.id;
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!chat_id || !user_id) return createError('no chat or user found');
 
 	const { error } = await db

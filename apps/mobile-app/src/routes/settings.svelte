@@ -5,7 +5,7 @@
 	import { version } from '$app/environment';
 
 	import { Dialog } from '@/components';
-	import { errorMessage, locale, profile, uiTexts } from '@/stores';
+	import { errorMessage, locale, auth, uiTexts } from '@/stores';
 	import { modifyProfile, signOut } from '@/utils/auth';
 	import preferences from '@/utils/preferences';
 
@@ -15,11 +15,11 @@
 	let { open = $bindable() }: Props = $props();
 
 	let values = $state({
-		profile: deepClone($profile),
+		profile: deepClone(auth.profile),
 		locale: $locale
 	});
 	const submittable = $derived(
-		JSON.stringify({ profile: $profile, locale: $locale }) !== JSON.stringify(values) &&
+		JSON.stringify({ profile: auth.profile, locale: $locale }) !== JSON.stringify(values) &&
 			values.profile?.name.trim() !== ''
 	);
 
@@ -30,7 +30,7 @@
 	async function save() {
 		if (!submittable) return;
 		const localeChanged = values.locale !== $locale;
-		const profileChanged = JSON.stringify($profile) !== JSON.stringify(values.profile);
+		const profileChanged = JSON.stringify(auth.profile) !== JSON.stringify(values.profile);
 
 		if (localeChanged) {
 			await preferences.locale.set(values.locale);
@@ -67,10 +67,10 @@
 		<div class="center-content flex-row gap-2">
 			<h2>{$uiTexts.profile}</h2>
 			<div class="flex w-fit flex-row rounded-sm bg-gray-600 px-1 text-xs text-white/80">
-				{$profile?.public_id}
+				{auth.profile?.public_id}
 				<button
 					onclick={() => {
-						navigator.clipboard.writeText($profile?.public_id || '');
+						navigator.clipboard.writeText(auth.profile?.public_id || '');
 					}}
 				>
 					<Icon icon="ph:copy-fill" />

@@ -1,5 +1,5 @@
-import { derived, get, writable } from 'svelte/store';
-import { user } from './auth';
+import { derived, writable } from 'svelte/store';
+import { auth } from './auth.svelte';
 
 // const chat = writable<Chatroom | null>(null);
 const chats = writable<Chatroom[]>([]);
@@ -19,9 +19,9 @@ const friends = derived(chats, ($chats) => {
 
 function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
 	if (target === 'me') {
-		return chat.chat_members.find((m) => m.profiles.user === get(user)?.id);
+		return chat.chat_members.find((m) => m.profiles.user === auth.user?.id);
 	} else {
-		return chat.chat_members.find((m) => m.profiles.user !== get(user)?.id);
+		return chat.chat_members.find((m) => m.profiles.user !== auth.user?.id);
 	}
 }
 

@@ -3,12 +3,13 @@ import randomItem from 'random-item';
 import { get } from 'svelte/store';
 
 import { db } from '@/db';
-import { profile, user, regions, trip } from '@/stores';
+import { regions, trip } from '@/stores';
+import { auth } from '@/stores';
 import { createError } from '../error';
 import type { Tables } from '@repo/config/supatypes';
 
 async function loadProfile(user_id?: string) {
-	if (!user_id) user_id = get(user)?.id;
+	if (!user_id) user_id = auth.user?.id;
 	// const user_id = get(user)?.id;
 	if (!user_id) return createError('No auth found');
 
@@ -24,11 +25,11 @@ async function loadProfile(user_id?: string) {
 		return { error };
 	}
 
-	profile.set(data);
+	auth.profile = data;
 }
 
 async function createProfile(name: string) {
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('No auth found');
 
 	let regionIds = [...get(regions).map((r) => r.id)];
@@ -63,13 +64,13 @@ async function createProfile(name: string) {
 	if (tripError) return { error: tripError };
 
 	trip.set(tripData);
-	profile.set(profileData);
+	auth.profile = profileData;
 }
 
 async function modifyProfile(args: { name: string }) {
 	const { name } = args;
 
-	const user_id = get(user)?.id;
+	const user_id = auth.user?.id;
 	if (!user_id) return createError('No auth found');
 	const { data, error } = await db
 		.from('profiles')
@@ -82,7 +83,7 @@ async function modifyProfile(args: { name: string }) {
 		console.error(error.message);
 		return { error };
 	}
-	profile.set(data);
+	auth.profile = data;
 }
 
 export { loadProfile, createProfile, modifyProfile };

@@ -1,4 +1,4 @@
-export * from './auth';
+export * from './auth.svelte';
 export * from './chat';
 export * from './state';
 export * from './map';
