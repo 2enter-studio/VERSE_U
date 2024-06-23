@@ -8,7 +8,10 @@ async function downloadImage(bucket: BucketName, filename: string) {
 }
 
 function getFileUrl(bucket: BucketName, filename: string) {
-	return db.storage.from(bucket).getPublicUrl(filename);
+	const {
+		data: { publicUrl }
+	} = db.storage.from(bucket).getPublicUrl(filename);
+	return publicUrl;
 }
 
 export { downloadImage, getFileUrl };
