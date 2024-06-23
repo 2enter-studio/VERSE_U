@@ -1,5 +1,4 @@
 import type { RealtimePostgresUpdatePayload as Payload } from '@supabase/supabase-js';
-import { get } from 'svelte/store';
 
 import { db } from '@/db';
 import { createError } from '@/utils/error';

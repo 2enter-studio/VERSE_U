@@ -4,7 +4,6 @@ import { auth, gameState } from '@/states';
 import { assignMLTexts } from '@/utils/ml_text';
 import { createError } from '@/utils/error';
 import validate from '@/utils/validate';
-import Table = WebAssembly.Table;
 
 async function loadRegions() {
 	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();

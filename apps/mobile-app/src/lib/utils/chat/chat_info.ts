@@ -1,4 +1,3 @@
-import { get } from 'svelte/store';
 import { createError } from '@/utils/error';
 import { db } from '@/db';
 import { auth, gameState } from '@/states';

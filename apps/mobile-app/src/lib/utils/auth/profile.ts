@@ -1,6 +1,5 @@
 import moment from 'moment';
 import randomItem from 'random-item';
-import { get } from 'svelte/store';
 
 import { db } from '@/db';
 import { auth, gameState } from '@/states';

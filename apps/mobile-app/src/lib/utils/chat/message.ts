@@ -1,5 +1,4 @@
 import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
-import { get } from 'svelte/store';
 
 import { db } from '@/db';
 import { auth, gameState } from '@/states';
