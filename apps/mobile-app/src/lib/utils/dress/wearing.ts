@@ -1,51 +1,7 @@
-import { get } from 'svelte/store';
 import { db } from '@/db';
-import { auth, ownedWearings, wearings, wearingTypes } from '@/states';
-import { assignMLTexts } from '@/utils/ml_text';
+import { auth, gameState } from '@/states';
 import { createError } from '@/utils/error';
-import type { Tables } from '@repo/config/supatypes';
-
-async function loadWearingTypes() {
-	const { data, error } = await db
-		.from('wearing_types')
-		.select('*')
-		.returns<Tables<'wearing_types'>[]>();
-	if (error) return { error };
-
-	const newData = await assignMLTexts(data);
-
-	wearingTypes.set(newData);
-}
-
-async function loadWearings() {
-	await loadWearingTypes();
-	const { data, error } = await db
-		.from('wearings')
-		.select('*, texture_types(value), body_parts(value)')
-		.returns<Wearing[]>();
-
-	if (error) return { error };
-
-	const newData = await assignMLTexts(data);
-
-	wearings.set(newData);
-	await loadOwnedWearings();
-}
-
-async function loadOwnedWearings() {
-	const user_id = auth.user?.id;
-	if (!user_id) return;
-
-	const { data, error } = await db
-		.from('owned_wearings')
-		.select('wearing,equipped')
-		.eq('owner', user_id)
-		.returns<{ wearing: string; equipped: boolean }[]>();
-
-	if (error) return { error };
-
-	ownedWearings.set(data);
-}
+import { loadOwnedWearings } from '@/utils/load';
 
 async function buyWearing(wearing_id: string) {
 	const user_id = auth.user?.id;
@@ -59,7 +15,13 @@ async function buyWearing(wearing_id: string) {
 		.single();
 
 	if (error) return { error };
-	ownedWearings.set([...get(ownedWearings), data]);
+
+	const result = {
+		id: data.wearing,
+		equipped: data.equipped
+	};
+
+	gameState.ownedWearings.push(result);
 }
 
 async function equipWearings(wearing_ids: string[]) {
@@ -101,4 +63,4 @@ async function getWearingsByUserId(user_id: string) {
 	return data.map((d) => d.wearing);
 }
 
-export { loadWearings, loadOwnedWearings, equipWearings, buyWearing, getWearingsByUserId };
+export { equipWearings, buyWearing, getWearingsByUserId };

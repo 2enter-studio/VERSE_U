@@ -12,21 +12,22 @@ declare global {
 	type Named = { name: string };
 	type Described = { description: string };
 
-	type Region = Tables<'regions'> & { name?: string; description?: string };
+	type Region = Tables<'regions'> & Named & Described;
 
-	type ChatMember = { agree: boolean; profiles: Tables<'profiles'> };
+	type ChatMember = Omit<Tables<'chats_members'>, 'user'> & { user: Tables<'profiles'> };
 	type Chatroom = {
 		id: string;
 		chat_members: ChatMember[];
 		chat_messages: Tables<'chat_messages'>[];
 	};
 
+	type WearingType = Tables<'wearing_types'> & Named & Described;
 	type Wearing = Tables<'wearings'> &
 		Named &
 		Described & {
-			category: string;
-			texture_types: { id: string; value: string }[];
-			body_parts: { id: string; value: string }[];
+			category: Tables<'wearing_types'>;
+			texture_types: Tables<'texture_types'>[];
+			body_parts: Tables<'body_parts'>[];
 		};
 }
 

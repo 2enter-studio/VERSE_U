@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { general, ownedWearings, wearings, wearingTypes } from '@/states';
+	import { general, gameState } from '@/states';
 	import { buyWearing, equipWearings } from '@/utils/dress/wearing';
 	import { Drawer } from '@/components/index.js';
 
@@ -13,11 +13,11 @@
 	};
 
 	let {
-		selectedWearings = $bindable(),
 		open = $bindable(),
+		selectedWearings = $bindable(),
 		selectedWearingType = $bindable()
 	}: Props = $props();
-	// let selectedType = $state(randomItem($wearingTypes).id);
+	// let selectedType = $state(randomItem(gameState.wearingTypes).id);
 	let initSelectedWearings = $state({ ...selectedWearings });
 
 	const unSaved = $derived(
@@ -32,14 +32,14 @@
 
 		return () => {
 			selectedWearings = { ...initSelectedWearings };
-			selectedWearingType = $wearingTypes[0].id;
+			selectedWearingType = gameState.wearingTypes[0].id;
 			general.showMenu = true;
 		};
 	});
 </script>
 
 <Drawer bind:open class="w-screen gap-2 bg-black p-1">
-	{#each $wearingTypes as wearingType}
+	{#each gameState.wearingTypes as wearingType}
 		{@const typeSelected = wearingType.id === selectedWearingType}
 		<div class="z-10 flex w-full flex-row justify-evenly {typeSelected ? '' : 'hidden'}">
 			<input
@@ -56,9 +56,9 @@
 				/>
 			</label>
 
-			{#each $wearings.filter((w) => w.category === wearingType.id) as wearing}
+			{#each gameState.wearings.filter((w) => w.category.id === wearingType.id) as wearing}
 				{@const selected = selectedWearings[wearingType.id] === wearing.id}
-				{@const owned = $ownedWearings.some((w) => w.wearing === wearing.id)}
+				{@const owned = gameState.ownedWearings.some((w) => w.id === wearing.id)}
 				{#if owned}
 					<input
 						id={wearing.id}
@@ -88,7 +88,7 @@
 	{/each}
 
 	<div class="flex w-full flex-row justify-evenly">
-		{#each $wearingTypes as wearingType}
+		{#each gameState.wearingTypes as wearingType}
 			{@const typeSelected = wearingType.id === selectedWearingType}
 			<input
 				id={wearingType.id}

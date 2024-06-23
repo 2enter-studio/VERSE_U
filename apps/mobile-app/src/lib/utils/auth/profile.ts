@@ -3,7 +3,7 @@ import randomItem from 'random-item';
 import { get } from 'svelte/store';
 
 import { db } from '@/db';
-import { auth, regions, trip } from '@/states';
+import { auth, gameState } from '@/states';
 import { createError } from '../error';
 import type { Tables } from '@repo/config/supatypes';
 
@@ -31,7 +31,7 @@ async function createProfile(name: string) {
 	const user_id = auth.user?.id;
 	if (!user_id) return createError('No auth found');
 
-	let regionIds = [...get(regions).map((r) => r.id)];
+	let regionIds = [...gameState.regions.map((r) => r.id)];
 	if (regionIds.length === 0) return createError('NO_REGION_FOUND');
 
 	const { data: profileData, error: profileError } = await db.from('profiles').insert({ name });
@@ -62,7 +62,7 @@ async function createProfile(name: string) {
 
 	if (tripError) return { error: tripError };
 
-	trip.set(tripData);
+	gameState.trip = tripData;
 	auth.profile = profileData;
 }
 

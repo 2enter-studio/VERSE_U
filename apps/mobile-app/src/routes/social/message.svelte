@@ -1,7 +1,7 @@
 <script lang="ts">
 	import moment from 'moment';
 	import { fly } from 'svelte/transition';
-	import { auth, chat } from '@/states';
+	import { auth, gameState } from '@/states';
 	import { Avatar } from '@/components';
 	import type { Tables } from '@repo/config/supatypes';
 
@@ -11,14 +11,14 @@
 	const dateTimeClassName = 'mx-1 mb-0.5 text-[9.5px] tracking-tighter text-black/70';
 </script>
 
-{#if $chat}
+{#if gameState.chat}
 	<div
 		in:fly={{ x: isMine ? 100 : -100, duration: 70 }}
 		class="my-[3px] flex w-full flex-row items-end {isMine ? 'justify-end' : 'justify-start'}"
 	>
 		{#if !isMine}
-			{@const profile = $chat.chat_members.find(
-				(m) => m.profiles.user === message.sender
+			{@const profile = gameState.chat.chat_members.find(
+				(m) => m.user.user === message.sender
 			)?.profiles}
 			<Avatar {profile} class="mr-1 size-9" />
 			<!--		<div class="mr-2 size-12 rounded-full bg-rose-400"></div>-->

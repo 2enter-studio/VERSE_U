@@ -9,10 +9,15 @@
 	import Icon from '@iconify/svelte';
 
 	import { db } from '@/db';
-	import { loadPeopleNearby, loadRegions, loadTrip } from '@/utils/map';
-	import { loadChats } from '@/utils/chat';
-	import { loadWearings } from '@/utils/dress/wearing';
-	import { auth, general } from '@/states';
+	import {
+		loadChats,
+		loadRegions,
+		loadTrip,
+		loadWearings,
+		loadPeopleNearBy,
+		loadOwnedWearings
+	} from '@/utils/load';
+	import { auth, gameState, general } from '@/states';
 	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	import preferences from '@/utils/preferences';
@@ -20,6 +25,7 @@
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
+	$inspect(gameState.wearingTypes);
 
 	let loaded = $state(false);
 
@@ -36,9 +42,10 @@
 
 			if (auth.profile) {
 				await loadTrip();
-				await loadPeopleNearby();
+				await loadPeopleNearBy();
 				await loadChats();
 				await loadWearings();
+				await loadOwnedWearings();
 			}
 		}
 

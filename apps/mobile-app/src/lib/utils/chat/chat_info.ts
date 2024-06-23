@@ -1,7 +1,7 @@
 import { get } from 'svelte/store';
 import { createError } from '@/utils/error';
 import { db } from '@/db';
-import { auth, chat, chatId, chats } from '@/states';
+import { auth, gameState } from '@/states';
 import validate from '@/utils/validate';
 import { sendMessage } from '@/utils/chat/message';
 
@@ -9,7 +9,7 @@ async function loadChats(chat_ids?: string[]) {
 	const user_id = auth.user?.id;
 	if (!user_id) return createError('no user found');
 
-	const setAll = chat_ids === undefined;
+	const setAll = !!chat_ids;
 
 	// fetch chat ids from profile if not provided
 	if (!chat_ids) {
@@ -33,7 +33,7 @@ async function loadChats(chat_ids?: string[]) {
 	{
 		const { data, error } = await db
 			.from('chats')
-			.select('*,chat_members(agree,profiles(*)),chat_messages(*)')
+			.select('*, chat_members(agree, user(*)), chat_messages(*)')
 			// .gt('chat_messages.created_at', 'now() - interval "1 days"')
 			.in('id', chat_ids)
 			.returns<Chatroom[]>();
@@ -56,18 +56,18 @@ async function loadChats(chat_ids?: string[]) {
 		// }
 
 		if (setAll) {
-			chats.set(data);
+			gameState.chats = data;
 		} else {
 			for (const d of data) {
-				const chat = get(chats).find((c) => c.id === d.id);
+				const chat = gameState.chats.find((c) => c.id === d.id);
 				if (chat) {
 					Object.assign(chat, d);
 				} else {
-					chats.set([...get(chats), d]);
+					gameState.chats.push(d);
+					// chats.set([...get(chats), d]);
 				}
 			}
 		}
-		chats.update((chats) => [...chats]);
 	}
 }
 
@@ -93,14 +93,14 @@ async function startChat(target_user_id: string, firstMessage: string) {
 		}
 
 		await loadChats([new_chat_id]);
-		chatId.set(new_chat_id);
+		gameState.chat_id = new_chat_id;
 		const result = await sendMessage(firstMessage);
 		if ('error' in result) return result;
 	}
 }
 
 async function agreeFriendShip() {
-	const chat_id = get(chat)?.id;
+	const { chat_id } = gameState;
 	const user_id = auth.user?.id;
 	if (!chat_id || !user_id) return createError('no chat or user found');
 
@@ -111,6 +111,14 @@ async function agreeFriendShip() {
 		.eq('user', user_id);
 
 	if (error) return { error };
+}
+
+function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
+	if (target === 'me') {
+		return chat.chat_members.find((m) => m.user.user === auth.user?.id);
+	} else {
+		return chat.chat_members.find((m) => m.user.user !== auth.user?.id);
+	}
 }
 
 function subscribeToAgree() {
@@ -132,4 +140,4 @@ function subscribeToAgree() {
 		.subscribe();
 }
 
-export { loadChats, startChat, agreeFriendShip, subscribeToAgree };
+export { loadChats, startChat, agreeFriendShip, subscribeToAgree, getMemberFromChat };

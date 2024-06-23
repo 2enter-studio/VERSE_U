@@ -33,25 +33,20 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 	return data;
 }
 
-async function assignMLTexts<T extends any[]>(
-	data: T,
-	column_names: string[] = ['name', 'description']
-) {
+async function assignMLTexts<T extends any[], P extends string[]>(data: T, column_names: P) {
 	const mlTexts = await getMLTexts(
 		data.map((d) => d.id),
 		column_names
 	);
-	if (mlTexts.length === 0) return data;
 
 	for (const d of data) {
 		for (const column_name of column_names) {
-			d[column_name] = mlTexts.find(
-				(m) => m.row_id === d.id && m.column_name === column_name
-			)?.value;
+			d[column_name] =
+				mlTexts.find((m) => m.row_id === d.id && m.column_name === column_name)?.value ?? '';
 		}
 	}
 
-	return data;
+	return data as (T[number] & Record<P[number], string>)[];
 }
 
 function getTextFromObj(obj: { [key in string]: any }[], column_name: string, id: string) {

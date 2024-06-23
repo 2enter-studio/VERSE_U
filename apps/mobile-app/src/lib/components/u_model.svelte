@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import type { CharacterAnimation } from '@/config';
 	import { DEFAULT_CAMERA_POS, FRAME_RATE } from '@/config';
-	import { wearings } from '@/states';
+	import { gameState } from '@/states';
 	import { getFileUrl } from '@/utils/storage';
 
 	type Props = {
@@ -98,7 +98,7 @@
 			}
 		}
 
-		for (const wearing of $wearings.filter((w) => wearingIds.includes(w.id))) {
+		for (const wearing of gameState.wearings.filter((w) => wearingIds.includes(w.id))) {
 			const { mesh, body_parts, id } = wearing;
 
 			for (const { value: body_part } of body_parts) {

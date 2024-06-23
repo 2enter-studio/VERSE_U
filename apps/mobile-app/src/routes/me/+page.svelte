@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { equippedWearings, wearings, wearingTypes, trip, tripStatus, general } from '@/states';
+	import { gameState, general } from '@/states';
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
@@ -10,11 +10,13 @@
 	import { uploadSelfie } from '@/utils/dress/selfie';
 	// import randomItem from 'random-item';
 
-	const expressions = $wearingTypes.filter((type) => type.is_expression).map((type) => type.id);
+	const expressions = gameState.wearingTypes
+		.filter((type) => type.is_expression)
+		.map((type) => type.id);
 
 	let animation = $state<CharacterAnimation>('idle');
 	let dressing = $state(false);
-	let selectedWearingType = $state($wearingTypes[0].id);
+	let selectedWearingType = $state(gameState.wearingTypes[0].id);
 	let selectedWearings: Record<string, string> = $state({});
 	let selfieUrl = $state('');
 
@@ -32,12 +34,12 @@
 
 	onMount(() => {
 		// init selectedWearings
-		for (const type of $wearingTypes) {
+		for (const type of gameState.wearingTypes) {
 			selectedWearings[type.id] =
-				$equippedWearings.find((w_id) => {
-					const w = $wearings.find((w) => w.id === w_id);
-					return w?.category === type.id;
-				}) || '';
+				gameState.equippedWearings.find(({ id }) => {
+					const w = gameState.wearings.find((w) => w.id === id);
+					return w?.category.id === type.id;
+				})?.id || '';
 		}
 
 		// const animationSwitcher = setInterval(() => {
@@ -50,7 +52,7 @@
 	});
 </script>
 
-<link rel="prefetch" href={getFileUrl('regions', `backgrounds/${$trip?.to}`)} />
+<link rel="prefetch" href={getFileUrl('regions', `backgrounds/${gameState.trip?.to}`)} />
 
 <div class="center-content fixed bottom-0 flex-row gap-3">
 	{#if !dressing}
@@ -64,8 +66,8 @@
 	{/if}
 </div>
 
-{#if $tripStatus.progress === 1}
-	{@const regionBgUrl = getFileUrl('regions', `backgrounds/${$trip?.to}`)}
+{#if gameState.tripStatus.progress === 1}
+	{@const regionBgUrl = getFileUrl('regions', `backgrounds/${gameState.trip?.to}`)}
 	<div
 		class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
 		style="background-image: url({regionBgUrl})"
