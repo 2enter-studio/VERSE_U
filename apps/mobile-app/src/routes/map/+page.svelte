@@ -3,7 +3,7 @@
 
 	import { MAP_SIZE } from '@/config';
 	import { trip, tripStatus, regions, peopleNearby, general } from '@/states';
-	import { getFileUrl } from '@/utils/storage/download';
+	import { getFileUrl } from '@/utils/storage';
 	import { secToMin } from '@/utils/time';
 	import { loadPeopleNearby, startNextTrip } from '@/utils/map';
 	import { getTextFromObj } from '@/utils/ml_text';

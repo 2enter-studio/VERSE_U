@@ -5,7 +5,7 @@
 	import type { CharacterAnimation } from '@/config';
 	import { DEFAULT_CAMERA_POS, FRAME_RATE } from '@/config';
 	import { wearings } from '@/states';
-	import { getFileUrl } from '@/utils/storage/download';
+	import { getFileUrl } from '@/utils/storage';
 
 	type Props = {
 		wearingIds: string[];
