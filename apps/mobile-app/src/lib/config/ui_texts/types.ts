@@ -20,7 +20,7 @@ const keys = [
 	'system',
 	'email',
 	'name',
-	'login',
+	'signin',
 	'signout',
 	'signup',
 	'password',

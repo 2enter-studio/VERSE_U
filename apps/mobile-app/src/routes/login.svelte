@@ -7,13 +7,13 @@
 	import validate from '@/utils/validate';
 	import { OAUTH_PROVIDERS } from '@/config';
 
-	type FormMode = 'login' | 'signup' | 'forgot_pwd' | 'change_pwd';
+	type FormMode = 'signin' | 'signup' | 'forgot_pwd' | 'change_pwd';
 	type InputType = 'email' | 'password' | 'confirm_password' | 'new_password';
 
-	let { formMode = 'login' }: { formMode?: FormMode } = $props();
+	let { formMode = 'signin' }: { formMode?: FormMode } = $props();
 
-	const submitMethods = {
-		login: pwdSignIn,
+	const submitMethods: Record<FormMode, Function> = {
+		signin: pwdSignIn,
 		signup: signUp,
 		change_pwd: changePwd,
 		forgot_pwd: forgotPwd
@@ -25,14 +25,14 @@
 	let pwdVisible = $state(false);
 	let email = $state(auth.user?.email || '');
 
-	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login', 'signup', 'forgot_pwd'] as const));
+	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin', 'signup', 'forgot_pwd'] as const));
 	const formChoices = $derived(
-		auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login'] as const)
+		auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin'] as const)
 	);
 
 	const submittable = $derived(
 		(pwd === pwdConfirm && validate.password(pwd) && formMode === 'signup') ||
-			(pwd.length > 0 && validate.email(email) && formMode === 'login') ||
+			(pwd.length > 0 && validate.email(email) && formMode === 'signin') ||
 			(pwdNew === pwdConfirm &&
 				validate.password(pwdNew) &&
 				pwdNew !== pwd &&
@@ -41,7 +41,7 @@
 	);
 
 	const formFields = $derived.by<InputType[]>(() => {
-		if (formMode === 'login') return ['email', 'password'] as const;
+		if (formMode === 'signin') return ['email', 'password'] as const;
 		else if (formMode === 'signup') return ['email', 'password', 'confirm_password'] as const;
 		else if (formMode === 'forgot_pwd') return ['email'] as const;
 		else if (formMode === 'change_pwd')
@@ -51,7 +51,7 @@
 
 	async function handleSubmit() {
 		let args: [string] | [string, string];
-		if (formMode === 'login') args = [email, pwd];
+		if (formMode === 'signin') args = [email, pwd];
 		else if (formMode === 'signup') args = [email, pwd];
 		else if (formMode === 'forgot_pwd') args = [email];
 		else if (formMode === 'change_pwd') args = [pwd, pwdNew];
