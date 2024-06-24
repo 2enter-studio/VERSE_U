@@ -1,5 +1,5 @@
 export * from './storage';
-export * from './ml_text';
+export * from './ml_texts';
 export * from './time';
 export * from './error';
 
