@@ -1,11 +1,11 @@
 import type { Tables } from '@repo/config/supatypes';
+
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { assignMLTexts, createError, validate } from '@/utils';
 
-async function loadProfile(user_id?: string) {
+async function profile(user_id?: string) {
 	if (!user_id) user_id = authState.user?.id;
-	// const user_id = get(user)?.id;
 	if (!user_id) return createError('No auth found');
 
 	const { data, error } = await db
@@ -23,13 +23,13 @@ async function loadProfile(user_id?: string) {
 	authState.profile = data;
 }
 
-async function loadRegions() {
+async function regions() {
 	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();
 	if (error) return { error };
 	gameState.regions = await assignMLTexts(data, ['name', 'description'] as const);
 }
 
-async function loadWearings() {
+async function wearings() {
 	const { data, error } = await db
 		.from('wearings')
 		.select('*, category(*), texture_types(*), body_parts(*)');
@@ -45,7 +45,7 @@ async function loadWearings() {
 	gameState.wearingTypes = await assignMLTexts(wearingTypes, ['name', 'description'] as const);
 }
 
-async function loadOwnedWearings() {
+async function ownedWearings() {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 	const { data, error } = await db
@@ -63,7 +63,7 @@ async function loadOwnedWearings() {
 	});
 }
 
-async function loadChats(chat_ids?: string[]) {
+async function chats(chat_ids?: string[]) {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 
@@ -92,7 +92,7 @@ async function loadChats(chat_ids?: string[]) {
 	}
 }
 
-async function loadTrip() {
+async function trip() {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 
@@ -107,7 +107,7 @@ async function loadTrip() {
 	gameState.trip = data;
 }
 
-async function loadPeopleNearBy() {
+async function peopleNearBy() {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 	if (!gameState.trip) return createError('NO_TRIP_FOUND');
@@ -131,12 +131,4 @@ async function loadPeopleNearBy() {
 	gameState.peopleNearBy = data.map((d) => d.user);
 }
 
-export {
-	loadProfile,
-	loadRegions,
-	loadWearings,
-	loadOwnedWearings,
-	loadChats,
-	loadPeopleNearBy,
-	loadTrip
-};
+export { profile, regions, wearings, ownedWearings, chats, peopleNearBy, trip };

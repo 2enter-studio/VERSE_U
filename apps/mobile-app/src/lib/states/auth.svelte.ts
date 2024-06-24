@@ -1,5 +1,5 @@
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { createError, loadProfile } from '@/utils';
+import { createError, load } from '@/utils';
 
 import { db } from '@/db';
 import type { Tables } from '@repo/config/supatypes';
@@ -53,7 +53,7 @@ function createAuth() {
 			// https://supabase.com/docs/reference/javascript/auth-onauthstatechange
 			setTimeout(async () => {
 				// Get the auth profile by auth id
-				await loadProfile(user_id);
+				await load.profile(user_id);
 			}, 0);
 		},
 		clear() {

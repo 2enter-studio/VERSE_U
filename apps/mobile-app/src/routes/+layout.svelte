@@ -9,15 +9,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { db } from '@/db';
-	import {
-		loadChats,
-		loadOwnedWearings,
-		loadPeopleNearBy,
-		loadRegions,
-		loadTrip,
-		loadWearings,
-		preferences
-	} from '@/utils';
+	import { load, preferences } from '@/utils';
 	import { authState, gameState, generalState } from '@/states';
 	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
@@ -33,7 +25,7 @@
 		generalState.locale = await preferences.locale.get();
 
 		if (authState.loggedIn) {
-			await loadRegions();
+			await load.regions();
 
 			if (!authState.profile && $page.url.pathname !== '/auth/create-profile') {
 				console.log('profile not found');
@@ -41,11 +33,11 @@
 			}
 
 			if (authState.profile) {
-				await loadTrip();
-				await loadPeopleNearBy();
-				await loadChats();
-				await loadWearings();
-				await loadOwnedWearings();
+				await load.trip();
+				await load.peopleNearBy();
+				await load.chats();
+				await load.wearings();
+				await load.ownedWearings();
 			}
 		}
 
