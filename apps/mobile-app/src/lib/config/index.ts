@@ -21,7 +21,7 @@ type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
-const DEFAULT_ROUTE = '/social';
+const DEFAULT_ROUTE = '/map';
 const DEFAULT_LOCALE = 'zh';
 const MAP_SIZE = 3200;
 const FRAME_RATE = 12;

@@ -11,16 +11,16 @@
 	import { db } from '@/db';
 	import {
 		loadChats,
+		loadOwnedWearings,
+		loadPeopleNearBy,
 		loadRegions,
 		loadTrip,
 		loadWearings,
-		loadPeopleNearBy,
-		loadOwnedWearings
-	} from '@/utils/load';
+		preferences
+	} from '@/utils';
 	import { auth, gameState, general } from '@/states';
 	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
-	import preferences from '@/utils/preferences';
 	// import { Notifications } from './index.js';
 
 	type Props = { children: Snippet };

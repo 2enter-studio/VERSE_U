@@ -6,7 +6,7 @@
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
-	import { getFileUrl } from '@/utils/storage';
+	import { getFileUrl } from '@/utils';
 	import { uploadSelfie } from '@/utils/dress/selfie';
 	// import randomItem from 'random-item';
 

@@ -1,4 +1,4 @@
-import { createError, handleEFResponse } from '@/utils/error';
+import { createError, handleEFResponse } from '@/utils';
 import { db } from '@/db';
 import { auth } from '@/states';
 

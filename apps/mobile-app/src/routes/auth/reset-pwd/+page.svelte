@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setPwd, signOut } from '@/utils/auth';
-	import validate from '@/utils/validate';
+	import { validate } from '@/utils';
 	import { DEFAULT_ROUTE } from '@/config';
 
 	let pwd = $state('');

@@ -2,8 +2,7 @@ import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 
 import { db } from '@/db';
 import { auth, gameState } from '@/states';
-import { createError } from '@/utils/error';
-import { getCurrentYearMonth } from '@/utils/time';
+import { createError, getCurrentYearMonth } from '@/utils';
 import { loadChats } from './chat_info';
 import type { Tables } from '@repo/config/supatypes';
 

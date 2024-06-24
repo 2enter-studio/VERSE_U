@@ -1,7 +1,7 @@
 import type { RealtimePostgresUpdatePayload as Payload } from '@supabase/supabase-js';
 
 import { db } from '@/db';
-import { createError } from '@/utils/error';
+import { createError } from '@/utils';
 import type { Tables } from '@repo/config/supatypes';
 import { gameState } from '@/states';
 

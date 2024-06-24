@@ -1,9 +1,7 @@
 import type { Tables } from '@repo/config/supatypes';
 import { db } from '@/db';
 import { auth, gameState } from '@/states';
-import { assignMLTexts } from '@/utils/ml_text';
-import { createError } from '@/utils/error';
-import validate from '@/utils/validate';
+import { assignMLTexts, createError, validate } from '@/utils';
 
 async function loadRegions() {
 	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();

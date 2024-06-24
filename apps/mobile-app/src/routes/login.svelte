@@ -4,7 +4,7 @@
 
 	import { auth, general } from '@/states';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
-	import validate from '@/utils/validate';
+	import { validate } from '@/utils';
 	import { OAUTH_PROVIDERS } from '@/config';
 
 	type FormMode = 'signin' | 'signup' | 'forgot_pwd' | 'change_pwd';

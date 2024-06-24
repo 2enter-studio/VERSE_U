@@ -7,7 +7,7 @@
 	import { Dialog } from '@/components';
 	import { auth, general } from '@/states';
 	import { modifyProfile, signOut } from '@/utils/auth';
-	import preferences from '@/utils/preferences';
+	import { preferences } from '@/utils';
 
 	import { LOCALES, UI_TEXTS } from '@/config';
 

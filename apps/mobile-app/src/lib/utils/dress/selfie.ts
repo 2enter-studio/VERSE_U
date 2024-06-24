@@ -2,7 +2,7 @@ import { decode } from 'base64-arraybuffer';
 import { auth } from '@/states';
 import { db } from '@/db';
 
-// import { handleEFResponse } from '@/utils/error';
+// import { handleEFResponse } from '@/utils';
 
 async function uploadSelfie(image: string) {
 	const user_id = auth.user?.id;

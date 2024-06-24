@@ -1,7 +1,6 @@
-import { createError } from '@/utils/error';
+import { createError, validate } from '@/utils';
 import { db } from '@/db';
 import { auth, gameState } from '@/states';
-import validate from '@/utils/validate';
 import { sendMessage } from '@/utils/chat/message';
 
 async function loadChats(chat_ids?: string[]) {

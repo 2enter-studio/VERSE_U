@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { auth } from '@/states';
-import { createError } from '@/utils/error';
+import { createError } from '@/utils';
 
 async function updateActiveStatus() {
 	const currentUser = auth.user;

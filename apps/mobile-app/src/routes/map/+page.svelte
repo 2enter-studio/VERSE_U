@@ -3,11 +3,8 @@
 
 	import { MAP_SIZE } from '@/config';
 	import { gameState, general } from '@/states';
-	import { getFileUrl } from '@/utils/storage';
-	import { secToMin } from '@/utils/time';
-	import { startNextTrip } from '@/utils/map';
-	import { getTextFromObj } from '@/utils/ml_text';
-	import { loadPeopleNearBy } from '@/utils/load';
+	import { startNextTrip } from '$routes/map';
+	import { getFileUrl, getTextFromObj, loadPeopleNearBy, secToMin } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 
@@ -18,23 +15,17 @@
 	let dom = $state<HTMLElement>();
 	let width = $derived(dom?.clientWidth || 0);
 	let height = $derived(dom?.clientHeight || 0);
-	const previousRegion = $derived(
-		gameState.regions.find((r) => r.id === gameState.trip?.from) as Region
-	);
-	const targetRegion = $derived(
-		gameState.regions.find((r) => r.id === gameState.trip?.to) as Region
-	);
-	const currentPos = $derived({
-		x:
-			(previousRegion.x + (targetRegion.x - previousRegion.x) * gameState.tripStatus.progress) *
-			MAP_SIZE,
-		y:
-			(previousRegion.y + (targetRegion.y - previousRegion.y) * gameState.tripStatus.progress) *
-			MAP_SIZE
+
+	const from = $derived(gameState.regions.find((r) => r.id === gameState.trip?.from) as Region);
+	const to = $derived(gameState.regions.find((r) => r.id === gameState.trip?.to) as Region);
+
+	const position = $derived({
+		x: (from.x + (to.x - from.x) * gameState.tripStatus.progress) * MAP_SIZE,
+		y: (from.y + (to.y - from.y) * gameState.tripStatus.progress) * MAP_SIZE
 	});
-	const currentOrigin = $derived({
-		x: currentPos.x - width / 2,
-		y: currentPos.y - height / 2
+	const origin = $derived({
+		x: position.x - width / 2,
+		y: position.y - height / 2
 	});
 </script>
 
@@ -47,7 +38,7 @@
 	class="absolute z-[-10] h-screen w-screen bg-no-repeat transition-all duration-1000 ease-linear"
 	style="
 		background-image: url('/map.webp');
-		background-position: -{currentPos.x}px -{currentPos.y}px;
+		background-position: -{position.x}px -{position.y}px;
 	"
 ></div>
 
@@ -94,8 +85,8 @@
 
 	{#each gameState.regions as region}
 		{@const fixedPos = {
-			x: region.x * MAP_SIZE - currentOrigin.x - width / 10,
-			y: region.y * MAP_SIZE - currentOrigin.y - height / 8
+			x: region.x * MAP_SIZE - origin.x - width / 10,
+			y: region.y * MAP_SIZE - origin.y - height / 8
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
 			<div

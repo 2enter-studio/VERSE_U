@@ -2,7 +2,7 @@ import { email } from './email';
 import { uuid } from './uuid';
 import { password } from './password';
 
-export default {
+export {
 	email,
 	uuid,
 	password

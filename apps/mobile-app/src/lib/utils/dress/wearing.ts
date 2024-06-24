@@ -1,7 +1,6 @@
 import { db } from '@/db';
 import { auth, gameState } from '@/states';
-import { createError } from '@/utils/error';
-import { loadOwnedWearings } from '@/utils/load';
+import { createError, loadOwnedWearings } from '@/utils';
 
 async function buyWearing(wearing_id: string) {
 	const user_id = auth.user?.id;

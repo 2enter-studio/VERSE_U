@@ -2,10 +2,10 @@
 	import * as THREE from 'three';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { onMount } from 'svelte';
-	import type { CharacterAnimation } from '@/config';
-	import { DEFAULT_CAMERA_POS, FRAME_RATE } from '@/config';
+
+	import { DEFAULT_CAMERA_POS, FRAME_RATE, type CharacterAnimation } from '@/config';
 	import { gameState } from '@/states';
-	import { getFileUrl } from '@/utils/storage';
+	import { getFileUrl } from '@/utils';
 
 	type Props = {
 		wearingIds: string[];

@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { gameState } from '@/states';
-import { handleEFResponse } from '@/utils/error';
+import { handleEFResponse } from '@/utils';
 
 async function startNextTrip(option: 0 | 1) {
 	const { data, error } = await db.functions.invoke('set-trip', {

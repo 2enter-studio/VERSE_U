@@ -1,4 +1,4 @@
-import validate from '@/utils/validate';
+import { validate } from '@/utils';
 import { db } from '@/db';
 import { auth } from '@/states';
 import { createError } from '../error';
