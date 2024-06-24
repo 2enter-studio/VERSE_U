@@ -1,4 +1,4 @@
-import UI_TEXTS from './ui_texts';
+import * as UI_TEXTS from './ui_texts';
 
 const LOCALES = ['en', 'zh'] as const;
 // const OAUTH_PROVIDERS = ['facebook', 'google', 'apple'] as const;
@@ -21,9 +21,8 @@ type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
 
-const DEFAULT_ROUTE = '/me';
-const MIN_STAY_TIME = 1000 * 3;
-const MAX_STAY_TIME = 1000 * 60 * 60 * 8;
+const DEFAULT_ROUTE = '/map';
+const DEFAULT_LOCALE = 'zh';
 const MAP_SIZE = 3200;
 const FRAME_RATE = 12;
 const DEFAULT_CAMERA_POS = [0, 2.0, 2.0] as const;
@@ -36,8 +35,7 @@ export {
 	BUCKET_NAMES,
 	CHARACTER_ANIMATIONS,
 	DEFAULT_ROUTE,
-	MIN_STAY_TIME,
-	MAX_STAY_TIME,
+	DEFAULT_LOCALE,
 	MAP_SIZE,
 	FRAME_RATE,
 	DEFAULT_CAMERA_POS,

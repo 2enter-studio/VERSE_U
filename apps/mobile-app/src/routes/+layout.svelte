@@ -9,33 +9,35 @@
 	import Icon from '@iconify/svelte';
 
 	import { db } from '@/db';
-	import { loadPeopleNearby, loadRegions, loadTrip } from '@/utils/map';
-	import { loadChats } from '@/utils/chat';
-	import { loadWearings } from '@/utils/dress/wearing';
-	import { auth, platform, showMenu } from '@/stores';
-	import { Menu, Login, MyProfile, Error, SideMenu } from './';
+	import { load, preferences } from '@/utils';
+	import { authState, gameState, generalState } from '@/states';
+	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	// import { Notifications } from './index.js';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
+	$inspect(gameState.wearingTypes);
 
 	let loaded = $state(false);
 
 	async function init() {
-		if (auth.loggedIn) {
-			await loadRegions();
+		generalState.locale = await preferences.locale.get();
 
-			if (!auth.profile && $page.url.pathname !== '/auth/create-profile') {
+		if (authState.loggedIn) {
+			await load.regions();
+
+			if (!authState.profile && $page.url.pathname !== '/auth/create-profile') {
 				console.log('profile not found');
 				window.location.assign('/auth/create-profile');
 			}
 
-			if (auth.profile) {
-				await loadTrip();
-				await loadPeopleNearby();
-				await loadChats();
-				await loadWearings();
+			if (authState.profile) {
+				await load.trip();
+				await load.peopleNearBy();
+				await load.chats();
+				await load.wearings();
+				await load.ownedWearings();
 			}
 		}
 
@@ -45,14 +47,14 @@
 	}
 
 	onMount(async () => {
-		if ($platform !== 'web') {
+		if (generalState.platform !== 'web') {
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
 		}
 
-		[loaded, $showMenu] = [false, false];
+		[loaded, generalState.showMenu] = [false, false];
 		await init();
-		[loaded, $showMenu] = [true, true];
+		[loaded, generalState.showMenu] = [true, true];
 
 		const url = $page.url.href;
 		const Url = new URL(url);
@@ -92,7 +94,7 @@
 <!--<div class="fixed top-20">{$page.url.pathname}</div>-->
 
 <div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-	{#if auth.loggedIn}
+	{#if authState.loggedIn}
 		{#if loaded}
 			<div class="flex w-full">
 				<MyProfile
@@ -109,7 +111,7 @@
 			</div>
 		{/if}
 
-		{#if $showMenu}
+		{#if generalState.showMenu}
 			<Menu />
 			<SideMenu />
 		{/if}

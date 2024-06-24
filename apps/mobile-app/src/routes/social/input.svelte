@@ -1,25 +1,26 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
-	import { sendMessage } from '@/utils/chat';
-	import { processing } from '@/stores';
+	import { sendMessage } from './utils';
+	import { generalState } from '@/states';
 
-	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } = $props();
+	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } =
+		$props();
 
 	let content = $state('');
 	let textAreaDom: HTMLTextAreaElement;
 
-	const submittable = $derived(!$processing && content.trim() !== '');
+	const submittable = $derived(!generalState.processing && content.trim() !== '');
 
 	async function send() {
-		$processing = true;
+		generalState.processing = true;
 		const result = await sendMessage(content);
 		if ('error' in result) {
 			console.error(result.error);
 		} else {
 			content = '';
 		}
-		$processing = false;
+		generalState.processing = false;
 		setHeight(true);
 		onsend();
 	}
@@ -39,7 +40,10 @@
 	}
 </script>
 
-<div bind:this={dom} class="fixed bottom-0 left-0 flex h-fit w-screen flex-row items-end bg-black px-1 pb-3">
+<div
+	bind:this={dom}
+	class="fixed bottom-0 left-0 flex h-fit w-screen flex-row items-end bg-black px-1 pb-3"
+>
 	<textarea
 		class="spacing-1 my-1 w-[90%] resize-y rounded-xl bg-white/20 p-2 text-white"
 		rows="1"
@@ -48,7 +52,10 @@
 		{oninput}
 	></textarea>
 	<div class="mb-2 flex w-[10%] justify-center">
-		<button onclick={send} class={submittable ? 'text-amber-300' : 'pointer-events-none text-white/30'}>
+		<button
+			onclick={send}
+			class={submittable ? 'text-amber-300' : 'pointer-events-none text-white/30'}
+		>
 			<Icon icon="fluent:send-28-filled" class="text-2xl text-inherit" />
 		</button>
 	</div>

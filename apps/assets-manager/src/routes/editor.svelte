@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
-	import type { Tables } from '@repo/config/supatypes';
+	import type { Tables } from '@repo/shared/supatypes';
 	import { type TableName, TABLES_INFO } from '@/config';
 
-	import { typeOverRide } from '@repo/utils/types';
+	import { typeOverRide } from '@repo/shared/utils';
 
 	import Forms from '@/components/form';
 	import { SubmitBtn } from '@/components';
@@ -72,11 +72,7 @@
 								class="bg-gray-500 pointer-events-none text-sm"
 							/>
 						{:else}
-							<svelte:component
-								this={form}
-								bind:data={data[name]}
-								{name}
-							/>
+							<svelte:component this={form} bind:data={data[name]} {name} />
 						{/if}
 					{:else}
 						<h2 class="text-bold bg-cyan-600 px-1">{name}</h2>

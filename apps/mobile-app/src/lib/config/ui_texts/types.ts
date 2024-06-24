@@ -20,7 +20,7 @@ const keys = [
 	'system',
 	'email',
 	'name',
-	'login',
+	'signin',
 	'signout',
 	'signup',
 	'password',
@@ -33,5 +33,9 @@ const keys = [
 	// ...errorKeys
 ] as const;
 
-export type ErrorUITextTable = Record<(typeof errorKeys)[number], string>;
-export type UITextTable = Record<(typeof keys)[number], string>;
+type ErrorCode = (typeof errorKeys)[number];
+type TextCode = (typeof keys)[number];
+type ErrorUITextTable = Record<ErrorCode, string>;
+type UITextTable = Record<TextCode, string>;
+
+export type { ErrorCode, TextCode, ErrorUITextTable, UITextTable };

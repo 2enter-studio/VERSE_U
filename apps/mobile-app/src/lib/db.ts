@@ -5,7 +5,7 @@ import {
 	SUPABASE_URL,
 	DEVELOPING
 } from '$env/static/public';
-import { makeSupaClient } from '@repo/config/utils';
+import { makeSupaClient } from '@repo/shared/utils';
 
 function getEnv(key: string) {
 	const ENVS = {

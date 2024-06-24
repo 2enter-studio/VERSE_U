@@ -1,25 +1,25 @@
 <script lang="ts">
-	import { notifications } from '@/stores';
-	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { generalState } from '@/states';
+
 	onMount(() => {
 		setInterval(() => {
-			$notifications = [...$notifications, `${~~(Math.random() * 1000)}`];
+			generalState.notifications = [...generalState.notifications, `${~~(Math.random() * 1000)}`];
 		}, 3000);
 
 		setInterval(() => {
-			// $notifications = $notifications.slice(1);
-			$notifications.shift();
-			$notifications = $notifications;
+			// general.notifications = general.notifications.slice(1);
+			generalState.notifications.shift();
+			generalState.notifications = generalState.notifications;
 		}, 5000);
 	});
 	$effect(() => {
-		console.log($notifications);
+		console.log(generalState.notifications);
 	});
 </script>
 
 <div class="flex w-[20vw] flex-col gap-1 transition-all">
-	{#each $notifications.reverse() as notification}
+	{#each generalState.notifications.reverse() as notification}
 		<div class="rounded-sm bg-white px-1 text-black transition-all duration-300">
 			{notification}
 		</div>

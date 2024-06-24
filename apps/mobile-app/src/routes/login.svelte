@@ -2,18 +2,18 @@
 	import Icon from '@iconify/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { errorMessage, uiTexts, auth } from '@/stores';
-	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
-	import validate from '@/utils/validate';
+	import { authState, generalState } from '@/states';
+	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
+	import { validate } from '@/utils';
 	import { OAUTH_PROVIDERS } from '@/config';
 
-	type FormMode = 'login' | 'signup' | 'forgot_pwd' | 'change_pwd';
+	type FormMode = 'signin' | 'signup' | 'forgot_pwd' | 'change_pwd';
 	type InputType = 'email' | 'password' | 'confirm_password' | 'new_password';
 
-	let { formMode = 'login' }: { formMode?: FormMode } = $props();
+	let { formMode = 'signin' }: { formMode?: FormMode } = $props();
 
-	const submitMethods = {
-		login: pwdSignIn,
+	const submitMethods: Record<FormMode, Function> = {
+		signin: pwdSignIn,
 		signup: signUp,
 		change_pwd: changePwd,
 		forgot_pwd: forgotPwd
@@ -23,16 +23,16 @@
 	let pwdConfirm = $state('');
 	let pwdNew = $state('');
 	let pwdVisible = $state(false);
-	let email = $state(auth.user?.email || '');
+	let email = $state(authState.user?.email || '');
 
-	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login', 'signup', 'forgot_pwd'] as const));
+	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin', 'signup', 'forgot_pwd'] as const));
 	const formChoices = $derived(
-		auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['login'] as const)
+		authState.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin'] as const)
 	);
 
 	const submittable = $derived(
 		(pwd === pwdConfirm && validate.password(pwd) && formMode === 'signup') ||
-			(pwd.length > 0 && validate.email(email) && formMode === 'login') ||
+			(pwd.length > 0 && validate.email(email) && formMode === 'signin') ||
 			(pwdNew === pwdConfirm &&
 				validate.password(pwdNew) &&
 				pwdNew !== pwd &&
@@ -41,7 +41,7 @@
 	);
 
 	const formFields = $derived.by<InputType[]>(() => {
-		if (formMode === 'login') return ['email', 'password'] as const;
+		if (formMode === 'signin') return ['email', 'password'] as const;
 		else if (formMode === 'signup') return ['email', 'password', 'confirm_password'] as const;
 		else if (formMode === 'forgot_pwd') return ['email'] as const;
 		else if (formMode === 'change_pwd')
@@ -51,7 +51,7 @@
 
 	async function handleSubmit() {
 		let args: [string] | [string, string];
-		if (formMode === 'login') args = [email, pwd];
+		if (formMode === 'signin') args = [email, pwd];
 		else if (formMode === 'signup') args = [email, pwd];
 		else if (formMode === 'forgot_pwd') args = [email];
 		else if (formMode === 'change_pwd') args = [pwd, pwdNew];
@@ -60,7 +60,7 @@
 		const res = await submitMethods[formMode](...(args as [string, string]));
 		if (res?.error) {
 			console.error(res.error);
-			$errorMessage = res.error.message;
+			generalState.errorMessage = res.error.message;
 			return;
 		}
 		window.location.assign('/map');
@@ -72,10 +72,10 @@
 
 <div class="center-content w-[60vw] flex-col gap-1">
 	<h1 class="mb-3 border-black text-2xl font-extrabold text-black">
-		{#if auth.loggedIn}
+		{#if authState.loggedIn}
 			Account Center
 		{:else}
-			{$uiTexts.welcome}
+			{generalState.uiTexts.welcome}
 		{/if}
 	</h1>
 
@@ -90,7 +90,7 @@
 					? 'bg-gradient-to-l from-white/80 to-white text-black'
 					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-xs transition-colors duration-200"
 			>
-				{$uiTexts[choice]}
+				{generalState.uiTexts[choice]}
 			</label>
 		{/each}
 	</div>
@@ -103,7 +103,7 @@
 			<div transition:slide={{ duration: 500 }} class="flex w-full flex-col">
 				<div class="flex w-full items-end text-left">
 					<span class="py-0.5 pl-0.5">
-						{$uiTexts[field]}
+						{generalState.uiTexts[field]}
 					</span>
 				</div>
 				{#if field === 'email'}
@@ -112,7 +112,7 @@
 						type="email"
 						class={inputClasses}
 						bind:value={email}
-						readonly={auth.loggedIn}
+						readonly={authState.loggedIn}
 						required
 					/>
 				{/if}
@@ -168,7 +168,7 @@
 			</div>
 		</div>
 	</form>
-	{#if !auth.loggedIn && OAUTH_PROVIDERS.length > 0}
+	{#if !authState.loggedIn && OAUTH_PROVIDERS.length > 0}
 		<div
 			class="mt-2 flex flex-row justify-around gap-5 rounded-full bg-red-500 p-1 shadow-inner shadow-red-800/80"
 		>

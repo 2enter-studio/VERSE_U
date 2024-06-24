@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import { makeSupaClient } from '@repo/config/utils';
-import type { Tables } from '@repo/config/supatypes';
+import { makeSupaClient } from '@repo/shared/utils';
+import type { Tables } from '@repo/shared/supatypes';
 import { type BucketName, TABLE_NAMES, type TableName } from '@/config';
 
 const admin = makeSupaClient('admin');

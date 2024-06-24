@@ -1,0 +1,17 @@
+{
+  "name": "@repo/shared",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./config": "./supabase/functions/config.ts",
+    "./supatypes": "./supabase/functions/types.ts",
+    "./utils": "./supabase/functions/_shared/utils/index.ts"
+  }
+}

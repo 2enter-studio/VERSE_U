@@ -26,6 +26,6 @@ function makePreference<T extends string>(key: string, defaultValue: T) {
 	};
 }
 
-const locale = makePreference<Locale>('locale', 'zh');
+const locale= makePreference<Locale>('locale', 'zh')
 
-export default { locale };
+export { locale };

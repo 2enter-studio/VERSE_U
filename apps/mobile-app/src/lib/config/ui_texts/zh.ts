@@ -13,7 +13,7 @@ const table: UITextTable = {
 	system: '系統',
 	email: 'email',
 	name: '名稱',
-	login: '登入',
+	signin: '登入',
 	signout: '登出',
 	signup: '註冊',
 	password: '密碼',
@@ -25,4 +25,4 @@ const table: UITextTable = {
 	where_are_you_going: '去哪裡?'
 };
 
-export default table;
+export { table as zh };

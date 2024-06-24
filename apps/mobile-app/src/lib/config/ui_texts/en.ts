@@ -13,7 +13,7 @@ const table: UITextTable = {
 	system: 'System',
 	email: 'email',
 	name: 'Name',
-	login: 'Login',
+	signin: 'Login',
 	signout: 'SignOut',
 	signup: 'Sign up',
 	password: 'Password',
@@ -28,4 +28,4 @@ const table: UITextTable = {
 	// ERROR_INVALID_PASSWORD: 'Invalid password'
 };
 
-export default table;
+export { table as en };

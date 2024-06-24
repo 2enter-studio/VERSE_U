@@ -2,10 +2,10 @@
 	import * as THREE from 'three';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { onMount } from 'svelte';
-	import type { CharacterAnimation } from '@/config';
-	import { FRAME_RATE, DEFAULT_CAMERA_POS } from '@/config';
-	import { wearings } from '@/stores';
-	import { getFileUrl } from '@/utils/storage/download';
+
+	import { DEFAULT_CAMERA_POS, FRAME_RATE, type CharacterAnimation } from '@/config';
+	import { gameState } from '@/states';
+	import { getFileUrl } from '@/utils';
 
 	type Props = {
 		wearingIds: string[];
@@ -98,7 +98,7 @@
 			}
 		}
 
-		for (const wearing of $wearings.filter((w) => wearingIds.includes(w.id))) {
+		for (const wearing of gameState.wearings.filter((w) => wearingIds.includes(w.id))) {
 			const { mesh, body_parts, id } = wearing;
 
 			for (const { value: body_part } of body_parts) {

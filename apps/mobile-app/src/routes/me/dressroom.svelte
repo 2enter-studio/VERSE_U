@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { wearings, wearingTypes, ownedWearings, showMenu, errorMessage } from '@/stores';
-	import { buyWearing, equipWearings } from '@/utils/dress/wearing';
+	import { generalState, gameState } from '@/states';
+	import { buyWearing, equipWearings } from './utils';
 	import { Drawer } from '@/components/index.js';
 
 	type Props = {
@@ -12,46 +12,71 @@
 		selectedWearingType: string;
 	};
 
-	let { selectedWearings = $bindable(), open = $bindable(), selectedWearingType = $bindable() }: Props = $props();
-	// let selectedType = $state(randomItem($wearingTypes).id);
+	let {
+		open = $bindable(),
+		selectedWearings = $bindable(),
+		selectedWearingType = $bindable()
+	}: Props = $props();
+	// let selectedType = $state(randomItem(gameState.wearingTypes).id);
 	let initSelectedWearings = $state({ ...selectedWearings });
 
-	const unSaved = $derived(JSON.stringify(selectedWearings) !== JSON.stringify(initSelectedWearings));
-	const filteredSelectedWearings = $derived(Object.values(selectedWearings).filter((w) => w !== ''));
+	const unSaved = $derived(
+		JSON.stringify(selectedWearings) !== JSON.stringify(initSelectedWearings)
+	);
+	const filteredSelectedWearings = $derived(
+		Object.values(selectedWearings).filter((w) => w !== '')
+	);
 
 	onMount(() => {
-		$showMenu = false;
+		generalState.showMenu = false;
 
 		return () => {
 			selectedWearings = { ...initSelectedWearings };
-			selectedWearingType = $wearingTypes[0].id;
-			$showMenu = true;
+			selectedWearingType = gameState.wearingTypes[0].id;
+			generalState.showMenu = true;
 		};
 	});
 </script>
 
 <Drawer bind:open class="w-screen gap-2 bg-black p-1">
-	{#each $wearingTypes as wearingType}
+	{#each gameState.wearingTypes as wearingType}
 		{@const typeSelected = wearingType.id === selectedWearingType}
 		<div class="z-10 flex w-full flex-row justify-evenly {typeSelected ? '' : 'hidden'}">
-			<input id="{wearingType.id}-none" type="radio" value="" bind:group={selectedWearings[wearingType.id]} hidden />
+			<input
+				id="{wearingType.id}-none"
+				type="radio"
+				value=""
+				bind:group={selectedWearings[wearingType.id]}
+				hidden
+			/>
 			<label for="{wearingType.id}-none" class="flex items-center">
-				<Icon icon="ion:ban-sharp" class="{selectedWearings[wearingType.id] === '' ? 'text-red-500' : 'text-white'} " />
+				<Icon
+					icon="ion:ban-sharp"
+					class="{selectedWearings[wearingType.id] === '' ? 'text-red-500' : 'text-white'} "
+				/>
 			</label>
 
-			{#each $wearings.filter((w) => w.category === wearingType.id) as wearing}
+			{#each gameState.wearings.filter((w) => w.category.id === wearingType.id) as wearing}
 				{@const selected = selectedWearings[wearingType.id] === wearing.id}
-				{@const owned = $ownedWearings.some((w) => w.wearing === wearing.id)}
+				{@const owned = gameState.ownedWearings.some((w) => w.id === wearing.id)}
 				{#if owned}
-					<input id={wearing.id} type="radio" value={wearing.id} bind:group={selectedWearings[wearingType.id]} hidden />
-					<label class="bg-black text-white {selected ? 'bg-red-300' : ''}" for={wearing.id}>{wearing.name}</label>
+					<input
+						id={wearing.id}
+						type="radio"
+						value={wearing.id}
+						bind:group={selectedWearings[wearingType.id]}
+						hidden
+					/>
+					<label class="bg-black text-white {selected ? 'bg-red-300' : ''}" for={wearing.id}
+						>{wearing.name}</label
+					>
 				{:else}
 					<div class="flex flex-col items-center">
 						<span class="bg-gray-300 text-cyan-500">{wearing.name}</span>
 						<button
 							onclick={async () => {
 								const res = await buyWearing(wearing.id);
-								if (res?.error) $errorMessage = res.error.message;
+								if (res?.error) generalState.errorMessage = res.error.message;
 							}}
 						>
 							<Icon icon="fa6-solid:cart-plus" />
@@ -63,10 +88,18 @@
 	{/each}
 
 	<div class="flex w-full flex-row justify-evenly">
-		{#each $wearingTypes as wearingType}
+		{#each gameState.wearingTypes as wearingType}
 			{@const typeSelected = wearingType.id === selectedWearingType}
-			<input id={wearingType.id} value={wearingType.id} type="radio" bind:group={selectedWearingType} hidden />
-			<label for={wearingType.id} class="px-1 {typeSelected ? 'bg-white text-black' : ''}">{wearingType.name}</label>
+			<input
+				id={wearingType.id}
+				value={wearingType.id}
+				type="radio"
+				bind:group={selectedWearingType}
+				hidden
+			/>
+			<label for={wearingType.id} class="px-1 {typeSelected ? 'bg-white text-black' : ''}"
+				>{wearingType.name}</label
+			>
 		{/each}
 	</div>
 

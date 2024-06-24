@@ -2,9 +2,9 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
-	import { agreeFriendShip } from '@/utils/chat';
+	import { agreeFriendShip, getMemberFromChat } from './utils';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { auth, chat, chatId, showMenu, getMemberFromChat, errorMessage } from '@/stores';
+	import { authState, generalState, gameState } from '@/states';
 	import { Avatar } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
@@ -13,16 +13,16 @@
 	const inputHeight = $derived(chatInput?.clientHeight ?? 0);
 
 	onMount(() => {
-		if (!$chat?.id || !auth.user?.id) return;
+		if (!gameState.chat_id || !authState.user?.id) return;
 		onsend();
-		$showMenu = false;
+		generalState.showMenu = false;
 		return () => {
-			$showMenu = true;
+			generalState.showMenu = true;
 		};
 	});
 
 	$effect(() => {
-		if ($chat?.chat_messages) onsend();
+		if (gameState.chat?.chat_messages) onsend();
 	});
 
 	function onsend() {
@@ -33,15 +33,15 @@
 	}
 </script>
 
-{#if $chat}
-	{@const person = getMemberFromChat($chat)}
-	{@const me = getMemberFromChat($chat, 'me')}
+{#if gameState.chat}
+	{@const person = getMemberFromChat(gameState.chat)}
+	{@const me = getMemberFromChat(gameState.chat, 'me')}
 	<div class="fixed flex h-12 w-full gap-1 bg-black px-1 py-2 text-2xl">
-		<button onclick={() => ($chatId = null)}>
+		<button onclick={() => (gameState.chat_id = null)}>
 			<Icon icon="mdi:arrow-back" />
 		</button>
 		<Avatar profile={person?.profiles} class="size-8" />
-		{#if $chat.chat_messages.some((m) => m.sender === auth.user?.id) && $chat.chat_messages.some((m) => m.sender === person?.profiles?.user) && !me?.agree}
+		{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
 			<div class="center-content">
 				<span class="text-xs">add to friends?</span>
 				<button
@@ -49,7 +49,7 @@
 					onclick={async () => {
 						const result = await agreeFriendShip();
 						if (result?.error) {
-							$errorMessage = result.error.message;
+							generalState.errorMessage = result.error.message;
 							console.error(result.error);
 						} else console.log('yeah!');
 					}}
@@ -67,8 +67,8 @@
 		"
 	>
 		<div class="flex h-fit w-full flex-col justify-end px-1">
-			{#if $chat.chat_messages.length > 0}
-				{#each $chat.chat_messages as message}
+			{#if gameState.chat.chat_messages.length > 0}
+				{#each gameState.chat.chat_messages as message}
 					<ChatMessageBubble {message} />
 				{/each}
 			{/if}
