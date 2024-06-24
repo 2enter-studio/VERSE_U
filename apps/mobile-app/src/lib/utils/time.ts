@@ -7,4 +7,5 @@ function secToMin(milliSec: number): string {
 function getCurrentYearMonth() {
 	return moment().utc().format('YYYY_MM');
 }
+
 export { secToMin, getCurrentYearMonth };

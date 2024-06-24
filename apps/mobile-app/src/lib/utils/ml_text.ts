@@ -1,23 +1,6 @@
 import { db } from '@/db';
 import { generalState } from '@/states';
 
-async function getMLText(row_id: string, column_name: string) {
-	const { data, error } = await db
-		.from('ml_texts')
-		.select('value')
-		.eq('row_id', row_id)
-		.eq('column_name', column_name)
-		.eq('locale', generalState.locale)
-		.returns<{ value: string }[]>()
-		.single();
-
-	if (error) {
-		// console.error(error.message);
-		return '';
-	}
-	return data.value;
-}
-
 async function getMLTexts(row_ids: string[], column_names: string[]) {
 	const { data, error } = await db
 		.from('ml_texts')
@@ -55,4 +38,4 @@ function getTextFromObj(obj: Record<string, any>[], column_name: string, id: str
 	return obj.find((o) => o.id === id)?.[column_name] ?? '';
 }
 
-export { getMLText, getMLTexts, assignMLTexts, getTextFromObj };
+export { assignMLTexts, getTextFromObj };
