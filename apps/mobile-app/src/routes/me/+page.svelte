@@ -7,7 +7,7 @@
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
 	import { getFileUrl } from '@/utils';
-	import { uploadSelfie } from '@/utils/dress/selfie';
+	import { uploadSelfie } from '$routes/me/utils';
 	// import randomItem from 'random-item';
 
 	const expressions = gameState.wearingTypes

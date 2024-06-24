@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { generalState, gameState } from '@/states';
-	import { buyWearing, equipWearings } from '@/utils/dress/wearing';
+	import { buyWearing, equipWearings } from './utils';
 	import { Drawer } from '@/components/index.js';
 
 	type Props = {

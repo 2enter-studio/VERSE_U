@@ -1,7 +1,6 @@
-import { validate } from '@/utils';
 import { db } from '@/db';
 import { authState } from '@/states';
-import { createError } from '../error';
+import { validate, createError } from '@/utils';
 
 // Send a password reset email to the given email address
 async function forgotPwd(email: string) {

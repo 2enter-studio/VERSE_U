@@ -1,9 +1,4 @@
 import { db } from '@/db';
-import { authState } from '@/states';
-
-function clearStore() {
-	authState.clear();
-}
 
 async function signOut() {
 	const { error } = await db.auth.signOut();
@@ -12,4 +7,4 @@ async function signOut() {
 	// localStorage.removeItem(`sb-${supaId}-auth-token`);
 }
 
-export { signOut, clearStore };
+export { signOut };

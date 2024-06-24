@@ -1,9 +1,10 @@
+import { get } from 'svelte/store';
+import { page } from '$app/stores';
+
 import { db } from '@/db';
 import type { OAuthProvider } from '@/config';
 import { generalState } from '@/states';
 import { createError, validate } from '@/utils';
-import { get } from 'svelte/store';
-import { page } from '$app/stores';
 
 async function providerSignIn(provider: OAuthProvider) {
 	const options = {

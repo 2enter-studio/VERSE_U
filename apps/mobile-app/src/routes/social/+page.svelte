@@ -3,8 +3,8 @@
 	import Icon from '@iconify/svelte';
 
 	import { db } from '@/db';
-	import { subscribeToRegion } from '@/utils/map';
-	import { startChat, subscribeToAgree, subscribeToMessages } from '@/utils/chat';
+	import { subscribeToRegion } from '$routes/map/utils';
+	import { startChat, subscribeToAgree, subscribeToMessages } from './utils';
 
 	import { gameState, generalState } from '@/states';
 	import { Chatroom, ChatList, Story } from './';

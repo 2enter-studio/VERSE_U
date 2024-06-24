@@ -2,11 +2,10 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
-	import { agreeFriendShip } from '@/utils/chat';
+	import { agreeFriendShip, getMemberFromChat } from './utils';
 	import { ChatMessageBubble, ChatInput } from './';
 	import { authState, generalState, gameState } from '@/states';
 	import { Avatar } from '@/components';
-	import { getMemberFromChat } from '@/utils/chat';
 
 	let chatInput = $state<HTMLElement>();
 	let messagePool = $state<HTMLDivElement>();

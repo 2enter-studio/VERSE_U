@@ -1,7 +1,7 @@
 import { createError, validate } from '@/utils';
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
-import { sendMessage } from '@/utils/chat/message';
+import { sendMessage } from './message';
 
 async function loadChats(chat_ids?: string[]) {
 	const user_id = authState.user?.id;

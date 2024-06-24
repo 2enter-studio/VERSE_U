@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 
 	import { authState, generalState } from '@/states';
-	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '@/utils/auth';
+	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
 	import { validate } from '@/utils';
 	import { OAUTH_PROVIDERS } from '@/config';
 

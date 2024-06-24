@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { gameState } from '@/states';
-	import { getMemberFromChat } from '@/utils/chat';
+	import { getMemberFromChat } from './utils';
 	import { Avatar } from '@/components';
 
 	type Props = { chatrooms: Chatroom[] };

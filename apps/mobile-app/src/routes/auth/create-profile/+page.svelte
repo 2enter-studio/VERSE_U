@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { authState, generalState } from '@/states';
-	import { createProfile } from '@/utils/auth/profile';
+	import { createProfile } from '$routes/auth/utils';
 	import { Dialog } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';
 

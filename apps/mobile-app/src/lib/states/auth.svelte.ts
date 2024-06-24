@@ -1,9 +1,7 @@
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { clearStore } from '@/utils/auth/signout';
-import { createError } from '@/utils/error';
+import { createError, loadProfile } from '@/utils';
 
 import { db } from '@/db';
-import { loadProfile } from '@/utils/auth/profile';
 import type { Tables } from '@repo/config/supatypes';
 
 function createAuth() {
@@ -73,7 +71,7 @@ db.auth.onAuthStateChange(async (e: AuthChangeEvent, s) => {
 	switch (e) {
 		// e:  'INITIAL_SESSION' | 'PASSWORD_RECOVERY' | 'SIGNED_IN' | 'SIGNED_OUT' | 'TOKEN_REFRESHED' | 'USER_UPDATED' | "MFA_CHALLENGE_VERIFIED"
 		case 'SIGNED_OUT':
-			clearStore();
+			authState.clear();
 			break;
 		case 'SIGNED_IN':
 			await authState.set(s);

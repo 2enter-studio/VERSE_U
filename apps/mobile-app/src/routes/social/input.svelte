@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
-	import { sendMessage } from '@/utils/chat';
+	import { sendMessage } from './utils';
 	import { generalState } from '@/states';
 
 	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } =

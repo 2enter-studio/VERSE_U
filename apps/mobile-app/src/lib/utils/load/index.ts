@@ -3,6 +3,26 @@ import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { assignMLTexts, createError, validate } from '@/utils';
 
+async function loadProfile(user_id?: string) {
+	if (!user_id) user_id = authState.user?.id;
+	// const user_id = get(user)?.id;
+	if (!user_id) return createError('No auth found');
+
+	const { data, error } = await db
+		.from('profiles')
+		.select('*')
+		.eq('user', user_id)
+		.returns<Tables<'profiles'>[]>()
+		.single();
+
+	if (error) {
+		console.error(error.message);
+		return { error };
+	}
+
+	authState.profile = data;
+}
+
 async function loadRegions() {
 	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();
 	if (error) return { error };
@@ -111,4 +131,12 @@ async function loadPeopleNearBy() {
 	gameState.peopleNearBy = data.map((d) => d.user);
 }
 
-export { loadRegions, loadWearings, loadOwnedWearings, loadChats, loadPeopleNearBy, loadTrip };
+export {
+	loadProfile,
+	loadRegions,
+	loadWearings,
+	loadOwnedWearings,
+	loadChats,
+	loadPeopleNearBy,
+	loadTrip
+};

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
-	import { getWearingsByUserId } from '@/utils/dress/wearing';
-	import { UModel } from '@/components/index.js';
-	import { generalState } from '@/states';
 	import Icon from '@iconify/svelte';
+
+	import { getWearingsByUserId } from '$routes/me/utils';
+	import { UModel } from '@/components';
+	import { generalState } from '@/states';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 
 	type Props = {

@@ -1,7 +1,7 @@
 import { db } from '@/db';
-import { pwdSignIn } from '@/utils/auth/signin';
-
 import { createError, validate } from '@/utils';
+
+import { pwdSignIn } from '$routes/auth/utils';
 
 async function signUp(email: string, password: string) {
 	if (!validate.email(email)) return createError('invalid email');

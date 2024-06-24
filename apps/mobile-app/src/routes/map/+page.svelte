@@ -3,7 +3,7 @@
 
 	import { MAP_SIZE } from '@/config';
 	import { gameState, generalState } from '@/states';
-	import { startNextTrip } from '$routes/map';
+	import { startNextTrip } from '$routes/map/utils';
 	import { getFileUrl, getTextFromObj, loadPeopleNearBy, secToMin } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';

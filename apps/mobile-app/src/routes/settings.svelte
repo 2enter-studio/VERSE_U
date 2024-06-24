@@ -6,7 +6,7 @@
 
 	import { Dialog } from '@/components';
 	import { authState, generalState } from '@/states';
-	import { modifyProfile, signOut } from '@/utils/auth';
+	import { modifyProfile, signOut } from '$routes/auth/utils';
 	import { preferences } from '@/utils';
 
 	import { LOCALES, UI_TEXTS } from '@/config';

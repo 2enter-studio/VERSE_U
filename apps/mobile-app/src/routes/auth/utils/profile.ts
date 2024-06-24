@@ -3,28 +3,8 @@ import randomItem from 'random-item';
 
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
-import { createError } from '../error';
+import { createError } from '@/utils';
 import type { Tables } from '@repo/config/supatypes';
-
-async function loadProfile(user_id?: string) {
-	if (!user_id) user_id = authState.user?.id;
-	// const user_id = get(user)?.id;
-	if (!user_id) return createError('No auth found');
-
-	const { data, error } = await db
-		.from('profiles')
-		.select('*')
-		.eq('user', user_id)
-		.returns<Tables<'profiles'>[]>()
-		.single();
-
-	if (error) {
-		console.error(error.message);
-		return { error };
-	}
-
-	authState.profile = data;
-}
 
 async function createProfile(name: string) {
 	const user_id = authState.user?.id;
@@ -84,4 +64,4 @@ async function modifyProfile(args: { name: string }) {
 	authState.profile = data;
 }
 
-export { loadProfile, createProfile, modifyProfile };
+export { createProfile, modifyProfile };
