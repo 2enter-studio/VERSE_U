@@ -1,4 +1,4 @@
-import { db, loadMLTexts, loadTables } from '@/server/db';
+import { admin, loadMLTexts, loadTables } from '@/server/db';
 import { type Action, type Actions } from '@sveltejs/kit';
 import { ALL_TABLE_NAMES, type AllTableName, type BucketName, type TableName } from '@/config';
 import validator from 'validator';
@@ -35,7 +35,7 @@ const create: Action = async ({ request }) => {
 		}
 	}
 
-	const { data: result, error } = await db
+	const { data: result, error } = await admin
 		.from(tableName)
 		.insert(JSON.parse(data) ?? {})
 		.select('id')
@@ -66,7 +66,7 @@ const update: Action = async ({ request }) => {
 		);
 	}
 
-	const { error } = await db.from(tableName).update(JSON.parse(data)).eq('id', id);
+	const { error } = await admin.from(tableName).update(JSON.parse(data)).eq('id', id);
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 
@@ -89,7 +89,7 @@ const remove: Action = async ({ request }) => {
 		);
 	}
 
-	const { error } = await db.from(tableName).delete().eq('id', id);
+	const { error } = await admin.from(tableName).delete().eq('id', id);
 	if (error) return makeFormDataResponse('error', `failed to delete ${tableName}`, error.message);
 	return makeFormDataResponse('success', `deleted 1 row from ${tableName}`, `- row id: ${id}`);
 };
@@ -116,7 +116,7 @@ const junction: Action = async ({ request }) => {
 
 	let oldIds: string[] = [];
 	{
-		const { data: result, error } = await db
+		const { data: result, error } = await admin
 			.from(junctionName)
 			.select(targetColumnName)
 			.eq(baseColumnName, id)
@@ -135,7 +135,7 @@ const junction: Action = async ({ request }) => {
 	const deleteIds = oldIds.filter((i) => !selected.includes(i));
 
 	if (createIds.length > 0) {
-		const { error } = await db
+		const { error } = await admin
 			.from(junctionName)
 			.insert(createIds.map((i) => ({ [baseColumnName]: id, [targetColumnName]: i })));
 		if (error) {
@@ -144,7 +144,7 @@ const junction: Action = async ({ request }) => {
 	}
 
 	if (deleteIds.length > 0) {
-		const { error } = await db
+		const { error } = await admin
 			.from(junctionName)
 			.delete()
 			.filter(baseColumnName, 'eq', id)
@@ -167,7 +167,7 @@ const storage: Action = async ({ request }) => {
 	const filename = formData.get('filename') as string;
 	const file = formData.get('file') as File;
 
-	const { error } = await db.storage.from(bucketName).upload(filename, file, {
+	const { error } = await admin.storage.from(bucketName).upload(filename, file, {
 		upsert: true
 	});
 	if (error) {

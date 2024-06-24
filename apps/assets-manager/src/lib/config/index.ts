@@ -1,4 +1,3 @@
-const LOCALES = ['zh', 'en'] as const;
 const TABLE_NAMES = [
 	'app_versions',
 	'regions',
@@ -8,12 +7,15 @@ const TABLE_NAMES = [
 	'texture_types',
 	'body_parts'
 ] as const;
+
 const ALL_TABLE_NAMES = [
 	...TABLE_NAMES,
 	'ml_texts',
 	'j-wearings-texture_types',
 	'j-wearings-body_parts'
 ] as const;
+
+const LOCALES = ['zh', 'en'] as const;
 const BUCKET_NAMES = ['wearings', 'regions', 'meshes'] as const;
 const METADATA_TYPES = ['toggle', 'number', 'plain_text', 'ml_texts', 'datetime'] as const;
 const STORAGE_TYPES = ['webp', 'fbx', 'glb'] as const;
@@ -152,11 +154,16 @@ const TABLES_INFO: TableInfo = {
 			}
 		},
 		storage: {
-			texture_basecolor: {
+			thumbnail: {
+				type: 'webp',
+				bucket: 'wearings',
+				path: 'thumbnails'
+			},
+			texture_baseColor: {
 				type: 'webp',
 				bucket: 'wearings',
 				path: 'textures',
-				suffix: '_basecolor'
+				suffix: '_baseColor'
 			},
 			texture_metallic: {
 				type: 'webp',

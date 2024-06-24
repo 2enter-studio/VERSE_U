@@ -3,7 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/capitalize": "^2.0.2",
+    "@types/rfdc": "^1.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -13,5 +15,9 @@
     "./config": "./supabase/functions/config.ts",
     "./supatypes": "./supabase/functions/types.ts",
     "./utils": "./supabase/functions/_shared/utils/index.ts"
+  },
+  "dependencies": {
+    "capitalize": "^2.0.4",
+    "rfdc": "^1.4.1"
   }
 }

@@ -28,7 +28,7 @@
     "prettier-plugin-svelte": "latest",
     "prettier-plugin-tailwindcss": "latest",
     "publint": "latest",
-    "svelte": "^5.0.0-next.164",
+    "svelte": "^5.0.0-next.165",
     "svelte-adapter-bun": "^0.5.2",
     "svelte-add": "^2024.4.9-0.0",
     "svelte-check": "latest",
