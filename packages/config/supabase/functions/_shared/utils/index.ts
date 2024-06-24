@@ -2,8 +2,8 @@ import moment from 'moment';
 import sha256 from 'sha256';
 import { createClient } from '@supabase/supabase-js';
 
-import type { Tables, TablesInsert } from '@repo/config/supatypes';
-import { MAX_TRAVEL_TIME, MIN_STAY_TIME } from '@repo/config';
+import type { Tables, TablesInsert } from '../../types.ts';
+import { MAX_TRAVEL_TIME, MIN_STAY_TIME } from '../../config.ts';
 
 // General Utilities
 function genRandomNumbers(range: number, amount: number): number[] {

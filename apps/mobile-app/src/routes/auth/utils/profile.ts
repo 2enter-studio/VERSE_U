@@ -1,29 +1,31 @@
-import moment from 'moment';
-import randomItem from 'random-item';
+import type { Tables } from '@repo/config/supatypes';
 
+import { genRandomNumbers, addTime } from '@repo/config/utils';
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { createError } from '@/utils';
-import type { Tables } from '@repo/config/supatypes';
 
-async function createProfile(name: string) {
+async function createProfile(value: { name: string }) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('No auth found');
+	if (!user_id) return createError('NO_USER_FOUND');
 
-	let regionIds = [...gameState.regions.map((r) => r.id)];
-	if (regionIds.length === 0) return createError('NO_REGION_FOUND');
+	if (gameState.regions.length === 0) return createError('NO_REGION_FOUND');
 
-	const { data: profileData, error: profileError } = await db.from('profiles').insert({ name });
+	const { data: profileData, error: profileError } = await db
+		.from('profiles')
+		.insert(value)
+		.select()
+		.returns<Tables<'profiles'>[]>()
+		.single();
 	if (profileError) return { error: profileError };
 
-	const from = randomItem(regionIds);
-	regionIds.splice(regionIds.indexOf(from), 1);
-	const to = randomItem(regionIds);
-	regionIds.splice(regionIds.indexOf(to), 1);
-	const next_0 = randomItem(regionIds);
-	regionIds.splice(regionIds.indexOf(next_0), 1);
-	const next_1 = randomItem(regionIds);
-	regionIds.splice(regionIds.indexOf(next_1), 1);
+	const [from, to, next_0, next_1] = genRandomNumbers(gameState.regions.length, 4).map(
+		(num) => gameState.regions[num].id
+	);
+
+	const now = new Date().toISOString();
+	const start_at = addTime(now, -300);
+	const arrive_at = addTime(now, -100);
 
 	const { data: tripData, error: tripError } = await db
 		.from('trips')
@@ -32,10 +34,10 @@ async function createProfile(name: string) {
 			to,
 			next_0,
 			next_1,
-			arrive_at: moment().add(-100, 'seconds').toISOString(),
-			start_at: moment().add(-300, 'seconds').toISOString()
+			start_at,
+			arrive_at
 		})
-		.select('*')
+		.select()
 		.returns<Tables<'trips'>[]>()
 		.single();
 
@@ -45,22 +47,19 @@ async function createProfile(name: string) {
 	authState.profile = profileData;
 }
 
-async function modifyProfile(args: { name: string }) {
-	const { name } = args;
-
+async function modifyProfile(value: { name: string }) {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('No auth found');
+
 	const { data, error } = await db
 		.from('profiles')
-		.update({ name })
+		.update(value)
 		.eq('user', user_id)
-		.select('*')
+		.select()
 		.returns<Tables<'profiles'>[]>()
 		.single();
-	if (error) {
-		console.error(error.message);
-		return { error };
-	}
+
+	if (error) return { error };
 	authState.profile = data;
 }
 
