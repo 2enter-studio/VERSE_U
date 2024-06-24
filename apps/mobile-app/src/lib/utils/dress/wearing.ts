@@ -1,9 +1,9 @@
 import { db } from '@/db';
-import { auth, gameState } from '@/states';
+import { authState, gameState } from '@/states';
 import { createError, loadOwnedWearings } from '@/utils';
 
 async function buyWearing(wearing_id: string) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('You must be logged in to buy wearings');
 
 	const { data, error } = await db
@@ -24,7 +24,7 @@ async function buyWearing(wearing_id: string) {
 }
 
 async function equipWearings(wearing_ids: string[]) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('You must be logged in to equip wearings');
 
 	// un-equip all wearings

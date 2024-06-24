@@ -1,12 +1,12 @@
 <script lang="ts">
 	import moment from 'moment';
 	import { fly } from 'svelte/transition';
-	import { auth, gameState } from '@/states';
+	import { authState, gameState } from '@/states';
 	import { Avatar } from '@/components';
 	import type { Tables } from '@repo/config/supatypes';
 
 	export let message: Tables<'chat_messages'>;
-	const isMine = message.sender === auth.user?.id;
+	const isMine = message.sender === authState.user?.id;
 
 	const dateTimeClassName = 'mx-1 mb-0.5 text-[9.5px] tracking-tighter text-black/70';
 </script>

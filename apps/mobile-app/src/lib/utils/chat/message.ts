@@ -1,14 +1,14 @@
 import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 
 import { db } from '@/db';
-import { auth, gameState } from '@/states';
+import { authState, gameState } from '@/states';
 import { createError, getCurrentYearMonth } from '@/utils';
 import { loadChats } from './chat_info';
 import type { Tables } from '@repo/config/supatypes';
 
 async function sendMessage(content: string, reply_to?: string) {
 	const { chat_id } = gameState;
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!chat_id || !user_id) return createError('no chat found');
 
 	const insertData = {
@@ -49,7 +49,7 @@ function subscribeToMessages() {
 				event: 'INSERT',
 				schema: 'public',
 				table: tableName,
-				filter: `sender=neq.${auth.user?.id}`
+				filter: `sender=neq.${authState.user?.id}`
 			},
 			async (payload: RealtimePostgresInsertPayload<Tables<'chat_messages'>>) => {
 				console.log('received new message', payload);

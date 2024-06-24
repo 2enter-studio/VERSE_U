@@ -1,6 +1,6 @@
 import type { Tables } from '@repo/config/supatypes';
 import { db } from '@/db';
-import { auth, gameState } from '@/states';
+import { authState, gameState } from '@/states';
 import { assignMLTexts, createError, validate } from '@/utils';
 
 async function loadRegions() {
@@ -26,7 +26,7 @@ async function loadWearings() {
 }
 
 async function loadOwnedWearings() {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 	const { data, error } = await db
 		.from('owned_wearings')
@@ -44,7 +44,7 @@ async function loadOwnedWearings() {
 }
 
 async function loadChats(chat_ids?: string[]) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 
 	const reload = chat_ids === undefined;
@@ -73,7 +73,7 @@ async function loadChats(chat_ids?: string[]) {
 }
 
 async function loadTrip() {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 
 	const { data, error } = await db
@@ -88,7 +88,7 @@ async function loadTrip() {
 }
 
 async function loadPeopleNearBy() {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('NO_USER_FOUND');
 	if (!gameState.trip) return createError('NO_TRIP_FOUND');
 

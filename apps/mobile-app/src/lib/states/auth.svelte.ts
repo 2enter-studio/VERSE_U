@@ -76,11 +76,11 @@ db.auth.onAuthStateChange(async (e: AuthChangeEvent, s) => {
 			clearStore();
 			break;
 		case 'SIGNED_IN':
-			await auth.set(s);
+			await authState.set(s);
 			break;
 	}
 });
 
-const auth = createAuth();
+const authState = createAuth();
 
-export { auth };
+export { authState };

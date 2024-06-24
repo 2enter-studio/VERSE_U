@@ -1,9 +1,9 @@
 import { createError, handleEFResponse } from '@/utils';
 import { db } from '@/db';
-import { auth } from '@/states';
+import { authState } from '@/states';
 
 async function triggerHaiAn(passcode: string) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('');
 
 	const { data, error } = await db.functions.invoke('hai-an-road', {

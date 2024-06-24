@@ -4,7 +4,7 @@
 
 	import { agreeFriendShip } from '@/utils/chat';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { auth, general, gameState } from '@/states';
+	import { authState, general, gameState } from '@/states';
 	import { Avatar } from '@/components';
 	import { getMemberFromChat } from '@/utils/chat';
 
@@ -14,7 +14,7 @@
 	const inputHeight = $derived(chatInput?.clientHeight ?? 0);
 
 	onMount(() => {
-		if (!gameState.chat_id || !auth.user?.id) return;
+		if (!gameState.chat_id || !authState.user?.id) return;
 		onsend();
 		general.showMenu = false;
 		return () => {
@@ -42,7 +42,7 @@
 			<Icon icon="mdi:arrow-back" />
 		</button>
 		<Avatar profile={person?.profiles} class="size-8" />
-		{#if gameState.chat.chat_messages.some((m) => m.sender === auth.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
+		{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
 			<div class="center-content">
 				<span class="text-xs">add to friends?</span>
 				<button

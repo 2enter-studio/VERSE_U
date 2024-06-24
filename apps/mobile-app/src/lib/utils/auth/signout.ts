@@ -1,8 +1,8 @@
 import { db } from '@/db';
-import { auth } from '@/states';
+import { authState } from '@/states';
 
 function clearStore() {
-	auth.clear();
+	authState.clear();
 }
 
 async function signOut() {

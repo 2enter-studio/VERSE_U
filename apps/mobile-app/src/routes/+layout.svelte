@@ -18,7 +18,7 @@
 		loadWearings,
 		preferences
 	} from '@/utils';
-	import { auth, gameState, general } from '@/states';
+	import { authState, gameState, general } from '@/states';
 	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	// import { Notifications } from './index.js';
@@ -32,15 +32,15 @@
 	async function init() {
 		general.locale = await preferences.locale.get();
 
-		if (auth.loggedIn) {
+		if (authState.loggedIn) {
 			await loadRegions();
 
-			if (!auth.profile && $page.url.pathname !== '/auth/create-profile') {
+			if (!authState.profile && $page.url.pathname !== '/auth/create-profile') {
 				console.log('profile not found');
 				window.location.assign('/auth/create-profile');
 			}
 
-			if (auth.profile) {
+			if (authState.profile) {
 				await loadTrip();
 				await loadPeopleNearBy();
 				await loadChats();
@@ -102,7 +102,7 @@
 <!--<div class="fixed top-20">{$page.url.pathname}</div>-->
 
 <div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-	{#if auth.loggedIn}
+	{#if authState.loggedIn}
 		{#if loaded}
 			<div class="flex w-full">
 				<MyProfile

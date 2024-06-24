@@ -1,11 +1,11 @@
 import { decode } from 'base64-arraybuffer';
-import { auth } from '@/states';
+import { authState } from '@/states';
 import { db } from '@/db';
 
 // import { handleEFResponse } from '@/utils';
 
 async function uploadSelfie(image: string) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return;
 
 	// const { data, error } = await db.functions.invoke('upload-selfie', {

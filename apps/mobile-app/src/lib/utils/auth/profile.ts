@@ -2,12 +2,12 @@ import moment from 'moment';
 import randomItem from 'random-item';
 
 import { db } from '@/db';
-import { auth, gameState } from '@/states';
+import { authState, gameState } from '@/states';
 import { createError } from '../error';
 import type { Tables } from '@repo/config/supatypes';
 
 async function loadProfile(user_id?: string) {
-	if (!user_id) user_id = auth.user?.id;
+	if (!user_id) user_id = authState.user?.id;
 	// const user_id = get(user)?.id;
 	if (!user_id) return createError('No auth found');
 
@@ -23,11 +23,11 @@ async function loadProfile(user_id?: string) {
 		return { error };
 	}
 
-	auth.profile = data;
+	authState.profile = data;
 }
 
 async function createProfile(name: string) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('No auth found');
 
 	let regionIds = [...gameState.regions.map((r) => r.id)];
@@ -62,13 +62,13 @@ async function createProfile(name: string) {
 	if (tripError) return { error: tripError };
 
 	gameState.trip = tripData;
-	auth.profile = profileData;
+	authState.profile = profileData;
 }
 
 async function modifyProfile(args: { name: string }) {
 	const { name } = args;
 
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('No auth found');
 	const { data, error } = await db
 		.from('profiles')
@@ -81,7 +81,7 @@ async function modifyProfile(args: { name: string }) {
 		console.error(error.message);
 		return { error };
 	}
-	auth.profile = data;
+	authState.profile = data;
 }
 
 export { loadProfile, createProfile, modifyProfile };

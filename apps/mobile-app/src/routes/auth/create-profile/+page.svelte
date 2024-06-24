@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { auth, general } from '@/states';
+	import { authState, general } from '@/states';
 	import { createProfile } from '@/utils/auth/profile';
 	import { Dialog } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';
@@ -10,8 +10,8 @@
 	let name = $state('');
 
 	onMount(() => {
-		if (!auth.loggedIn || auth.profile) {
-			console.log(auth.loggedIn, auth.profile);
+		if (!authState.loggedIn || authState.profile) {
+			console.log(authState.loggedIn, authState.profile);
 			window.location.assign(DEFAULT_ROUTE);
 		}
 		general.showMenu = false;

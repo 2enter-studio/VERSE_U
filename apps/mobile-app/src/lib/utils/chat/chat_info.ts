@@ -1,10 +1,10 @@
 import { createError, validate } from '@/utils';
 import { db } from '@/db';
-import { auth, gameState } from '@/states';
+import { authState, gameState } from '@/states';
 import { sendMessage } from '@/utils/chat/message';
 
 async function loadChats(chat_ids?: string[]) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('no user found');
 
 	const setAll = !!chat_ids;
@@ -70,7 +70,7 @@ async function loadChats(chat_ids?: string[]) {
 }
 
 async function startChat(target_user_id: string, firstMessage: string) {
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!user_id) return createError('no user found');
 
 	if (!validate.uuid(target_user_id)) return createError('invalid target user id');
@@ -99,7 +99,7 @@ async function startChat(target_user_id: string, firstMessage: string) {
 
 async function agreeFriendShip() {
 	const { chat_id } = gameState;
-	const user_id = auth.user?.id;
+	const user_id = authState.user?.id;
 	if (!chat_id || !user_id) return createError('no chat or user found');
 
 	const { error } = await db
@@ -113,9 +113,9 @@ async function agreeFriendShip() {
 
 function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
 	if (target === 'me') {
-		return chat.chat_members.find((m) => m.user.user === auth.user?.id);
+		return chat.chat_members.find((m) => m.user.user === authState.user?.id);
 	} else {
-		return chat.chat_members.find((m) => m.user.user !== auth.user?.id);
+		return chat.chat_members.find((m) => m.user.user !== authState.user?.id);
 	}
 }
 

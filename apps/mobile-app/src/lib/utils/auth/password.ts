@@ -1,6 +1,6 @@
 import { validate } from '@/utils';
 import { db } from '@/db';
-import { auth } from '@/states';
+import { authState } from '@/states';
 import { createError } from '../error';
 
 // Send a password reset email to the given email address
@@ -29,7 +29,7 @@ async function changePwd(oldPassword: string, newPassword: string) {
 	if (!validate.password(oldPassword) || !validate.password(newPassword))
 		return createError('invalid password');
 
-	const sessionBackup = auth.session;
+	const sessionBackup = authState.session;
 
 	// Return an error if there is no session found
 	if (!sessionBackup) {
@@ -48,7 +48,7 @@ async function changePwd(oldPassword: string, newPassword: string) {
 
 	if (error) {
 		// To prevent auto logout, restore the session
-		auth.session = sessionBackup;
+		authState.session = sessionBackup;
 		return { error };
 	} else {
 		const result = await setPwd(newPassword);

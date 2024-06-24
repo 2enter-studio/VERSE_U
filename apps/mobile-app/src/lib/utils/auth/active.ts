@@ -1,9 +1,9 @@
 import { db } from '@/db';
-import { auth } from '@/states';
+import { authState } from '@/states';
 import { createError } from '@/utils';
 
 async function updateActiveStatus() {
-	const currentUser = auth.user;
+	const currentUser = authState.user;
 	const user_id = currentUser?.id;
 	if (!user_id) return createError('no auth found');
 
