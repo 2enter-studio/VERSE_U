@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { general, gameState } from '@/states';
+	import { generalState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from '@/utils/dress/wearing';
 	import { Drawer } from '@/components/index.js';
 
@@ -28,12 +28,12 @@
 	);
 
 	onMount(() => {
-		general.showMenu = false;
+		generalState.showMenu = false;
 
 		return () => {
 			selectedWearings = { ...initSelectedWearings };
 			selectedWearingType = gameState.wearingTypes[0].id;
-			general.showMenu = true;
+			generalState.showMenu = true;
 		};
 	});
 </script>
@@ -76,7 +76,7 @@
 						<button
 							onclick={async () => {
 								const res = await buyWearing(wearing.id);
-								if (res?.error) general.errorMessage = res.error.message;
+								if (res?.error) generalState.errorMessage = res.error.message;
 							}}
 						>
 							<Icon icon="fa6-solid:cart-plus" />

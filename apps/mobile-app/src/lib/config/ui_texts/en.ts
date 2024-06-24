@@ -28,4 +28,4 @@ const table: UITextTable = {
 	// ERROR_INVALID_PASSWORD: 'Invalid password'
 };
 
-export default table;
+export { table as en };

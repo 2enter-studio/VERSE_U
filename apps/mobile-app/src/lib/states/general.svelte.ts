@@ -1,6 +1,5 @@
 import { Capacitor } from '@capacitor/core';
-import { DEFAULT_LOCALE, type Locale } from '@/config';
-import ui_texts from '@/config/ui_texts';
+import { DEFAULT_LOCALE, UI_TEXTS, type Locale } from '@/config';
 
 function makeGeneralState() {
 	let processing = $state(false);
@@ -11,7 +10,7 @@ function makeGeneralState() {
 	let errorMessage = $state<string>('');
 	let notifications = $state<string[]>(['hello']);
 
-	const uiTexts = $state.frozen(ui_texts[locale]);
+	const uiTexts = $state.frozen(UI_TEXTS[locale]);
 	const platform = $state.frozen(Capacitor.getPlatform());
 
 	return {
@@ -60,6 +59,6 @@ function makeGeneralState() {
 	};
 }
 
-let general = makeGeneralState();
+let generalState = makeGeneralState();
 
-export { general };
+export { generalState };

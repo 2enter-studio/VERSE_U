@@ -1,4 +1,4 @@
-import UI_TEXTS from './ui_texts';
+import * as UI_TEXTS from './ui_texts';
 
 const LOCALES = ['en', 'zh'] as const;
 // const OAUTH_PROVIDERS = ['facebook', 'google', 'apple'] as const;

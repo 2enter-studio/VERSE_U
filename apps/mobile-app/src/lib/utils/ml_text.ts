@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { general } from '@/states';
+import { generalState } from '@/states';
 
 async function getMLText(row_id: string, column_name: string) {
 	const { data, error } = await db
@@ -7,7 +7,7 @@ async function getMLText(row_id: string, column_name: string) {
 		.select('value')
 		.eq('row_id', row_id)
 		.eq('column_name', column_name)
-		.eq('locale', general.locale)
+		.eq('locale', generalState.locale)
 		.returns<{ value: string }[]>()
 		.single();
 
@@ -24,7 +24,7 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 		.select('*')
 		.in('row_id', row_ids)
 		.in('column_name', column_names)
-		.eq('locale', general.locale)
+		.eq('locale', generalState.locale)
 		.returns<{ value: string; row_id: string; column_name: string }[]>();
 	if (error) {
 		// console.error(error.message);

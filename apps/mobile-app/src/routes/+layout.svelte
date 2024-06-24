@@ -18,7 +18,7 @@
 		loadWearings,
 		preferences
 	} from '@/utils';
-	import { authState, gameState, general } from '@/states';
+	import { authState, gameState, generalState } from '@/states';
 	import { Error, Login, Menu, MyProfile, SideMenu } from './';
 	import { DEFAULT_ROUTE } from '@/config';
 	// import { Notifications } from './index.js';
@@ -30,7 +30,7 @@
 	let loaded = $state(false);
 
 	async function init() {
-		general.locale = await preferences.locale.get();
+		generalState.locale = await preferences.locale.get();
 
 		if (authState.loggedIn) {
 			await loadRegions();
@@ -55,14 +55,14 @@
 	}
 
 	onMount(async () => {
-		if (general.platform !== 'web') {
+		if (generalState.platform !== 'web') {
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
 		}
 
-		[loaded, general.showMenu] = [false, false];
+		[loaded, generalState.showMenu] = [false, false];
 		await init();
-		[loaded, general.showMenu] = [true, true];
+		[loaded, generalState.showMenu] = [true, true];
 
 		const url = $page.url.href;
 		const Url = new URL(url);
@@ -119,7 +119,7 @@
 			</div>
 		{/if}
 
-		{#if general.showMenu}
+		{#if generalState.showMenu}
 			<Menu />
 			<SideMenu />
 		{/if}

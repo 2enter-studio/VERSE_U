@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { MAP_SIZE } from '@/config';
-	import { gameState, general } from '@/states';
+	import { gameState, generalState } from '@/states';
 	import { startNextTrip } from '$routes/map';
 	import { getFileUrl, getTextFromObj, loadPeopleNearBy, secToMin } from '@/utils';
 
@@ -62,7 +62,7 @@
 
 	<Dialog
 		bind:open={chooseNext}
-		title={general.uiTexts.where_are_you_going}
+		title={generalState.uiTexts.where_are_you_going}
 		class="divide-x divide-black/60"
 	>
 		{#each tripOptions as num}

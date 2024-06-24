@@ -6,7 +6,7 @@
 	import { subscribeToRegion } from '@/utils/map';
 	import { startChat, subscribeToAgree, subscribeToMessages } from '@/utils/chat';
 
-	import { gameState, general } from '@/states';
+	import { gameState, generalState } from '@/states';
 	import { Chatroom, ChatList, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 
@@ -38,7 +38,7 @@
 	<Chatroom />
 {:else}
 	<div class="center-content mb-3 mt-12 flex-col">
-		<h1>{general.uiTexts.people_nearby}</h1>
+		<h1>{generalState.uiTexts.people_nearby}</h1>
 		<div class="flex w-[88vw] flex-row gap-2">
 			{#each gameState.peopleNearBy as person, i}
 				{@const friend = gameState.friendChats.find((f) =>
@@ -95,7 +95,7 @@
 						? 'bg-opacity-100'
 						: 'bg-opacity-60 shadow-inner shadow-yellow-800/40'}"
 				>
-					{general.uiTexts[option]}
+					{generalState.uiTexts[option]}
 				</label>
 			{/each}
 		</div>
@@ -118,7 +118,7 @@
 		onclick={() => {
 			if (firstMessage.trim() === '') return;
 			startChat(storyUserId, firstMessage).then((res) => {
-				if (res?.error) general.errorMessage = res.error.message;
+				if (res?.error) generalState.errorMessage = res.error.message;
 				else {
 					startingNewChat = false;
 					storyUserId = '';

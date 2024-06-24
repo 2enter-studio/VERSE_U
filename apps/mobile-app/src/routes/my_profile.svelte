@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 
-	import { authState, general } from '@/states';
+	import { authState, generalState } from '@/states';
 	import { Avatar } from '@/components';
 	import { Settings } from './';
 
@@ -11,7 +11,7 @@
 	let openSetting = $state(false);
 </script>
 
-{#if authState.profile && general.showMenu}
+{#if authState.profile && generalState.showMenu}
 	<button
 		onclick={() => (openSetting = !openSetting)}
 		transition:fly={{ x: -100 }}

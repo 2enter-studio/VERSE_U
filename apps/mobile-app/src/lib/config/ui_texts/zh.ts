@@ -25,4 +25,4 @@ const table: UITextTable = {
 	where_are_you_going: '去哪裡?'
 };
 
-export default table;
+export { table as zh };
