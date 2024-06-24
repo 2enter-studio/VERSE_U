@@ -4,7 +4,7 @@
 	import { MAP_SIZE } from '@/config';
 	import { gameState, generalState } from '@/states';
 	import { startNextTrip } from '$routes/map/utils';
-	import { getFileUrl, getTextFromObj, loadPeopleNearBy, secToMin } from '@/utils';
+	import { getFileUrl, getTextFromObj, load, secToMin } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 
@@ -44,7 +44,7 @@
 
 {#if gameState.regions.length > 0 && gameState.trip}
 	{#if gameState.tripStatus.progress === 1}
-		{#await loadPeopleNearBy()}
+		{#await load.peopleNearBy()}
 			loading
 		{:then a}
 			{#if gameState.tripStatus.timeRemain === 0}
