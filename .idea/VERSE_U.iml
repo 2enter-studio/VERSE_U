@@ -15,10 +15,10 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/android" />
       <excludeFolder url="file://$MODULE_DIR$/apps/mobile-app/ios" />
       <excludeFolder url="file://$MODULE_DIR$/local_assets" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.branches" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.idea/dataSources" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/.temp" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/config/supabase/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.branches" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.temp" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/migrations" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

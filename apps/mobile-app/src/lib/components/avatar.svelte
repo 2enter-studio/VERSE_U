@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { getFileUrl } from '@/utils';
 	import { generalState } from '@/states';
-	import type { Tables } from '@repo/config/supatypes';
+	import type { Tables } from '@repo/shared/supatypes';
 
 	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };
 	let { profile, class: className = 'size-12', readonly = false }: Props = $props();

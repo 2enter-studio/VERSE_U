@@ -2,7 +2,7 @@ import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { createError, load } from '@/utils';
 
 import { db } from '@/db';
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
 function createAuth() {
 	let profile = $state<Tables<'profiles'> | null>(null);

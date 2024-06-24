@@ -1,4 +1,4 @@
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
 import { db } from '@/db';
 import { authState, gameState } from '@/states';

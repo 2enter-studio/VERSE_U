@@ -1,6 +1,6 @@
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
-import { genRandomNumbers, addTime } from '@repo/config/utils';
+import { genRandomNumbers, addTime } from '@repo/shared/utils';
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { createError } from '@/utils';

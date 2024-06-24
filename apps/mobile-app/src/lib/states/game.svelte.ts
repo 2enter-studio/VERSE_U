@@ -1,5 +1,5 @@
-import type { Tables } from '@repo/config/supatypes';
-import { MIN_STAY_TIME } from '@repo/config';
+import type { Tables } from '@repo/shared/supatypes';
+import { MIN_STAY_TIME } from '@repo/shared/config';
 
 function makeGameState() {
 	let regions = $state<Region[]>([]);

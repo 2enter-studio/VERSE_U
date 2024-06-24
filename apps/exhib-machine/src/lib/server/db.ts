@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { makeSupaClient } from '@repo/config/utils';
+import { makeSupaClient } from '@repo/shared/utils';
 
 const db = makeSupaClient('admin');
 

@@ -1,5 +1,5 @@
 import type { RealtimePostgresUpdatePayload as Payload } from '@supabase/realtime-js/dist/module/RealtimeChannel';
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
 import { db } from '@/db';
 import { createError, handleEFResponse } from '@/utils';

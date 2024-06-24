@@ -1,5 +1,5 @@
 import { STORAGE_BASEPATH } from '$env/static/private';
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
 const BUCKET_NAMES = ['wearings', 'meshes'] as const;
 const TEXTURE_TYPES = ['baseColor', 'metallic', 'normal', 'roughness'] as const;

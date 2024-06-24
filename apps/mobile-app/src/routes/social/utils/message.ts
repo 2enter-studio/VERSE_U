@@ -4,7 +4,7 @@ import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { createError, getCurrentYearMonth } from '@/utils';
 import { loadChats } from './chat_info';
-import type { Tables } from '@repo/config/supatypes';
+import type { Tables } from '@repo/shared/supatypes';
 
 async function sendMessage(content: string, reply_to?: string) {
 	const { chat_id } = gameState;

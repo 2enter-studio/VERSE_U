@@ -1,5 +1,5 @@
 {
-  "name": "@repo/config",
+  "name": "@repo/shared",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
@@ -9,7 +9,8 @@
     "typescript": "^5.0.0"
   },
   "exports": {
-    ".": "./supabase/functions/config.ts",
+    ".": "./index.ts",
+    "./config": "./supabase/functions/config.ts",
     "./supatypes": "./supabase/functions/types.ts",
     "./utils": "./supabase/functions/_shared/utils/index.ts"
   }

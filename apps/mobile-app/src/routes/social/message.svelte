@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import { authState, gameState } from '@/states';
 	import { Avatar } from '@/components';
-	import type { Tables } from '@repo/config/supatypes';
+	import type { Tables } from '@repo/shared/supatypes';
 
 	export let message: Tables<'chat_messages'>;
 	const isMine = message.sender === authState.user?.id;
