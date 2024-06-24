@@ -1,6 +1,6 @@
 import { type MetaData } from '@/config';
 import { EMPTY_METADATA } from '@/config';
-import { deepClone } from '@repo/utils';
+import { deepClone } from '@repo/shared/utils';
 import moment, { type Moment } from 'moment';
 
 const metadata: { old: MetaData; new: MetaData } = {

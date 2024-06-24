@@ -1,5 +1,8 @@
+import rfdc from 'rfdc';
 import capitalize from 'capitalize';
 import { MAX_TRAVEL_TIME } from '../../config.ts';
+
+const deepClone = rfdc();
 
 // General Utilities
 function snakeCaseToCapitalize(text: string) {
@@ -34,4 +37,14 @@ function addTime(base: string | Date, add: number) {
   return new Date(arriveTime).toISOString();
 }
 
-export { dist, getDuration, addTime, genRandomNumbers, snakeCaseToCapitalize };
+const typeOverRide = <T>(input: any) => input as T;
+
+export {
+  dist,
+  getDuration,
+  addTime,
+  genRandomNumbers,
+  snakeCaseToCapitalize,
+  typeOverRide,
+  deepClone
+};

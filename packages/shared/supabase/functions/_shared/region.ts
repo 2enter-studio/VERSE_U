@@ -7,9 +7,11 @@ async function getRegions() {
     .select()
     .eq('enabled', true)
     .returns<Tables<'regions'>[]>();
+
   if (error) {
     console.error(error);
   }
+
   return data ?? [];
 }
 

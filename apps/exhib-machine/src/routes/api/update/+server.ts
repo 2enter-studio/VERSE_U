@@ -1,12 +1,11 @@
-import { json } from '@sveltejs/kit';
 import moment from 'moment/moment';
+import { json } from '@sveltejs/kit';
+
+import { deepClone } from '@repo/shared/utils';
 import { getUpdated, loadMetaData } from '@/server/metadata';
 import { downloadUpdated } from '@/server/download';
 import { metadata } from '@/server/state';
-import { deepClone } from '@repo/utils';
-import config from '@/config';
-
-const { EMPTY_METADATA } = config;
+import { EMPTY_METADATA } from '@/config';
 
 async function update() {
 	await loadMetaData();

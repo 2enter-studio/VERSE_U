@@ -5,7 +5,7 @@ import { db } from '@/server/db';
 import { type BucketName, type MetaData } from '@/config';
 import { BUCKET_NAMES, METADATA_FILE, EMPTY_METADATA } from '@/config';
 import { metadata, serverState } from '@/server/state';
-import { deepClone } from '@repo/utils';
+import { deepClone } from '@repo/shared/utils';
 
 function initMetaData() {
 	metadata.old = getMetaDataBackUp();

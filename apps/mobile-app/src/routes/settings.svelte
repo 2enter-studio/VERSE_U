@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { deepClone } from '@repo/utils';
+	import { deepClone } from '@repo/shared/utils';
 	import { page } from '$app/stores';
 	import { version } from '$app/environment';
 
