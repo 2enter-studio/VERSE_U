@@ -2,11 +2,10 @@ import fs from 'fs-extra';
 import validator from 'validator';
 import moment from 'moment';
 import { db } from '@/server/db';
-import config, { type BucketName, type MetaData } from '@/config';
+import { type BucketName, type MetaData } from '@/config';
+import { BUCKET_NAMES, METADATA_FILE, EMPTY_METADATA } from '@/config';
 import { metadata, serverState } from '@/server/state';
 import { deepClone } from '@repo/utils';
-
-const { BUCKET_NAMES, METADATA_FILE, EMPTY_METADATA } = config;
 
 function initMetaData() {
 	metadata.old = getMetaDataBackUp();

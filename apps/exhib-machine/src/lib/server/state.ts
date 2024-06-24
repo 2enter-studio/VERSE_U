@@ -1,8 +1,7 @@
-import config, { type MetaData } from '@/config';
+import { type MetaData } from '@/config';
+import { EMPTY_METADATA } from '@/config';
 import { deepClone } from '@repo/utils';
 import moment, { type Moment } from 'moment';
-
-const { EMPTY_METADATA } = config;
 
 const metadata: { old: MetaData; new: MetaData } = {
 	old: deepClone(EMPTY_METADATA),
@@ -20,6 +19,5 @@ const serverState: ServerState = {
 	mode: 'development',
 	lastUpdated: moment()
 };
-
 
 export { metadata, serverState };
