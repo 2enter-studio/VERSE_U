@@ -1,4 +1,4 @@
-import { makeSupaClient } from './index.ts';
+import { makeSupaClient } from './utils/index.ts';
 
 function getEnv(key: string) {
   // @ts-ignore
