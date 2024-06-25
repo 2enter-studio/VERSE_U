@@ -1,127 +1,57 @@
 import type { Tables } from '@repo/shared/supatypes';
 import { MIN_STAY_TIME } from '@repo/shared/config';
 
-function makeGameState() {
-	let regions = $state<Region[]>([]);
-	let wearings = $state<Wearing[]>([]);
+class GameState {
+	regions = $state<Region[]>([]);
+	trip = $state<Tables<'trips'> | null>(null);
+	tripStatus = $state<{ progress: number; timeRemain: number }>({ progress: 0, timeRemain: 0 });
+	peopleNearBy = $state<Tables<'profiles'>[]>([]);
 
-	let trip = $state<Tables<'trips'> | null>(null);
-	let tripStatus = $state<{ progress: number; timeRemain: number }>({ progress: 0, timeRemain: 0 });
-	let chats = $state<Chatroom[]>([]);
-	let peopleNearBy = $state<Tables<'profiles'>[]>([]);
+	chats = $state<Chatroom[]>([]);
+	chat_id = $state<string | null>(null);
 
-	let chat_id = $state<string | null>(null);
-	let chat = $derived(chats.find((chat) => chat.id === chat_id));
+	wearings = $state<Wearing[]>([]);
+	wearingTypes = $state<WearingType[]>([]);
+	ownedWearings = $state<{ id: string; equipped: boolean }[]>([]);
 
-	let wearingTypes = $state<WearingType[]>([]);
-	let ownedWearings = $state<{ id: string; equipped: boolean }[]>([]);
-	let equippedWearings = $derived(ownedWearings.filter((wearing) => wearing.equipped));
+	readonly chat = $derived(this.chats.find((chat) => chat.id === this.chat_id));
+	readonly equippedWearings = $derived(this.ownedWearings.filter((wearing) => wearing.equipped));
+	readonly strangerChats = $derived(this.chats.filter((c) => c.chat_members.some((m) => !m.agree)));
+	readonly friendChats = $derived(this.chats.filter((c) => !this.strangerChats.includes(c)));
 
-	const strangerChats = $derived(chats.filter((c) => c.chat_members.some((m) => !m.agree)));
-	const friendChats = $derived(chats.filter((c) => !strangerChats.includes(c)));
+	loadTripStatus() {
+		const now = new Date();
+		if (!this.trip) return;
+		const arriveAt = new Date(this.trip.arrive_at);
+		const startAt = new Date(this.trip.start_at);
+		const timeDiff = now.getTime() - arriveAt.getTime();
 
-	return {
-		getTripStatus() {
-			const now = new Date();
-			if (!trip) return;
-			const arriveAt = new Date(trip.arrive_at);
-			const startAt = new Date(trip.start_at);
-			const timeDiff = now.getTime() - arriveAt.getTime();
+		let data: { progress: number; timeRemain: number };
 
-			let data: { progress: number; timeRemain: number };
-
-			if (timeDiff < 0) {
-				// on the way
-				const progress =
-					(now.getTime() - startAt.getTime()) / (arriveAt.getTime() - startAt.getTime());
-				data = { timeRemain: -timeDiff, progress };
-			} else if (timeDiff >= MIN_STAY_TIME) {
-				// ready to go
-				data = { timeRemain: 0, progress: 1 };
-			} else if (timeDiff >= 0) {
-				// arrived
-				const timeRemain = MIN_STAY_TIME - timeDiff;
-				data = { timeRemain, progress: 1 };
-			} else {
-				return;
-			}
-			tripStatus = data;
-		},
-
-		get chats() {
-			return chats;
-		},
-		get chat() {
-			return chat;
-		},
-		get chat_id() {
-			return chat_id;
-		},
-		get regions() {
-			return regions;
-		},
-		get wearings() {
-			return wearings;
-		},
-		get wearingTypes() {
-			return wearingTypes;
-		},
-		get ownedWearings() {
-			return ownedWearings;
-		},
-		get equippedWearings() {
-			return equippedWearings;
-		},
-		get trip() {
-			return trip;
-		},
-		get tripStatus() {
-			return tripStatus;
-		},
-		get peopleNearBy() {
-			return peopleNearBy;
-		},
-		get friendChats() {
-			return friendChats;
-		},
-		get strangerChats() {
-			return strangerChats;
-		},
-		set chats(value) {
-			chats = value;
-		},
-		set chat_id(value) {
-			chat_id = value;
-		},
-		set regions(value) {
-			regions = value;
-		},
-		set wearings(value) {
-			wearings = value;
-		},
-		set wearingTypes(value) {
-			wearingTypes = value;
-		},
-		set ownedWearings(value) {
-			ownedWearings = value;
-		},
-		set trip(value) {
-			trip = value;
-		},
-		set tripStatus(value) {
-			tripStatus = value;
-		},
-		set peopleNearBy(value) {
-			peopleNearBy = value;
+		if (timeDiff < 0) {
+			// on the way
+			const progress =
+				(now.getTime() - startAt.getTime()) / (arriveAt.getTime() - startAt.getTime());
+			data = { timeRemain: -timeDiff, progress };
+		} else if (timeDiff >= MIN_STAY_TIME) {
+			// ready to go
+			data = { timeRemain: 0, progress: 1 };
+		} else if (timeDiff >= 0) {
+			// arrived
+			const timeRemain = MIN_STAY_TIME - timeDiff;
+			data = { timeRemain, progress: 1 };
+		} else {
+			return;
 		}
-	};
+		this.tripStatus = data;
+	}
 }
 
-const gameState = makeGameState();
+const gameState = new GameState();
 
-gameState.getTripStatus();
+gameState.loadTripStatus();
 setInterval(() => {
-	gameState.getTripStatus();
+	gameState.loadTripStatus();
 }, 1000);
 
 export { gameState };

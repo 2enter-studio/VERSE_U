@@ -97,9 +97,9 @@
 				bind:group={selectedWearingType}
 				hidden
 			/>
-			<label for={wearingType.id} class="px-1 {typeSelected ? 'bg-white text-black' : ''}"
-				>{wearingType.name}</label
-			>
+			<label for={wearingType.id} class="px-1 {typeSelected ? 'bg-white text-black' : ''}">
+				{wearingType.name}
+			</label>
 		{/each}
 	</div>
 

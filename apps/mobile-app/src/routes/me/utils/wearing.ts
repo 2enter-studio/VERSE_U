@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
-import { createError, loadOwnedWearings } from '@/utils';
+import { createError, load } from '@/utils';
 
 async function buyWearing(wearing_id: string) {
 	const user_id = authState.user?.id;
@@ -46,7 +46,7 @@ async function equipWearings(wearing_ids: string[]) {
 		if (error) return { error };
 	}
 
-	await loadOwnedWearings();
+	await load.wearings();
 }
 
 async function getWearingsByUserId(user_id: string) {
