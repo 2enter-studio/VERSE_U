@@ -1,9 +1,4 @@
-import { email } from './email';
-import { uuid } from './uuid';
-import { password } from './password';
-
-export {
-	email,
-	uuid,
-	password
-};
+export * from './email';
+export * from './uuid';
+export * from './password';
+export * from './app_version';

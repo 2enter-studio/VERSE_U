@@ -1,8 +1,55 @@
 import type { Tables } from '@repo/shared/supatypes';
 
 import { db } from '@/db';
-import { authState, gameState } from '@/states';
-import { assignMLTexts, createError, validate } from '@/utils';
+import { authState, gameState, sysState } from '@/states';
+import { assignMLTexts, createError, needUpdate, preferences, redirectTo, validate } from '@/utils';
+import { version } from '$app/environment';
+import { inPeriod } from '@repo/shared/utils';
+
+async function locale() {
+	sysState.locale = await preferences.locale.get();
+}
+
+async function maintenance() {
+	const { data, error } = await db
+		.from('maintenance')
+		.select()
+		.returns<Tables<'maintenance'>[]>()
+		.limit(1)
+		.single();
+
+	if (error) return;
+
+	sysState.maintenance = data;
+	const { start, end } = data;
+
+	if (inPeriod(start, end, new Date())) {
+		redirectTo('/maintain');
+	}
+}
+
+async function appVersion() {
+	const { data, error } = await db
+		.from('app_versions')
+		.select()
+		.order('created_at', {ascending: false})
+		.returns<Tables<'app_versions'>[]>()
+		.limit(1)
+		.single();
+
+	console.log(data);
+	if (error) return;
+	if (!validate.app_version(data.value) || !validate.app_version(version)) return;
+
+	sysState.remoteAppVersion = data;
+
+	if (needUpdate()) {
+		console.log('need update!!');
+		redirectTo('/update');
+	} else {
+		console.log('no need update');
+	}
+}
 
 async function profile(user_id?: string) {
 	if (!user_id) user_id = authState.user?.id;
@@ -131,4 +178,15 @@ async function peopleNearBy() {
 	gameState.peopleNearBy = data.map((d) => d.user);
 }
 
-export { profile, regions, wearings, ownedWearings, chats, peopleNearBy, trip };
+export {
+	locale,
+	appVersion,
+	maintenance,
+	profile,
+	regions,
+	wearings,
+	ownedWearings,
+	chats,
+	peopleNearBy,
+	trip
+};

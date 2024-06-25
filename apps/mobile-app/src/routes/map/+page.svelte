@@ -62,7 +62,7 @@
 
 	<Dialog
 		bind:open={chooseNext}
-		title={sysState.uiTexts.where_are_you_going}
+		title={sysState.uiTexts.WHERE_ARE_YOU_GOING}
 		class="divide-x divide-black/60"
 	>
 		{#each tripOptions as num}

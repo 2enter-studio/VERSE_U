@@ -7,16 +7,16 @@
 	import { validate } from '@/utils';
 	import { OAUTH_PROVIDERS } from '@/config';
 
-	type FormMode = 'signin' | 'signup' | 'forgot_pwd' | 'change_pwd';
-	type InputType = 'email' | 'password' | 'confirm_password' | 'new_password';
+	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD';
+	type InputType = 'EMAIL' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'NEW_PASSWORD';
 
-	let { formMode = 'signin' }: { formMode?: FormMode } = $props();
+	let { formMode = 'SIGNIN' }: { formMode?: FormMode } = $props();
 
 	const submitMethods: Record<FormMode, Function> = {
-		signin: pwdSignIn,
-		signup: signUp,
-		change_pwd: changePwd,
-		forgot_pwd: forgotPwd
+		SIGNIN: pwdSignIn,
+		SIGNUP: signUp,
+		CHANGE_PWD: changePwd,
+		FORGOT_PWD: forgotPwd
 	} as const;
 
 	let pwd = $state('');
@@ -27,34 +27,34 @@
 
 	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin', 'signup', 'forgot_pwd'] as const));
 	const formChoices = $derived(
-		authState.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin'] as const)
+		authState.loggedIn ? (['CHANGE_PWD', 'FORGOT_PWD'] as const) : (['SIGNIN'] as const)
 	);
 
 	const submittable = $derived(
-		(pwd === pwdConfirm && validate.password(pwd) && formMode === 'signup') ||
-			(pwd.length > 0 && validate.email(email) && formMode === 'signin') ||
+		(pwd === pwdConfirm && validate.password(pwd) && formMode === 'SIGNUP') ||
+			(pwd.length > 0 && validate.email(email) && formMode === 'SIGNIN') ||
 			(pwdNew === pwdConfirm &&
 				validate.password(pwdNew) &&
 				pwdNew !== pwd &&
-				formMode === 'change_pwd') ||
-			(validate.email(email) && formMode === 'forgot_pwd')
+				formMode === 'CHANGE_PWD') ||
+			(validate.email(email) && formMode === 'FORGOT_PWD')
 	);
 
 	const formFields = $derived.by<InputType[]>(() => {
-		if (formMode === 'signin') return ['email', 'password'] as const;
-		else if (formMode === 'signup') return ['email', 'password', 'confirm_password'] as const;
-		else if (formMode === 'forgot_pwd') return ['email'] as const;
-		else if (formMode === 'change_pwd')
-			return ['password', 'new_password', 'confirm_password'] as const;
+		if (formMode === 'SIGNIN') return ['EMAIL', 'PASSWORD'] as const;
+		else if (formMode === 'SIGNUP') return ['EMAIL', 'PASSWORD', 'CONFIRM_PASSWORD'] as const;
+		else if (formMode === 'FORGOT_PWD') return ['EMAIL'] as const;
+		else if (formMode === 'CHANGE_PWD')
+			return ['PASSWORD', 'NEW_PASSWORD', 'CONFIRM_PASSWORD'] as const;
 		return [];
 	});
 
 	async function handleSubmit() {
 		let args: [string] | [string, string];
-		if (formMode === 'signin') args = [email, pwd];
-		else if (formMode === 'signup') args = [email, pwd];
-		else if (formMode === 'forgot_pwd') args = [email];
-		else if (formMode === 'change_pwd') args = [pwd, pwdNew];
+		if (formMode === 'SIGNIN') args = [email, pwd];
+		else if (formMode === 'SIGNUP') args = [email, pwd];
+		else if (formMode === 'FORGOT_PWD') args = [email];
+		else if (formMode === 'CHANGE_PWD') args = [pwd, pwdNew];
 		else return;
 
 		const res = await submitMethods[formMode](...(args as [string, string]));
@@ -75,7 +75,7 @@
 		{#if authState.loggedIn}
 			Account Center
 		{:else}
-			{sysState.uiTexts.welcome}
+			{sysState.uiTexts.WELCOME}
 		{/if}
 	</h1>
 
@@ -106,7 +106,7 @@
 						{sysState.uiTexts[field]}
 					</span>
 				</div>
-				{#if field === 'email'}
+				{#if field === 'EMAIL'}
 					<input
 						id="email"
 						type="email"
@@ -116,7 +116,7 @@
 						required
 					/>
 				{/if}
-				{#if field === 'password'}
+				{#if field === 'PASSWORD'}
 					<div class="flex w-full flex-row items-center gap-1">
 						<input
 							type={pwdVisible ? 'text' : 'password'}
@@ -130,7 +130,7 @@
 						<input type="checkbox" id="pwd-visible" bind:checked={pwdVisible} hidden />
 					</div>
 				{/if}
-				{#if field === 'new_password'}
+				{#if field === 'NEW_PASSWORD'}
 					<input
 						type={pwdVisible ? 'text' : 'password'}
 						class={inputClasses}
@@ -138,7 +138,7 @@
 						required
 					/>
 				{/if}
-				{#if field === 'confirm_password'}
+				{#if field === 'CONFIRM_PASSWORD'}
 					<input
 						type={pwdVisible ? 'text' : 'password'}
 						class={inputClasses}

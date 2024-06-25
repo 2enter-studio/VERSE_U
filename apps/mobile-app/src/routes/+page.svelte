@@ -1,8 +1,5 @@
 <script lang="ts">
-	// import { loggedIn, user_info } from '@/utils/auth';
-	// import Login from '@/components/Login.svelte';
-</script>
+	import { DEFAULT_ROUTE } from '@/config';
 
-<!--<div class="flex flex-col justify-center items-center h-screen gap-5">-->
-<!--	<Login />-->
-<!--</div>-->
+	window.location.assign(DEFAULT_ROUTE);
+</script>

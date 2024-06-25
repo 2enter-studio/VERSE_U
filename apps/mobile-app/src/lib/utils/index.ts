@@ -2,6 +2,8 @@ export * from './storage';
 export * from './ml_texts';
 export * from './time';
 export * from './error';
+export * from './updates';
+export * from './redirect';
 
 export * as load from './load';
 export * as validate from './validate';

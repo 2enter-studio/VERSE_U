@@ -10,8 +10,8 @@
 	import { Chatroom, ChatList, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 
-	const chatTypes = ['friends', 'strangers'] as const;
-	let selectedChatType = $state<(typeof chatTypes)[number]>('strangers');
+	const chatTypes = ['FRIENDS', 'STRANGERS'] as const;
+	let selectedChatType = $state<(typeof chatTypes)[number]>('STRANGERS');
 	let storyUserId = $state('');
 	let startingNewChat = $state(false);
 	let firstMessage = $state('');
@@ -38,7 +38,7 @@
 	<Chatroom />
 {:else}
 	<div class="center-content mb-3 mt-12 flex-col">
-		<h1>{sysState.uiTexts.people_nearby}</h1>
+		<h1>{sysState.uiTexts.PEOPLE_NEARBY}</h1>
 		<div class="flex w-[88vw] flex-row gap-2">
 			{#each gameState.peopleNearBy as person, i}
 				{@const friend = gameState.friendChats.find((f) =>
@@ -99,7 +99,7 @@
 				</label>
 			{/each}
 		</div>
-		{#if selectedChatType === 'friends'}
+		{#if selectedChatType === 'FRIENDS'}
 			<ChatList chatrooms={gameState.friendChats} />
 		{:else}
 			<ChatList chatrooms={gameState.strangerChats} />
@@ -118,8 +118,9 @@
 		onclick={() => {
 			if (firstMessage.trim() === '') return;
 			startChat(storyUserId, firstMessage).then((res) => {
-				if (res?.error) sysState.errorMessage = res.error.message;
-				else {
+				if (res?.error) {
+					sysState.defaultError(res.error.message);
+				} else {
 					startingNewChat = false;
 					storyUserId = '';
 				}

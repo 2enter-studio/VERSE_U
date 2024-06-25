@@ -1,7 +1,8 @@
-import { type Prettify } from '@repo/shared/utils';
+import { inPeriod, type Prettify } from '@repo/shared/utils';
 import { Capacitor } from '@capacitor/core';
 import { DEFAULT_LOCALE, UI_TEXTS, type Locale } from '@/config';
 import { v4 as uuid } from 'uuid';
+import type { Tables } from '@repo/shared/supatypes';
 
 type SystemMessage = {
 	id: string;
@@ -17,6 +18,12 @@ class SystemState {
 	showMenu = $state(true);
 	selfieUpdated = $state(false);
 	locale = $state<Locale>(DEFAULT_LOCALE);
+	now = $state<Date>(new Date());
+	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
+	maintenance = $state<Tables<'maintenance'> | null>(null);
+	readonly maintaining = $derived(
+		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
+	);
 
 	systemMessage = $state<SystemMessage[]>([
 		// {
@@ -32,6 +39,9 @@ class SystemState {
 	]);
 	readonly uiTexts = $state.frozen(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
+	// readonly newVersion = $derived(
+	// 	this.remoteAppVersion?.value === version ? null : this.remoteAppVersion?.value ?? null
+	// );
 
 	addSysMsg(input: Prettify<Omit<SystemMessage, 'created_at' | 'id'>>) {
 		const now = new Date();
@@ -63,5 +73,8 @@ class SystemState {
 }
 
 const sysState = new SystemState();
+setInterval(() => {
+	sysState.now = new Date();
+}, 1000);
 
 export { sysState };
