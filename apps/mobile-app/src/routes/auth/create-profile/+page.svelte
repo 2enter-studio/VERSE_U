@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { authState, generalState } from '@/states';
+	import { authState, sysState } from '@/states';
 	import { createProfile } from '$routes/auth/utils';
 	import { Dialog } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';
@@ -14,10 +14,10 @@
 			console.log(authState.loggedIn, authState.profile);
 			window.location.assign(DEFAULT_ROUTE);
 		}
-		generalState.showMenu = false;
+		sysState.showMenu = false;
 
 		return () => {
-			generalState.showMenu = true;
+			sysState.showMenu = true;
 		};
 	});
 

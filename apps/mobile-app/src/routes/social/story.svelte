@@ -4,7 +4,7 @@
 
 	import { getWearingsByUserId } from '$routes/me/utils';
 	import { UModel } from '@/components';
-	import { generalState } from '@/states';
+	import { sysState } from '@/states';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 
 	type Props = {
@@ -28,9 +28,9 @@
 	}
 
 	onMount(() => {
-		generalState.showMenu = false;
+		sysState.showMenu = false;
 		return () => {
-			generalState.showMenu = true;
+			sysState.showMenu = true;
 		};
 	});
 </script>

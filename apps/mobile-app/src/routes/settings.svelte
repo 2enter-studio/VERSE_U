@@ -5,7 +5,7 @@
 	import { version } from '$app/environment';
 
 	import { Dialog } from '@/components';
-	import { authState, generalState } from '@/states';
+	import { authState, sysState } from '@/states';
 	import { modifyProfile, signOut } from '$routes/auth/utils';
 	import { preferences } from '@/utils';
 
@@ -16,10 +16,10 @@
 
 	let values = $state({
 		profile: deepClone(authState.profile),
-		locale: generalState.locale
+		locale: sysState.locale
 	});
 	const submittable = $derived(
-		JSON.stringify({ profile: authState.profile, locale: generalState.locale }) !==
+		JSON.stringify({ profile: authState.profile, locale: sysState.locale }) !==
 			JSON.stringify(values) && values.profile?.name.trim() !== ''
 	);
 
@@ -29,7 +29,7 @@
 	});
 	async function save() {
 		if (!submittable) return;
-		const localeChanged = values.locale !== generalState.locale;
+		const localeChanged = values.locale !== sysState.locale;
 		const profileChanged = JSON.stringify(authState.profile) !== JSON.stringify(values.profile);
 
 		if (localeChanged) {
@@ -38,7 +38,9 @@
 
 		if (values.profile && profileChanged) {
 			const res = await modifyProfile({ name: values.profile.name });
-			if (res?.error) generalState.errorMessage = res.error.message;
+			if (res?.error) {
+				sysState.defaultError(res.error.message);
+			}
 		}
 
 		if (localeChanged) {
@@ -52,20 +54,20 @@
 
 <Dialog
 	bind:open
-	title={generalState.uiTexts.settings}
+	title={sysState.uiTexts.SETTINGS}
 	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
 >
 	current url: {$page.url.href}
 	<div class="flex flex-row gap-2">
-		{generalState.uiTexts.version}: {version}
+		{sysState.uiTexts.VERSION}: {version}
 		<button onclick={signOut} class="flex flex-row bg-black text-white">
-			{generalState.uiTexts.signout}
+			{sysState.uiTexts.SIGNOUT}
 			<Icon icon="mdi:exit-run" class="text-xl" />
 		</button>
 	</div>
 	<div class="flex flex-col text-black">
 		<div class="center-content flex-row gap-2">
-			<h2>{generalState.uiTexts.profile}</h2>
+			<h2>{sysState.uiTexts.PROFILE}</h2>
 			<div class="flex w-fit flex-row rounded-sm bg-gray-600 px-1 text-xs text-white/80">
 				{authState.profile?.public_id}
 				<button
@@ -83,7 +85,7 @@
 					for="my-name"
 					class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900"
 				>
-					{generalState.uiTexts.name}
+					{sysState.uiTexts.NAME}
 				</label>
 				<input
 					id="my-name"
@@ -97,14 +99,14 @@
 		{/if}
 	</div>
 	<div class="center-content flex-col">
-		<h2>{generalState.uiTexts.system}</h2>
+		<h2>{sysState.uiTexts.SYSTEM}</h2>
 		<div class="flex flex-row">
-			<h3>{generalState.uiTexts.language}</h3>
+			<h3>{sysState.uiTexts.LANGUAGE}</h3>
 			{#each LOCALES as lang}
 				{@const selected = lang === values.locale}
 				<input id="{lang}-option" type="radio" value={lang} bind:group={values.locale} hidden />
 				<label for="{lang}-option" class="{selected ? 'bg-black text-white' : ''} px-1">
-					{UI_TEXTS[lang].locale}
+					{UI_TEXTS[lang].LOCALE}
 				</label>
 			{/each}
 		</div>

@@ -1,41 +1,35 @@
-const errorKeys = [
-	'ERROR_UNKNOWN',
-	'ERROR_INVALID_EMAIL',
-	'ERROR_INVALID_PASSWORD',
-	'ERROR_INVALID_UUID',
-	'ERROR_CANNOT_LOAD_REGIONS',
-	'ERROR_CANNOT_LOAD_WEARINGS'
+const TEXT_CODES = [
+	'VERSION',
+	'LOCALE',
+	'LANGUAGE',
+	'ERROR',
+	'WARNING',
+	'SUCCESS',
+	'SETTINGS',
+	'FRIENDS',
+	'STRANGERS',
+	'PEOPLE_NEARBY',
+	'PROFILE',
+	'SYSTEM',
+	'EMAIL',
+	'NAME',
+	'SIGNIN',
+	'SIGNOUT',
+	'SIGNUP',
+	'PASSWORD',
+	'CONFIRM_EXECUTION',
+	'CONFIRM_PASSWORD',
+	'NEW_PASSWORD',
+	'FORGOT_PWD',
+	'CHANGE_PWD',
+	'WELCOME',
+	'WHERE_ARE_YOU_GOING',
+	'UNKNOWN_ERROR',
+	'INVALID_DATA_INPUT',
+	'FAILED_TO_LOAD_DATA'
 ] as const;
 
-const keys = [
-	'version',
-	'locale',
-	'language',
-	'error',
-	'settings',
-	'friends',
-	'strangers',
-	'people_nearby',
-	'profile',
-	'system',
-	'email',
-	'name',
-	'signin',
-	'signout',
-	'signup',
-	'password',
-	'confirm_password',
-	'new_password',
-	'forgot_pwd',
-	'change_pwd',
-	'welcome',
-	'where_are_you_going'
-	// ...errorKeys
-] as const;
-
-type ErrorCode = (typeof errorKeys)[number];
-type TextCode = (typeof keys)[number];
-type ErrorUITextTable = Record<ErrorCode, string>;
+type TextCode = (typeof TEXT_CODES)[number];
 type UITextTable = Record<TextCode, string>;
 
-export type { ErrorCode, TextCode, ErrorUITextTable, UITextTable };
+export type { TextCode, UITextTable };

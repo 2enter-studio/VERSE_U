@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { generalState } from '@/states';
+import { sysState } from '@/states';
 
 async function getMLTexts(row_ids: string[], column_names: string[]) {
 	const { data, error } = await db
@@ -7,7 +7,7 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 		.select('*')
 		.in('row_id', row_ids)
 		.in('column_name', column_names)
-		.eq('locale', generalState.locale)
+		.eq('locale', sysState.locale)
 		.returns<{ value: string; row_id: string; column_name: string }[]>();
 	if (error) {
 		// console.error(error.message);

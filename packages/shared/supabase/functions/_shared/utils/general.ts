@@ -10,6 +10,36 @@ function snakeCaseToCapitalize(text: string) {
     .join(' ');
 }
 
+function genRandomTexts(
+  length: number,
+  options: { num?: boolean; uppercase?: boolean; lowercase?: boolean; symbol?: boolean } = {
+    num: true,
+    uppercase: true,
+    lowercase: true,
+    symbol: false
+  }
+) {
+  const charsets = {
+    num: '0123456789',
+    uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    lowercase: 'abcdefghijklmnopqrstuvwxyz',
+    symbol: '!@#$%^&*()'
+  } as const;
+
+  const charset = Object.entries(charsets)
+    .filter(([key, _]) => options?.[key as 'num' | 'uppercase' | 'lowercase' | 'symbol'])
+    .map((o) => o[1])
+    .join('');
+
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    result += charset[Math.floor(Math.random() * charset.length)];
+  }
+
+  return result;
+}
+
 function genRandomNumbers(range: number, amount: number): number[] {
   const result: number[] = Array.from(Array(range).keys());
   if (amount < range) {
@@ -48,6 +78,7 @@ export {
   getDuration,
   addTime,
   genRandomNumbers,
+  genRandomTexts,
   snakeCaseToCapitalize,
   typeOverRide,
   deepClone
