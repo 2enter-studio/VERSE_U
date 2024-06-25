@@ -38,7 +38,7 @@
 				<button
 					class="bg-red-800 px-1 text-sm text-white"
 					onclick={async () => {
-						if (callback) await sysState.process(callback)
+						if (callback) await sysState.process(callback);
 						sysState.delSysMsg(id);
 					}}
 				>
@@ -47,6 +47,8 @@
 			{/if}
 		</Dialog>
 	{:else if display === 'side'}
-		{message}
+		<div class="fixed right-0 top-0 bg-black text-white px-1">
+			{message}
+		</div>
 	{/if}
 {/each}

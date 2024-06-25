@@ -19,16 +19,16 @@ class SystemState {
 	locale = $state<Locale>(DEFAULT_LOCALE);
 
 	systemMessage = $state<SystemMessage[]>([
-		{
-			id: uuid(),
-			created_at: new Date(),
-			display: 'popout',
-			type: 'WARNING',
-			message: 'Fuck you',
-			callback: () => {
-				console.log('fuck you ');
-			}
-		}
+		// {
+		// 	id: uuid(),
+		// 	created_at: new Date(),
+		// 	display: 'side',
+		// 	type: 'WARNING',
+		// 	message: 'Fuck you',
+		// 	callback: () => {
+		// 		console.log('fuck you ');
+		// 	}
+		// }
 	]);
 	readonly uiTexts = $state.frozen(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
