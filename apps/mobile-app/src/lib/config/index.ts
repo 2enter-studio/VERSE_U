@@ -27,6 +27,7 @@ const MAP_SIZE = 3200;
 const FRAME_RATE = 12;
 const DEFAULT_CAMERA_POS = [0, 2.0, 2.0] as const;
 const ZOOM_IN_CAMERA_POS = [0, 2.3, 0.5] as const;
+const SYS_MSG_LIFE_TIME = 5000;
 
 export {
 	UI_TEXTS,
@@ -39,7 +40,8 @@ export {
 	MAP_SIZE,
 	FRAME_RATE,
 	DEFAULT_CAMERA_POS,
-	ZOOM_IN_CAMERA_POS
+	ZOOM_IN_CAMERA_POS,
+	SYS_MSG_LIFE_TIME,
 };
 
 export type { Locale, OAuthProvider, BucketName, CharacterAnimation };
