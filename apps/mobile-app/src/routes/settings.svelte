@@ -54,20 +54,20 @@
 
 <Dialog
 	bind:open
-	title={sysState.uiTexts.settings}
+	title={sysState.uiTexts.SETTINGS}
 	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
 >
 	current url: {$page.url.href}
 	<div class="flex flex-row gap-2">
-		{sysState.uiTexts.version}: {version}
+		{sysState.uiTexts.VERSION}: {version}
 		<button onclick={signOut} class="flex flex-row bg-black text-white">
-			{sysState.uiTexts.signout}
+			{sysState.uiTexts.SIGNOUT}
 			<Icon icon="mdi:exit-run" class="text-xl" />
 		</button>
 	</div>
 	<div class="flex flex-col text-black">
 		<div class="center-content flex-row gap-2">
-			<h2>{sysState.uiTexts.profile}</h2>
+			<h2>{sysState.uiTexts.PROFILE}</h2>
 			<div class="flex w-fit flex-row rounded-sm bg-gray-600 px-1 text-xs text-white/80">
 				{authState.profile?.public_id}
 				<button
@@ -85,7 +85,7 @@
 					for="my-name"
 					class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900"
 				>
-					{sysState.uiTexts.name}
+					{sysState.uiTexts.NAME}
 				</label>
 				<input
 					id="my-name"
@@ -99,14 +99,14 @@
 		{/if}
 	</div>
 	<div class="center-content flex-col">
-		<h2>{sysState.uiTexts.system}</h2>
+		<h2>{sysState.uiTexts.SYSTEM}</h2>
 		<div class="flex flex-row">
-			<h3>{sysState.uiTexts.language}</h3>
+			<h3>{sysState.uiTexts.LANGUAGE}</h3>
 			{#each LOCALES as lang}
 				{@const selected = lang === values.locale}
 				<input id="{lang}-option" type="radio" value={lang} bind:group={values.locale} hidden />
 				<label for="{lang}-option" class="{selected ? 'bg-black text-white' : ''} px-1">
-					{UI_TEXTS[lang].locale}
+					{UI_TEXTS[lang].LOCALE}
 				</label>
 			{/each}
 		</div>
