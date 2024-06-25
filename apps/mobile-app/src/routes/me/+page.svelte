@@ -107,8 +107,9 @@
 		<button
 			onclick={async () => {
 				const res = await uploadSelfie(selfieUrl.split('base64,')[1]);
-				if (res?.error) generalState.errorMessage = res.error.message;
-				else {
+				if (res?.error) {
+					generalState.defaultError(res.error.message);
+				} else {
 					console.log('selfie uploaded');
 				}
 				generalState.selfieUpdated = true;

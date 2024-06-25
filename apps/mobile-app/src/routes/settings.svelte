@@ -38,7 +38,9 @@
 
 		if (values.profile && profileChanged) {
 			const res = await modifyProfile({ name: values.profile.name });
-			if (res?.error) generalState.errorMessage = res.error.message;
+			if (res?.error) {
+				generalState.defaultError(res.error.message);
+			}
 		}
 
 		if (localeChanged) {

@@ -76,7 +76,9 @@
 						<button
 							onclick={async () => {
 								const res = await buyWearing(wearing.id);
-								if (res?.error) generalState.errorMessage = res.error.message;
+								if (res?.error) {
+									generalState.defaultError(res.error.message);
+								}
 							}}
 						>
 							<Icon icon="fa6-solid:cart-plus" />

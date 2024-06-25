@@ -60,7 +60,7 @@
 		const res = await submitMethods[formMode](...(args as [string, string]));
 		if (res?.error) {
 			console.error(res.error);
-			generalState.errorMessage = res.error.message;
+			generalState.defaultError(res.error.message);
 			return;
 		}
 		window.location.assign('/map');
