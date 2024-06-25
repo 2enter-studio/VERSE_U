@@ -11,9 +11,8 @@
 	import { db } from '@/db';
 	import { load, preferences } from '@/utils';
 	import { authState, gameState, generalState } from '@/states';
-	import { Error, Login, Menu, MyProfile, SideMenu } from './';
+	import { Login, Menu, MyProfile, SideMenu, SystemMessage } from './';
 	import { DEFAULT_ROUTE } from '@/config';
-	// import { Notifications } from './index.js';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
@@ -126,7 +125,7 @@
 	{/if}
 </div>
 
-<Error />
+<SystemMessage />
 
 <!--<div class="fixed right-1 top-1">-->
 <!--	<Notifications />-->
