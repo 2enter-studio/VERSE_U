@@ -11,7 +11,7 @@ const table: UITextTable = {
 	PEOPLE_NEARBY: 'People nearby',
 	PROFILE: 'Profile',
 	SYSTEM: 'System',
-	EMAIL: 'email',
+	EMAIL: 'E-mail',
 	NAME: 'Name',
 	SIGNIN: 'SignIn',
 	SIGNOUT: 'SignOut',
