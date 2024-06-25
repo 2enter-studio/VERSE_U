@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { authState, generalState } from '@/states';
+	import { authState, sysState } from '@/states';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
 	import { validate } from '@/utils';
 	import { OAUTH_PROVIDERS } from '@/config';
@@ -60,7 +60,7 @@
 		const res = await submitMethods[formMode](...(args as [string, string]));
 		if (res?.error) {
 			console.error(res.error);
-			generalState.defaultError(res.error.message);
+			sysState.defaultError(res.error.message);
 			return;
 		}
 		window.location.assign('/map');
@@ -75,7 +75,7 @@
 		{#if authState.loggedIn}
 			Account Center
 		{:else}
-			{generalState.uiTexts.welcome}
+			{sysState.uiTexts.welcome}
 		{/if}
 	</h1>
 
@@ -90,7 +90,7 @@
 					? 'bg-gradient-to-l from-white/80 to-white text-black'
 					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-xs transition-colors duration-200"
 			>
-				{generalState.uiTexts[choice]}
+				{sysState.uiTexts[choice]}
 			</label>
 		{/each}
 	</div>
@@ -103,7 +103,7 @@
 			<div transition:slide={{ duration: 500 }} class="flex w-full flex-col">
 				<div class="flex w-full items-end text-left">
 					<span class="py-0.5 pl-0.5">
-						{generalState.uiTexts[field]}
+						{sysState.uiTexts[field]}
 					</span>
 				</div>
 				{#if field === 'email'}

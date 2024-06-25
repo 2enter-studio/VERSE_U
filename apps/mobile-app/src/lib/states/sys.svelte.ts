@@ -12,7 +12,7 @@ type SystemMessage = {
 	callback?: Function;
 };
 
-class GeneralState {
+class SystemState {
 	processing = $state(false);
 	showMenu = $state(true);
 	selfieUpdated = $state(false);
@@ -62,6 +62,6 @@ class GeneralState {
 	}
 }
 
-const generalState = new GeneralState();
+const sysState = new SystemState();
 
-export { generalState };
+export { sysState };

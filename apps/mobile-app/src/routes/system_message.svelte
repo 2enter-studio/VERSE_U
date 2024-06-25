@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { Dialog } from '@/components';
-	import { generalState } from '@/states';
+	import { sysState } from '@/states';
 	import { onMount } from 'svelte';
 	import { SYS_MSG_LIFE_TIME } from '@/config';
 
-	$inspect(generalState.systemMessage);
+	$inspect(sysState.systemMessage);
 
 	onMount(() => {
 		const interval = setInterval(() => {
-			for (const { id, created_at } of generalState.systemMessage.filter(
+			for (const { id, created_at } of sysState.systemMessage.filter(
 				(m) => m.display !== 'popout'
 			)) {
 				const now = new Date().getTime();
 				if (created_at.getTime() < now - SYS_MSG_LIFE_TIME) {
-					generalState.delSysMsg(id);
+					sysState.delSysMsg(id);
 				}
 			}
 		}, 1000);
@@ -23,13 +23,13 @@
 	});
 </script>
 
-{#each generalState.systemMessage as { id, created_at, message, type, display, callback } (created_at)}
+{#each sysState.systemMessage as { id, created_at, message, type, display, callback } (created_at)}
 	{#if display === 'popout'}
 		<Dialog
-			title={generalState.uiTexts[type]}
+			title={sysState.uiTexts[type]}
 			open
 			onclose={() => {
-				generalState.delSysMsg(id);
+				sysState.delSysMsg(id);
 			}}
 			class="center-content flex-col text-black"
 		>
@@ -38,11 +38,11 @@
 				<button
 					class="bg-red-800 px-1 text-sm text-white"
 					onclick={async () => {
-						if (callback) await generalState.process(callback)
-						generalState.delSysMsg(id);
+						if (callback) await sysState.process(callback)
+						sysState.delSysMsg(id);
 					}}
 				>
-					{generalState.uiTexts.CONFIRM_EXECUTION}
+					{sysState.uiTexts.CONFIRM_EXECUTION}
 				</button>
 			{/if}
 		</Dialog>

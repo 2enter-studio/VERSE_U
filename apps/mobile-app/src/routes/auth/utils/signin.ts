@@ -3,12 +3,12 @@ import { page } from '$app/stores';
 
 import { db } from '@/db';
 import type { OAuthProvider } from '@/config';
-import { generalState } from '@/states';
+import { sysState } from '@/states';
 import { createError, validate } from '@/utils';
 
 async function providerSignIn(provider: OAuthProvider) {
 	const options = {
-		redirectTo: generalState.platform === 'web' ? get(page).url.origin : 'verseuapp://'
+		redirectTo: sysState.platform === 'web' ? get(page).url.origin : 'verseuapp://'
 	};
 	const { error } = await db.auth.signInWithOAuth({ provider, options });
 	if (error) return { error };

@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { sendMessage } from './utils';
-	import { generalState } from '@/states';
+	import { sysState } from '@/states';
 
 	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } =
 		$props();
@@ -10,17 +10,17 @@
 	let content = $state('');
 	let textAreaDom: HTMLTextAreaElement;
 
-	const submittable = $derived(!generalState.processing && content.trim() !== '');
+	const submittable = $derived(!sysState.processing && content.trim() !== '');
 
 	async function send() {
-		generalState.processing = true;
+		sysState.processing = true;
 		const result = await sendMessage(content);
 		if ('error' in result) {
 			console.error(result.error);
 		} else {
 			content = '';
 		}
-		generalState.processing = false;
+		sysState.processing = false;
 		setHeight(true);
 		onsend();
 	}

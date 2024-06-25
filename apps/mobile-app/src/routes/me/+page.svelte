@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { gameState, generalState } from '@/states';
+	import { gameState, sysState } from '@/states';
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
@@ -108,11 +108,11 @@
 			onclick={async () => {
 				const res = await uploadSelfie(selfieUrl.split('base64,')[1]);
 				if (res?.error) {
-					generalState.defaultError(res.error.message);
+					sysState.defaultError(res.error.message);
 				} else {
 					console.log('selfie uploaded');
 				}
-				generalState.selfieUpdated = true;
+				sysState.selfieUpdated = true;
 				selfieUrl = '';
 			}}
 		>

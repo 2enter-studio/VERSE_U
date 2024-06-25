@@ -1,5 +1,5 @@
 export * from './auth.svelte';
-export * from './general.svelte';
+export * from './sys.svelte.js';
 export * from './game.svelte';
 //
 // export * from './chat';

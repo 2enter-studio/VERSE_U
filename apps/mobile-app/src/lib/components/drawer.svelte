@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { generalState } from '@/states';
+	import { sysState } from '@/states';
 
 	type Props = { children: Snippet; class?: string; open: boolean; onclose?: () => void };
 	let { children, class: className, open = $bindable(false), onclose }: Props = $props();
@@ -12,9 +12,9 @@
 		open = false;
 	}
 	onMount(() => {
-		generalState.showMenu = false;
+		sysState.showMenu = false;
 		return () => {
-			generalState.showMenu = true;
+			sysState.showMenu = true;
 		};
 	});
 </script>

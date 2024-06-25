@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getFileUrl } from '@/utils';
-	import { generalState } from '@/states';
+	import { sysState } from '@/states';
 	import type { Tables } from '@repo/shared/supatypes';
 
 	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };
@@ -15,10 +15,10 @@
 
 	if (!readonly) {
 		$effect(() => {
-			if (generalState.selfieUpdated) {
+			if (sysState.selfieUpdated) {
 				setTimeout(() => {
 					reloadSelfie();
-					generalState.selfieUpdated = false;
+					sysState.selfieUpdated = false;
 				}, 1000);
 			}
 		});

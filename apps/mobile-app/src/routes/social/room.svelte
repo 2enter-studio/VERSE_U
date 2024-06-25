@@ -4,7 +4,7 @@
 
 	import { agreeFriendShip, getMemberFromChat } from './utils';
 	import { ChatMessageBubble, ChatInput } from './';
-	import { authState, generalState, gameState } from '@/states';
+	import { authState, sysState, gameState } from '@/states';
 	import { Avatar } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
@@ -15,9 +15,9 @@
 	onMount(() => {
 		if (!gameState.chat_id || !authState.user?.id) return;
 		onsend();
-		generalState.showMenu = false;
+		sysState.showMenu = false;
 		return () => {
-			generalState.showMenu = true;
+			sysState.showMenu = true;
 		};
 	});
 
@@ -49,7 +49,7 @@
 					onclick={async () => {
 						const result = await agreeFriendShip();
 						if (result?.error) {
-							generalState.errorMessage = result.error.message;
+							sysState.errorMessage = result.error.message;
 							console.error(result.error);
 						} else console.log('yeah!');
 					}}
