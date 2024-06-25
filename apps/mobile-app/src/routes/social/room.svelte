@@ -49,8 +49,7 @@
 					onclick={async () => {
 						const result = await agreeFriendShip();
 						if (result?.error) {
-							sysState.errorMessage = result.error.message;
-							console.error(result.error);
+							sysState.defaultError(result.error.message);
 						} else console.log('yeah!');
 					}}
 				>

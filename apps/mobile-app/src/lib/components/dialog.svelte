@@ -15,9 +15,9 @@
 	let {
 		children,
 		title,
-		open = $bindable<boolean>(),
 		class: className,
 		closable = true,
+		open = $bindable<boolean>(),
 		onclose
 	}: Props = $props();
 

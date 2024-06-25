@@ -1,5 +1,6 @@
 const TABLE_NAMES = [
 	'app_versions',
+	'maintenance',
 	'regions',
 	'wearings',
 	'meshes',
@@ -92,10 +93,17 @@ const TABLES_INFO: TableInfo = {
 			...ID,
 			...CREATED_AT,
 			...VALUE,
-			maintenance_start: {
+			...NAME_AND_DESCRIPTION
+		}
+	},
+	maintenance: {
+		description: '系統維護',
+		metadata: {
+			...ID,
+			start: {
 				type: 'datetime'
 			},
-			maintenance_end: {
+			end: {
 				type: 'datetime'
 			},
 			...NAME_AND_DESCRIPTION

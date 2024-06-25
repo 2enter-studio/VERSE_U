@@ -13,22 +13,16 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          maintenance_end: string | null
-          maintenance_start: string | null
           value: string
         }
         Insert: {
           created_at?: string
           id?: string
-          maintenance_end?: string | null
-          maintenance_start?: string | null
           value?: string
         }
         Update: {
           created_at?: string
           id?: string
-          maintenance_end?: string | null
-          maintenance_start?: string | null
           value?: string
         }
         Relationships: []
@@ -388,6 +382,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      maintenance: {
+        Row: {
+          end: string
+          id: string
+          start: string
+        }
+        Insert: {
+          end?: string
+          id?: string
+          start?: string
+        }
+        Update: {
+          end?: string
+          id?: string
+          start?: string
+        }
+        Relationships: []
       }
       meshes: {
         Row: {

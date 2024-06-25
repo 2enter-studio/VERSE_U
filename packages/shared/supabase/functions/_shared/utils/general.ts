@@ -59,12 +59,28 @@ function getDuration(dist: number) {
   return MAX_TRAVEL_TIME * dist;
 }
 
-function addTime(base: string | Date, add: number) {
-  const startTime = typeof base === 'string' ? new Date(base).getTime() : base.getTime();
+// Time related
+type DateInput = Date | string | number;
+
+function inPeriod(start: DateInput, end: DateInput, target: DateInput) {
+  const startTime = new Date(start).getTime();
+  const endTime = new Date(end).getTime();
+  const targetTime = new Date(target).getTime();
+
+  if (targetTime < endTime && targetTime > startTime) {
+    return endTime - targetTime;
+  } else {
+    return null;
+  }
+}
+
+function addTime(base: DateInput, add: number) {
+  const startTime = new Date(base).getTime();
   const arriveTime = startTime + add;
   return new Date(arriveTime).toISOString();
 }
 
+// Type related
 const typeOverRide = <T>(input: any) => input as T;
 
 type Prettify<T> = {
@@ -77,6 +93,7 @@ export {
   dist,
   getDuration,
   addTime,
+  inPeriod,
   genRandomNumbers,
   genRandomTexts,
   snakeCaseToCapitalize,

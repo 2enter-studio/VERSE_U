@@ -9,27 +9,21 @@
 	import Icon from '@iconify/svelte';
 
 	import { db } from '@/db';
-	import { load, preferences } from '@/utils';
-	import { authState, gameState, sysState } from '@/states';
+	import { load, redirectTo } from '@/utils';
+	import { authState, sysState } from '@/states';
 	import { Login, Menu, MyProfile, SideMenu, SystemMessage } from './';
-	import { DEFAULT_ROUTE } from '@/config';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
-	$inspect(gameState.wearingTypes);
 
 	let loaded = $state(false);
 
 	async function init() {
-		sysState.locale = await preferences.locale.get();
+		await load.locale();
+		if (sysState.maintaining) return;
 
 		if (authState.loggedIn) {
 			await load.regions();
-
-			if (!authState.profile && $page.url.pathname !== '/auth/create-profile') {
-				console.log('profile not found');
-				window.location.assign('/auth/create-profile');
-			}
 
 			if (authState.profile) {
 				await load.trip();
@@ -37,11 +31,9 @@
 				await load.chats();
 				await load.wearings();
 				await load.ownedWearings();
+			} else {
+				redirectTo('/auth/create-profile');
 			}
-		}
-
-		if ($page.url.pathname !== DEFAULT_ROUTE && !$page.url.pathname.includes('/auth')) {
-			window.location.assign(DEFAULT_ROUTE);
 		}
 	}
 
