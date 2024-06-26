@@ -4,7 +4,7 @@ import { createError, load } from '@/utils';
 
 async function buyWearing(wearing_id: string) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('You must be logged in to buy wearings');
+	if (!user_id) return createError('MUST_SIGNIN_FIRST');
 
 	const { data, error } = await db
 		.from('owned_wearings')
@@ -25,7 +25,7 @@ async function buyWearing(wearing_id: string) {
 
 async function equipWearings(wearing_ids: string[]) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('You must be logged in to equip wearings');
+	if (!user_id) return createError('MUST_SIGNIN_FIRST');
 
 	// un-equip all wearings
 	const { error } = await db

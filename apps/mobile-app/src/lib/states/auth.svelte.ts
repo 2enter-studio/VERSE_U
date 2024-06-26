@@ -29,7 +29,7 @@ class AuthState {
 
 		// Get auth id via session
 		const user_id = this.session?.user?.id;
-		if (!user_id) return createError('no user found');
+		if (!user_id) return createError('USER_NOT_FOUND');
 
 		// Use this syntax to prevent issue caused by await call
 		// https://supabase.com/docs/reference/javascript/auth-onauthstatechange

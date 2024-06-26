@@ -32,7 +32,7 @@ async function appVersion() {
 	const { data, error } = await db
 		.from('app_versions')
 		.select()
-		.order('created_at', {ascending: false})
+		.order('created_at', { ascending: false })
 		.returns<Tables<'app_versions'>[]>()
 		.limit(1)
 		.single();
@@ -53,7 +53,7 @@ async function appVersion() {
 
 async function profile(user_id?: string) {
 	if (!user_id) user_id = authState.user?.id;
-	if (!user_id) return createError('No auth found');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
 	const { data, error } = await db
 		.from('profiles')
@@ -94,7 +94,7 @@ async function wearings() {
 
 async function ownedWearings() {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('NO_USER_FOUND');
+	if (!user_id) return createError('USER_NOT_FOUND');
 	const { data, error } = await db
 		.from('owned_wearings')
 		.select('wearing,equipped')
@@ -112,7 +112,7 @@ async function ownedWearings() {
 
 async function chats(chat_ids?: string[]) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('NO_USER_FOUND');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
 	const reload = chat_ids === undefined;
 
@@ -126,7 +126,7 @@ async function chats(chat_ids?: string[]) {
 		gameState.chats = data;
 	} else {
 		// validate chat ids
-		if (chat_ids.some((id) => !validate.uuid(id))) return createError('invalid chat id');
+		if (chat_ids.some((id) => !validate.uuid(id))) return createError('CHAT_NOT_FOUND');
 
 		const { data, error } = await db
 			.from('chats')
@@ -141,7 +141,7 @@ async function chats(chat_ids?: string[]) {
 
 async function trip() {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('NO_USER_FOUND');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
 	const { data, error } = await db
 		.from('trips')
@@ -156,8 +156,8 @@ async function trip() {
 
 async function peopleNearBy() {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('NO_USER_FOUND');
-	if (!gameState.trip) return createError('NO_TRIP_FOUND');
+	if (!user_id) return createError('USER_NOT_FOUND');
+	if (!gameState.trip) return createError('TRIP_NOT_FOUND');
 
 	const { trip } = gameState;
 	if (new Date(trip.arrive_at).getTime() > new Date().getTime()) {

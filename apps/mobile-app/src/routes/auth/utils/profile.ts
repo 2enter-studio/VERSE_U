@@ -7,9 +7,9 @@ import { createError } from '@/utils';
 
 async function createProfile(value: { name: string }) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('NO_USER_FOUND');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
-	if (gameState.regions.length === 0) return createError('NO_REGION_FOUND');
+	if (gameState.regions.length === 0) return createError('FAILED_TO_LOAD_DATA');
 
 	const { data: profileData, error: profileError } = await db
 		.from('profiles')
@@ -50,7 +50,7 @@ async function createProfile(value: { name: string }) {
 
 async function modifyProfile(value: { name: string }) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('No auth found');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
 	const { data, error } = await db
 		.from('profiles')
