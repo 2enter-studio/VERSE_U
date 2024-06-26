@@ -35,7 +35,7 @@
 				redirectTo('/auth/create-profile');
 			}
 		} else {
-			redirectTo('/auth/account')
+			redirectTo('/auth/account');
 		}
 	}
 
@@ -84,7 +84,7 @@
 	}
 </script>
 
-<!--<div class="fixed top-20">{$page.url.pathname}</div>-->
+<SystemMessage />
 
 <div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
 	{#if authState.loggedIn}
@@ -114,8 +114,6 @@
 		</div>
 	{/if}
 </div>
-
-<SystemMessage />
 
 <style>
 	#layout {
