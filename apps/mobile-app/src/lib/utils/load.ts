@@ -63,8 +63,7 @@ async function profile(user_id?: string) {
 		.single();
 
 	if (error) {
-		console.error(error.message);
-		return { error };
+		return createError('FAILED_TO_LOAD_DATA');
 	}
 
 	authState.profile = data;
@@ -72,7 +71,7 @@ async function profile(user_id?: string) {
 
 async function regions() {
 	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();
-	if (error) return { error };
+	if (error) return createError('FAILED_TO_LOAD_DATA');
 	gameState.regions = await assignMLTexts(data, ['name', 'description'] as const);
 }
 
@@ -80,7 +79,9 @@ async function wearings() {
 	const { data, error } = await db
 		.from('wearings')
 		.select('*, category(*), texture_types(*), body_parts(*)');
-	if (error) return { error };
+
+	if (error) return createError('FAILED_TO_LOAD_DATA');
+
 	gameState.wearings = (await assignMLTexts(data, ['name', 'description'] as const)) as Wearing[];
 
 	const wearingTypes: Tables<'wearing_types'>[] = [];
@@ -100,7 +101,7 @@ async function ownedWearings() {
 		.select('wearing,equipped')
 		.returns<{ wearing: string; equipped: boolean }[]>();
 
-	if (error) return { error };
+	if (error) return createError('FAILED_TO_LOAD_DATA');
 
 	gameState.ownedWearings = data.map(({ wearing, equipped }) => {
 		return {
@@ -122,7 +123,8 @@ async function chats(chat_ids?: string[]) {
 			.select('*, chat_members(*, user(*)), chat_messages(*)')
 			.returns<Chatroom[]>();
 
-		if (error) return { error };
+		if (error) return createError('FAILED_TO_LOAD_DATA');
+
 		gameState.chats = data;
 	} else {
 		// validate chat ids
@@ -134,7 +136,8 @@ async function chats(chat_ids?: string[]) {
 			.in('id', chat_ids)
 			.returns<Chatroom[]>();
 
-		if (error) return { error };
+		if (error) return createError('FAILED_TO_LOAD_DATA');
+
 		gameState.chats = gameState.chats.concat(data);
 	}
 }
@@ -150,7 +153,8 @@ async function trip() {
 		.returns<Tables<'trips'>[]>()
 		.single();
 
-	if (error) return { error };
+	if (error) return createError('FAILED_TO_LOAD_DATA');
+
 	gameState.trip = data;
 }
 
@@ -173,7 +177,7 @@ async function peopleNearBy() {
 		.eq('to', trip.to)
 		.returns<{ user: Tables<'profiles'> }[]>();
 
-	if (error) return { error };
+	if (error) return createError('FAILED_TO_LOAD_DATA');
 
 	gameState.peopleNearBy = data.map((d) => d.user);
 }

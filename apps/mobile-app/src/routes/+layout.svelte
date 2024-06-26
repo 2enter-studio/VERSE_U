@@ -12,6 +12,7 @@
 	import { load, redirectTo } from '@/utils';
 	import { authState, sysState } from '@/states';
 	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
+	import type { TextCode } from '@/config/ui_texts/types';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
@@ -26,11 +27,14 @@
 			await load.regions();
 
 			if (authState.profile) {
-				await load.trip();
-				await load.peopleNearBy();
-				await load.chats();
-				await load.wearings();
-				await load.ownedWearings();
+				const keywords = ['trip', 'peopleNearBy', 'chats', 'wearings', 'ownedWearings'] as const;
+
+				for (const key of keywords) {
+					const result = await load[key]();
+					if (result && result?.error) {
+						sysState.defaultError(result.error.message as TextCode);
+					}
+				}
 			} else {
 				redirectTo('/auth/create-profile');
 			}

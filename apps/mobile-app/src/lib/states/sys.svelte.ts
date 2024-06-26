@@ -40,7 +40,7 @@ class SystemState {
 		// 	}
 		// }
 	]);
-	readonly uiTexts = $state.frozen(UI_TEXTS[this.locale]);
+	readonly uiTexts = $derived(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
 	// readonly newVersion = $derived(
 	// 	this.remoteAppVersion?.value === version ? null : this.remoteAppVersion?.value ?? null

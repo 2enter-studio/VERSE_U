@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { deepClone } from '@repo/shared/utils';
-	import { page } from '$app/stores';
 	import { version } from '$app/environment';
 
+	import type { TextCode } from '@/config/ui_texts/types';
 	import { Dialog } from '@/components';
 	import { authState, sysState } from '@/states';
 	import { modifyProfile, signOut } from '$routes/auth/utils';
@@ -39,7 +39,7 @@
 		if (values.profile && profileChanged) {
 			const res = await modifyProfile({ name: values.profile.name });
 			if (res?.error) {
-				sysState.defaultError(res.error.message);
+				sysState.defaultError(res.error.message as TextCode);
 			}
 		}
 
@@ -57,7 +57,6 @@
 	title={sysState.uiTexts.SETTINGS}
 	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
 >
-	current url: {$page.url.href}
 	<div class="flex flex-row gap-2">
 		{sysState.uiTexts.VERSION}: {version}
 		<button onclick={signOut} class="flex flex-row bg-black text-white">
