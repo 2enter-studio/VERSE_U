@@ -4,6 +4,7 @@ export * from './time';
 export * from './error';
 export * from './updates';
 export * from './redirect';
+export * from './subscribe';
 
 export * as load from './load';
 export * as validate from './validate';
