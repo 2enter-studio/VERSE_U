@@ -24,10 +24,6 @@ class SystemState {
 	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
 	maintenance = $state<Tables<'maintenance'> | null>(null);
 
-	readonly maintaining = $derived(
-		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
-	);
-
 	systemMessage = $state<SystemMessage[]>([
 		// {
 		// 	id: uuid(),
@@ -42,9 +38,9 @@ class SystemState {
 	]);
 	readonly uiTexts = $derived(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
-	// readonly newVersion = $derived(
-	// 	this.remoteAppVersion?.value === version ? null : this.remoteAppVersion?.value ?? null
-	// );
+	readonly maintaining = $derived(
+		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
+	);
 
 	addSysMsg(input: Prettify<Omit<SystemMessage, 'created_at' | 'id'>>) {
 		const now = new Date();
