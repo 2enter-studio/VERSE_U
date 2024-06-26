@@ -14,7 +14,7 @@ async function providerSignIn(provider: OAuthProvider) {
 	const { error } = await db.auth.signInWithOAuth({ provider, options });
 
 	if (error) {
-		return createError('LOGIN_FAILED');
+		return createError('SIGNIN_FAILED');
 	}
 }
 
@@ -26,7 +26,7 @@ async function pwdSignIn(email: string, password: string) {
 
 	const { error } = await db.auth.signInWithPassword({ email, password });
 	if (error) {
-		return createError('LOGIN_FAILED');
+		return createError('SIGNIN_FAILED');
 	}
 }
 

@@ -29,10 +29,12 @@ const table: UITextTable = {
 	UNKNOWN_ERROR: 'Unknown Error',
 	INVALID_DATA_INPUT: 'Invalid Data Input',
 	INVALID_EMAIL: 'Invalid Email',
+	INVALID_EMAIL_OR_PASSWORD: 'Invalid Email or Password',
 	INVALID_PASSWORD: 'Invalid Password',
 	FAILED_TO_LOAD_DATA: 'Failed to load data',
 	OPERATION_FAILED: 'Operation Failed',
-	MUST_LOGIN_FIRST: 'Must Login First',
+	MUST_SIGNIN_FIRST: 'Must Sign In First',
+	SIGNIN_FAILED: 'Sign in failed',
 	WARNING: 'Warning',
 	SUCCESS: 'Success'
 	// ERROR_UNKNOWN: 'An unknown error has occurred',

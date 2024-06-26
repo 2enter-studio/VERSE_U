@@ -3,9 +3,11 @@ import type { UITextTable } from '@/config/ui_texts/types';
 const table: UITextTable = {
 	ACCOUNT: '帳戶',
 	ACCOUNT_NOT_FOUND: '找不到該帳戶',
-	MUST_LOGIN_FIRST: '請先登入',
+	MUST_SIGNIN_FIRST: '請先登入',
 	VERSION: '版本',
 	LOCALE: '繁體中文',
+	SIGNIN_FAILED: '登入失敗',
+	INVALID_EMAIL_OR_PASSWORD: '無效的Email或密碼',
 	LANGUAGE: '語言',
 	ERROR: '錯誤',
 	WARNING: '警告',
