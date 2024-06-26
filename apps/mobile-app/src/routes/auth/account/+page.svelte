@@ -86,7 +86,7 @@
 	<div class="mb-3 w-full border-black text-2xl font-extrabold text-white">
 		{#if authState.loggedIn}
 			<div class="flex w-full flex-row justify-between">
-				<button class="text-black">
+				<button class="text-black" onclick={() => redirectTo(DEFAULT_ROUTE)}>
 					<Icon icon="carbon:previous-filled" class="size-6 rounded-full bg-white p-[0.5px]" />
 				</button>
 				<span class="w-full text-center">{sysState.uiTexts.ACCOUNT}</span>
