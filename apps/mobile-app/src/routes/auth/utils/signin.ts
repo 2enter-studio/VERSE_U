@@ -10,16 +10,24 @@ async function providerSignIn(provider: OAuthProvider) {
 	const options = {
 		redirectTo: sysState.platform === 'web' ? get(page).url.origin : 'verseuapp://'
 	};
+
 	const { error } = await db.auth.signInWithOAuth({ provider, options });
-	if (error) return { error };
+
+	if (error) {
+		return createError('SIGNIN_FAILED');
+	}
 }
 
 async function pwdSignIn(email: string, password: string) {
-	if (!validate.email(email)) return createError('invalid email');
-	if (!validate.password(password)) return createError('invalid password');
+	if (!validate.email(email) || !validate.password(password)) {
+		// sysState.defaultError('INVALID_EMAIL_OR_PASSWORD');
+		return createError('INVALID_EMAIL_OR_PASSWORD');
+	}
 
 	const { error } = await db.auth.signInWithPassword({ email, password });
-	if (error) return { error };
+	if (error) {
+		return createError('SIGNIN_FAILED');
+	}
 }
 
 export { providerSignIn, pwdSignIn };

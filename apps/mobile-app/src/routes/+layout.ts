@@ -1,7 +1,7 @@
 // import { updateActiveStatus } from '@/utils/auth';
 import type { Load } from '@sveltejs/kit';
 import { authState } from '@/states';
-import { load as loadData } from '@/utils';
+import { load as loadData, redirectTo } from '@/utils';
 
 export const prerender = true;
 export const ssr = false;
@@ -12,7 +12,10 @@ export const load: Load = async () => {
 
 	if (!authState.loggedIn) {
 		await authState.set();
-		console.log(authState.loggedIn ? 'logged in' : 'not logged in');
+		// console.log(authState.loggedIn ? 'logged in' : 'not logged in');
+		if (!authState.loggedIn) {
+			redirectTo('/auth/account');
+		}
 		// redirect(302, '/');
 	}
 	// const result = await updateActiveStatus();

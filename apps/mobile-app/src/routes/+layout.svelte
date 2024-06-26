@@ -11,7 +11,7 @@
 	import { db } from '@/db';
 	import { load, redirectTo } from '@/utils';
 	import { authState, sysState } from '@/states';
-	import { Login, Menu, MyProfile, SideMenu, SystemMessage } from './';
+	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
 
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
@@ -34,6 +34,8 @@
 			} else {
 				redirectTo('/auth/create-profile');
 			}
+		} else {
+			redirectTo('/auth/account');
 		}
 	}
 
@@ -82,7 +84,7 @@
 	}
 </script>
 
-<!--<div class="fixed top-20">{$page.url.pathname}</div>-->
+<SystemMessage />
 
 <div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
 	{#if authState.loggedIn}
@@ -106,22 +108,12 @@
 			<Menu />
 			<SideMenu />
 		{/if}
-	{:else if !['/auth/reset-pwd', '/auth/create-profile'].includes($page.url.pathname)}
-		<div class="center-content h-screen flex-col">
-			<Login />
-		</div>
 	{:else}
 		<div class="center-content h-screen flex-col">
 			{@render children()}
 		</div>
 	{/if}
 </div>
-
-<SystemMessage />
-
-<!--<div class="fixed right-1 top-1">-->
-<!--	<Notifications />-->
-<!--</div>-->
 
 <style>
 	#layout {

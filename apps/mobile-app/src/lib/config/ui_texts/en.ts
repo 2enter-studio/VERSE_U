@@ -1,6 +1,8 @@
 import type { UITextTable } from '@/config/ui_texts/types';
 
 const table: UITextTable = {
+	ACCOUNT: 'Account',
+	ACCOUNT_NOT_FOUND: 'Account Not Found',
 	VERSION: 'Version',
 	LOCALE: 'English',
 	LANGUAGE: 'Language',
@@ -26,7 +28,13 @@ const table: UITextTable = {
 	WHERE_ARE_YOU_GOING: 'Where are you going?',
 	UNKNOWN_ERROR: 'Unknown Error',
 	INVALID_DATA_INPUT: 'Invalid Data Input',
+	INVALID_EMAIL: 'Invalid Email',
+	INVALID_EMAIL_OR_PASSWORD: 'Invalid Email or Password',
+	INVALID_PASSWORD: 'Invalid Password',
 	FAILED_TO_LOAD_DATA: 'Failed to load data',
+	OPERATION_FAILED: 'Operation Failed',
+	MUST_SIGNIN_FIRST: 'Must Sign In First',
+	SIGNIN_FAILED: 'Sign in failed',
 	WARNING: 'Warning',
 	SUCCESS: 'Success'
 	// ERROR_UNKNOWN: 'An unknown error has occurred',

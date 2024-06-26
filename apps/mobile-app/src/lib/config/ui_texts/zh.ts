@@ -1,8 +1,13 @@
 import type { UITextTable } from '@/config/ui_texts/types';
 
 const table: UITextTable = {
+	ACCOUNT: '帳戶',
+	ACCOUNT_NOT_FOUND: '找不到該帳戶',
+	MUST_SIGNIN_FIRST: '請先登入',
 	VERSION: '版本',
 	LOCALE: '繁體中文',
+	SIGNIN_FAILED: '登入失敗',
+	INVALID_EMAIL_OR_PASSWORD: '無效的Email或密碼',
 	LANGUAGE: '語言',
 	ERROR: '錯誤',
 	WARNING: '警告',
@@ -21,14 +26,17 @@ const table: UITextTable = {
 	PASSWORD: '密碼',
 	CONFIRM_EXECUTION: '確定執行',
 	CONFIRM_PASSWORD: '確認密碼',
+	OPERATION_FAILED: '操作失敗',
+	INVALID_EMAIL: '無效的Email',
+	INVALID_PASSWORD: '無效密碼',
 	NEW_PASSWORD: '新密碼',
 	FORGOT_PWD: '忘記密碼',
 	CHANGE_PWD: '更改密碼',
 	WELCOME: '歡迎來到 Verse U',
 	WHERE_ARE_YOU_GOING: '去哪裡?',
-	UNKNOWN_ERROR: '',
-	INVALID_DATA_INPUT: '',
-	FAILED_TO_LOAD_DATA: ''
+	UNKNOWN_ERROR: '未知錯誤',
+	INVALID_DATA_INPUT: '無效',
+	FAILED_TO_LOAD_DATA: '無法載入資料'
 } as const;
 
 export { table as zh };

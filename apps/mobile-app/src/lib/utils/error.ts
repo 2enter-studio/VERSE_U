@@ -3,8 +3,9 @@ import {
 	FunctionsHttpError,
 	FunctionsRelayError
 } from '@supabase/supabase-js';
+import type { TextCode } from '@/config/ui_texts/types';
 
-function createError(message: string, options?: ErrorOptions) {
+function createError(message: TextCode, options?: ErrorOptions) {
 	const error = new Error(message, options);
 	return { error };
 }

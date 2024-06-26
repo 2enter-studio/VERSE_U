@@ -14,9 +14,10 @@ async function createProfile(value: { name: string }) {
 	const { data: profileData, error: profileError } = await db
 		.from('profiles')
 		.insert(value)
-		.select()
+		.select('*')
 		.returns<Tables<'profiles'>[]>()
 		.single();
+
 	if (profileError) return { error: profileError };
 
 	const [from, to, next_0, next_1] = genRandomNumbers(gameState.regions.length, 4).map(
