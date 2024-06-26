@@ -22,10 +22,9 @@
 	});
 
 	async function submit() {
-		const response = await createProfile(name);
-		console.log(response);
+		const response = await createProfile({ name });
 		if (response?.error) {
-			console.error(response.error);
+			sysState.defaultError(response.error.message);
 			return;
 		}
 
