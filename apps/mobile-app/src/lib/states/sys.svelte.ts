@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { DEFAULT_LOCALE, UI_TEXTS, type Locale } from '@/config';
 import { v4 as uuid } from 'uuid';
 import type { Tables } from '@repo/shared/supatypes';
+import type { TextCode } from '@/config/ui_texts/types';
 
 type SystemMessage = {
 	id: string;
@@ -19,8 +20,10 @@ class SystemState {
 	selfieUpdated = $state(false);
 	locale = $state<Locale>(DEFAULT_LOCALE);
 	now = $state<Date>(new Date());
+
 	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
 	maintenance = $state<Tables<'maintenance'> | null>(null);
+
 	readonly maintaining = $derived(
 		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
 	);
@@ -48,18 +51,18 @@ class SystemState {
 		const id = uuid();
 		this.systemMessage.push({ ...input, created_at: now, id });
 	}
-	defaultError(message: string) {
+	defaultError(message: TextCode) {
 		this.addSysMsg({
 			type: 'ERROR',
 			display: 'side',
-			message
+			message: this.uiTexts[message]
 		});
 	}
-	defaultSuccess(message: string) {
+	defaultSuccess(message: TextCode) {
 		this.addSysMsg({
 			type: 'SUCCESS',
 			display: 'side',
-			message
+			message: this.uiTexts[message]
 		});
 	}
 	delSysMsg(id: string) {
