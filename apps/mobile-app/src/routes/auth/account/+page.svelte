@@ -3,14 +3,13 @@
 	import { slide } from 'svelte/transition';
 
 	import { authState, sysState } from '@/states';
+	import { redirectTo, validate } from '@/utils';
+	import { DEFAULT_ROUTE, OAUTH_PROVIDERS } from '@/config';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
-	import { validate } from '@/utils';
-	import { OAUTH_PROVIDERS } from '@/config';
+	import { onMount } from 'svelte';
 
 	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD';
 	type InputType = 'EMAIL' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'NEW_PASSWORD';
-
-	let { formMode = 'SIGNIN' }: { formMode?: FormMode } = $props();
 
 	const submitMethods: Record<FormMode, Function> = {
 		SIGNIN: pwdSignIn,
@@ -19,70 +18,88 @@
 		FORGOT_PWD: forgotPwd
 	} as const;
 
+	const inputClasses =
+		'rounded-md text-sm py-0.5 w-full bg-black text-white border-white border-[1px] pl-2';
+
+	let formMode = $state<FormMode>(authState.loggedIn ? 'CHANGE_PWD' : 'SIGNIN');
 	let pwd = $state('');
 	let pwdConfirm = $state('');
 	let pwdNew = $state('');
 	let pwdVisible = $state(false);
 	let email = $state(authState.user?.email || '');
+	let submittable = $state<boolean>(false);
+	let formFields = $state.frozen<InputType[]>([]);
+	let args = $state.frozen<[string, string] | [string]>();
 
-	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin', 'signup', 'forgot_pwd'] as const));
-	const formChoices = $derived(
+	const formOptions = $derived(
 		authState.loggedIn ? (['CHANGE_PWD', 'FORGOT_PWD'] as const) : (['SIGNIN', 'SIGNUP'] as const)
 	);
 
-	const submittable = $derived(
-		(pwd === pwdConfirm && validate.password(pwd) && formMode === 'SIGNUP') ||
-			(pwd.length > 0 && validate.email(email) && formMode === 'SIGNIN') ||
-			(pwdNew === pwdConfirm &&
-				validate.password(pwdNew) &&
-				pwdNew !== pwd &&
-				formMode === 'CHANGE_PWD') ||
-			(validate.email(email) && formMode === 'FORGOT_PWD')
-	);
-
-	const formFields = $derived.by<InputType[]>(() => {
-		if (formMode === 'SIGNIN') return ['EMAIL', 'PASSWORD'] as const;
-		else if (formMode === 'SIGNUP') return ['EMAIL', 'PASSWORD', 'CONFIRM_PASSWORD'] as const;
-		else if (formMode === 'FORGOT_PWD') return ['EMAIL'] as const;
-		else if (formMode === 'CHANGE_PWD')
-			return ['PASSWORD', 'NEW_PASSWORD', 'CONFIRM_PASSWORD'] as const;
-		return [];
+	$effect(() => {
+		switch (formMode) {
+			case 'SIGNIN':
+				submittable = pwd.length > 0 && validate.email(email);
+				formFields = ['EMAIL', 'PASSWORD'] as const;
+				args = [email, pwd];
+				break;
+			case 'SIGNUP':
+				submittable = pwd === pwdConfirm && validate.password(pwd);
+				formFields = ['EMAIL', 'PASSWORD', 'CONFIRM_PASSWORD'] as const;
+				args = [email, pwd];
+				break;
+			case 'FORGOT_PWD':
+				submittable = validate.email(email);
+				formFields = ['EMAIL'];
+				args = [email];
+				break;
+			case 'CHANGE_PWD':
+				submittable = pwdNew === pwdConfirm && validate.password(pwdNew) && pwdNew !== pwd;
+				formFields = ['PASSWORD', 'NEW_PASSWORD', 'CONFIRM_PASSWORD'] as const;
+				args = [pwd, pwdNew];
+				break;
+			default:
+				submittable = false;
+				formFields = [];
+		}
 	});
 
 	async function handleSubmit() {
-		let args: [string] | [string, string];
-		if (formMode === 'SIGNIN') args = [email, pwd];
-		else if (formMode === 'SIGNUP') args = [email, pwd];
-		else if (formMode === 'FORGOT_PWD') args = [email];
-		else if (formMode === 'CHANGE_PWD') args = [pwd, pwdNew];
-		else return;
-
+		if (!args) return;
 		const res = await submitMethods[formMode](...(args as [string, string]));
+
 		if (res?.error) {
-			console.error(res.error);
 			sysState.defaultError(res.error.message);
-			return;
+		} else {
+			redirectTo(DEFAULT_ROUTE);
 		}
-		window.location.assign('/map');
 	}
 
-	const inputClasses =
-		'rounded-md text-sm py-0.5 w-full bg-black text-white border-white border-[1px] pl-2';
+	onMount(() => {
+		sysState.showMenu = false;
+		return () => {
+			sysState.showMenu = true;
+		};
+	});
 </script>
 
-<div class="center-content w-[60vw] flex-col gap-1">
-	<h1 class="mb-3 border-black text-2xl font-extrabold text-black">
+<div class="center-content h-screen w-[60vw] flex-col gap-1">
+	<div class="mb-3 w-full border-black text-2xl font-extrabold text-white">
 		{#if authState.loggedIn}
-			Account Center
+			<div class="flex w-full flex-row justify-between">
+				<button class="text-black">
+					<Icon icon="carbon:previous-filled" class="size-6 rounded-full bg-white p-[0.5px]" />
+				</button>
+				<span class="w-full text-center">{sysState.uiTexts.ACCOUNT}</span>
+			</div>
 		{:else}
 			{sysState.uiTexts.WELCOME}
 		{/if}
-	</h1>
+	</div>
 
 	<div
 		class="flex w-full flex-row justify-between gap-2 rounded-md bg-black/90 p-1 shadow-inner shadow-white/50"
 	>
-		{#each formChoices as choice}
+		{#each formOptions as choice}
 			<input id={choice} type="radio" value={choice} hidden bind:group={formMode} />
 			<label
 				for={choice}
@@ -148,25 +165,13 @@
 				{/if}
 			</div>
 		{/each}
-		<!--{#if submittable}-->
 		<button type="submit" class="center-content mt-2" disabled={!submittable}>
 			<Icon
 				icon="carbon:next-filled"
-				class="size-8 rounded-full p-0 {submittable
-					? 'text-red-500'
-					: 'text-red-500/50'} shadow-inner shadow-amber-800"
+				class="{submittable ? 'text-red-500' : 'text-red-500/50'}
+					 size-8 rounded-full shadow-inner shadow-amber-800"
 			/>
 		</button>
-		<!--{/if}-->
-		<div class="center-content mt-3 w-full">
-			<div
-				class="flex w-fit flex-col justify-start rounded-lg bg-green-800 px-3 py-1 text-xs text-white"
-			>
-				<h5>Demo Account</h5>
-				<span>email: demo@2enter.art</span>
-				<span>password: 2enter2enter</span>
-			</div>
-		</div>
 	</form>
 	{#if !authState.loggedIn && OAUTH_PROVIDERS.length > 0}
 		<div

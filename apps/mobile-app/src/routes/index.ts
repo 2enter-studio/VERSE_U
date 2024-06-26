@@ -1,4 +1,3 @@
-export { default as Login } from './login.svelte';
 export { default as Menu } from './menu.svelte';
 export { default as SideMenu } from './side_menu.svelte';
 export { default as MyProfile } from './my_profile.svelte';
