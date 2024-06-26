@@ -63,7 +63,7 @@
 		}
 	});
 
-	async function handleSubmit() {
+	async function onsubmit() {
 		if (!args) return;
 		const res = await submitMethods[formMode](...(args as [string, string]));
 
@@ -113,8 +113,8 @@
 	</div>
 
 	<form
-		onsubmit={handleSubmit}
-		class="flex w-full flex-col items-end rounded-lg bg-white px-3 py-3 text-black shadow-inner shadow-black/40"
+		{onsubmit}
+		class="flex w-full flex-col items-end rounded-lg bg-white p-3 text-black shadow-inner shadow-black/40"
 	>
 		{#each formFields as field}
 			<div transition:slide={{ duration: 500 }} class="flex w-full flex-col">
