@@ -1,6 +1,7 @@
 import type { UITextTable } from '@/config/ui_texts/types';
 
 const table: UITextTable = {
+	ACCOUNT: 'Account',
 	VERSION: 'Version',
 	LOCALE: 'English',
 	LANGUAGE: 'Language',

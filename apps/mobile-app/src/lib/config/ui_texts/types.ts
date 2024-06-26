@@ -1,4 +1,5 @@
 const TEXT_CODES = [
+	'ACCOUNT',
 	'VERSION',
 	'LOCALE',
 	'LANGUAGE',
