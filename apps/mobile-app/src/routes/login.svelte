@@ -27,7 +27,7 @@
 
 	// const formChoices = $derived(auth.loggedIn ? (['change_pwd', 'forgot_pwd'] as const) : (['signin', 'signup', 'forgot_pwd'] as const));
 	const formChoices = $derived(
-		authState.loggedIn ? (['CHANGE_PWD', 'FORGOT_PWD'] as const) : (['SIGNIN'] as const)
+		authState.loggedIn ? (['CHANGE_PWD', 'FORGOT_PWD'] as const) : (['SIGNIN', 'SIGNUP'] as const)
 	);
 
 	const submittable = $derived(
