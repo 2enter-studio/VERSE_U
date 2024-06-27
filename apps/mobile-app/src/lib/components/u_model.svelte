@@ -78,11 +78,21 @@
 
 		const url = getFileUrl('wearings', `textures/${wearing_id}`);
 
+		const map = textureLoader.load(`${url}_baseColor`);
+		const normalMap = textureLoader.load(`${url}_normal`);
+		const roughnessMap = textureLoader.load(`${url}_roughness`);
+		const metalnessMap = textureLoader.load(`${url}_metallic`);
+
+		map.flipY = false;
+		normalMap.flipY = false;
+		roughnessMap.flipY = false;
+		metalnessMap.flipY = false;
+
 		return new THREE.MeshStandardMaterial({
-			map: textureLoader.load(`${url}_baseColor`),
-			normalMap: textureLoader.load(`${url}_normal`),
-			roughnessMap: textureLoader.load(`${url}_roughness`),
-			metalnessMap: textureLoader.load(`${url}_metallic`)
+			map,
+			normalMap,
+			roughnessMap,
+			metalnessMap
 		});
 	}
 
@@ -122,7 +132,9 @@
 							const obj = gltf.scene;
 							const skinnedMesh = obj.children[0].children[0] as THREE.SkinnedMesh;
 							if (skeleton) skinnedMesh.skeleton = skeleton;
-							if (wearing.texture_types.length > 0) skinnedMesh.material = makeMaterial(id);
+							if (wearing.texture_types.length > 0) {
+								skinnedMesh.material = makeMaterial(id);
+							}
 							obj.name = id;
 
 							wearingGroup.add(obj);
