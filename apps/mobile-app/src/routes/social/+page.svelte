@@ -2,12 +2,11 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { db } from '@/db';
-	import { subscribeToRegion } from '$routes/map/utils';
-	import { startChat, subscribeToAgree, subscribeToMessages } from './utils';
+	import { startChat } from './utils';
+	import { subscribe } from '@/utils';
 
 	import { gameState, sysState } from '@/states';
-	import { Chatroom, ChatList, Story } from './';
+	import { ChatList, Chatroom, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 
 	const chatTypes = ['FRIENDS', 'STRANGERS'] as const;
@@ -18,18 +17,19 @@
 
 	$inspect(gameState.friendChats, gameState.strangerChats);
 	onMount(() => {
-		subscribeToMessages();
-		subscribeToAgree();
-		subscribeToRegion((payload) => {
-			const userLeave = payload.new.user;
-			console.log('User is leaving: ', userLeave);
-			if (!gameState.peopleNearBy) return;
-			gameState.peopleNearBy = gameState.peopleNearBy.filter((person) => person.user !== userLeave);
-		});
+		subscribe.chat_members.subscribe();
+		const chatMsgSub = subscribe.chat_messages();
+		const leaverSub = subscribe.leaver();
+
+		if (!leaverSub) console.error('leaver not sub');
+		else leaverSub.subscribe();
+		if (!chatMsgSub) console.error('chat_msgSub not sub');
+		else chatMsgSub.subscribe();
 
 		return () => {
-			db.realtime.disconnect();
-			console.log('connection status: ', db.realtime.connectionState());
+			leaverSub?.unsubscribe();
+			chatMsgSub?.unsubscribe();
+			subscribe.chat_members.unsubscribe();
 		};
 	});
 </script>

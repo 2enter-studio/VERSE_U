@@ -5,8 +5,10 @@
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from '$routes/map/utils';
 	import { getFileUrl, getTextFromObj, load, secToMin } from '@/utils';
+	import { subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
+	import { onMount } from 'svelte';
 
 	const tripOptions = [0, 1] as const;
 
@@ -26,6 +28,16 @@
 	const origin = $derived({
 		x: position.x - width / 2,
 		y: position.y - height / 2
+	});
+
+	onMount(() => {
+		const newTripSub = subscribe.newTrip();
+		if (!newTripSub) console.error('Trip was not subscribed');
+		newTripSub?.subscribe();
+
+		return async () => {
+			await newTripSub?.unsubscribe();
+		};
 	});
 </script>
 
