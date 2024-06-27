@@ -1,16 +1,19 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
-	import { MAP_SIZE } from '@/config';
+	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from '$routes/map/utils';
 	import { getFileUrl, getTextFromObj, load, secToMin } from '@/utils';
+	import { subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
+	import { onMount } from 'svelte';
 
 	const tripOptions = [0, 1] as const;
 
 	let chooseNext = $state(false);
+	const transitionClasses = USE_SMOOTH_MAP_MOTION ? 'transition-all duration-1000 ease-linear' : '';
 
 	let dom = $state<HTMLElement>();
 	let width = $derived(dom?.clientWidth || 0);
@@ -27,6 +30,16 @@
 		x: position.x - width / 2,
 		y: position.y - height / 2
 	});
+
+	onMount(() => {
+		const newTripSub = subscribe.newTrip();
+		if (!newTripSub) console.error('Trip was not subscribed');
+		newTripSub?.subscribe();
+
+		return async () => {
+			await newTripSub?.unsubscribe();
+		};
+	});
 </script>
 
 {#each gameState.regions as region}
@@ -35,7 +48,7 @@
 
 <div
 	bind:this={dom}
-	class="absolute z-[-10] h-screen w-screen bg-no-repeat transition-all duration-1000 ease-linear"
+	class="absolute z-[-10] h-screen w-screen bg-no-repeat {transitionClasses}"
 	style="
 		background-image: url('/map.webp');
 		background-position: -{position.x}px -{position.y}px;
@@ -90,7 +103,7 @@
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
 			<div
-				class="center-content fixed z-[-10] w-[35vw] flex-col transition-all duration-1000 ease-linear"
+				class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
 				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
 			>
 				<img src={getFileUrl('regions', `stickers/${region.id}`)} alt={region.name} />

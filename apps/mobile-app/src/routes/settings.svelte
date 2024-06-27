@@ -24,7 +24,7 @@
 	);
 
 	$effect(() => {
-		console.log('applying settings');
+		// console.log('applying settings');
 		preferences.locale.set(values.locale);
 	});
 	async function save() {

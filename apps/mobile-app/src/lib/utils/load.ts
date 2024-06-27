@@ -37,7 +37,6 @@ async function appVersion() {
 		.limit(1)
 		.single();
 
-	console.log(data);
 	if (error) return;
 	if (!validate.app_version(data.value) || !validate.app_version(version)) return;
 
@@ -138,7 +137,15 @@ async function chats(chat_ids?: string[]) {
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
-		gameState.chats = gameState.chats.concat(data);
+		for (const d of data) {
+			const chat = gameState.chats.find((c) => c.id === d.id);
+			if (chat) {
+				Object.assign(chat, d);
+			} else {
+				gameState.chats.push(d);
+				// chats.set([...get(chats), d]);
+			}
+		}
 	}
 }
 

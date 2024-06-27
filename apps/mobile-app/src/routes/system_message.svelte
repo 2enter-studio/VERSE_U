@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { SYS_MSG_LIFE_TIME } from '@/config';
 
-	$inspect(sysState.systemMessage);
+	// $inspect(sysState.systemMessage);
 
 	onMount(() => {
 		const interval = setInterval(() => {

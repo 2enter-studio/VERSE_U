@@ -1,6 +1,7 @@
 import rfdc from 'rfdc';
 import capitalize from 'capitalize';
 import { MAX_TRAVEL_TIME } from '../../config.ts';
+import type { Database } from '../../types.ts';
 
 // General Utilities
 function snakeCaseToCapitalize(text: string) {
@@ -87,6 +88,8 @@ type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
+type AllSupaTableName = keyof Database['public']['Tables'];
+
 const deepClone = rfdc();
 
 export {
@@ -101,4 +104,4 @@ export {
   deepClone
 };
 
-export type { Prettify };
+export type { Prettify, AllSupaTableName };
