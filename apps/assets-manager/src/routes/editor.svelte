@@ -40,7 +40,7 @@
 </script>
 
 {#if data}
-	<div class="flex flex-row items-start divide-white divide-x-2 overflow-y-auto {className}">
+	<div class="flex flex-row items-start divide-white divide-x-2">
 		<div class="flex flex-col p-0.5">
 			<Icon
 				icon="lets-icons:back"
@@ -57,7 +57,7 @@
 				/>
 			{/if}
 		</div>
-		<div class="flex flex-col gap-3 items-start text-center w-full p-2">
+		<div class="flex flex-col gap-3 items-start text-center w-full p-2 overflow-y-auto {className}">
 			{#each Object.entries(metadata) as [name, content]}
 				{@const isMLTexts = content.type === 'ml_texts'}
 				{@const form = returnComponent(Forms[content.type])}

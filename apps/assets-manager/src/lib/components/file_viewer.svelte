@@ -31,11 +31,11 @@
 				if (onLoadFail) await onLoadFail();
 			}
 		} else {
-			setSystemLog(
-				'error',
-				'failed to load file, no source found',
-				makeTableMessage({ file: fileUrl })
-			);
+			// setSystemLog(
+			// 	'error',
+			// 	'failed to load file, no source found',
+			// 	makeTableMessage({ file: fileUrl })
+			// );
 			if (onLoadFail) await onLoadFail();
 		}
 		if (init) await init();
@@ -57,10 +57,14 @@
 	action="?/storage"
 	data={{ bucket, filename }}
 	icon="icomoon-free:upload"
+	disabled={!modified}
 	class="{modified
 		? 'pointer-events-auto hover:bg-pink-400'
 		: 'pointer-events-none text-white/10'} center-content text-2xl"
 	enctype="multipart/form-data"
+	afterSubmit={() => {
+		modified = false;
+	}}
 >
 	<input id="{bucket}-{filename}" name="file" type="file" {accept} {onchange} hidden />
 </SubmitBtn>
