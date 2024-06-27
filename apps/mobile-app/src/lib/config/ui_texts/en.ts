@@ -11,6 +11,7 @@ const table: UITextTable = {
 	CHAT_NOT_FOUND: 'Chat not found',
 	TRIP_NOT_FOUND: 'Trip not found',
 	FRIENDS: 'Friends',
+	START_CHAT: 'Start Chatting',
 	STRANGERS: 'Stranger',
 	PEOPLE_NEARBY: 'People nearby',
 	PROFILE: 'Profile',

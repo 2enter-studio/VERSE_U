@@ -1,6 +1,5 @@
 import * as UI_TEXTS from './ui_texts';
 
-const LOCALES = ['en', 'zh'] as const;
 // const OAUTH_PROVIDERS = ['facebook', 'google', 'apple'] as const;
 const OAUTH_PROVIDERS = [] as const;
 const BUCKET_NAMES = ['meshes', 'regions', 'stickers', 'wearings', 'user_data'] as const;
@@ -16,7 +15,6 @@ const CHARACTER_ANIMATIONS = [
 	'Macarena_Dance'
 ] as const;
 
-type Locale = (typeof LOCALES)[number];
 type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
@@ -32,7 +30,6 @@ const USE_SMOOTH_MAP_MOTION = false;
 
 export {
 	UI_TEXTS,
-	LOCALES,
 	OAUTH_PROVIDERS,
 	BUCKET_NAMES,
 	CHARACTER_ANIMATIONS,
@@ -46,4 +43,4 @@ export {
 	USE_SMOOTH_MAP_MOTION
 };
 
-export type { Locale, OAuthProvider, BucketName, CharacterAnimation };
+export type { OAuthProvider, BucketName, CharacterAnimation };

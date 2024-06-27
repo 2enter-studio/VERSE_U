@@ -3,9 +3,8 @@
 
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
-	import { startNextTrip } from '$routes/map/utils';
-	import { getFileUrl, getTextFromObj, load, secToMin } from '@/utils';
-	import { subscribe } from '@/utils';
+	import { startNextTrip } from './utils';
+	import { getFileUrl, getTextFromObj, load, subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 	import { onMount } from 'svelte';
@@ -67,8 +66,6 @@
 				>
 					<Icon icon="mingcute:run-fill" class="text-2xl" />
 				</button>
-			{:else}
-				You must stay until: {secToMin(gameState.tripStatus.timeRemain)}
 			{/if}
 		{/await}
 	{/if}

@@ -8,7 +8,6 @@
 	import DressRoom from './dressroom.svelte';
 	import { getFileUrl } from '@/utils';
 	import { uploadSelfie } from '$routes/me/utils';
-	// import randomItem from 'random-item';
 
 	const expressions = gameState.wearingTypes
 		.filter((type) => type.is_expression)
@@ -29,7 +28,6 @@
 		const canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
 		if (!canvas) return;
 		selfieUrl = canvas.toDataURL('image/webp');
-		// window.open(url);
 	}
 
 	onMount(() => {

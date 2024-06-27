@@ -1,35 +1,29 @@
 import { createError, validate, load } from '@/utils';
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
-import { sendMessage } from './message';
 
-async function startChat(target_user_id: string, firstMessage: string) {
+async function startNewChat(target_user_id: string, firstMessage: string) {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('USER_NOT_FOUND');
 
 	if (!validate.uuid(target_user_id)) return createError('USER_NOT_FOUND');
 	if (firstMessage.trim() === '') return createError('OPERATION_FAILED');
 
-	const { data, error } = await db.from('chats').insert({}).select('id').single();
-	if (error) return { error };
-	const new_chat_id = data.id as string;
+	const { data, error } = await db
+		.rpc('start_new_chat', {
+			target_user_id,
+			first_message: firstMessage
+		})
+		.returns<string>();
 
-	{
-		const insertSelf = { chat: new_chat_id };
-		const insertOther = { ...insertSelf, user: target_user_id };
-		const { error } = await db.from('chat_members').insert(insertSelf);
-		if (error) return { error };
-		{
-			const { error } = await db.from('chat_members').insert(insertOther);
-			if (error) return { error };
-		}
-
-		await load.chats([new_chat_id]);
-		// await loadChats([new_chat_id]);
-		gameState.chat_id = new_chat_id;
-		const result = await sendMessage(firstMessage);
-		if ('error' in result) return result;
+	if (error) {
+		console.error(error);
+		return createError('OPERATION_FAILED');
 	}
+	console.log(data);
+	await load.chats([data]);
+	// await loadChats([new_chat_id]);
+	gameState.chat_id = data;
 }
 
 async function agreeFriendShip() {
@@ -54,4 +48,4 @@ function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
 	}
 }
 
-export { startChat, agreeFriendShip, getMemberFromChat };
+export { startNewChat, agreeFriendShip, getMemberFromChat };

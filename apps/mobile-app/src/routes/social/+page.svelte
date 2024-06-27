@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { startChat } from './utils';
+	import { startNewChat } from './utils';
 	import { subscribe } from '@/utils';
 
 	import { gameState, sysState } from '@/states';
@@ -15,7 +15,10 @@
 	let startingNewChat = $state(false);
 	let firstMessage = $state('');
 
-	$inspect(gameState.friendChats, gameState.strangerChats);
+	$effect(() => {
+		if (gameState.chat_id) storyUserId = ''
+	})
+
 	onMount(() => {
 		subscribe.chat_members.subscribe();
 		const chatMsgSub = subscribe.chat_messages();
@@ -54,6 +57,7 @@
 					}}
 				>
 					<Avatar profile={person} />
+					<small>{person.name}</small>
 				</button>
 				{#if storyUserId === person.user}
 					<Story
@@ -107,7 +111,7 @@
 	</div>
 {/if}
 
-<Dialog title="start" bind:open={startingNewChat} class="center-content">
+<Dialog title={sysState.uiTexts.START_CHAT} bind:open={startingNewChat} class="center-content">
 	<input
 		bind:value={firstMessage}
 		class="rounded-lg bg-black text-white"
@@ -115,16 +119,15 @@
 		type="text"
 	/>
 	<button
-		onclick={() => {
+		onclick={async () => {
 			if (firstMessage.trim() === '') return;
-			startChat(storyUserId, firstMessage).then((res) => {
-				if (res?.error) {
-					sysState.defaultError(res.error.message);
-				} else {
-					startingNewChat = false;
-					storyUserId = '';
-				}
-			});
+			const result = await startNewChat(storyUserId, firstMessage);
+			if (result?.error) {
+				sysState.defaultError('OPERATION_FAILED');
+			} else {
+				startingNewChat = false;
+				storyUserId = '';
+			}
 		}}
 	>
 		<Icon icon="mingcute:send-plane-fill" class="size-10 rounded-full text-cyan-800" />

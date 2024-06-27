@@ -10,6 +10,7 @@ const table: UITextTable = {
 	CHAT_NOT_FOUND: '找不到聊天室',
 	LOCALE: '繁體中文',
 	SIGNIN_FAILED: '登入失敗',
+	START_CHAT: '開始聊天',
 	INVALID_EMAIL_OR_PASSWORD: '無效的Email或密碼',
 	LANGUAGE: '語言',
 	ERROR: '錯誤',

@@ -1,6 +1,7 @@
 import { inPeriod, type Prettify } from '@repo/shared/utils';
 import { Capacitor } from '@capacitor/core';
-import { DEFAULT_LOCALE, UI_TEXTS, type Locale } from '@/config';
+import { DEFAULT_LOCALE, UI_TEXTS } from '@/config';
+import type { Locale } from '@repo/shared/config';
 import { v4 as uuid } from 'uuid';
 import type { Tables } from '@repo/shared/supatypes';
 import type { TextCode } from '@/config/ui_texts/types';

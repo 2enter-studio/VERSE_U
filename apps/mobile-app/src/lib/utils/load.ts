@@ -182,6 +182,7 @@ async function peopleNearBy() {
 		.select('user(*)')
 		.lt('arrive_at', new Date().toISOString())
 		.eq('to', trip.to)
+		.neq('user', user_id)
 		.returns<{ user: Tables<'profiles'> }[]>();
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');

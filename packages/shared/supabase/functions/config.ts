@@ -1,6 +1,6 @@
-const MIN_STAY_TIME = 1000 * 5;
-const MAX_STAY_TIME = 1000 * 10;
-const MAX_TRAVEL_TIME = 1000 * 60;
+const MIN_STAY_TIME = 1000 * 60 * 10;
+const MAX_STAY_TIME = 1000 * 60 * 60 * 2;
+const MAX_TRAVEL_TIME = 1000 * 60 * 40;
 
 const LOCALES = ['en', 'zh'] as const;
 

@@ -1,10 +1,10 @@
 import type { Tables } from '@repo/shared/supatypes';
 import { MIN_STAY_TIME } from '@repo/shared/config';
+import { sysState } from '@/states/sys.svelte';
 
 class GameState {
 	regions = $state<Region[]>([]);
 	trip = $state<Tables<'trips'> | null>(null);
-	tripStatus = $state<{ progress: number; timeRemain: number }>({ progress: 0, timeRemain: 0 });
 	peopleNearBy = $state<Tables<'profiles'>[]>([]);
 
 	chats = $state<Chatroom[]>([]);
@@ -18,40 +18,36 @@ class GameState {
 	readonly equippedWearings = $derived(this.ownedWearings.filter((wearing) => wearing.equipped));
 	readonly strangerChats = $derived(this.chats.filter((c) => c.chat_members.some((m) => !m.agree)));
 	readonly friendChats = $derived(this.chats.filter((c) => !this.strangerChats.includes(c)));
+	readonly tripStatus = $derived.by(() => {
+		const defaultResult = { progress: 0, timeRemain: 0 };
+		if (!this.trip) return defaultResult;
 
-	loadTripStatus() {
-		const now = new Date();
-		if (!this.trip) return;
+		const now = sysState.now;
 		const arriveAt = new Date(this.trip.arrive_at);
 		const startAt = new Date(this.trip.start_at);
 		const timeDiff = now.getTime() - arriveAt.getTime();
 
-		let data: { progress: number; timeRemain: number };
+		let result: { progress: number; timeRemain: number };
 
 		if (timeDiff < 0) {
 			// on the way
 			const progress =
 				(now.getTime() - startAt.getTime()) / (arriveAt.getTime() - startAt.getTime());
-			data = { timeRemain: -timeDiff, progress };
+			result = { timeRemain: -timeDiff, progress };
 		} else if (timeDiff >= MIN_STAY_TIME) {
 			// ready to go
-			data = { timeRemain: 0, progress: 1 };
+			result = { timeRemain: 0, progress: 1 };
 		} else if (timeDiff >= 0) {
 			// arrived
 			const timeRemain = MIN_STAY_TIME - timeDiff;
-			data = { timeRemain, progress: 1 };
+			result = { timeRemain, progress: 1 };
 		} else {
-			return;
+			return defaultResult;
 		}
-		this.tripStatus = data;
-	}
+		return result;
+	});
 }
 
 const gameState = new GameState();
-
-gameState.loadTripStatus();
-setInterval(() => {
-	gameState.loadTripStatus();
-}, 1000);
 
 export { gameState };

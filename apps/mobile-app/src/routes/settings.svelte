@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { deepClone } from '@repo/shared/utils';
+	import { LOCALES } from '@repo/shared/config';
 	import { version } from '$app/environment';
 
 	import type { TextCode } from '@/config/ui_texts/types';
@@ -9,7 +10,7 @@
 	import { modifyProfile, signOut } from '$routes/auth/utils';
 	import { preferences } from '@/utils';
 
-	import { LOCALES, UI_TEXTS } from '@/config';
+	import { UI_TEXTS } from '@/config';
 
 	type Props = { open: boolean };
 	let { open = $bindable() }: Props = $props();

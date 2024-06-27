@@ -24,7 +24,7 @@
 					{gameState.chats
 						.find((c) => c.id === chatroom.id)
 						?.chat_messages.at(-1)
-						?.content.slice(0, 10)}
+						?.content.slice(0, 15)}
 				</small>
 			</span>
 		</button>
