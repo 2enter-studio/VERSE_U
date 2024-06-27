@@ -138,7 +138,15 @@ async function chats(chat_ids?: string[]) {
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
-		gameState.chats = gameState.chats.concat(data);
+		for (const d of data) {
+			const chat = gameState.chats.find((c) => c.id === d.id);
+			if (chat) {
+				Object.assign(chat, d);
+			} else {
+				gameState.chats.push(d);
+				// chats.set([...get(chats), d]);
+			}
+		}
 	}
 }
 

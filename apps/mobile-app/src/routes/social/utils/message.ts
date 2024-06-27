@@ -1,5 +1,3 @@
-import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
-
 import { db } from '@/db';
 import { authState, gameState } from '@/states';
 import { createError } from '@/utils';
