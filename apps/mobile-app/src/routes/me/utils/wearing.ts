@@ -43,10 +43,11 @@ async function equipWearings(wearing_ids: string[]) {
 			.update({ equipped: true })
 			.eq('owner', user_id)
 			.in('wearing', wearing_ids);
+
 		if (error) return { error };
 	}
 
-	await load.wearings();
+	await load.ownedWearings();
 }
 
 async function getWearingsByUserId(user_id: string) {

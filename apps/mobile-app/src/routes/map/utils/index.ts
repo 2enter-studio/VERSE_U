@@ -13,6 +13,8 @@ async function startNextTrip(option: 0 | 1) {
 		gameState.tripStatus.progress = 0;
 		gameState.peopleNearBy = [];
 	});
+
+	gameState.trip = data;
 }
 
 export { startNextTrip };

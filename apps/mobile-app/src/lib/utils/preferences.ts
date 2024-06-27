@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { Preferences } from '@capacitor/preferences';
 
-import type { Locale } from '@/config';
+import type { Locale } from '@repo/shared/config';
 
 function makePreference<T extends string>(key: string, defaultValue: T) {
 	return {
@@ -26,6 +26,6 @@ function makePreference<T extends string>(key: string, defaultValue: T) {
 	};
 }
 
-const locale= makePreference<Locale>('locale', 'zh')
+const locale = makePreference<Locale>('locale', 'zh');
 
 export { locale };

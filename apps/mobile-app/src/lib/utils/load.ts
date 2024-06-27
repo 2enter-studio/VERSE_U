@@ -98,6 +98,7 @@ async function ownedWearings() {
 	const { data, error } = await db
 		.from('owned_wearings')
 		.select('wearing,equipped')
+		.eq('owner', user_id)
 		.returns<{ wearing: string; equipped: boolean }[]>();
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
