@@ -34,9 +34,12 @@
 	<Dialog title="Info" open={openDetail} class="flex-col text-center text-black">
 		{#if tripStatus.progress < 1}
 			You're on the way to the {gameState.trip?.to}
+			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
+		{:else if tripStatus.timeRemain === 0}
+			You're ready to go
 		{:else}
 			Stay for a sec, then you can start a new trip.
+			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 		{/if}
-		<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 	</Dialog>
 {/if}
