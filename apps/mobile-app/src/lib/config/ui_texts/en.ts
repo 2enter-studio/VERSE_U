@@ -13,6 +13,7 @@ const table: UITextTable = {
 	FRIENDS: 'Friends',
 	START_CHAT: 'Start Chatting',
 	STRANGERS: 'Stranger',
+	EQUIP: 'Equip',
 	PEOPLE_NEARBY: 'People nearby',
 	PROFILE: 'Profile',
 	USER_NOT_FOUND: 'User not found',

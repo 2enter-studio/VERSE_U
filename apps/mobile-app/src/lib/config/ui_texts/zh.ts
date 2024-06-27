@@ -9,6 +9,7 @@ const table: UITextTable = {
 	TRIP_NOT_FOUND: '找不到行程',
 	CHAT_NOT_FOUND: '找不到聊天室',
 	LOCALE: '繁體中文',
+	EQUIP: '裝備',
 	SIGNIN_FAILED: '登入失敗',
 	START_CHAT: '開始聊天',
 	INVALID_EMAIL_OR_PASSWORD: '無效的Email或密碼',

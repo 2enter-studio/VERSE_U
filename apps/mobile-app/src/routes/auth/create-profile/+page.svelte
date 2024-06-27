@@ -24,7 +24,7 @@
 	async function submit() {
 		const response = await createProfile({ name });
 		if (response?.error) {
-			sysState.defaultError(response.error.message);
+			sysState.defaultError('OPERATION_FAILED');
 			return;
 		}
 
