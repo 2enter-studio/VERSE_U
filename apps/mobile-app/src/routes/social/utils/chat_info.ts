@@ -31,13 +31,13 @@ async function agreeFriendShip() {
 	const user_id = authState.user?.id;
 	if (!chat_id || !user_id) return createError('USER_NOT_FOUND');
 
-	const { error } = await db
-		.from('chat_members')
-		.update({ agree: true })
-		.eq('chat', chat_id)
-		.eq('user', user_id);
+	const { error } = await db.rpc('agree_friendship', { chat_id });
 
-	if (error) return { error };
+	if (error) {
+		console.error(error);
+		return createError('OPERATION_FAILED');
+	}
+	await load.chats([chat_id]);
 }
 
 function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {

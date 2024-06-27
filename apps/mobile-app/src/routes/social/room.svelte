@@ -40,7 +40,7 @@
 		<button onclick={() => (gameState.chat_id = null)}>
 			<Icon icon="mdi:arrow-back" />
 		</button>
-		<Avatar profile={person?.profiles} class="size-8" />
+		<Avatar profile={person?.user} class="size-8" />
 		{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
 			<div class="center-content">
 				<span class="text-xs">add to friends?</span>
@@ -48,9 +48,7 @@
 					class="bg-white px-1 text-xs text-black"
 					onclick={async () => {
 						const result = await agreeFriendShip();
-						if (result?.error) {
-							sysState.defaultError(result.error.message);
-						} else console.log('yeah!');
+						if (result?.error) sysState.defaultError('OPERATION_FAILED');
 					}}
 				>
 					YES
