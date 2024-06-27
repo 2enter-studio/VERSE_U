@@ -8,7 +8,7 @@ import type { Tables } from '@repo/shared/supatypes';
 async function sendMessage(content: string, reply_to?: string) {
 	const { chat_id } = gameState;
 	const user_id = authState.user?.id;
-	if (!chat_id || !user_id) return createError('no chat found');
+	if (!chat_id || !user_id) return createError('CHAT_NOT_FOUND');
 
 	const insertData = {
 		chat: chat_id,

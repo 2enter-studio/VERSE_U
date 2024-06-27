@@ -5,10 +5,10 @@ import { sendMessage } from './message';
 
 async function startChat(target_user_id: string, firstMessage: string) {
 	const user_id = authState.user?.id;
-	if (!user_id) return createError('no user found');
+	if (!user_id) return createError('USER_NOT_FOUND');
 
-	if (!validate.uuid(target_user_id)) return createError('invalid target user id');
-	if (firstMessage.trim() === '') return createError('please give a first message');
+	if (!validate.uuid(target_user_id)) return createError('USER_NOT_FOUND');
+	if (firstMessage.trim() === '') return createError('OPERATION_FAILED');
 
 	const { data, error } = await db.from('chats').insert({}).select('id').single();
 	if (error) return { error };
@@ -35,7 +35,7 @@ async function startChat(target_user_id: string, firstMessage: string) {
 async function agreeFriendShip() {
 	const { chat_id } = gameState;
 	const user_id = authState.user?.id;
-	if (!chat_id || !user_id) return createError('no chat or user found');
+	if (!chat_id || !user_id) return createError('USER_NOT_FOUND');
 
 	const { error } = await db
 		.from('chat_members')
