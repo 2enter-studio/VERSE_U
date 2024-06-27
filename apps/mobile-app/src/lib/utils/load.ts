@@ -37,7 +37,6 @@ async function appVersion() {
 		.limit(1)
 		.single();
 
-	console.log(data);
 	if (error) return;
 	if (!validate.app_version(data.value) || !validate.app_version(version)) return;
 

@@ -17,12 +17,10 @@
 	type Props = { children: Snippet };
 	let { children }: Props = $props();
 
-	let loaded = $state(false);
-
 	async function init() {
+		console.log('initializing');
 		await load.locale();
 		if (sysState.maintaining) return;
-
 		if (authState.loggedIn) {
 			await load.regions();
 
@@ -35,12 +33,8 @@
 						sysState.defaultError(result.error.message as TextCode);
 					}
 				}
-			} else {
-				redirectTo('/auth/create-profile');
-			}
-		} else {
-			redirectTo('/auth/account');
-		}
+			} else redirectTo('/auth/create-profile');
+		} else redirectTo('/auth/account');
 	}
 
 	onMount(async () => {
@@ -48,10 +42,6 @@
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
 		}
-
-		[loaded, sysState.showMenu] = [false, false];
-		await init();
-		[loaded, sysState.showMenu] = [true, true];
 
 		const url = $page.url.href;
 		const Url = new URL(url);
@@ -82,7 +72,7 @@
 		const params = new URLSearchParams(hash.replace('#', '?'));
 		const access_token = params.get('access_token') || '';
 		const refresh_token = params.get('refresh_token') || '';
-		console.log({ access_token, refresh_token });
+		// console.log({ access_token, refresh_token });
 
 		return { access_token, refresh_token };
 	}
@@ -90,34 +80,34 @@
 
 <SystemMessage />
 
-<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-	{#if authState.loggedIn}
-		{#if loaded}
+{#await init()}
+	<div
+		transition:fade={{ duration: 300 }}
+		class="full-screen center-content bg-black/30 backdrop-blur-lg"
+	>
+		<Icon icon="mingcute:loading-fill" class="size-20 animate-spin"></Icon>
+	</div>
+{:then _}
+	<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
+		{#if authState.loggedIn}
 			<div class="flex w-full">
 				<MyProfile
 					class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
 				/>
 			</div>
 			{@render children()}
+
+			{#if sysState.showMenu}
+				<Menu />
+				<SideMenu />
+			{/if}
 		{:else}
-			<div
-				transition:fade={{ duration: 1000 }}
-				class="full-screen center-content bg-black/30 backdrop-blur-lg"
-			>
-				<Icon icon="mingcute:loading-fill" class="size-20 animate-spin"></Icon>
+			<div class="center-content h-screen flex-col">
+				{@render children()}
 			</div>
 		{/if}
-
-		{#if sysState.showMenu}
-			<Menu />
-			<SideMenu />
-		{/if}
-	{:else}
-		<div class="center-content h-screen flex-col">
-			{@render children()}
-		</div>
-	{/if}
-</div>
+	</div>
+{/await}
 
 <style>
 	#layout {
