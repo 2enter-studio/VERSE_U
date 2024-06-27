@@ -88,6 +88,7 @@
 	wearingIds={filteredSelectedWearings}
 	animation={zoomIn ? 'idle' : animation}
 	cameraPosition={zoomIn ? [...ZOOM_IN_CAMERA_POS] : undefined}
+	selfRotate={dressing}
 />
 
 {#if selfieUrl !== ''}

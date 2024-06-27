@@ -13,6 +13,7 @@
 		animation?: CharacterAnimation;
 		class?: string;
 		cameraPosition?: [number, number, number];
+		selfRotate?: boolean;
 	};
 
 	let {
@@ -20,7 +21,8 @@
 		animation,
 		cameraPosition = [...DEFAULT_CAMERA_POS],
 		class: className,
-		readonly = false
+		readonly = false,
+		selfRotate = false
 	}: Props = $props();
 
 	let mixer: THREE.AnimationMixer;
@@ -58,6 +60,12 @@
 				});
 			}
 		});
+
+		$effect(() => {
+			if(!selfRotate && body) {
+				body.rotation.set(0, 0, 0);
+			}
+		})
 
 		$effect(() => {
 			if (camera) {
@@ -220,6 +228,8 @@
 			scene.traverse((obj) => {
 				obj.frustumCulled = false;
 			});
+
+			if (body && selfRotate) body?.rotateY(-0.1);
 
 			setTimeout(() => {
 				frame = requestAnimationFrame(animate);
