@@ -94,18 +94,22 @@
 <SystemMessage />
 
 {#await init()}
+	{@const loadingTexts = [sysState.uiTexts.DATA, sysState.uiTexts.LOADING]}
 	<div
 		transition:fade={{ duration: 300 }}
 		class="full-screen flex flex-row justify-between bg-black/30 backdrop-blur-sm"
 	>
-		{#each { length: 2 } as _}
+		{#each { length: 2 } as _, i}
 			<div
-				class="center-content h-full transition-all duration-1000"
-				style="width: {100 * ((1 - loadingProgress) / 2)}%; background-color: hsl({~~(
-					Math.random() * 360
-				)}, 100%, 50%);"
+				class="center-content w-full transition-all duration-1000 text-8xl text-center break-all"
+				style="
+					width: {100 * ((1 - loadingProgress) / 2)}%;
+					background-color: hsl({~~(Math.random() * 360)}, 60%, 60%);
+					color: hsl({~~(Math.random() * 360)}, 30%, 80%);
+				"
 			>
-				<Icon icon="mingcute:loading-fill" class="size-8 animate-spin"></Icon>
+				{loadingTexts[i].toUpperCase()}
+				<!--				<Icon icon="mingcute:loading-fill" class="size-8 animate-spin"></Icon>-->
 			</div>
 		{/each}
 	</div>
