@@ -125,7 +125,9 @@
 					</div>
 				{/if}
 			{:else}
-				<CreateProfile />
+				{#await authState.set() then _}
+					<CreateProfile />
+				{/await}
 			{/if}
 		{:else}
 			<Account />
