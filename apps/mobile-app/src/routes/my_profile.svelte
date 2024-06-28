@@ -11,7 +11,7 @@
 	let openSetting = $state(false);
 </script>
 
-{#if authState.profile && sysState.showMenu}
+{#if authState.profile}
 	<button
 		onclick={() => (openSetting = !openSetting)}
 		transition:fly={{ x: -100 }}

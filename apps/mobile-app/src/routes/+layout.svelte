@@ -5,22 +5,29 @@
 	import { page } from '$app/stores';
 	import { App } from '@capacitor/app';
 	import { ScreenOrientation } from '@capacitor/screen-orientation';
+	import Account from '$routes/auth/account/+page.svelte';
+	import CreateProfile from '$routes/auth/create-profile/+page.svelte';
 	import { SafeAreaController } from '@aashu-dubey/capacitor-statusbar-safe-area';
 	import Icon from '@iconify/svelte';
 	import eruda from 'eruda';
 
 	import { db } from '@/db';
-	import { load, redirectTo } from '@/utils';
+	import { load as loadData, load, redirectTo } from '@/utils';
 	import { authState, sysState } from '@/states';
 	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
 	import type { TextCode } from '@/config/ui_texts/types';
+	import type { PageData } from './$types';
 
-	type Props = { children: Snippet };
-	let { children }: Props = $props();
+	type Props = { children: Snippet; data: PageData };
+	let { children, data }: Props = $props();
+	let loadingProgress = $state(0);
 
 	async function init() {
 		console.log('initializing');
 		await load.locale();
+		await loadData.appVersion();
+		await loadData.maintenance();
+
 		if (sysState.maintaining) return;
 		if (authState.loggedIn) {
 			await load.regions();
@@ -30,35 +37,39 @@
 
 				for (const key of keywords) {
 					const result = await load[key]();
+					console.log(`loading ${key}`);
 					if (result && result?.error) {
 						sysState.defaultError(result.error.message as TextCode);
 					}
+					loadingProgress += 1 / keywords.length;
 				}
-			} else redirectTo('/auth/create-profile');
-		} else redirectTo('/auth/account');
+			}
+		}
+		// else redirectTo('/auth/account');
 	}
 
 	onMount(async () => {
+		await setUpSafeCSS();
+
 		eruda.init();
+
+		await App.addListener('resume', async () => {
+			await init();
+		});
+
+		await App.addListener('appUrlOpen', async (event) => {
+			const { url } = event;
+			const Url = new URL(url);
+			await handleOAuthCallback(Url);
+		});
+	});
+
+	async function setUpSafeCSS() {
 		if (sysState.platform !== 'web') {
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
 		}
-
-		const url = $page.url.href;
-		const Url = new URL(url);
-		await handleOAuthCallback(Url);
-	});
-
-	App.addListener('appUrlOpen', async (event) => {
-		const { url } = event;
-		const Url = new URL(url);
-		await handleOAuthCallback(Url);
-	});
-
-	App.addListener('resume', async () => {
-		await init();
-	});
+	}
 
 	async function handleOAuthCallback(url: URL) {
 		// Catch the token from the URL and set it in the store
@@ -85,28 +96,38 @@
 {#await init()}
 	<div
 		transition:fade={{ duration: 300 }}
-		class="full-screen center-content bg-black/30 backdrop-blur-lg"
+		class="full-screen flex flex-row justify-between bg-black/30 backdrop-blur-sm"
 	>
-		<Icon icon="mingcute:loading-fill" class="size-20 animate-spin"></Icon>
+		{#each { length: 2 } as _}
+			<div
+				class="center-content h-full transition-all duration-1000"
+				style="width: {100 * ((1 - loadingProgress) / 2)}%; background-color: hsl({~~(
+					Math.random() * 360
+				)}, 100%, 50%);"
+			>
+				<Icon icon="mingcute:loading-fill" class="size-8 animate-spin"></Icon>
+			</div>
+		{/each}
 	</div>
 {:then _}
 	<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
 		{#if authState.loggedIn}
-			<div class="flex w-full">
-				<MyProfile
-					class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
-				/>
-			</div>
-			{@render children()}
-
-			{#if sysState.showMenu}
-				<Menu />
-				<SideMenu />
+			{#if authState.profile}
+				{@render children()}
+				{#if sysState.showMenu}
+					<Menu />
+					<SideMenu />
+					<div class="flex w-full">
+						<MyProfile
+							class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
+						/>
+					</div>
+				{/if}
+			{:else}
+				<CreateProfile />
 			{/if}
 		{:else}
-			<div class="center-content h-screen flex-col">
-				{@render children()}
-			</div>
+			<Account />
 		{/if}
 	</div>
 {/await}

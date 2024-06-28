@@ -7,10 +7,16 @@
 	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };
 	let { profile, class: className = 'size-12', readonly = false }: Props = $props();
 
-	let selfieUrl = $state<string>();
-	function reloadSelfie() {
+	let selfieUrl = $state<string>('');
+	let selfieAvailable = $state(false);
+
+	async function reloadSelfie() {
 		if (profile)
 			selfieUrl = getFileUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
+		// const res = await fetch(selfieUrl);
+		// if (!res.ok) {
+		// 	selfieAvailable = false;
+		// }
 	}
 
 	if (!readonly) {
@@ -24,14 +30,18 @@
 		});
 	}
 
-	onMount(() => {
-		reloadSelfie();
+	onMount(async () => {
+		await reloadSelfie();
 	});
 </script>
 
 {#if selfieUrl}
 	<div
-		class="center-content rounded-full border-2 border-amber-500 bg-amber-300 bg-cover bg-center bg-no-repeat text-xs text-white {className}"
+		class="center-content rounded-full border-2 border-amber-500 bg-amber-300 bg-cover bg-center bg-no-repeat text-black {className}"
 		style="background-image: url({selfieUrl})"
-	></div>
+	>
+		{#if !selfieAvailable}
+			{profile?.name.slice(0, 1).toUpperCase()}
+		{/if}
+	</div>
 {/if}
