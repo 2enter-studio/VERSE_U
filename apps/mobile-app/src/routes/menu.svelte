@@ -11,7 +11,7 @@
 	] as const;
 </script>
 
-<div class="fixed flex flex-col bottom-0 ">
+<div class="fixed bottom-0 flex flex-col">
 	<TripStatus />
 	<div
 		id="menu"

@@ -47,7 +47,7 @@
 			{/if}
 		</Dialog>
 	{:else if display === 'side'}
-		<div class="fixed right-0 top-0 bg-black text-white px-1">
+		<div class="fixed right-0 top-0 bg-black px-1 text-white">
 			{message}
 		</div>
 	{/if}
