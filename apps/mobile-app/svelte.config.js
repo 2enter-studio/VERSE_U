@@ -25,6 +25,7 @@ const config = {
 		env: {
 			publicPrefix: ''
 		},
+
 		version: {
 			name: version
 		}
