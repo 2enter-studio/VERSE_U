@@ -9,6 +9,10 @@
 	let openDetail = $state(false);
 
 	const tripStatus = $derived(gameState.tripStatus);
+	const fromRegion = $derived(
+		gameState.regions.find((region) => region.id === gameState.trip?.from)
+	);
+	const toRegion = $derived(gameState.regions.find((region) => region.id === gameState.trip?.to));
 </script>
 
 <div class="{className} flex flex-row">
@@ -31,14 +35,18 @@
 </div>
 
 {#if openDetail}
-	<Dialog title="Info" open={openDetail} class="flex-col text-center text-black">
+	<Dialog
+		title={sysState.uiTexts.TRIP_INFO}
+		open={openDetail}
+		class="flex-col text-center text-black"
+	>
 		{#if tripStatus.progress < 1}
-			You're on the way to the {gameState.trip?.to}
+			{fromRegion?.name} --> {toRegion?.name}
 			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 		{:else if tripStatus.timeRemain === 0}
-			You're ready to go
+			{sysState.uiTexts.READY_TO_GO}
 		{:else}
-			Stay for a sec, then you can start a new trip.
+			{sysState.uiTexts.MUST_STAY_FOR_A_SEC}
 			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 		{/if}
 	</Dialog>
