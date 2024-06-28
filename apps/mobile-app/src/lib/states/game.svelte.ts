@@ -1,6 +1,6 @@
 import type { Tables } from '@repo/shared/supatypes';
 import { MIN_STAY_TIME } from '@repo/shared/config';
-import { sysState } from '@/states/sys.svelte';
+import { sysState } from '@/states';
 
 class GameState {
 	regions = $state<Region[]>([]);
