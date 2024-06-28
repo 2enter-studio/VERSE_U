@@ -60,10 +60,19 @@
 >
 	<div class="flex flex-row gap-2">
 		{sysState.uiTexts.VERSION}: {version}
-		<button onclick={signOut} class="flex flex-row bg-black text-white">
-			{sysState.uiTexts.SIGNOUT}
-			<Icon icon="mdi:exit-run" class="text-xl" />
-		</button>
+		{#if !sysState.processing}
+			<button
+				onclick={async () => {
+					await sysState.process(async () => {
+						await signOut();
+					});
+				}}
+				class="flex flex-row bg-black text-white"
+			>
+				{sysState.uiTexts.SIGNOUT}
+				<Icon icon="mdi:exit-run" class="text-xl" />
+			</button>
+		{/if}
 	</div>
 	<div class="flex flex-col text-black">
 		<div class="center-content flex-row gap-2">
