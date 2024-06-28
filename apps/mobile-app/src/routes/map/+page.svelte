@@ -78,9 +78,12 @@
 			{#if gameState.trip}
 				{@const region_id = gameState.trip[`next_${num}`]}
 				<button
-					onclick={() => {
-						startNextTrip(num);
-						chooseNext = false;
+					class={sysState.processing ? 'hidden' : ''}
+					onclick={async () => {
+						await sysState.process(async () => {
+							await startNextTrip(num);
+							chooseNext = false;
+						});
 					}}
 				>
 					<span class="center-content flex-col text-black">

@@ -125,16 +125,19 @@
 	</div>
 
 	<button
-		class="z-10 bg-white text-black {unSaved ? '' : 'hidden'}"
+		class="z-10 bg-white text-black {unSaved && !sysState.processing ? '' : 'hidden'}"
 		disabled={!unSaved}
 		onclick={async () => {
 			if (!unSaved) return;
-			const res = await equipWearings(filteredSelectedWearings);
-			if (res?.error) {
-				console.error(res.error);
-				return;
-			}
-			initSelectedWearings = { ...selectedWearings };
+			await sysState.process(async () => {
+				const res = await equipWearings(filteredSelectedWearings);
+				if (res?.error) {
+					console.error(res.error);
+				} else {
+					sysState.defaultSuccess('SUCCESS');
+					initSelectedWearings = { ...selectedWearings };
+				}
+			});
 		}}
 	>
 		{sysState.uiTexts.EQUIP}
