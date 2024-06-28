@@ -102,7 +102,7 @@
 					minlength="1"
 					type="text"
 					bind:value={values.profile.name}
-					class="rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
+					class="w-4/5 rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
 				/>
 			</div>
 		{/if}

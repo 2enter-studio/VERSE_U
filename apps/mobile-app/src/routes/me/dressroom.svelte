@@ -125,8 +125,8 @@
 	</div>
 
 	<button
-		class="z-10 bg-white text-black {unSaved && !sysState.processing ? '' : 'hidden'}"
-		disabled={!unSaved}
+		class="z-10 bg-white px-2 py-1 text-black rounded-xl mb-1 {unSaved && !sysState.processing ? '' : 'hidden'}"
+		disabled={!unSaved && sysState.processing}
 		onclick={async () => {
 			if (!unSaved) return;
 			await sysState.process(async () => {
@@ -140,6 +140,6 @@
 			});
 		}}
 	>
-		{sysState.uiTexts.EQUIP}
+		{sysState.uiTexts.SAVE_MODIFIED}
 	</button>
 </Drawer>

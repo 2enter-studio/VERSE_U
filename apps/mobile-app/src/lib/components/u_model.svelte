@@ -237,6 +237,6 @@
 	class="{className} {modelLoaded && animating ? 'opacity-100' : 'opacity-0'}"
 ></div>
 
-{#if !modelLoaded}
-	<div class="full-screen center-content">loading{'.'.repeat(sysState.now.getTime() % 4)}</div>
-{/if}
+<!--{#if !modelLoaded}-->
+<!--	<div class="full-screen center-content">loading{'.'.repeat(sysState.now.getTime() % 4)}</div>-->
+<!--{/if}-->

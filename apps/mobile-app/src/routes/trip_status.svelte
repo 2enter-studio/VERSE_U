@@ -17,7 +17,7 @@
 
 <div class="{className} flex flex-row">
 	<button
-		class="flex h-1.5 w-full justify-start bg-white"
+		class="flex h-2 w-full justify-start bg-white"
 		onclick={() => (openDetail = !openDetail)}
 	>
 		{#if tripStatus.progress < 1}
@@ -27,7 +27,7 @@
 			></div>
 		{:else}
 			<div
-				class="flex h-full items-center bg-cyan-500"
+				class="flex h-full items-center bg-sky-500"
 				style="width: {~~(100 * ((MIN_STAY_TIME - tripStatus.timeRemain) / MIN_STAY_TIME))}%;"
 			></div>
 		{/if}
