@@ -41,10 +41,6 @@
 	});
 </script>
 
-{#each gameState.regions as region}
-	<link rel="prefetch" href={getFileUrl('regions', `stickers/${region.id}`)} />
-{/each}
-
 <div
 	bind:this={dom}
 	class="absolute z-[-10] h-screen w-screen bg-no-repeat {transitionClasses}"
@@ -55,6 +51,9 @@
 ></div>
 
 {#if gameState.regions.length > 0 && gameState.trip}
+	{#each gameState.regions as region}
+		<link rel="prefetch" href={getFileUrl('regions', `stickers/${region.id}`)} />
+	{/each}
 	{#if gameState.tripStatus.progress === 1}
 		{#await load.peopleNearBy()}
 			loading
