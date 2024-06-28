@@ -48,4 +48,21 @@ function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
 	}
 }
 
-export { startNewChat, agreeFriendShip, getMemberFromChat };
+async function clearExpiredChats() {
+	const user_id = authState.user?.id;
+	if (!user_id || gameState.chats.length === 0) {
+		console.error('user or chats not found');
+		return createError('USER_NOT_FOUND');
+	}
+
+	const deleteIds = gameState.chats
+		.filter((chat) => chat.chat_members.some((member) => !member.agree))
+		.map((c) => c.id);
+
+	const { error } = await db.from('chats').delete().in('id', deleteIds);
+	if (error) {
+		console.error(error);
+	}
+	await load.chats();
+}
+export { startNewChat, agreeFriendShip, getMemberFromChat, clearExpiredChats };

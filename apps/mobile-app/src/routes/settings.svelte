@@ -60,10 +60,19 @@
 >
 	<div class="flex flex-row gap-2">
 		{sysState.uiTexts.VERSION}: {version}
-		<button onclick={signOut} class="flex flex-row bg-black text-white">
-			{sysState.uiTexts.SIGNOUT}
-			<Icon icon="mdi:exit-run" class="text-xl" />
-		</button>
+		{#if !sysState.processing}
+			<button
+				onclick={async () => {
+					await sysState.process(async () => {
+						await signOut();
+					});
+				}}
+				class="flex flex-row bg-black text-white"
+			>
+				{sysState.uiTexts.SIGNOUT}
+				<Icon icon="mdi:exit-run" class="text-xl" />
+			</button>
+		{/if}
 	</div>
 	<div class="flex flex-col text-black">
 		<div class="center-content flex-row gap-2">
@@ -93,7 +102,7 @@
 					minlength="1"
 					type="text"
 					bind:value={values.profile.name}
-					class="rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
+					class="w-4/5 rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
 				/>
 			</div>
 		{/if}

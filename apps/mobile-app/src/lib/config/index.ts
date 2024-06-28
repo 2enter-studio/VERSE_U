@@ -25,7 +25,7 @@ const MAP_SIZE = 3200;
 const FRAME_RATE = 12;
 const DEFAULT_CAMERA_POS = [0.05, 1.65, 2.0] as const;
 const ZOOM_IN_CAMERA_POS = [0, 2.3, 0.5] as const;
-const SYS_MSG_LIFE_TIME = 5000;
+const SYS_MSG_LIFE_TIME = 3000;
 const USE_SMOOTH_MAP_MOTION = false;
 
 export {

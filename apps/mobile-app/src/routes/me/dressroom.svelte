@@ -5,6 +5,7 @@
 	import { sysState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from './utils';
 	import { Drawer } from '@/components/index.js';
+	import { getFileUrl } from '@/utils';
 
 	type Props = {
 		open: boolean;
@@ -18,6 +19,7 @@
 		selectedWearingType = $bindable()
 	}: Props = $props();
 	// let selectedType = $state(randomItem(gameState.wearingTypes).id);
+	const thumbnailSize = 'size-20';
 	let initSelectedWearings = $state({ ...selectedWearings });
 
 	const unSaved = $derived(
@@ -38,10 +40,14 @@
 	});
 </script>
 
-<Drawer bind:open class="w-screen gap-2 bg-black p-1">
+<Drawer bind:open class="w-screen gap-2 bg-amber-500 p-1">
 	{#each gameState.wearingTypes as wearingType}
 		{@const typeSelected = wearingType.id === selectedWearingType}
-		<div class="z-10 flex w-full flex-row justify-evenly {typeSelected ? '' : 'hidden'}">
+		<div
+			class="z-10 flex max-h-[30vh] w-full flex-row flex-wrap justify-evenly overflow-y-auto {typeSelected
+				? ''
+				: 'hidden'}"
+		>
 			<input
 				id="{wearingType.id}-none"
 				type="radio"
@@ -49,7 +55,10 @@
 				bind:group={selectedWearings[wearingType.id]}
 				hidden
 			/>
-			<label for="{wearingType.id}-none" class="flex items-center">
+			<label
+				for="{wearingType.id}-none"
+				class="center-content flex items-center text-3xl {thumbnailSize}"
+			>
 				<Icon
 					icon="ion:ban-sharp"
 					class="{selectedWearings[wearingType.id] === '' ? 'text-red-500' : 'text-white'} "
@@ -67,29 +76,39 @@
 						bind:group={selectedWearings[wearingType.id]}
 						hidden
 					/>
-					<label class="bg-black text-white {selected ? 'bg-red-300' : ''}" for={wearing.id}
-						>{wearing.name}</label
-					>
+					<label class="text-white {selected ? 'rounded-full bg-white' : ''}" for={wearing.id}>
+						<img
+							src={getFileUrl('wearings', `thumbnails/${wearing.id}`)}
+							alt="loading"
+							class="{thumbnailSize} "
+						/>
+					</label>
 				{:else}
 					<div class="flex flex-col items-center">
-						<span class="bg-gray-300 text-cyan-500">{wearing.name}</span>
-						<button
-							onclick={async () => {
-								const res = await buyWearing(wearing.id);
-								if (res?.error) {
-									sysState.defaultError(res.error.message);
-								}
-							}}
-						>
-							<Icon icon="fa6-solid:cart-plus" />
-						</button>
+						<span class="text-cyan-500">
+							<img
+								src={getFileUrl('wearings', `thumbnails/${wearing.id}`)}
+								alt="loading"
+								class="{thumbnailSize} opacity-30"
+							/>
+						</span>
+						<!--						<button-->
+						<!--							onclick={async () => {-->
+						<!--								const res = await buyWearing(wearing.id);-->
+						<!--								if (res?.error) {-->
+						<!--									sysState.defaultError('OPERATION_FAILED');-->
+						<!--								}-->
+						<!--							}}-->
+						<!--						>-->
+						<!--							<Icon icon="fa6-solid:cart-plus" />-->
+						<!--						</button>-->
 					</div>
 				{/if}
 			{/each}
 		</div>
 	{/each}
 
-	<div class="flex w-full flex-row justify-evenly">
+	<div class="flex w-full flex-row justify-evenly gap-3 overflow-x-auto px-3">
 		{#each gameState.wearingTypes as wearingType}
 			{@const typeSelected = wearingType.id === selectedWearingType}
 			<input
@@ -106,18 +125,21 @@
 	</div>
 
 	<button
-		class="z-10 bg-white text-black {unSaved ? '' : 'hidden'}"
-		disabled={!unSaved}
+		class="z-10 bg-white px-2 py-1 text-black rounded-xl mb-1 {unSaved && !sysState.processing ? '' : 'hidden'}"
+		disabled={!unSaved && sysState.processing}
 		onclick={async () => {
 			if (!unSaved) return;
-			const res = await equipWearings(filteredSelectedWearings);
-			if (res?.error) {
-				console.error(res.error);
-				return;
-			}
-			initSelectedWearings = { ...selectedWearings };
+			await sysState.process(async () => {
+				const res = await equipWearings(filteredSelectedWearings);
+				if (res?.error) {
+					console.error(res.error);
+				} else {
+					sysState.defaultSuccess('SUCCESS');
+					initSelectedWearings = { ...selectedWearings };
+				}
+			});
 		}}
 	>
-		Equip
+		{sysState.uiTexts.SAVE_MODIFIED}
 	</button>
 </Drawer>

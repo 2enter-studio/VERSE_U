@@ -41,10 +41,6 @@
 	});
 </script>
 
-{#each gameState.regions as region}
-	<link rel="prefetch" href={getFileUrl('regions', `stickers/${region.id}`)} />
-{/each}
-
 <div
 	bind:this={dom}
 	class="absolute z-[-10] h-screen w-screen bg-no-repeat {transitionClasses}"
@@ -55,19 +51,22 @@
 ></div>
 
 {#if gameState.regions.length > 0 && gameState.trip}
+	{#each gameState.regions as region}
+		<link rel="prefetch" href={getFileUrl('regions', `stickers/${region.id}`)} />
+	{/each}
 	{#if gameState.tripStatus.progress === 1}
-		{#await load.peopleNearBy()}
-			loading
-		{:then a}
-			{#if gameState.tripStatus.timeRemain === 0}
-				<button
-					class="center-content fixed left-[58vw] top-[50vh] size-10 rounded-full border-b-4 border-r-4 bg-green-700 p-1"
-					onclick={() => (chooseNext = true)}
-				>
-					<Icon icon="mingcute:run-fill" class="text-2xl" />
-				</button>
-			{/if}
-		{/await}
+		<!--{#await load.peopleNearBy()}-->
+		<!--	loading-->
+		<!--{:then _}-->
+		{#if gameState.tripStatus.timeRemain === 0}
+			<button
+				class="center-content fixed left-[58vw] top-[50vh] size-10 rounded-full border-b-4 border-r-4 bg-green-700 p-1"
+				onclick={() => (chooseNext = true)}
+			>
+				<Icon icon="mingcute:run-fill" class="text-2xl" />
+			</button>
+		{/if}
+		<!--{/await}-->
 	{/if}
 
 	<Dialog
@@ -79,13 +78,20 @@
 			{#if gameState.trip}
 				{@const region_id = gameState.trip[`next_${num}`]}
 				<button
-					onclick={() => {
-						startNextTrip(num);
+					class={sysState.processing ? 'hidden' : ''}
+					onclick={async () => {
 						chooseNext = false;
+						await sysState.process(async () => {
+							await startNextTrip(num);
+							sysState.defaultSuccess();
+						});
 					}}
 				>
 					<span class="center-content flex-col text-black">
-						<img src={getFileUrl('regions', `stickers/${region_id}`)} alt="" />
+						<span
+							style="background-image: url({getFileUrl('regions', `stickers/${region_id}`)})"
+							class="size-32 bg-contain bg-center bg-no-repeat"
+						></span>
 						{getTextFromObj(gameState.regions, 'name', region_id)}
 					</span>
 				</button>

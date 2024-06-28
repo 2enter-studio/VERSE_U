@@ -1,6 +1,6 @@
 {
 	"name": "mobile-app",
-	"version": "0.1.1",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -20,6 +20,7 @@
 		"@capacitor/screen-orientation": "^6.0.1",
 		"@sveltejs/adapter-static": "^3.0.2",
 		"base64-arraybuffer": "^1.0.2",
+		"eruda": "^3.0.1",
 		"postcss-load-config": "^6.0.1",
 		"random-item": "^4.0.1",
 		"serve": "^14.2.3",

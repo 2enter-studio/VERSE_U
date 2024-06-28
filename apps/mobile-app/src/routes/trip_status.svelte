@@ -9,11 +9,15 @@
 	let openDetail = $state(false);
 
 	const tripStatus = $derived(gameState.tripStatus);
+	const fromRegion = $derived(
+		gameState.regions.find((region) => region.id === gameState.trip?.from)
+	);
+	const toRegion = $derived(gameState.regions.find((region) => region.id === gameState.trip?.to));
 </script>
 
 <div class="{className} flex flex-row">
 	<button
-		class="flex h-1.5 w-full justify-start bg-white"
+		class="flex h-2 w-full justify-start bg-white"
 		onclick={() => (openDetail = !openDetail)}
 	>
 		{#if tripStatus.progress < 1}
@@ -23,7 +27,7 @@
 			></div>
 		{:else}
 			<div
-				class="flex h-full items-center bg-cyan-500"
+				class="flex h-full items-center bg-sky-500"
 				style="width: {~~(100 * ((MIN_STAY_TIME - tripStatus.timeRemain) / MIN_STAY_TIME))}%;"
 			></div>
 		{/if}
@@ -31,14 +35,18 @@
 </div>
 
 {#if openDetail}
-	<Dialog title="Info" open={openDetail} class="flex-col text-center text-black">
+	<Dialog
+		title={sysState.uiTexts.TRIP_INFO}
+		open={openDetail}
+		class="flex-col text-center text-black"
+	>
 		{#if tripStatus.progress < 1}
-			You're on the way to the {gameState.trip?.to}
+			{fromRegion?.name} --> {toRegion?.name}
 			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 		{:else if tripStatus.timeRemain === 0}
-			You're ready to go
+			{sysState.uiTexts.READY_TO_GO}
 		{:else}
-			Stay for a sec, then you can start a new trip.
+			{sysState.uiTexts.MUST_STAY_FOR_A_SEC}
 			<small class="text-xs">{secToMin(Math.abs(tripStatus.timeRemain))}</small>
 		{/if}
 	</Dialog>

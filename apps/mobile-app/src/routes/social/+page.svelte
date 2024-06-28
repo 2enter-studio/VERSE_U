@@ -16,8 +16,8 @@
 	let firstMessage = $state('');
 
 	$effect(() => {
-		if (gameState.chat_id) storyUserId = ''
-	})
+		if (gameState.chat_id) storyUserId = '';
+	});
 
 	onMount(() => {
 		subscribe.chat_members.subscribe();

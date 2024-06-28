@@ -296,14 +296,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "user_tags_tag_id_fkey"
+            foreignKeyName: "public_j-users-tags_tag_fkey"
             columns: ["tag"]
             isOneToOne: false
             referencedRelation: "tags"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_tags_user_id_fkey"
+            foreignKeyName: "public_j-users-tags_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "users"
@@ -467,14 +467,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "owned_wearings_owner_fkey"
+            foreignKeyName: "public_owned_wearings_owner_fkey"
             columns: ["owner"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user"]
           },
           {
-            foreignKeyName: "owned_wearings_wearing_fkey"
+            foreignKeyName: "public_owned_wearings_wearing_fkey"
             columns: ["wearing"]
             isOneToOne: false
             referencedRelation: "wearings"
@@ -538,24 +538,6 @@ export type Database = {
           updated_at?: string
           x?: number
           y?: number
-        }
-        Relationships: []
-      }
-      stickers: {
-        Row: {
-          created_at: string
-          id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          updated_at?: string
         }
         Relationships: []
       }
@@ -643,6 +625,27 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "public_trips_from_fkey"
+            columns: ["from"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_trips_next_0_fkey"
+            columns: ["next_0"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_trips_next_1_fkey"
+            columns: ["next_1"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_trips_to_fkey"
             columns: ["to"]
             isOneToOne: false
@@ -650,28 +653,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "trips_destination_fkey"
-            columns: ["from"]
-            isOneToOne: false
-            referencedRelation: "regions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "trips_next_0_fkey"
-            columns: ["next_0"]
-            isOneToOne: false
-            referencedRelation: "regions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "trips_next_1_fkey"
-            columns: ["next_1"]
-            isOneToOne: false
-            referencedRelation: "regions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "trips_user_fkey"
+            foreignKeyName: "public_trips_user_fkey"
             columns: ["user"]
             isOneToOne: true
             referencedRelation: "profiles"
@@ -754,6 +736,7 @@ export type Database = {
           category: string
           created_at: string
           id: string
+          in_starter_pack: boolean
           mesh: string
           updated_at: string
         }
@@ -761,6 +744,7 @@ export type Database = {
           category?: string
           created_at?: string
           id?: string
+          in_starter_pack?: boolean
           mesh?: string
           updated_at?: string
         }
@@ -768,22 +752,23 @@ export type Database = {
           category?: string
           created_at?: string
           id?: string
+          in_starter_pack?: boolean
           mesh?: string
           updated_at?: string
         }
         Relationships: [
           {
+            foreignKeyName: "public_wearings_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "wearing_types"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_wearings_mesh_fkey"
             columns: ["mesh"]
             isOneToOne: false
             referencedRelation: "meshes"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "wearings_category_fkey"
-            columns: ["category"]
-            isOneToOne: false
-            referencedRelation: "wearing_types"
             referencedColumns: ["id"]
           },
         ]
@@ -793,6 +778,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      agree_friendship: {
+        Args: {
+          chat_id: string
+        }
+        Returns: undefined
+      }
       archive_trips: {
         Args: {
           ids: string[]
@@ -819,6 +810,13 @@ export type Database = {
           _chat_id: string
         }
         Returns: boolean
+      }
+      start_new_chat: {
+        Args: {
+          target_user_id: string
+          first_message: string
+        }
+        Returns: string
       }
       update_last_active: {
         Args: {

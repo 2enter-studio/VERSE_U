@@ -145,6 +145,9 @@ const TABLES_INFO: TableInfo = {
 			...ID,
 			...CREATED_AT,
 			...UPDATED_AT,
+			in_starter_pack: {
+				type: 'toggle'
+			},
 			...NAME_AND_DESCRIPTION
 		},
 		reference: {
