@@ -39,9 +39,8 @@ Deno.serve(async (req) => {
   // update current trip
   const { error } = await admin.from('trips').update(nextTrip).eq('id', trip.id);
 
-  if (error) {
-    return createError(error.message, { status: 500 });
-  }
+  if (error) return createError(error.message, { status: 500 });
+
 
   return createSuccess({ nextTrip });
 });

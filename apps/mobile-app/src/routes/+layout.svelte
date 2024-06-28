@@ -2,24 +2,22 @@
 	import '../app.css';
 	import { onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { page } from '$app/stores';
 	import { App } from '@capacitor/app';
 	import { ScreenOrientation } from '@capacitor/screen-orientation';
 	import Account from '$routes/auth/account/+page.svelte';
 	import CreateProfile from '$routes/auth/create-profile/+page.svelte';
 	import { SafeAreaController } from '@aashu-dubey/capacitor-statusbar-safe-area';
-	import Icon from '@iconify/svelte';
-	import eruda from 'eruda';
+	// import eruda from 'eruda';
 
 	import { db } from '@/db';
-	import { load as loadData, load, redirectTo } from '@/utils';
+	import { load as loadData, load } from '@/utils';
 	import { authState, sysState } from '@/states';
 	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
 	import type { TextCode } from '@/config/ui_texts/types';
 	import type { PageData } from './$types';
 
 	type Props = { children: Snippet; data: PageData };
-	let { children, data }: Props = $props();
+	let { children }: Props = $props();
 	let loadingProgress = $state(0);
 
 	async function init() {
@@ -45,13 +43,12 @@
 				}
 			}
 		}
-		// else redirectTo('/auth/account');
 	}
 
 	onMount(async () => {
 		await setUpSafeCSS();
 
-		eruda.init();
+		// eruda.init();
 
 		await App.addListener('resume', async () => {
 			await init();
@@ -101,7 +98,7 @@
 	>
 		{#each { length: 2 } as _, i}
 			<div
-				class="center-content w-full transition-all duration-1000 text-8xl text-center break-all"
+				class="center-content w-full break-all text-center text-8xl transition-all duration-1000"
 				style="
 					width: {100 * ((1 - loadingProgress) / 2)}%;
 					background-color: hsl({~~(Math.random() * 360)}, 60%, 60%);

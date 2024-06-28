@@ -36,7 +36,7 @@
 	<input
 		type="text"
 		bind:value={name}
-		class="rounded-lg bg-black py-1 text-white"
+		class="rounded-lg bg-black py-1 text-white w-4/5"
 		placeholder="enter your name"
 	/>
 

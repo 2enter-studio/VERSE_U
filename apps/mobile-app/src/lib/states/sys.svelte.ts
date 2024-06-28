@@ -55,11 +55,11 @@ class SystemState {
 			message: this.uiTexts[message]
 		});
 	}
-	defaultSuccess(message: TextCode) {
+	defaultSuccess(message?: TextCode) {
 		return this.addSysMsg({
 			type: 'SUCCESS',
 			display: 'side',
-			message: this.uiTexts[message]
+			message: this.uiTexts[message ?? 'SUCCESS']
 		});
 	}
 	defaultProcessing() {
@@ -74,7 +74,11 @@ class SystemState {
 	}
 	async process(method: Function) {
 		this.processing = true;
-		const msg = sysState.defaultProcessing('PROCESSING');
+		const msg = sysState.defaultProcessing();
+		// const result = await method(;
+		// if (result?.error) {
+		// 	sysState.defaultError(result?.error);
+		// }
 		await method();
 		sysState.delSysMsg(msg.id);
 		this.processing = false;
