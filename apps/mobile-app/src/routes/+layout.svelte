@@ -7,6 +7,7 @@
 	import { ScreenOrientation } from '@capacitor/screen-orientation';
 	import { SafeAreaController } from '@aashu-dubey/capacitor-statusbar-safe-area';
 	import Icon from '@iconify/svelte';
+	import eruda from 'eruda';
 
 	import { db } from '@/db';
 	import { load, redirectTo } from '@/utils';
@@ -38,6 +39,7 @@
 	}
 
 	onMount(async () => {
+		eruda.init();
 		if (sysState.platform !== 'web') {
 			await SafeAreaController.injectCSSVariables();
 			await ScreenOrientation.lock({ orientation: 'portrait' });
