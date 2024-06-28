@@ -1,7 +1,7 @@
 module.exports = {
 	apps: [
 		{
-			name: 'official-website',
+			name: 'verse_u official website',
 			interpreter: 'bun',
 			script: './build',
 			instances: 1,
