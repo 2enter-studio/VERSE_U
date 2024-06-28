@@ -10,7 +10,7 @@ type SystemMessage = {
 	id: string;
 	created_at: Date;
 	display?: 'popout' | 'side';
-	type: 'SUCCESS' | 'WARNING' | 'ERROR';
+	type: 'SUCCESS' | 'WARNING' | 'ERROR' | 'PROCESSING';
 	message: string;
 	callback?: Function;
 };
@@ -44,22 +44,29 @@ class SystemState {
 	);
 
 	addSysMsg(input: Prettify<Omit<SystemMessage, 'created_at' | 'id'>>) {
-		const now = new Date();
-		const id = uuid();
-		this.systemMessage.push({ ...input, created_at: now, id });
+		const result = { ...input, created_at: new Date(), id: uuid() };
+		this.systemMessage.push(result);
+		return result;
 	}
 	defaultError(message: TextCode) {
-		this.addSysMsg({
+		return this.addSysMsg({
 			type: 'ERROR',
 			display: 'side',
 			message: this.uiTexts[message]
 		});
 	}
 	defaultSuccess(message: TextCode) {
-		this.addSysMsg({
+		return this.addSysMsg({
 			type: 'SUCCESS',
 			display: 'side',
 			message: this.uiTexts[message]
+		});
+	}
+	defaultProcessing() {
+		return this.addSysMsg({
+			type: 'PROCESSING',
+			display: 'side',
+			message: this.uiTexts.PROCESSING
 		});
 	}
 	delSysMsg(id: string) {
@@ -67,7 +74,9 @@ class SystemState {
 	}
 	async process(method: Function) {
 		this.processing = true;
+		const msg = sysState.defaultProcessing('PROCESSING');
 		await method();
+		sysState.delSysMsg(msg.id);
 		this.processing = false;
 	}
 }

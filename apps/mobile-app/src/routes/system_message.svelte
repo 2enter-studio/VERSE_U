@@ -9,7 +9,7 @@
 	onMount(() => {
 		const interval = setInterval(() => {
 			for (const { id, created_at } of sysState.systemMessage.filter(
-				(m) => m.display !== 'popout'
+				(m) => m.display !== 'popout' && m.type !== 'PROCESSING'
 			)) {
 				const now = new Date().getTime();
 				if (created_at.getTime() < now - SYS_MSG_LIFE_TIME) {
@@ -17,10 +17,26 @@
 				}
 			}
 		}, 1000);
+
 		return () => {
 			clearInterval(interval);
 		};
 	});
+
+	function getStyle(type: 'SUCCESS' | 'PROCESSING' | 'WARNING' | 'ERROR') {
+		switch (type) {
+			case 'SUCCESS':
+				return 'bg-green-500';
+			case 'WARNING':
+				return 'bg-amber-500';
+			case 'ERROR':
+				return 'bg-rose-500';
+			case 'PROCESSING':
+				return 'bg-cyan-500';
+			default:
+				return '';
+		}
+	}
 </script>
 
 {#each sysState.systemMessage as { id, created_at, message, type, display, callback } (created_at)}
@@ -47,7 +63,7 @@
 			{/if}
 		</Dialog>
 	{:else if display === 'side'}
-		<div class="fixed right-0 top-0 bg-black px-1 text-white">
+		<div class="fixed left-0 top-0 w-screen bg-black px-1 text-center text-white {getStyle(type)}">
 			{message}
 		</div>
 	{/if}
