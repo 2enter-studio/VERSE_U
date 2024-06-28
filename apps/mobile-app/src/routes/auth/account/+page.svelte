@@ -32,7 +32,7 @@
 	let args = $state.frozen<[string, string] | [string]>();
 
 	const formOptions = $derived(
-		authState.loggedIn ? (['CHANGE_PWD', 'FORGOT_PWD'] as const) : (['SIGNIN', 'SIGNUP'] as const)
+		authState.loggedIn ? (['CHANGE_PWD'] as const) : (['SIGNIN', 'SIGNUP'] as const)
 	);
 
 	$effect(() => {
