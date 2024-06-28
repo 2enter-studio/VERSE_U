@@ -44,6 +44,27 @@ async function createProfile(value: { name: string }) {
 
 	if (tripError) return { error: tripError };
 
+	{
+		const { data, error } = await db
+			.from('wearings')
+			.select('id')
+			.eq('in_starter_pack', true)
+			.returns<{ id: string }[]>();
+
+		if (error) return { error };
+		const insertData = data.map((d) => {
+			return { wearing: d.id };
+		});
+
+		{
+			const { error } = await db.from('owned_wearings').upsert(insertData);
+			if (error) {
+				console.error(error);
+				return { error };
+			}
+		}
+	}
+
 	gameState.trip = tripData;
 	authState.profile = profileData;
 }
