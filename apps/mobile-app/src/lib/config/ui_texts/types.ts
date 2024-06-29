@@ -49,7 +49,8 @@ const TEXT_CODES = [
 	'WARNING',
 	'WELCOME',
 	'WHERE_ARE_YOU_GOING',
-	'YOUR_APP_VERSION'
+	'YOUR_APP_VERSION',
+	'YOU_ARE_OFFLINE',
 ] as const;
 
 type TextCode = (typeof TEXT_CODES)[number];

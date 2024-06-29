@@ -2,6 +2,7 @@ import type { UITextTable } from '@/config/ui_texts/types';
 
 const table: UITextTable = {
 	ACCOUNT: 'Account',
+	YOU_ARE_OFFLINE: 'You are currently offline, please connect to the internet.',
 	ACCOUNT_NOT_FOUND: 'Account Not Found',
 	VERSION: 'Version',
 	LOCALE: 'EN',

@@ -15,6 +15,7 @@
 	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
 	import type { TextCode } from '@/config/ui_texts/types';
 	import type { PageData } from './$types';
+	import { Dialog } from '@/components';
 
 	type Props = { children: Snippet; data: PageData };
 	let { children }: Props = $props();
@@ -27,6 +28,7 @@
 		await loadData.maintenance();
 
 		if (sysState.maintaining) return;
+
 		if (authState.loggedIn) {
 			await load.regions();
 
@@ -34,8 +36,8 @@
 				const keywords = ['trip', 'peopleNearBy', 'chats', 'wearings', 'ownedWearings'] as const;
 
 				for (const key of keywords) {
-					const result = await load[key]();
 					console.log(`loading ${key}`);
+					const result = await load[key]();
 					if (result && result?.error) {
 						sysState.defaultError(result.error.message as TextCode);
 					}
@@ -90,50 +92,56 @@
 
 <SystemMessage />
 
-{#await init()}
-	{@const loadingTexts = [sysState.uiTexts.DATA, sysState.uiTexts.LOADING]}
-	<div
-		transition:fade={{ duration: 300 }}
-		class="full-screen flex flex-row justify-between bg-black/30 backdrop-blur-sm"
-	>
-		{#each { length: 2 } as _, i}
-			<div
-				class="center-content w-full break-all text-center text-8xl transition-all duration-1000"
-				style="
+{#if window.navigator.onLine}
+	{#await init()}
+		{@const loadingTexts = [sysState.uiTexts.DATA, sysState.uiTexts.LOADING]}
+		<div
+			transition:fade={{ duration: 300 }}
+			class="full-screen flex flex-row justify-between bg-black/30 backdrop-blur-sm"
+		>
+			{#each { length: 2 } as _, i}
+				<div
+					class="center-content w-full break-all text-center text-8xl transition-all duration-1000"
+					style="
 					width: {100 * ((1 - loadingProgress) / 2)}%;
 					background-color: hsl({~~(Math.random() * 360)}, 60%, 60%);
 					color: hsl({~~(Math.random() * 360)}, 30%, 80%);
 				"
-			>
-				{loadingTexts[i].toUpperCase()}
-				<!--				<Icon icon="mingcute:loading-fill" class="size-8 animate-spin"></Icon>-->
-			</div>
-		{/each}
-	</div>
-{:then _}
-	<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-		{#if authState.loggedIn}
-			{#if authState.profile}
-				{@render children()}
-				{#if sysState.showMenu}
-					<Menu />
-					<SideMenu />
-					<div class="flex w-full">
-						<MyProfile
-							class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
-						/>
-					</div>
+				>
+					{loadingTexts[i].toUpperCase()}
+					<!--				<Icon icon="mingcute:loading-fill" class="size-8 animate-spin"></Icon>-->
+				</div>
+			{/each}
+		</div>
+	{:then _}
+		<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
+			{#if authState.loggedIn}
+				{#if authState.profile}
+					{@render children()}
+					{#if sysState.showMenu}
+						<Menu />
+						<SideMenu />
+						<div class="flex w-full">
+							<MyProfile
+								class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
+							/>
+						</div>
+					{/if}
+				{:else}
+					{#await authState.set() then _}
+						<CreateProfile />
+					{/await}
 				{/if}
 			{:else}
-				{#await authState.set() then _}
-					<CreateProfile />
-				{/await}
+				<Account />
 			{/if}
-		{:else}
-			<Account />
-		{/if}
-	</div>
-{/await}
+		</div>
+	{/await}
+{:else}
+	<Dialog title={sysState.uiTexts.ERROR} closable={false} open={true}>
+		{sysState.uiTexts.YOU_ARE_OFFLINE}
+	</Dialog>
+{/if}
 
 <style>
 	#layout {
