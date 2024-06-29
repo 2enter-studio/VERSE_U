@@ -6,6 +6,7 @@
 	import { UModel } from '@/components';
 	import { sysState } from '@/states';
 	import { CHARACTER_ANIMATIONS } from '@/config';
+	import randomItem from 'random-item';
 
 	type Props = {
 		user_id: string;
@@ -35,7 +36,7 @@
 	});
 </script>
 
-<div class="full-screen flex flex-col items-center justify-between bg-green-400">
+<div class="full-screen z-20 flex flex-col items-center justify-between bg-green-400">
 	{#await loading() then wearingIds}
 		<div class="w-full px-3 text-right">
 			<button onclick={close} class="mt-[var(--safe-area-inset-top)]">
@@ -51,7 +52,7 @@
 		</button>
 		<UModel
 			class="full-screen z-[-10] text-black"
-			animation={CHARACTER_ANIMATIONS[0]}
+			animation={randomItem(CHARACTER_ANIMATIONS)}
 			{wearingIds}
 			readonly
 		></UModel>

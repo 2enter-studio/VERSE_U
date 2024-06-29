@@ -52,6 +52,7 @@
 				)}
 
 				<button
+					class="center-content flex-col bg-lime-500/20 backdrop-blur-lg px-0.5 py-1 rounded-sm w-1/5"
 					onclick={() => {
 						storyUserId = person.user;
 					}}

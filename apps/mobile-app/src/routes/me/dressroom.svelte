@@ -108,7 +108,7 @@
 		</div>
 	{/each}
 
-	<div class="flex w-full flex-row justify-evenly gap-3 overflow-x-auto px-3">
+	<div class="flex w-screen flex-row justify-evenly gap-3 overflow-x-scroll px-3 py-1 bg-purple-800">
 		{#each gameState.wearingTypes as wearingType}
 			{@const typeSelected = wearingType.id === selectedWearingType}
 			<input
@@ -118,14 +118,19 @@
 				bind:group={selectedWearingType}
 				hidden
 			/>
-			<label for={wearingType.id} class="px-1 {typeSelected ? 'bg-white text-black' : ''}">
+			<label
+				for={wearingType.id}
+				class="px-2 w-1/4 text-center whitespace-nowrap {typeSelected ? 'rounded-sm bg-white text-black' : ''}"
+			>
 				{wearingType.name}
 			</label>
 		{/each}
 	</div>
 
 	<button
-		class="z-10 bg-white px-2 py-1 text-black rounded-xl mb-1 {unSaved && !sysState.processing ? '' : 'hidden'}"
+		class="z-10 mb-1 rounded-xl bg-white px-2 py-1 text-black {unSaved && !sysState.processing
+			? ''
+			: 'hidden'}"
 		disabled={!unSaved && sysState.processing}
 		onclick={async () => {
 			if (!unSaved) return;
