@@ -15,7 +15,7 @@
 	let {
 		children,
 		title,
-		class: className,
+		class: className = 'text-center text-black center-content',
 		closable = true,
 		open = $bindable<boolean>(),
 		onclose

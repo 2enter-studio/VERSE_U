@@ -1,3 +1,5 @@
+import type { Tables } from '@repo/shared/supatypes';
+
 import { db } from '@/db';
 import { sysState } from '@/states';
 
@@ -8,7 +10,8 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 		.in('row_id', row_ids)
 		.in('column_name', column_names)
 		.eq('locale', sysState.locale)
-		.returns<{ value: string; row_id: string; column_name: string }[]>();
+		.returns<Tables<'ml_texts'>[]>();
+
 	if (error) {
 		// console.error(error.message);
 		return [];

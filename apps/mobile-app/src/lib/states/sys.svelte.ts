@@ -1,10 +1,12 @@
-import { inPeriod, type Prettify } from '@repo/shared/utils';
-import { Capacitor } from '@capacitor/core';
-import { DEFAULT_LOCALE, UI_TEXTS } from '@/config';
-import type { Locale } from '@repo/shared/config';
 import { v4 as uuid } from 'uuid';
+import { Capacitor } from '@capacitor/core';
+
 import type { Tables } from '@repo/shared/supatypes';
+import { inPeriod, type Prettify } from '@repo/shared/utils';
+import type { Locale } from '@repo/shared/config';
+
 import type { TextCode } from '@/config/ui_texts/types';
+import { DEFAULT_LOCALE, UI_TEXTS } from '@/config';
 
 type SystemMessage = {
 	id: string;
@@ -25,18 +27,7 @@ class SystemState {
 	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
 	maintenance = $state<Tables<'maintenance'> | null>(null);
 
-	systemMessage = $state<SystemMessage[]>([
-		// {
-		// 	id: uuid(),
-		// 	created_at: new Date(),
-		// 	display: 'side',
-		// 	type: 'WARNING',
-		// 	message: 'Fuck you',
-		// 	callback: () => {
-		// 		console.log('fuck you ');
-		// 	}
-		// }
-	]);
+	systemMessage = $state<SystemMessage[]>([]);
 	readonly uiTexts = $derived(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
 	readonly maintaining = $derived(
