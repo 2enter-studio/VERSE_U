@@ -62,15 +62,10 @@
 					// console.error('body not found');
 					return;
 				}
-				// modelLoaded = false;
 				console.log('reloading wearings');
-				loadWearings()
-					// .then(() => {
-					// 	modelLoaded = true;
-					// })
-					.catch((error) => {
-						console.error(error);
-					});
+				loadWearings().catch((error) => {
+					console.error(error);
+				});
 			}
 		);
 		watch(
@@ -91,7 +86,6 @@
 
 	async function makeMaterial(wearing_id: string) {
 		// const isNew = !$equippedWearings.includes(wearing_id);
-
 		const url = getFileUrl('wearings', `textures/${wearing_id}`);
 
 		try {
@@ -132,11 +126,11 @@
 			}
 		}
 
-		// for (const wearing of gameState.wearings.filter((w) => wearingIds.includes(w.id))) {
 		for (const wearing of wearingIds.map((id) => gameState.wearings.find((w) => w.id === id))) {
 			if (!wearing) {
 				return;
 			}
+
 			const { mesh, body_parts, id } = wearing;
 
 			for (const { value: body_part } of body_parts) {
@@ -155,7 +149,6 @@
 			const url = getFileUrl('meshes', `glb/${mesh}`);
 
 			const gltf = await loader.loadAsync(url, (progress) => {
-				console.log(progress);
 				const { loaded, total } = progress;
 				subLoadProgress = loaded / total;
 			});
@@ -207,19 +200,18 @@
 	onMount(async () => {
 		if (!dom) return;
 
+		renderer.setSize(dom.clientWidth, dom.clientHeight);
+		renderer.setPixelRatio(window.devicePixelRatio / 1.5);
+		dom.appendChild(renderer.domElement);
+		camera = new THREE.PerspectiveCamera(100, dom.clientWidth / dom.clientHeight, 0.1, 2000);
+		setCamera();
+
 		await loadBody();
 		console.log('body loaded');
 		await loadWearings();
 		console.log('wearings loaded');
 
-		// modelLoaded = true;
-
-		renderer.setSize(dom.clientWidth, dom.clientHeight);
-		renderer.setPixelRatio(window.devicePixelRatio / 1.5);
-		dom.appendChild(renderer.domElement);
-		camera = new THREE.PerspectiveCamera(100, dom.clientWidth / dom.clientHeight, 0.1, 2000);
-
-		setCamera();
+		animate();
 
 		function animate() {
 			scene.traverse((obj) => {
@@ -237,8 +229,6 @@
 				frame = requestAnimationFrame(animate);
 			}, 1000 / FRAME_RATE);
 		}
-
-		animate();
 	});
 
 	onDestroy(() => {
@@ -258,7 +248,7 @@
 		<span>
 			loading{'.'.repeat(sysState.now.getTime() % 4)}
 		</span>
-		<div class="flex h-2 w-[80vw] flex-row bg-white">
+		<div class="flex h-3 w-[80vw] flex-row bg-white">
 			<div
 				class="h-full bg-rose-800 transition-all duration-500"
 				style="width: {(100 * loadProgress).toFixed(2)}%"
