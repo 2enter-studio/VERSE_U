@@ -34,7 +34,12 @@ values ('Head'),
 insert into meshes default values;
 
 insert into  wearing_types (value)
-values ('wearing_type_0')
+values ('wearing_type_0');
 
-
+insert into storage.buckets (id, name, public)
+values 
+    ('regions', 'regions', true),
+    ('wearings', 'wearings', true),
+    ('meshes', 'meshes', true),
+    ('user_data', 'user_data', false);
 
