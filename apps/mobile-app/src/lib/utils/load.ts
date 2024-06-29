@@ -1,10 +1,10 @@
 import type { Tables } from '@repo/shared/supatypes';
+import { inPeriod } from '@repo/shared/utils';
 
 import { db } from '@/db';
 import { authState, gameState, sysState } from '@/states';
 import { assignMLTexts, createError, needUpdate, preferences, redirectTo, validate } from '@/utils';
 import { version } from '$app/environment';
-import { inPeriod } from '@repo/shared/utils';
 
 async function locale() {
 	sysState.locale = await preferences.locale.get();
@@ -184,6 +184,7 @@ async function peopleNearBy() {
 		.lt('arrive_at', new Date().toISOString())
 		.eq('to', trip.to)
 		.neq('user', user_id)
+		.limit(10)
 		.returns<{ user: Tables<'profiles'> }[]>();
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
