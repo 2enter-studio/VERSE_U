@@ -62,7 +62,7 @@
 				</button>
 				{#if storyUserId === person.user}
 					<Story
-						user_id={person.user}
+						{person}
 						close={() => (storyUserId = '')}
 						next={() => {
 							if (i + 1 < gameState.peopleNearBy.length)

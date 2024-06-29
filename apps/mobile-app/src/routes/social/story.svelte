@@ -3,23 +3,24 @@
 	import Icon from '@iconify/svelte';
 
 	import { getWearingsByUserId } from '$routes/me/utils';
-	import { UModel } from '@/components';
+	import { Avatar, UModel } from '@/components';
 	import { sysState } from '@/states';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 	import randomItem from 'random-item';
+	import type { Tables } from '@repo/shared/supatypes';
 
 	type Props = {
-		user_id: string;
+		person: Tables<'profiles'>;
 		close: () => void;
 		next: () => void;
 		previous: () => void;
 		startChat: () => void;
 	};
 
-	let { user_id, close, next, previous, startChat }: Props = $props();
+	let { close, next, previous, startChat, person }: Props = $props();
 
 	async function loading() {
-		const res = await getWearingsByUserId(user_id);
+		const res = await getWearingsByUserId(person.user);
 		if ('error' in res) {
 			console.error(res.error);
 			return [];
@@ -38,7 +39,11 @@
 
 <div class="full-screen z-20 flex flex-col items-center justify-between bg-green-400">
 	{#await loading() then wearingIds}
-		<div class="w-full px-3 text-right">
+		<div class="flex w-full flex-row justify-between px-1 text-right">
+			<div class="flex flex-row items-center gap-2 my-1">
+				<Avatar profile={person} />
+				{person.name}
+			</div>
 			<button onclick={close} class="mt-[var(--safe-area-inset-top)]">
 				<Icon icon="iconamoon:close-bold" class="size-8" />
 			</button>

@@ -4,7 +4,7 @@
 	import { sysState } from '@/states';
 	import type { Tables } from '@repo/shared/supatypes';
 
-	type Props = { profile?: Tables<'profiles'>; class?: string; readonly?: boolean };
+	type Props = { profile: Tables<'profiles'>; class?: string; readonly?: boolean };
 	let { profile, class: className = 'size-12', readonly = false }: Props = $props();
 
 	let selfieUrl = $state<string>('');
