@@ -29,11 +29,13 @@
 	let frame = 0;
 	let mixer: THREE.AnimationMixer;
 	let skeleton: THREE.Skeleton;
+	let loadProgress = $state(0);
+	let subLoadProgress = $state(0);
 
 	let camera = $state<THREE.PerspectiveCamera>();
 	let dom = $state<HTMLElement>();
 	let body = $state<THREE.Object3D<THREE.Object3DEventMap>>();
-	let modelLoaded = $state(false);
+	let modelLoaded = $derived(loadProgress >= 1);
 
 	const animating = $derived(
 		body?.animations?.some((a) => mixer?.clipAction(a).isRunning()) || false
@@ -60,12 +62,12 @@
 					// console.error('body not found');
 					return;
 				}
-				modelLoaded = false;
+				// modelLoaded = false;
 				console.log('reloading wearings');
 				loadWearings()
-					.then(() => {
-						modelLoaded = true;
-					})
+					// .then(() => {
+					// 	modelLoaded = true;
+					// })
 					.catch((error) => {
 						console.error(error);
 					});
@@ -116,6 +118,8 @@
 	}
 
 	async function loadWearings() {
+		loadProgress = 0;
+
 		if (!body) {
 			console.log('body not found');
 			return;
@@ -128,7 +132,11 @@
 			}
 		}
 
-		for (const wearing of gameState.wearings.filter((w) => wearingIds.includes(w.id))) {
+		// for (const wearing of gameState.wearings.filter((w) => wearingIds.includes(w.id))) {
+		for (const wearing of wearingIds.map((id) => gameState.wearings.find((w) => w.id === id))) {
+			if (!wearing) {
+				return;
+			}
 			const { mesh, body_parts, id } = wearing;
 
 			for (const { value: body_part } of body_parts) {
@@ -139,12 +147,18 @@
 				}
 			}
 
-			if (wearingGroup.children.some((c) => c.name === id)) continue;
+			if (wearingGroup.children.some((c) => c.name === id)) {
+				loadProgress += 1 / wearingIds.length;
+				continue;
+			}
 
-			if (!mesh) return;
 			const url = getFileUrl('meshes', `glb/${mesh}`);
 
-			const gltf = await loader.loadAsync(url);
+			const gltf = await loader.loadAsync(url, (progress) => {
+				console.log(progress);
+				const { loaded, total } = progress;
+				subLoadProgress = loaded / total;
+			});
 			const obj = gltf.scene;
 			const skinnedMesh = obj.children[0].children[0] as THREE.SkinnedMesh;
 
@@ -154,6 +168,8 @@
 			}
 			obj.name = id;
 			wearingGroup.add(obj);
+			subLoadProgress = 0;
+			loadProgress += 1 / wearingIds.length;
 		}
 	}
 
@@ -196,7 +212,7 @@
 		await loadWearings();
 		console.log('wearings loaded');
 
-		modelLoaded = true;
+		// modelLoaded = true;
 
 		renderer.setSize(dom.clientWidth, dom.clientHeight);
 		renderer.setPixelRatio(window.devicePixelRatio / 1.5);
@@ -237,6 +253,22 @@
 	class="{className} {modelLoaded && animating ? 'opacity-100' : 'opacity-0'}"
 ></div>
 
-<!--{#if !modelLoaded}-->
-<!--	<div class="full-screen center-content">loading{'.'.repeat(sysState.now.getTime() % 4)}</div>-->
-<!--{/if}-->
+{#if !modelLoaded}
+	<div class="full-screen center-content pointer-events-none flex flex-col gap-1">
+		<span>
+			loading{'.'.repeat(sysState.now.getTime() % 4)}
+		</span>
+		<div class="flex h-2 w-[80vw] flex-row bg-white">
+			<div
+				class="h-full bg-rose-800 transition-all duration-500"
+				style="width: {(100 * loadProgress).toFixed(2)}%"
+			></div>
+			<div class="flex flex-row" style="width: {100 / wearingIds.length}%;">
+				<div
+					class="h-full bg-cyan-800 transition-all duration-100"
+					style="width: {(100 * subLoadProgress).toFixed(2)}%"
+				></div>
+			</div>
+		</div>
+	</div>
+{/if}
