@@ -120,7 +120,9 @@
 			/>
 			<label
 				for={wearingType.id}
-				class="px-2 w-1/4 text-center whitespace-nowrap {typeSelected ? 'rounded-sm bg-white text-black' : ''}"
+				class="w-1/4 whitespace-nowrap px-2 text-center {typeSelected
+					? 'rounded-sm bg-transparent text-white shadow-inner shadow-black/30'
+					: ''}"
 			>
 				{wearingType.name}
 			</label>
