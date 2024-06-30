@@ -5,7 +5,7 @@
 	import { sysState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from './utils';
 	import { Drawer } from '@/components/index.js';
-	import { getFilePublicUrl } from '@/utils';
+	import { getFileUrl } from '@/utils';
 
 	type Props = {
 		open: boolean;
@@ -77,20 +77,16 @@
 						hidden
 					/>
 					<label class="text-white {selected ? 'rounded-full bg-white' : ''}" for={wearing.id}>
-						<img
-							src={getFilePublicUrl('wearings', `thumbnails/${wearing.id}`)}
-							alt="loading"
-							class="{thumbnailSize} "
-						/>
+						{#await getFileUrl('wearings', `thumbnails/${wearing.id}`) then { data: url }}
+							<img src={url} alt="loading" class="{thumbnailSize} " />
+						{/await}
 					</label>
 				{:else}
 					<div class="flex flex-col items-center">
 						<span class="text-cyan-500">
-							<img
-								src={getFilePublicUrl('wearings', `thumbnails/${wearing.id}`)}
-								alt="loading"
-								class="{thumbnailSize} opacity-30"
-							/>
+							{#await getFileUrl('wearings', `thumbnails/${wearing.id}`) then { data: url }}
+								<img src={url} alt="loading" class="{thumbnailSize} opacity-30" />
+							{/await}
 						</span>
 						<!--						<button-->
 						<!--							onclick={async () => {-->
@@ -108,7 +104,9 @@
 		</div>
 	{/each}
 
-	<div class="flex w-screen flex-row justify-evenly gap-3 overflow-x-scroll px-3 py-1 bg-purple-800">
+	<div
+		class="flex w-screen flex-row justify-evenly gap-3 overflow-x-scroll bg-purple-800 px-3 py-1 text-purple-300"
+	>
 		{#each gameState.wearingTypes as wearingType}
 			{@const typeSelected = wearingType.id === selectedWearingType}
 			<input

@@ -4,7 +4,7 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { getFilePublicUrl, getTextFromObj, load, subscribe } from '@/utils';
+	import { getFilePublicUrl, getFileUrl, getTextFromObj, load, subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 	import { onMount } from 'svelte';
@@ -21,9 +21,12 @@
 	const from = $derived(gameState.regions.find((r) => r.id === gameState.trip?.from) as Region);
 	const to = $derived(gameState.regions.find((r) => r.id === gameState.trip?.to) as Region);
 
-	const position = $derived({
-		x: (from.x + (to.x - from.x) * gameState.tripStatus.progress) * MAP_SIZE,
-		y: (from.y + (to.y - from.y) * gameState.tripStatus.progress) * MAP_SIZE
+	const position = $derived.by(() => {
+		if (!from) return { x: MAP_SIZE / 2, y: MAP_SIZE / 2 };
+		return {
+			x: (from.x + (to.x - from.x) * gameState.tripStatus.progress) * MAP_SIZE,
+			y: (from.y + (to.y - from.y) * gameState.tripStatus.progress) * MAP_SIZE
+		};
 	});
 	const origin = $derived({
 		x: position.x - width / 2,
@@ -51,9 +54,6 @@
 ></div>
 
 {#if gameState.regions.length > 0 && gameState.trip}
-	{#each gameState.regions as region}
-		<link rel="prefetch" href={getFilePublicUrl('regions', `stickers/${region.id}`)} />
-	{/each}
 	{#if gameState.tripStatus.progress === 1}
 		<!--{#await load.peopleNearBy()}-->
 		<!--	loading-->
@@ -88,10 +88,12 @@
 					}}
 				>
 					<span class="center-content flex-col text-black">
-						<span
-							style="background-image: url({getFilePublicUrl('regions', `stickers/${region_id}`)})"
-							class="size-32 bg-contain bg-center bg-no-repeat"
-						></span>
+						{#await getFileUrl('regions', `stickers/${region_id}`) then { data }}
+							<span
+								style="background-image: url({data})"
+								class="size-32 bg-contain bg-center bg-no-repeat"
+							></span>
+						{/await}
 						{getTextFromObj(gameState.regions, 'name', region_id)}
 					</span>
 				</button>
