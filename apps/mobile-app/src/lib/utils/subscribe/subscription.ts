@@ -51,6 +51,7 @@ class Subscription<T extends AllSupaTableName> {
 	}
 
 	async unsubscribe() {
+		console.log(`unsubscribe to ${this.channelName}`);
 		await db.removeChannel(this.channel);
 	}
 }

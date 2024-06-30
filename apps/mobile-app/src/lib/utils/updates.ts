@@ -12,7 +12,6 @@ function needUpdate() {
 		],
 		version.split('.').map((digit) => Number(digit)) as [number, number, number]
 	];
-	console.log(remoteInfo, localInfo);
 
 	if (remoteInfo[0] > localInfo[0]) {
 		return true;
