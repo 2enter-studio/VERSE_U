@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as THREE from 'three';
+	import { Directory, Filesystem } from '@capacitor/filesystem';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { onDestroy, onMount } from 'svelte';
 	import { watch } from 'runed';
@@ -30,7 +31,7 @@
 	let mixer: THREE.AnimationMixer;
 	let skeleton: THREE.Skeleton;
 	let loadProgress = $state(0);
-	let subLoadProgress = $state(0);
+	let subLoadProgress = $state([0, 0]);
 
 	let camera = $state<THREE.PerspectiveCamera>();
 	let dom = $state<HTMLElement>();
@@ -86,24 +87,28 @@
 
 	async function makeMaterial(wearing_id: string) {
 		// const isNew = !$equippedWearings.includes(wearing_id);
-		const url = getFileUrl('wearings', `textures/${wearing_id}`);
-
 		try {
-			const map = await textureLoader.loadAsync(`${url}_baseColor`);
-			const normalMap = await textureLoader.loadAsync(`${url}_normal`);
-			const roughnessMap = await textureLoader.loadAsync(`${url}_roughness`);
-			const metalnessMap = await textureLoader.loadAsync(`${url}_metallic`);
+			subLoadProgress[1] = 0;
+			const TEXTURE_TYPES = ['baseColor', 'metallic', 'roughness', 'normal'] as const;
+			let result: Record<(typeof TEXTURE_TYPES)[number], THREE.Texture> = {};
+			for (const wearing_type of TEXTURE_TYPES) {
+				const { data, error } = await getFileUrl(
+					'wearings',
+					`textures/${wearing_id}_${wearing_type}`,
+					'image/webp'
+				);
+				if (error) throw new Error('loading failed');
+				result[wearing_type] = await textureLoader.loadAsync(data);
 
-			map.flipY = false;
-			normalMap.flipY = false;
-			roughnessMap.flipY = false;
-			metalnessMap.flipY = false;
+				result[wearing_type].flipY = false;
+				subLoadProgress[1] += 0.25;
+			}
 
 			return new THREE.MeshStandardMaterial({
-				map,
-				normalMap,
-				roughnessMap,
-				metalnessMap
+				map: result.baseColor,
+				normalMap: result.normal,
+				roughnessMap: result.roughness,
+				metalnessMap: result.metallic
 			});
 		} catch (error) {
 			console.error(error);
@@ -146,11 +151,16 @@
 				continue;
 			}
 
-			const url = getFileUrl('meshes', `glb/${mesh}`);
+			// const url = getFileUrl('meshes', `glb/${mesh}`);
 
-			const gltf = await loader.loadAsync(url, (progress) => {
+			const { data } = await Filesystem.readFile({
+				directory: Directory.Documents,
+				path: `meshes/glb/${mesh}`
+			});
+
+			const gltf = await loader.loadAsync(`data:text/plain;base64,${data}`, (progress) => {
 				const { loaded, total } = progress;
-				subLoadProgress = loaded / total;
+				subLoadProgress[0] = loaded / total;
 			});
 			const obj = gltf.scene;
 			const skinnedMesh = obj.children[0].children[0] as THREE.SkinnedMesh;
@@ -161,7 +171,7 @@
 			}
 			obj.name = id;
 			wearingGroup.add(obj);
-			subLoadProgress = 0;
+			subLoadProgress[0] = 0;
 			loadProgress += 1 / wearingIds.length;
 		}
 	}
@@ -253,12 +263,14 @@
 				class="h-full bg-rose-800 transition-all duration-500"
 				style="width: {(100 * loadProgress).toFixed(2)}%"
 			></div>
-			<div class="flex flex-row" style="width: {100 / wearingIds.length}%;">
-				<div
-					class="h-full bg-cyan-800 transition-all duration-100"
-					style="width: {(100 * subLoadProgress).toFixed(2)}%"
-				></div>
-			</div>
+			{#each { length: 2 } as _, i}
+				<div class="flex flex-row" style="width: {50 / wearingIds.length}%;">
+					<div
+						class="h-full bg-cyan-800 transition-all duration-100"
+						style="width: {(100 * subLoadProgress[i]).toFixed(2)}%"
+					></div>
+				</div>
+			{/each}
 		</div>
 	</div>
 {/if}

@@ -6,7 +6,7 @@
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
-	import { getFileUrl } from '@/utils';
+	import { getFilePublicUrl } from '@/utils';
 	import { uploadSelfie } from '$routes/me/utils';
 
 	const expressions = gameState.wearingTypes
@@ -50,7 +50,7 @@
 	});
 </script>
 
-<link rel="prefetch" href={getFileUrl('regions', `backgrounds/${gameState.trip?.to}`)} />
+<link rel="prefetch" href={getFilePublicUrl('regions', `backgrounds/${gameState.trip?.to}`)} />
 
 <div class="center-content fixed bottom-0 flex-row gap-3">
 	{#if !dressing}
@@ -65,7 +65,7 @@
 </div>
 
 {#if gameState.tripStatus.progress === 1}
-	{@const regionBgUrl = getFileUrl('regions', `backgrounds/${gameState.trip?.to}`)}
+	{@const regionBgUrl = getFilePublicUrl('regions', `backgrounds/${gameState.trip?.to}`)}
 	<div
 		class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
 		style="background-image: url({regionBgUrl})"

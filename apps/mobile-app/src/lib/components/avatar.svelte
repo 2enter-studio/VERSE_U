@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getFileUrl } from '@/utils';
+	import { getFilePublicUrl } from '@/utils';
 	import { sysState } from '@/states';
 	import type { Tables } from '@repo/shared/supatypes';
 
@@ -12,7 +12,7 @@
 
 	async function reloadSelfie() {
 		if (profile)
-			selfieUrl = getFileUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
+			selfieUrl = getFilePublicUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
 		// const res = await fetch(selfieUrl);
 		// if (!res.ok) {
 		// 	selfieAvailable = false;

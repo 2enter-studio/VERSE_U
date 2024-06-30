@@ -4,7 +4,7 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { getFileUrl, getTextFromObj, load, subscribe } from '@/utils';
+	import { getFilePublicUrl, getTextFromObj, load, subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 	import { onMount } from 'svelte';
@@ -52,7 +52,7 @@
 
 {#if gameState.regions.length > 0 && gameState.trip}
 	{#each gameState.regions as region}
-		<link rel="prefetch" href={getFileUrl('regions', `stickers/${region.id}`)} />
+		<link rel="prefetch" href={getFilePublicUrl('regions', `stickers/${region.id}`)} />
 	{/each}
 	{#if gameState.tripStatus.progress === 1}
 		<!--{#await load.peopleNearBy()}-->
@@ -89,7 +89,7 @@
 				>
 					<span class="center-content flex-col text-black">
 						<span
-							style="background-image: url({getFileUrl('regions', `stickers/${region_id}`)})"
+							style="background-image: url({getFilePublicUrl('regions', `stickers/${region_id}`)})"
 							class="size-32 bg-contain bg-center bg-no-repeat"
 						></span>
 						{getTextFromObj(gameState.regions, 'name', region_id)}
@@ -109,7 +109,7 @@
 				class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
 				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
 			>
-				<img src={getFileUrl('regions', `stickers/${region.id}`)} alt={region.name} />
+				<img src={getFilePublicUrl('regions', `stickers/${region.id}`)} alt={region.name} />
 				{#if gameState.peopleNearBy.length > 0 && region.id === gameState.trip?.to}
 					<div class="center-content w-fit gap-1 rounded-full bg-orange-500 p-0.5">
 						{#each gameState.peopleNearBy as person}

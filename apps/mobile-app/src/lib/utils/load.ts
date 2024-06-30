@@ -1,9 +1,16 @@
 import type { Tables } from '@repo/shared/supatypes';
 import { inPeriod } from '@repo/shared/utils';
-
 import { db } from '@/db';
 import { authState, gameState, sysState } from '@/states';
-import { assignMLTexts, createError, needUpdate, preferences, redirectTo, validate } from '@/utils';
+import {
+	assignMLTexts,
+	createError,
+	download,
+	needUpdate,
+	preferences,
+	redirectTo,
+	validate
+} from '@/utils';
 import { version } from '$app/environment';
 
 async function locale() {
@@ -89,7 +96,15 @@ async function wearings() {
 			wearingTypes.push(category);
 		}
 	}
+
 	gameState.wearingTypes = await assignMLTexts(wearingTypes, ['name', 'description'] as const);
+
+	for (const wearing of gameState.wearings) {
+		await download('meshes', `glb/${wearing.mesh}`);
+		for (const { value: texture_type } of wearing.texture_types) {
+			await download('wearings', `textures/${wearing.id}_${texture_type}`);
+		}
+	}
 }
 
 async function ownedWearings() {

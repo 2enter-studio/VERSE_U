@@ -5,7 +5,7 @@
 	import { sysState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from './utils';
 	import { Drawer } from '@/components/index.js';
-	import { getFileUrl } from '@/utils';
+	import { getFilePublicUrl } from '@/utils';
 
 	type Props = {
 		open: boolean;
@@ -78,7 +78,7 @@
 					/>
 					<label class="text-white {selected ? 'rounded-full bg-white' : ''}" for={wearing.id}>
 						<img
-							src={getFileUrl('wearings', `thumbnails/${wearing.id}`)}
+							src={getFilePublicUrl('wearings', `thumbnails/${wearing.id}`)}
 							alt="loading"
 							class="{thumbnailSize} "
 						/>
@@ -87,7 +87,7 @@
 					<div class="flex flex-col items-center">
 						<span class="text-cyan-500">
 							<img
-								src={getFileUrl('wearings', `thumbnails/${wearing.id}`)}
+								src={getFilePublicUrl('wearings', `thumbnails/${wearing.id}`)}
 								alt="loading"
 								class="{thumbnailSize} opacity-30"
 							/>
