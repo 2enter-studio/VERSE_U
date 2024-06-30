@@ -5,10 +5,9 @@ import { authState, gameState, sysState } from '@/states';
 import {
 	assignMLTexts,
 	createError,
-	download,
+	fileDownloader,
 	needUpdate,
 	preferences,
-	redirectTo,
 	validate
 } from '@/utils';
 import { version } from '$app/environment';
@@ -31,7 +30,7 @@ async function maintenance() {
 	const { start, end } = data;
 
 	if (inPeriod(start, end, new Date())) {
-		redirectTo('/maintain');
+		sysState.routeTo('maintain');
 	}
 }
 
@@ -51,7 +50,7 @@ async function appVersion() {
 
 	if (needUpdate()) {
 		console.log('need update!!');
-		redirectTo('/update');
+		sysState.routeTo('update');
 	} else {
 		console.log('no need update');
 	}
@@ -76,35 +75,50 @@ async function profile(user_id?: string) {
 }
 
 async function regions() {
-	const { data, error } = await db.from('regions').select('*').returns<Tables<'regions'>[]>();
+	const { data, error } = await db
+		.from('regions')
+		.select('*')
+		.eq('enabled', true)
+		.returns<Tables<'regions'>[]>();
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 	gameState.regions = await assignMLTexts(data, ['name', 'description'] as const);
+	for (const region of data) {
+		fileDownloader.add('regions', `backgrounds/${region.id}`);
+		fileDownloader.add('regions', `stickers/${region.id}`);
+	}
 }
 
 async function wearings() {
-	const { data, error } = await db
+	const { data: wearings, error } = await db
 		.from('wearings')
-		.select('*, category(*), texture_types(*), body_parts(*)');
+		.select('*, category(*), texture_types(*), body_parts(*)')
+		.eq('enabled', true);
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
-	gameState.wearings = (await assignMLTexts(data, ['name', 'description'] as const)) as Wearing[];
-
 	const wearingTypes: Tables<'wearing_types'>[] = [];
-	for (const { category } of data) {
+	for (const { category } of wearings) {
 		if (!wearingTypes.some((r) => r.id === category.id)) {
 			wearingTypes.push(category);
 		}
 	}
 
-	gameState.wearingTypes = await assignMLTexts(wearingTypes, ['name', 'description'] as const);
-
-	for (const wearing of gameState.wearings) {
-		await download('meshes', `glb/${wearing.mesh}`);
+	const promises: Promise<void>[] = [];
+	for (const wearing of wearings) {
+		fileDownloader.add('meshes', `glb/${wearing.mesh}`);
+		fileDownloader.add('wearings', `thumbnails/${wearing.mesh}`);
 		for (const { value: texture_type } of wearing.texture_types) {
-			await download('wearings', `textures/${wearing.id}_${texture_type}`);
+			fileDownloader.add('wearings', `textures/${wearing.id}_${texture_type}`);
 		}
 	}
+
+	await Promise.all(promises);
+
+	gameState.wearingTypes = await assignMLTexts(wearingTypes, ['name', 'description'] as const);
+	gameState.wearings = (await assignMLTexts(wearings, [
+		'name',
+		'description'
+	] as const)) as Wearing[];
 }
 
 async function ownedWearings() {
