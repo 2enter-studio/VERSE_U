@@ -12,7 +12,7 @@
 	onMount(() => {
 		if (!authState.loggedIn || authState.profile) {
 			console.log(authState.loggedIn, authState.profile);
-			window.location.assign(DEFAULT_ROUTE);
+			sysState.routeTo(DEFAULT_ROUTE);
 		}
 		sysState.showMenu = false;
 
@@ -28,7 +28,7 @@
 			return;
 		}
 
-		window.location.assign(DEFAULT_ROUTE);
+		sysState.routeTo(DEFAULT_ROUTE);
 	}
 </script>
 
@@ -36,7 +36,7 @@
 	<input
 		type="text"
 		bind:value={name}
-		class="rounded-lg bg-black py-1 text-white w-4/5"
+		class="w-4/5 rounded-lg bg-black py-1 text-white"
 		placeholder="enter your name"
 	/>
 

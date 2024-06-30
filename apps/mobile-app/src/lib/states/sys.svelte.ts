@@ -6,7 +6,8 @@ import { inPeriod, type Prettify } from '@repo/shared/utils';
 import type { Locale } from '@repo/shared/config';
 
 import type { TextCode } from '@/config/ui_texts/types';
-import { DEFAULT_LOCALE, UI_TEXTS } from '@/config';
+import { DEFAULT_LOCALE, DEFAULT_ROUTE, type Route, UI_TEXTS } from '@/config';
+import { needUpdate } from '@/utils';
 
 type SystemMessage = {
 	id: string;
@@ -23,9 +24,11 @@ class SystemState {
 	selfieUpdated = $state(false);
 	locale = $state<Locale>(DEFAULT_LOCALE);
 	now = $state<Date>(new Date());
+	route = $state<Route>(DEFAULT_ROUTE);
 
 	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
 	maintenance = $state<Tables<'maintenance'> | null>(null);
+	downloadProgress = $state(0);
 
 	systemMessage = $state<SystemMessage[]>([]);
 	readonly uiTexts = $derived(UI_TEXTS[this.locale]);
@@ -33,7 +36,11 @@ class SystemState {
 	readonly maintaining = $derived(
 		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
 	);
+	readonly appLocked = $derived(this.maintaining || needUpdate());
 
+	routeTo(route: Route) {
+		this.route = route;
+	}
 	addSysMsg(input: Prettify<Omit<SystemMessage, 'created_at' | 'id'>>) {
 		const result = { ...input, created_at: new Date(), id: uuid() };
 		this.systemMessage.push(result);

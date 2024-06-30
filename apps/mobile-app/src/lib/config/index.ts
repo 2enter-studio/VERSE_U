@@ -14,12 +14,14 @@ const CHARACTER_ANIMATIONS = [
 	'YMCA_dance',
 	'Macarena_Dance'
 ] as const;
+const ROUTES = ['me', 'map', 'social', 'maintain', 'update'] as const;
 
 type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
 type CharacterAnimation = (typeof CHARACTER_ANIMATIONS)[number];
+type Route = (typeof ROUTES)[number];
 
-const DEFAULT_ROUTE = '/map';
+const DEFAULT_ROUTE = 'me';
 const DEFAULT_LOCALE = 'zh';
 const MAP_SIZE = 3200;
 const FRAME_RATE = 12;
@@ -40,7 +42,8 @@ export {
 	DEFAULT_CAMERA_POS,
 	ZOOM_IN_CAMERA_POS,
 	SYS_MSG_LIFE_TIME,
-	USE_SMOOTH_MAP_MOTION
+	USE_SMOOTH_MAP_MOTION,
+	ROUTES
 };
 
-export type { OAuthProvider, BucketName, CharacterAnimation };
+export type { OAuthProvider, BucketName, CharacterAnimation, Route };

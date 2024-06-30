@@ -1,13 +1,13 @@
 <script lang="ts">
 	// import { slide } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
-	import { page } from '$app/stores';
-	import { TripStatus } from '$routes/index';
+	import { TripStatus } from './';
+	import { sysState } from '@/states';
 
 	const routes = [
-		{ path: '/social', icon: 'iconoir:chat-bubble' },
-		{ path: '/map', icon: 'gis:map-poi' },
-		{ path: '/me', icon: 'fa6-solid:face-laugh' }
+		{ route: 'social', icon: 'iconoir:chat-bubble' },
+		{ route: 'map', icon: 'gis:map-poi' },
+		{ route: 'me', icon: 'fa6-solid:face-laugh' }
 	] as const;
 </script>
 
@@ -22,17 +22,17 @@
 			background-size: 80%;
 		"
 	>
-		{#each routes as { path, icon }}
-			{@const active = $page.url.pathname === path}
-			<a
+		{#each routes as { route, icon }}
+			{@const active = sysState.route === route}
+			<button
+				onclick={() => sysState.routeTo(route)}
 				class="{active
 					? 'size-[6.5vh] border-8 border-dashed border-cyan-700 bg-yellow-300 text-black'
 					: 'size-[6vh] border-2 border-white bg-black/90'}
 				center-content rounded-full text-[2.9vh] shadow-lg shadow-black/70"
-				href={path}
 			>
 				<Icon {icon} />
-			</a>
+			</button>
 		{/each}
 	</div>
 </div>
