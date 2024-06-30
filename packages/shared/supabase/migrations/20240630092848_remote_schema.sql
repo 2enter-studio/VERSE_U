@@ -14,6 +14,10 @@ CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
 
 COMMENT ON SCHEMA "public" IS 'standard public schema';
 
+CREATE EXTENSION IF NOT EXISTS "hypopg" WITH SCHEMA "extensions";
+
+CREATE EXTENSION IF NOT EXISTS "index_advisor" WITH SCHEMA "extensions";
+
 CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
 
 CREATE EXTENSION IF NOT EXISTS "pg_stat_statements" WITH SCHEMA "extensions";
@@ -32,6 +36,16 @@ CREATE TYPE "public"."language" AS ENUM (
 );
 
 ALTER TYPE "public"."language" OWNER TO "postgres";
+
+CREATE OR REPLACE FUNCTION "public"."agree_friendship"("chat_id" "uuid") RETURNS "void"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$BEGIN
+  UPDATE public.chat_members 
+  SET agree = true 
+  WHERE "user" = auth.uid() AND chat = chat_id;
+END;$$;
+
+ALTER FUNCTION "public"."agree_friendship"("chat_id" "uuid") OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."archive_trip"() RETURNS "trigger"
     LANGUAGE "plpgsql"
@@ -72,6 +86,36 @@ END;$$;
 
 ALTER FUNCTION "public"."gen_random_text"("length" integer) OWNER TO "postgres";
 
+CREATE OR REPLACE FUNCTION "public"."get_first_mesh_id"() RETURNS "uuid"
+    LANGUAGE "plpgsql"
+    AS $$
+BEGIN
+    RETURN (
+        SELECT id
+        FROM meshes
+        ORDER BY id ASC
+        LIMIT 1
+    );
+END;
+$$;
+
+ALTER FUNCTION "public"."get_first_mesh_id"() OWNER TO "postgres";
+
+CREATE OR REPLACE FUNCTION "public"."get_first_wearing_type_id"() RETURNS "uuid"
+    LANGUAGE "plpgsql"
+    AS $$
+BEGIN
+    RETURN (
+        SELECT id
+        FROM wearing_types
+        ORDER BY id ASC
+        LIMIT 1
+    );
+END;
+$$;
+
+ALTER FUNCTION "public"."get_first_wearing_type_id"() OWNER TO "postgres";
+
 CREATE OR REPLACE FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_id" "uuid") RETURNS boolean
     LANGUAGE "sql" SECURITY DEFINER
     AS $$SELECT EXISTS (
@@ -82,6 +126,27 @@ CREATE OR REPLACE FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_i
 );$$;
 
 ALTER FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_id" "uuid") OWNER TO "postgres";
+
+CREATE OR REPLACE FUNCTION "public"."start_new_chat"("target_user_id" "uuid", "first_message" "text") RETURNS "uuid"
+    LANGUAGE "plpgsql"
+    AS $$DECLARE 
+  chat_id uuid; 
+BEGIN 
+  SELECT gen_random_uuid() into chat_id;
+
+  INSERT INTO chats (id) VALUES (chat_id); 
+  
+  INSERT INTO chat_members (chat, "user", agree) VALUES 
+    (chat_id, auth.uid(), false), 
+    (chat_id, target_user_id, false); 
+  
+  INSERT INTO chat_messages (chat, sender, content) VALUES 
+    (chat_id, auth.uid(), first_message); 
+  
+  RETURN chat_id; 
+END;$$;
+
+ALTER FUNCTION "public"."start_new_chat"("target_user_id" "uuid", "first_message" "text") OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."update_last_active"("user_id" "uuid") RETURNS "uuid"
     LANGUAGE "plpgsql"
@@ -102,13 +167,13 @@ SET default_tablespace = '';
 
 SET default_table_access_method = "heap";
 
-CREATE TABLE IF NOT EXISTS "public"."avatars" (
-    "user" "uuid" DEFAULT "auth"."uid"() NOT NULL,
+CREATE TABLE IF NOT EXISTS "public"."app_versions" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL
+    "value" "text" DEFAULT '0.0.0'::"text" NOT NULL
 );
 
-ALTER TABLE "public"."avatars" OWNER TO "postgres";
+ALTER TABLE "public"."app_versions" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."body_parts" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -118,22 +183,11 @@ CREATE TABLE IF NOT EXISTS "public"."body_parts" (
 
 ALTER TABLE "public"."body_parts" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."character_assets" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "user" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "coin" integer DEFAULT 0 NOT NULL,
-    "exp" integer DEFAULT 0 NOT NULL,
-    "vehicle" "uuid"
-);
-
-ALTER TABLE "public"."character_assets" OWNER TO "postgres";
-
 CREATE TABLE IF NOT EXISTS "public"."chat_members" (
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "chat" "uuid" NOT NULL,
-    "user" "uuid" NOT NULL,
+    "user" "uuid" DEFAULT "auth"."uid"() NOT NULL,
     "agree" boolean DEFAULT false NOT NULL
 );
 
@@ -145,39 +199,22 @@ CREATE TABLE IF NOT EXISTS "public"."chat_messages" (
     "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
     "chat" "uuid" NOT NULL,
     "content" "text" NOT NULL,
-    "reply_to" "uuid",
-    "reply_to_datetime" timestamp with time zone,
-    "readed" boolean DEFAULT false NOT NULL
+    "reply_to" "uuid"
 )
 PARTITION BY RANGE ("created_at");
 
 ALTER TABLE "public"."chat_messages" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_04" (
+CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_06" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
     "chat" "uuid" NOT NULL,
     "content" "text" NOT NULL,
-    "reply_to" "uuid",
-    "reply_to_datetime" timestamp with time zone,
-    "readed" boolean DEFAULT false NOT NULL
+    "reply_to" "uuid"
 );
 
-ALTER TABLE "public"."chat_messages_2024_04" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_05" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid",
-    "reply_to_datetime" timestamp with time zone,
-    "readed" boolean DEFAULT false NOT NULL
-);
-
-ALTER TABLE "public"."chat_messages_2024_05" OWNER TO "postgres";
+ALTER TABLE "public"."chat_messages_2024_06" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."chats" (
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -187,23 +224,13 @@ CREATE TABLE IF NOT EXISTS "public"."chats" (
 
 ALTER TABLE "public"."chats" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."j-avatars-stickers" (
+CREATE TABLE IF NOT EXISTS "public"."hai_an_players" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "avatar" "uuid" NOT NULL,
-    "sticker" "uuid" NOT NULL
+    "player" "uuid" DEFAULT "auth"."uid"() NOT NULL
 );
 
-ALTER TABLE "public"."j-avatars-stickers" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."j-avatars-wearings" (
-    "avatar" "uuid" NOT NULL,
-    "wearing" "uuid" NOT NULL,
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
-);
-
-ALTER TABLE "public"."j-avatars-wearings" OWNER TO "postgres";
+ALTER TABLE "public"."hai_an_players" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."j-users-tags" (
     "user" "uuid" NOT NULL,
@@ -232,14 +259,13 @@ CREATE TABLE IF NOT EXISTS "public"."j-wearings-texture_types" (
 
 ALTER TABLE "public"."j-wearings-texture_types" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."j-wearings-wearing_types" (
+CREATE TABLE IF NOT EXISTS "public"."maintenance" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "wearing" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "wearing_type" "uuid" DEFAULT "gen_random_uuid"() NOT NULL
+    "start" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "end" timestamp with time zone DEFAULT "now"() NOT NULL
 );
 
-ALTER TABLE "public"."j-wearings-wearing_types" OWNER TO "postgres";
+ALTER TABLE "public"."maintenance" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."meshes" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -271,8 +297,6 @@ ALTER TABLE "public"."owned_wearings" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "last_active" timestamp without time zone DEFAULT "now"() NOT NULL,
-    "coins" bigint DEFAULT '0'::bigint NOT NULL,
-    "exp" bigint DEFAULT '0'::bigint NOT NULL,
     "name" "text" NOT NULL,
     "public_id" "text" DEFAULT "public"."gen_random_text"(8) NOT NULL,
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -287,18 +311,10 @@ CREATE TABLE IF NOT EXISTS "public"."regions" (
     "x" double precision DEFAULT '0'::double precision NOT NULL,
     "y" double precision DEFAULT '0'::double precision NOT NULL,
     "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "enabled" boolean DEFAULT false NOT NULL
+    "enabled" boolean DEFAULT true NOT NULL
 );
 
 ALTER TABLE "public"."regions" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."stickers" (
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL
-);
-
-ALTER TABLE "public"."stickers" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."tag_types" (
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -349,18 +365,11 @@ CREATE TABLE IF NOT EXISTS "public"."trips_archived" (
 
 ALTER TABLE "public"."trips_archived" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."vehicles" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "speed" smallint DEFAULT '1'::smallint NOT NULL
-);
-
-ALTER TABLE "public"."vehicles" OWNER TO "postgres";
-
 CREATE TABLE IF NOT EXISTS "public"."wearing_types" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "value" "text" NOT NULL
+    "value" "text" DEFAULT "public"."gen_random_text"(5) NOT NULL,
+    "is_expression" boolean DEFAULT false NOT NULL
 );
 
 ALTER TABLE "public"."wearing_types" OWNER TO "postgres";
@@ -368,22 +377,24 @@ ALTER TABLE "public"."wearing_types" OWNER TO "postgres";
 CREATE TABLE IF NOT EXISTS "public"."wearings" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "mesh" "uuid",
+    "mesh" "uuid" DEFAULT "public"."get_first_mesh_id"() NOT NULL,
     "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "category" "uuid"
+    "category" "uuid" DEFAULT "public"."get_first_wearing_type_id"() NOT NULL,
+    "in_starter_pack" boolean DEFAULT false NOT NULL
 );
 
 ALTER TABLE "public"."wearings" OWNER TO "postgres";
 
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_04" FOR VALUES FROM ('2024-04-01 00:00:00+00') TO ('2024-05-01 00:00:00+00');
+ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_06" FOR VALUES FROM ('2024-06-01 00:00:00+00') TO ('2024-07-01 00:00:00+00');
 
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_05" FOR VALUES FROM ('2024-05-01 00:00:00+00') TO ('2024-06-01 00:00:00+00');
+ALTER TABLE ONLY "public"."app_versions"
+    ADD CONSTRAINT "app_updates_id_key" UNIQUE ("id");
 
-ALTER TABLE ONLY "public"."avatars"
-    ADD CONSTRAINT "avatars_id_key" UNIQUE ("id");
+ALTER TABLE ONLY "public"."app_versions"
+    ADD CONSTRAINT "app_updates_version_key" UNIQUE ("value");
 
-ALTER TABLE ONLY "public"."avatars"
-    ADD CONSTRAINT "avatars_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "public"."app_versions"
+    ADD CONSTRAINT "app_versions_pkey" PRIMARY KEY ("value");
 
 ALTER TABLE ONLY "public"."body_parts"
     ADD CONSTRAINT "body_parts_pkey" PRIMARY KEY ("id");
@@ -391,32 +402,26 @@ ALTER TABLE ONLY "public"."body_parts"
 ALTER TABLE ONLY "public"."body_parts"
     ADD CONSTRAINT "body_parts_value_key" UNIQUE ("value");
 
-ALTER TABLE ONLY "public"."character_assets"
-    ADD CONSTRAINT "character_assets_id_key" UNIQUE ("id");
-
-ALTER TABLE ONLY "public"."character_assets"
-    ADD CONSTRAINT "character_assets_pkey" PRIMARY KEY ("user");
+ALTER TABLE ONLY "public"."chat_members"
+    ADD CONSTRAINT "chat_members_pkey" PRIMARY KEY ("chat", "user");
 
 ALTER TABLE ONLY "public"."chat_messages"
     ADD CONSTRAINT "chat_messages_pkey" PRIMARY KEY ("id", "created_at");
 
-ALTER TABLE ONLY "public"."chat_messages_2024_04"
-    ADD CONSTRAINT "chat_messages_2024_04_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_05"
-    ADD CONSTRAINT "chat_messages_2024_05_pkey" PRIMARY KEY ("id", "created_at");
+ALTER TABLE ONLY "public"."chat_messages_2024_06"
+    ADD CONSTRAINT "chat_messages_2024_06_pkey" PRIMARY KEY ("id", "created_at");
 
 ALTER TABLE ONLY "public"."chats"
     ADD CONSTRAINT "chats_pkey" PRIMARY KEY ("id");
 
-ALTER TABLE ONLY "public"."j-avatars-stickers"
-    ADD CONSTRAINT "j-avatars-stickers_pkey" PRIMARY KEY ("avatar", "sticker");
+ALTER TABLE ONLY "public"."hai_an_players"
+    ADD CONSTRAINT "hai_an_players_id_key" UNIQUE ("id");
 
-ALTER TABLE ONLY "public"."j-avatars-wearings"
-    ADD CONSTRAINT "j-avatars-wearings_pkey" PRIMARY KEY ("avatar", "wearing");
+ALTER TABLE ONLY "public"."hai_an_players"
+    ADD CONSTRAINT "hai_an_players_pkey" PRIMARY KEY ("player");
 
-ALTER TABLE ONLY "public"."chat_members"
-    ADD CONSTRAINT "j-chats-users_pkey" PRIMARY KEY ("chat", "user");
+ALTER TABLE ONLY "public"."hai_an_players"
+    ADD CONSTRAINT "hai_an_players_player_key" UNIQUE ("player");
 
 ALTER TABLE ONLY "public"."j-users-tags"
     ADD CONSTRAINT "j-users-tags_pkey" PRIMARY KEY ("user", "tag");
@@ -430,14 +435,17 @@ ALTER TABLE ONLY "public"."j-wearings-body_parts"
 ALTER TABLE ONLY "public"."j-wearings-texture_types"
     ADD CONSTRAINT "j-wearings-texture_types_pkey" PRIMARY KEY ("wearing", "texture_type");
 
-ALTER TABLE ONLY "public"."j-wearings-wearing_types"
-    ADD CONSTRAINT "j-wearings-wearing_types_id_key" UNIQUE ("id");
-
-ALTER TABLE ONLY "public"."j-wearings-wearing_types"
-    ADD CONSTRAINT "j-wearings-wearing_types_pkey" PRIMARY KEY ("wearing", "wearing_type");
-
 ALTER TABLE ONLY "public"."regions"
     ADD CONSTRAINT "locations_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE ONLY "public"."maintenance"
+    ADD CONSTRAINT "maintenance_end_key" UNIQUE ("end");
+
+ALTER TABLE ONLY "public"."maintenance"
+    ADD CONSTRAINT "maintenance_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE ONLY "public"."maintenance"
+    ADD CONSTRAINT "maintenance_start_key" UNIQUE ("start");
 
 ALTER TABLE ONLY "public"."meshes"
     ADD CONSTRAINT "meshs_pkey" PRIMARY KEY ("id");
@@ -463,12 +471,6 @@ ALTER TABLE ONLY "public"."profiles"
 ALTER TABLE ONLY "public"."profiles"
     ADD CONSTRAINT "profiles_public_id_key" UNIQUE ("public_id");
 
-ALTER TABLE ONLY "public"."j-avatars-stickers"
-    ADD CONSTRAINT "r_avatar_sticker_id_key" UNIQUE ("id");
-
-ALTER TABLE ONLY "public"."j-avatars-wearings"
-    ADD CONSTRAINT "r_avatar_wearing_id_key" UNIQUE ("id");
-
 ALTER TABLE ONLY "public"."chat_members"
     ADD CONSTRAINT "r_chat_members_id_key" UNIQUE ("id");
 
@@ -477,9 +479,6 @@ ALTER TABLE ONLY "public"."j-users-tags"
 
 ALTER TABLE ONLY "public"."j-wearings-texture_types"
     ADD CONSTRAINT "r_wearing_texture_types_id_key" UNIQUE ("id");
-
-ALTER TABLE ONLY "public"."stickers"
-    ADD CONSTRAINT "sticker_pkey" PRIMARY KEY ("id");
 
 ALTER TABLE ONLY "public"."tag_types"
     ADD CONSTRAINT "tag_types_pkey" PRIMARY KEY ("id");
@@ -494,22 +493,19 @@ ALTER TABLE ONLY "public"."texture_types"
     ADD CONSTRAINT "texture_types_pkey" PRIMARY KEY ("id");
 
 ALTER TABLE ONLY "public"."trips_archived"
-    ADD CONSTRAINT "trips_archived_pkey" PRIMARY KEY ("user", "id", "from", "to");
+    ADD CONSTRAINT "trips_archived_pkey" PRIMARY KEY ("id", "user", "from", "to");
 
 ALTER TABLE ONLY "public"."trips"
     ADD CONSTRAINT "trips_id_key" UNIQUE ("id");
 
 ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "trips_pkey" PRIMARY KEY ("user", "from", "to");
+    ADD CONSTRAINT "trips_pkey" PRIMARY KEY ("from", "to", "user");
 
 ALTER TABLE ONLY "public"."trips"
     ADD CONSTRAINT "trips_user_key" UNIQUE ("user");
 
 ALTER TABLE ONLY "public"."regions"
     ADD CONSTRAINT "unique_location" UNIQUE ("x", "y", "enabled");
-
-ALTER TABLE ONLY "public"."vehicles"
-    ADD CONSTRAINT "vehicles_pkey" PRIMARY KEY ("id");
 
 ALTER TABLE ONLY "public"."wearing_types"
     ADD CONSTRAINT "wearing_types_pkey" PRIMARY KEY ("id");
@@ -520,38 +516,30 @@ ALTER TABLE ONLY "public"."wearing_types"
 ALTER TABLE ONLY "public"."wearings"
     ADD CONSTRAINT "wearings_pkey" PRIMARY KEY ("id");
 
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_04_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_05_pkey";
+ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_06_pkey";
 
 CREATE OR REPLACE TRIGGER "trigger_archive_trip" BEFORE UPDATE ON "public"."trips" FOR EACH ROW EXECUTE FUNCTION "public"."archive_trip"();
 
 ALTER TABLE "public"."chat_messages"
-    ADD CONSTRAINT "chat_messages_chat_fkey" FOREIGN KEY ("chat") REFERENCES "public"."chats"("id");
+    ADD CONSTRAINT "chat_messages_chat_fkey" FOREIGN KEY ("chat") REFERENCES "public"."chats"("id") ON DELETE CASCADE;
 
 ALTER TABLE "public"."chat_messages"
-    ADD CONSTRAINT "chat_messages_sender_fkey" FOREIGN KEY ("sender") REFERENCES "public"."profiles"("user");
-
-ALTER TABLE ONLY "public"."owned_wearings"
-    ADD CONSTRAINT "owned_wearings_owner_fkey" FOREIGN KEY ("owner") REFERENCES "public"."profiles"("user");
-
-ALTER TABLE ONLY "public"."owned_wearings"
-    ADD CONSTRAINT "owned_wearings_wearing_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id");
-
-ALTER TABLE ONLY "public"."avatars"
-    ADD CONSTRAINT "public_avatars_user_fkey" FOREIGN KEY ("user") REFERENCES "auth"."users"("id");
-
-ALTER TABLE ONLY "public"."character_assets"
-    ADD CONSTRAINT "public_character_assets_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user");
-
-ALTER TABLE ONLY "public"."character_assets"
-    ADD CONSTRAINT "public_character_assets_vehicle_fkey" FOREIGN KEY ("vehicle") REFERENCES "public"."vehicles"("id");
+    ADD CONSTRAINT "chat_messages_sender_fkey" FOREIGN KEY ("sender") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."chat_members"
-    ADD CONSTRAINT "public_chat_members_chat_fkey" FOREIGN KEY ("chat") REFERENCES "public"."chats"("id");
+    ADD CONSTRAINT "public_chat_members_chat_fkey" FOREIGN KEY ("chat") REFERENCES "public"."chats"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."chat_members"
-    ADD CONSTRAINT "public_chat_members_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user");
+    ADD CONSTRAINT "public_chat_members_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."hai_an_players"
+    ADD CONSTRAINT "public_hai_an_players_player_fkey" FOREIGN KEY ("player") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."j-users-tags"
+    ADD CONSTRAINT "public_j-users-tags_tag_fkey" FOREIGN KEY ("tag") REFERENCES "public"."tags"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."j-users-tags"
+    ADD CONSTRAINT "public_j-users-tags_user_fkey" FOREIGN KEY ("user") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."j-wearings-body_parts"
     ADD CONSTRAINT "public_j-wearings-body_parts_base_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id");
@@ -559,26 +547,14 @@ ALTER TABLE ONLY "public"."j-wearings-body_parts"
 ALTER TABLE ONLY "public"."j-wearings-body_parts"
     ADD CONSTRAINT "public_j-wearings-body_parts_related_fkey" FOREIGN KEY ("body_part") REFERENCES "public"."body_parts"("id");
 
-ALTER TABLE ONLY "public"."j-wearings-wearing_types"
-    ADD CONSTRAINT "public_j-wearings-wearing_types_base_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id");
+ALTER TABLE ONLY "public"."owned_wearings"
+    ADD CONSTRAINT "public_owned_wearings_owner_fkey" FOREIGN KEY ("owner") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
 
-ALTER TABLE ONLY "public"."j-wearings-wearing_types"
-    ADD CONSTRAINT "public_j-wearings-wearing_types_related_fkey" FOREIGN KEY ("wearing_type") REFERENCES "public"."wearing_types"("id");
+ALTER TABLE ONLY "public"."owned_wearings"
+    ADD CONSTRAINT "public_owned_wearings_wearing_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."profiles"
-    ADD CONSTRAINT "public_profiles_user_fkey" FOREIGN KEY ("user") REFERENCES "auth"."users"("id");
-
-ALTER TABLE ONLY "public"."j-avatars-wearings"
-    ADD CONSTRAINT "public_r-avatar-wearing_avatar_fkey" FOREIGN KEY ("avatar") REFERENCES "public"."avatars"("id");
-
-ALTER TABLE ONLY "public"."j-avatars-wearings"
-    ADD CONSTRAINT "public_r-avatar-wearing_wearing_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id");
-
-ALTER TABLE ONLY "public"."j-avatars-stickers"
-    ADD CONSTRAINT "public_r_avatar_sticker_avatar_fkey" FOREIGN KEY ("avatar") REFERENCES "public"."avatars"("id");
-
-ALTER TABLE ONLY "public"."j-avatars-stickers"
-    ADD CONSTRAINT "public_r_avatar_sticker_sticker_fkey" FOREIGN KEY ("sticker") REFERENCES "public"."stickers"("id");
+    ADD CONSTRAINT "public_profiles_user_fkey" FOREIGN KEY ("user") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."j-wearings-texture_types"
     ADD CONSTRAINT "public_r_wearing_texture_types_texture_type_fkey" FOREIGN KEY ("texture_type") REFERENCES "public"."texture_types"("id");
@@ -586,45 +562,43 @@ ALTER TABLE ONLY "public"."j-wearings-texture_types"
 ALTER TABLE ONLY "public"."j-wearings-texture_types"
     ADD CONSTRAINT "public_r_wearing_texture_types_wearing_fkey" FOREIGN KEY ("wearing") REFERENCES "public"."wearings"("id");
 
-ALTER TABLE ONLY "public"."trips_archived"
-    ADD CONSTRAINT "public_trips_archived_from_fkey" FOREIGN KEY ("from") REFERENCES "public"."regions"("id");
-
-ALTER TABLE ONLY "public"."trips_archived"
-    ADD CONSTRAINT "public_trips_archived_to_fkey" FOREIGN KEY ("to") REFERENCES "public"."regions"("id");
-
-ALTER TABLE ONLY "public"."trips_archived"
-    ADD CONSTRAINT "public_trips_archived_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user");
+ALTER TABLE ONLY "public"."trips"
+    ADD CONSTRAINT "public_trips_from_fkey" FOREIGN KEY ("from") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "public_trips_to_fkey" FOREIGN KEY ("to") REFERENCES "public"."regions"("id");
+    ADD CONSTRAINT "public_trips_next_0_fkey" FOREIGN KEY ("next_0") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips"
+    ADD CONSTRAINT "public_trips_next_1_fkey" FOREIGN KEY ("next_1") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips"
+    ADD CONSTRAINT "public_trips_to_fkey" FOREIGN KEY ("to") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips"
+    ADD CONSTRAINT "public_trips_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."wearings"
-    ADD CONSTRAINT "public_wearings_mesh_fkey" FOREIGN KEY ("mesh") REFERENCES "public"."meshes"("id") ON DELETE RESTRICT;
-
-ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "trips_destination_fkey" FOREIGN KEY ("from") REFERENCES "public"."regions"("id");
-
-ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "trips_next_0_fkey" FOREIGN KEY ("next_0") REFERENCES "public"."regions"("id");
-
-ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "trips_next_1_fkey" FOREIGN KEY ("next_1") REFERENCES "public"."regions"("id");
-
-ALTER TABLE ONLY "public"."trips"
-    ADD CONSTRAINT "trips_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user");
-
-ALTER TABLE ONLY "public"."j-users-tags"
-    ADD CONSTRAINT "user_tags_tag_id_fkey" FOREIGN KEY ("tag") REFERENCES "public"."tags"("id");
-
-ALTER TABLE ONLY "public"."j-users-tags"
-    ADD CONSTRAINT "user_tags_user_id_fkey" FOREIGN KEY ("user") REFERENCES "auth"."users"("id");
+    ADD CONSTRAINT "public_wearings_category_fkey" FOREIGN KEY ("category") REFERENCES "public"."wearing_types"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."wearings"
-    ADD CONSTRAINT "wearings_category_fkey" FOREIGN KEY ("category") REFERENCES "public"."wearing_types"("id");
+    ADD CONSTRAINT "public_wearings_mesh_fkey" FOREIGN KEY ("mesh") REFERENCES "public"."meshes"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips_archived"
+    ADD CONSTRAINT "trips_archived_from_fkey" FOREIGN KEY ("from") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips_archived"
+    ADD CONSTRAINT "trips_archived_to_fkey" FOREIGN KEY ("to") REFERENCES "public"."regions"("id") ON DELETE CASCADE;
+
+ALTER TABLE ONLY "public"."trips_archived"
+    ADD CONSTRAINT "trips_archived_user_fkey" FOREIGN KEY ("user") REFERENCES "public"."profiles"("user") ON DELETE CASCADE;
+
+CREATE POLICY "(temporarily) User can insert their own rows" ON "public"."owned_wearings" FOR INSERT TO "authenticated" WITH CHECK (( SELECT ("auth"."uid"() = "owned_wearings"."owner")));
 
 CREATE POLICY "All authenticated users can select all wearings" ON "public"."wearings" FOR SELECT TO "authenticated" USING (true);
 
-CREATE POLICY "Allow users to update their own agree values" ON "public"."chat_members" FOR UPDATE TO "authenticated" USING (("auth"."uid"() = "user"));
+CREATE POLICY "Allow users to update their own agree values" ON "public"."chat_members" FOR UPDATE TO "authenticated" USING (( SELECT ("auth"."uid"() = "chat_members"."user")));
+
+CREATE POLICY "Authenticated user can insert their own trip" ON "public"."trips" FOR INSERT TO "authenticated" WITH CHECK (( SELECT ("auth"."uid"() = "trips"."user")));
 
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."chat_members" FOR INSERT TO "authenticated" WITH CHECK (("public"."is_chat_member"("auth"."uid"(), "chat") OR ("auth"."uid"() = "user")));
 
@@ -632,19 +606,21 @@ CREATE POLICY "Enable insert for authenticated users only" ON "public"."chats" F
 
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."profiles" FOR INSERT TO "authenticated" WITH CHECK (true);
 
+CREATE POLICY "Enable read access for all users" ON "public"."app_versions" FOR SELECT USING (true);
+
+CREATE POLICY "Enable read access for all users" ON "public"."maintenance" FOR SELECT USING (true);
+
+CREATE POLICY "Enable read for authenticated users only" ON "public"."regions" FOR SELECT TO "authenticated" USING (true);
+
 CREATE POLICY "Enable select for authenticated users only" ON "public"."body_parts" FOR SELECT TO "authenticated" USING (true);
 
 CREATE POLICY "Enable select for authenticated users only" ON "public"."j-wearings-body_parts" FOR SELECT TO "authenticated" USING (true);
 
 CREATE POLICY "Enable select for authenticated users only" ON "public"."j-wearings-texture_types" FOR SELECT TO "authenticated" USING (true);
 
-CREATE POLICY "Enable select for authenticated users only" ON "public"."j-wearings-wearing_types" FOR SELECT TO "authenticated" USING (true);
-
 CREATE POLICY "Enable select for authenticated users only" ON "public"."ml_texts" FOR SELECT TO "authenticated" USING (true);
 
 CREATE POLICY "Enable select for authenticated users only" ON "public"."profiles" FOR SELECT TO "authenticated" USING (true);
-
-CREATE POLICY "Enable select for authenticated users only" ON "public"."regions" FOR SELECT TO "authenticated" USING (true);
 
 CREATE POLICY "Enable select for authenticated users only" ON "public"."texture_types" FOR SELECT TO "authenticated" USING (true);
 
@@ -652,45 +628,41 @@ CREATE POLICY "Enable select for authenticated users only" ON "public"."trips" F
 
 CREATE POLICY "Enable select for authenticated users only" ON "public"."wearing_types" FOR SELECT TO "authenticated" USING (true);
 
-CREATE POLICY "User can select messages if he's chat member" ON "public"."chat_messages" TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "User can check if they're in this table" ON "public"."hai_an_players" FOR SELECT TO "authenticated" USING (("player" = "auth"."uid"()));
 
-CREATE POLICY "User can update his own profile" ON "public"."profiles" FOR UPDATE USING (("auth"."uid"() = "user"));
+CREATE POLICY "User can delete chat if he's one of it's members" ON "public"."chats" FOR DELETE TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "id"));
 
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages" TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "User can update his own profile" ON "public"."profiles" FOR UPDATE USING (( SELECT ("auth"."uid"() = "profiles"."user")));
 
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_04" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "User can update rows they own" ON "public"."owned_wearings" FOR UPDATE TO "authenticated" USING (( SELECT ("auth"."uid"() = "owned_wearings"."owner")));
 
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_05" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
+
+CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_06" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
 CREATE POLICY "Users can see their chat members" ON "public"."chat_members" FOR SELECT USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
-CREATE POLICY "Users can see their own chats" ON "public"."chats" FOR SELECT USING (true);
+CREATE POLICY "Users can see their own chats" ON "public"."chats" FOR SELECT USING ("public"."is_chat_member"("auth"."uid"(), "id"));
 
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_04" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_05" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
+CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_06" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
 CREATE POLICY "Users can select their wearings or every equipped wearings" ON "public"."owned_wearings" FOR SELECT TO "authenticated" USING ((("auth"."uid"() = "owner") OR ("equipped" = true)));
 
-ALTER TABLE "public"."avatars" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."app_versions" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."body_parts" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."character_assets" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."chat_members" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."chat_messages" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."chat_messages_2024_04" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_05" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."chat_messages_2024_06" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."chats" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."j-avatars-stickers" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."j-avatars-wearings" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."hai_an_players" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."j-users-tags" ENABLE ROW LEVEL SECURITY;
 
@@ -698,7 +670,7 @@ ALTER TABLE "public"."j-wearings-body_parts" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."j-wearings-texture_types" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."j-wearings-wearing_types" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."maintenance" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."meshes" ENABLE ROW LEVEL SECURITY;
 
@@ -710,8 +682,6 @@ ALTER TABLE "public"."profiles" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."regions" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."stickers" ENABLE ROW LEVEL SECURITY;
-
 ALTER TABLE "public"."tag_types" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."tags" ENABLE ROW LEVEL SECURITY;
@@ -722,22 +692,24 @@ ALTER TABLE "public"."trips" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."trips_archived" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."vehicles" ENABLE ROW LEVEL SECURITY;
-
 ALTER TABLE "public"."wearing_types" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."wearings" ENABLE ROW LEVEL SECURITY;
 
 ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
 
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_04";
+ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_06";
 
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_05";
+ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."trips";
 
 GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
+
+GRANT ALL ON FUNCTION "public"."agree_friendship"("chat_id" "uuid") TO "anon";
+GRANT ALL ON FUNCTION "public"."agree_friendship"("chat_id" "uuid") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."agree_friendship"("chat_id" "uuid") TO "service_role";
 
 GRANT ALL ON FUNCTION "public"."archive_trip"() TO "anon";
 GRANT ALL ON FUNCTION "public"."archive_trip"() TO "authenticated";
@@ -751,25 +723,33 @@ GRANT ALL ON FUNCTION "public"."gen_random_text"("length" integer) TO "anon";
 GRANT ALL ON FUNCTION "public"."gen_random_text"("length" integer) TO "authenticated";
 GRANT ALL ON FUNCTION "public"."gen_random_text"("length" integer) TO "service_role";
 
+GRANT ALL ON FUNCTION "public"."get_first_mesh_id"() TO "anon";
+GRANT ALL ON FUNCTION "public"."get_first_mesh_id"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."get_first_mesh_id"() TO "service_role";
+
+GRANT ALL ON FUNCTION "public"."get_first_wearing_type_id"() TO "anon";
+GRANT ALL ON FUNCTION "public"."get_first_wearing_type_id"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."get_first_wearing_type_id"() TO "service_role";
+
 GRANT ALL ON FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_id" "uuid") TO "anon";
 GRANT ALL ON FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_id" "uuid") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."is_chat_member"("_user_id" "uuid", "_chat_id" "uuid") TO "service_role";
+
+GRANT ALL ON FUNCTION "public"."start_new_chat"("target_user_id" "uuid", "first_message" "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."start_new_chat"("target_user_id" "uuid", "first_message" "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."start_new_chat"("target_user_id" "uuid", "first_message" "text") TO "service_role";
 
 GRANT ALL ON FUNCTION "public"."update_last_active"("user_id" "uuid") TO "anon";
 GRANT ALL ON FUNCTION "public"."update_last_active"("user_id" "uuid") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."update_last_active"("user_id" "uuid") TO "service_role";
 
-GRANT ALL ON TABLE "public"."avatars" TO "anon";
-GRANT ALL ON TABLE "public"."avatars" TO "authenticated";
-GRANT ALL ON TABLE "public"."avatars" TO "service_role";
+GRANT ALL ON TABLE "public"."app_versions" TO "anon";
+GRANT ALL ON TABLE "public"."app_versions" TO "authenticated";
+GRANT ALL ON TABLE "public"."app_versions" TO "service_role";
 
 GRANT ALL ON TABLE "public"."body_parts" TO "anon";
 GRANT ALL ON TABLE "public"."body_parts" TO "authenticated";
 GRANT ALL ON TABLE "public"."body_parts" TO "service_role";
-
-GRANT ALL ON TABLE "public"."character_assets" TO "anon";
-GRANT ALL ON TABLE "public"."character_assets" TO "authenticated";
-GRANT ALL ON TABLE "public"."character_assets" TO "service_role";
 
 GRANT ALL ON TABLE "public"."chat_members" TO "anon";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE ON TABLE "public"."chat_members" TO "authenticated";
@@ -779,25 +759,17 @@ GRANT ALL ON TABLE "public"."chat_messages" TO "anon";
 GRANT ALL ON TABLE "public"."chat_messages" TO "authenticated";
 GRANT ALL ON TABLE "public"."chat_messages" TO "service_role";
 
-GRANT ALL ON TABLE "public"."chat_messages_2024_04" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_04" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_04" TO "service_role";
-
-GRANT ALL ON TABLE "public"."chat_messages_2024_05" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_05" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_05" TO "service_role";
+GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "anon";
+GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "authenticated";
+GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "service_role";
 
 GRANT ALL ON TABLE "public"."chats" TO "anon";
 GRANT ALL ON TABLE "public"."chats" TO "authenticated";
 GRANT ALL ON TABLE "public"."chats" TO "service_role";
 
-GRANT ALL ON TABLE "public"."j-avatars-stickers" TO "anon";
-GRANT ALL ON TABLE "public"."j-avatars-stickers" TO "authenticated";
-GRANT ALL ON TABLE "public"."j-avatars-stickers" TO "service_role";
-
-GRANT ALL ON TABLE "public"."j-avatars-wearings" TO "anon";
-GRANT ALL ON TABLE "public"."j-avatars-wearings" TO "authenticated";
-GRANT ALL ON TABLE "public"."j-avatars-wearings" TO "service_role";
+GRANT ALL ON TABLE "public"."hai_an_players" TO "anon";
+GRANT ALL ON TABLE "public"."hai_an_players" TO "authenticated";
+GRANT ALL ON TABLE "public"."hai_an_players" TO "service_role";
 
 GRANT ALL ON TABLE "public"."j-users-tags" TO "anon";
 GRANT ALL ON TABLE "public"."j-users-tags" TO "authenticated";
@@ -811,9 +783,9 @@ GRANT ALL ON TABLE "public"."j-wearings-texture_types" TO "anon";
 GRANT ALL ON TABLE "public"."j-wearings-texture_types" TO "authenticated";
 GRANT ALL ON TABLE "public"."j-wearings-texture_types" TO "service_role";
 
-GRANT ALL ON TABLE "public"."j-wearings-wearing_types" TO "anon";
-GRANT ALL ON TABLE "public"."j-wearings-wearing_types" TO "authenticated";
-GRANT ALL ON TABLE "public"."j-wearings-wearing_types" TO "service_role";
+GRANT ALL ON TABLE "public"."maintenance" TO "anon";
+GRANT ALL ON TABLE "public"."maintenance" TO "authenticated";
+GRANT ALL ON TABLE "public"."maintenance" TO "service_role";
 
 GRANT ALL ON TABLE "public"."meshes" TO "anon";
 GRANT ALL ON TABLE "public"."meshes" TO "authenticated";
@@ -835,10 +807,6 @@ GRANT ALL ON TABLE "public"."regions" TO "anon";
 GRANT ALL ON TABLE "public"."regions" TO "authenticated";
 GRANT ALL ON TABLE "public"."regions" TO "service_role";
 
-GRANT ALL ON TABLE "public"."stickers" TO "anon";
-GRANT ALL ON TABLE "public"."stickers" TO "authenticated";
-GRANT ALL ON TABLE "public"."stickers" TO "service_role";
-
 GRANT ALL ON TABLE "public"."tag_types" TO "anon";
 GRANT ALL ON TABLE "public"."tag_types" TO "authenticated";
 GRANT ALL ON TABLE "public"."tag_types" TO "service_role";
@@ -858,10 +826,6 @@ GRANT ALL ON TABLE "public"."trips" TO "service_role";
 GRANT ALL ON TABLE "public"."trips_archived" TO "anon";
 GRANT ALL ON TABLE "public"."trips_archived" TO "authenticated";
 GRANT ALL ON TABLE "public"."trips_archived" TO "service_role";
-
-GRANT ALL ON TABLE "public"."vehicles" TO "anon";
-GRANT ALL ON TABLE "public"."vehicles" TO "authenticated";
-GRANT ALL ON TABLE "public"."vehicles" TO "service_role";
 
 GRANT ALL ON TABLE "public"."wearing_types" TO "anon";
 GRANT ALL ON TABLE "public"."wearing_types" TO "authenticated";

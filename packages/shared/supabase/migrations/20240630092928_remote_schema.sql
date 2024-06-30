@@ -1,4 +1,3 @@
-
 create policy "Give users access to own folder 5luvfi_0"
 on "storage"."objects"
 as permissive
@@ -21,5 +20,6 @@ as permissive
 for update
 to public
 using (((bucket_id = 'user_data'::text) AND (( SELECT (auth.uid())::text AS uid) = (storage.foldername(name))[1])));
+
 
 
