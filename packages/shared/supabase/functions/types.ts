@@ -90,9 +90,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
-          readed: boolean
           reply_to: string | null
-          reply_to_datetime: string | null
           sender: string
         }
         Insert: {
@@ -100,9 +98,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
-          readed?: boolean
           reply_to?: string | null
-          reply_to_datetime?: string | null
           sender?: string
         }
         Update: {
@@ -110,9 +106,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
-          readed?: boolean
           reply_to?: string | null
-          reply_to_datetime?: string | null
           sender?: string
         }
         Relationships: [
@@ -132,81 +126,13 @@ export type Database = {
           },
         ]
       }
-      chat_messages_2024_04: {
-        Row: {
-          chat: string
-          content: string
-          created_at: string
-          id: string
-          readed: boolean
-          reply_to: string | null
-          reply_to_datetime: string | null
-          sender: string
-        }
-        Insert: {
-          chat: string
-          content: string
-          created_at?: string
-          id?: string
-          readed?: boolean
-          reply_to?: string | null
-          reply_to_datetime?: string | null
-          sender?: string
-        }
-        Update: {
-          chat?: string
-          content?: string
-          created_at?: string
-          id?: string
-          readed?: boolean
-          reply_to?: string | null
-          reply_to_datetime?: string | null
-          sender?: string
-        }
-        Relationships: []
-      }
-      chat_messages_2024_05: {
-        Row: {
-          chat: string
-          content: string
-          created_at: string
-          id: string
-          readed: boolean
-          reply_to: string | null
-          reply_to_datetime: string | null
-          sender: string
-        }
-        Insert: {
-          chat: string
-          content: string
-          created_at?: string
-          id?: string
-          readed?: boolean
-          reply_to?: string | null
-          reply_to_datetime?: string | null
-          sender?: string
-        }
-        Update: {
-          chat?: string
-          content?: string
-          created_at?: string
-          id?: string
-          readed?: boolean
-          reply_to?: string | null
-          reply_to_datetime?: string | null
-          sender?: string
-        }
-        Relationships: []
-      }
       chat_messages_2024_06: {
         Row: {
           chat: string
           content: string
           created_at: string
           id: string
-          readed: boolean
           reply_to: string | null
-          reply_to_datetime: string | null
           sender: string
         }
         Insert: {
@@ -214,9 +140,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
-          readed?: boolean
           reply_to?: string | null
-          reply_to_datetime?: string | null
           sender?: string
         }
         Update: {
@@ -224,9 +148,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
-          readed?: boolean
           reply_to?: string | null
-          reply_to_datetime?: string | null
           sender?: string
         }
         Relationships: []
@@ -735,6 +657,7 @@ export type Database = {
         Row: {
           category: string
           created_at: string
+          enabled: boolean
           id: string
           in_starter_pack: boolean
           mesh: string
@@ -743,6 +666,7 @@ export type Database = {
         Insert: {
           category?: string
           created_at?: string
+          enabled?: boolean
           id?: string
           in_starter_pack?: boolean
           mesh?: string
@@ -751,6 +675,7 @@ export type Database = {
         Update: {
           category?: string
           created_at?: string
+          enabled?: boolean
           id?: string
           in_starter_pack?: boolean
           mesh?: string

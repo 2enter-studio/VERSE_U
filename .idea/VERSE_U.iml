@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.branches" />
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.temp" />
-      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/old_migrations" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
