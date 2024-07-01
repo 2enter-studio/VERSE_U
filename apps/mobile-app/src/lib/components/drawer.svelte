@@ -20,7 +20,7 @@
 </script>
 
 {#if open}
-	<div class="{className} center-content fixed bottom-0 flex-col rounded-t-2xl pb-4">
+	<div class="{className} center-content fixed bottom-0 flex-col rounded-t-2xl pb-6">
 		<div class="w-full">
 			<Icon
 				icon="mdi:close"

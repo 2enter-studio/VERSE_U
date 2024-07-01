@@ -40,7 +40,7 @@
 	});
 </script>
 
-<Drawer bind:open class="w-screen gap-2 bg-amber-500 p-1">
+<Drawer bind:open class="w-screen gap-2 bg-amber-500 px-1 pt-1">
 	{#each gameState.wearingTypes as wearingType}
 		{@const typeSelected = wearingType.id === selectedWearingType}
 		<div
@@ -88,16 +88,16 @@
 								<img src={url} alt="loading" class="{thumbnailSize} opacity-30" />
 							{/await}
 						</span>
-						<!--						<button-->
-						<!--							onclick={async () => {-->
-						<!--								const res = await buyWearing(wearing.id);-->
-						<!--								if (res?.error) {-->
-						<!--									sysState.defaultError('OPERATION_FAILED');-->
-						<!--								}-->
-						<!--							}}-->
-						<!--						>-->
-						<!--							<Icon icon="fa6-solid:cart-plus" />-->
-						<!--						</button>-->
+						<!--												<button-->
+						<!--													onclick={async () => {-->
+						<!--														const res = await buyWearing(wearing.id);-->
+						<!--														if (res?.error) {-->
+						<!--															sysState.defaultError('OPERATION_FAILED');-->
+						<!--														}-->
+						<!--													}}-->
+						<!--												>-->
+						<!--													<Icon icon="fa6-solid:cart-plus" />-->
+						<!--												</button>-->
 					</div>
 				{/if}
 			{/each}
