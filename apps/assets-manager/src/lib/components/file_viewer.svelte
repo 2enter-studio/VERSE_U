@@ -14,15 +14,19 @@
 		accept: string;
 	};
 	let { bucket, filename, reloadFile, onLoadFail, init, accept }: Props = $props();
+
 	const fileUrl = `/api/storage/${bucket}/${filename}`;
 	let modified = $state(false);
+	let fileType = $state<string>();
 
 	onMount(async () => {
 		const res = await fetch(fileUrl);
 		if (res.ok) {
 			const blob = await res.blob();
-			if (blob) await reloadFile(blob);
-			else {
+			if (blob) {
+				fileType = blob.type;
+				await reloadFile(blob);
+			} else {
 				setSystemLog(
 					'error',
 					'failed to load file, no blob found',
@@ -53,18 +57,21 @@
 	}
 </script>
 
-<SubmitBtn
-	action="?/storage"
-	data={{ bucket, filename }}
-	icon="icomoon-free:upload"
-	disabled={!modified}
-	class="{modified
-		? 'pointer-events-auto hover:bg-pink-400'
-		: 'pointer-events-none text-white/10'} center-content text-2xl"
-	enctype="multipart/form-data"
-	afterSubmit={() => {
-		modified = false;
-	}}
->
-	<input id="{bucket}-{filename}" name="file" type="file" {accept} {onchange} hidden />
-</SubmitBtn>
+<div class="flex flex-col items-start">
+	<SubmitBtn
+		action="?/storage"
+		data={{ bucket, filename }}
+		icon="icomoon-free:upload"
+		disabled={!modified}
+		class="{modified
+			? 'pointer-events-auto hover:bg-pink-400'
+			: 'pointer-events-none text-white/10'} center-content text-2xl"
+		enctype="multipart/form-data"
+		afterSubmit={() => {
+			modified = false;
+		}}
+	>
+		<input id="{bucket}-{filename}" name="file" type="file" {accept} {onchange} hidden />
+	</SubmitBtn>
+	<small>{fileType}</small>
+</div>
