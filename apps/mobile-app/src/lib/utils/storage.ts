@@ -67,7 +67,27 @@ class FileDownloader {
 	add(bucket: BucketName, filename: string) {
 		this.list.add({ bucket, filename });
 	}
+	async init() {
+		const folders = [
+			'wearings',
+			'wearings/textures',
+			'wearings/thumbnails',
+			'regions',
+			'regions/stickers',
+			'regions/backgrounds',
+			'meshes',
+			'meshes/glb'
+		];
+		await Promise.all(
+			folders.map((folder) =>
+				Filesystem.readdir({ path: folder, directory }).catch(
+					async (e) => await Filesystem.mkdir({ directory, path: folder })
+				)
+			)
+		);
+	}
 	async start() {
+		await this.init();
 		if (this.list.size > 0) {
 			const size = this.list.size;
 			await Promise.all(
