@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 
 	import { authState, sysState } from '@/states';
-	import { redirectTo, validate } from '@/utils';
+	import { validate } from '@/utils';
 	import { DEFAULT_ROUTE, OAUTH_PROVIDERS } from '@/config';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
 	import { onMount } from 'svelte';
@@ -70,7 +70,7 @@
 		if (res?.error) {
 			sysState.defaultError(res.error.message);
 		} else {
-			redirectTo(DEFAULT_ROUTE);
+			sysState.routeTo(DEFAULT_ROUTE);
 		}
 	}
 
@@ -86,7 +86,7 @@
 	<div class="mb-3 w-full border-black text-2xl font-extrabold text-white">
 		{#if authState.loggedIn}
 			<div class="flex w-full flex-row justify-between">
-				<button class="text-black" onclick={() => redirectTo(DEFAULT_ROUTE)}>
+				<button class="text-black" onclick={() => sysState.routeTo(DEFAULT_ROUTE)}>
 					<Icon icon="carbon:previous-filled" class="size-6 rounded-full bg-white p-[0.5px]" />
 				</button>
 				<span class="w-full text-center">{sysState.uiTexts.ACCOUNT}</span>

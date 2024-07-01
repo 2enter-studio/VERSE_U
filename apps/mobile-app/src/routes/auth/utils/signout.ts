@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { createError, redirectTo } from '@/utils';
+import { createError } from '@/utils';
 
 async function signOut() {
 	const { error } = await db.auth.signOut();
