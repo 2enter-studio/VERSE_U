@@ -167,12 +167,28 @@ const storage: Action = async ({ request }) => {
 	const filename = formData.get('filename') as string;
 	const file = formData.get('file') as File;
 
-	const { error } = await admin.storage.from(bucketName).upload(filename, file, {
+	let target_id = filename.split('/').at(-1) as string;
+	if (target_id.includes('_')) target_id = target_id.split('_')[0];
+
+	const { error } = await admin.storage.from(bucketName).update(filename, file, {
 		upsert: true
 	});
+
 	if (error) {
 		return makeFormDataResponse('error', 'failed to update file', error.message);
 	}
+	if (validator.isUUID(target_id)) {
+		const { error } = await admin
+			.from(bucketName)
+			.update({ updated_at: new Date().toISOString() })
+			.eq('id', target_id);
+		if (error) {
+			return makeFormDataResponse('error', 'file uploaded but failed to update metadata');
+		}
+	} else {
+		return makeFormDataResponse('error', 'file uploaded but can not find metadata id');
+	}
+
 	return makeFormDataResponse(
 		'success',
 		'file uploaded',
