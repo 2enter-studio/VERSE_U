@@ -4,6 +4,7 @@
 	import type { PageData } from '../../../routes/$types';
 	import { getRowName } from '@/index';
 	import { onDestroy } from 'svelte';
+	import { setEditing } from '@/stores/edit_history';
 
 	let { base, target, class: className, selected = $bindable() }: RefProps = $props();
 
@@ -32,8 +33,18 @@
 			/>
 			<label
 				for="option-{id}"
-				class="{isSelected ? 'bg-white text-black' : 'bg-black text-white'} cursor-pointer hover:border-white border-white/0 border-2 px-1"
+				class="{isSelected
+					? 'bg-white text-black'
+					: 'bg-black text-white'} cursor-pointer hover:border-white border-white/0 border-2 px-1"
 			>
+				<button
+					class="hover:bg-amber-500"
+					onclick={() => {
+						setEditing({ id, tableName: target });
+					}}
+				>
+					{'->'}
+				</button>
 				{getRowName(option)}
 			</label>
 		{/each}

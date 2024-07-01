@@ -8,7 +8,7 @@
 	import { getRowName } from '@/index';
 	import { page } from '$app/stores';
 	import { SubmitBtn } from '@/components/index.js';
-	import deepEqual from 'deep-equal';
+	import { setEditing } from '@/stores/edit_history';
 
 	const { tables } = $page.data as PageData;
 
@@ -40,13 +40,22 @@
 <div class="flex flex-col text-left">
 	{#each options as option}
 		{@const isSelected = selected.includes(option.id)}
+
 		<input id="option-{option.id}" type="checkbox" bind:group={selected} value={option.id} hidden />
 		<label
 			for="option-{option.id}"
 			class="{isSelected
 				? 'bg-white text-black'
-				: ''} px-1 cursor-pointer hover:border-white border-white/0 border-2"
+				: ''} flex flex-row justify-between gap-3 px-1 cursor-pointer hover:border-white border-white/0 border-2"
 		>
+			<button
+				class="hover:bg-amber-500"
+				onclick={() => {
+					setEditing({ id: option.id, tableName: target });
+				}}
+			>
+				{'->'}
+			</button>
 			{getRowName(option)}
 		</label>
 	{/each}
