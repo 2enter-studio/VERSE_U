@@ -45,7 +45,10 @@
 						</div>
 					{/if}
 				</div>
-				<input type="text" bind:value={searchIds[tableName]} />
+				<div class="flex flex-rol divide-black divide-x-4">
+					<span class="bg-white text-black px-1 whitespace-nowrap">search (id)</span>
+					<input type="text" class="w-full" bind:value={searchIds[tableName]} />
+				</div>
 				<div class="flex flex-col gap-1">
 					{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
 						{@const selected = $editing?.id === row.id}
