@@ -18,7 +18,9 @@
 	let selected = $state<string[]>([]);
 	let selectedCopy = $state<string[]>([]);
 
-	const modified = $derived(!deepEqual(selected, selectedCopy));
+	const modified = $derived(
+		selected.length !== selectedCopy.length || !selected.every((d) => selectedCopy.includes(d))
+	);
 
 	onMount(async () => {
 		const tablesData = await tables;
