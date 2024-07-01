@@ -17,34 +17,36 @@ async function downloadFile(bucket: BucketName, name: string, saveName = name) {
 		return { error };
 	}
 
+	const blobType = blob.type;
+	const extension = blobType.split('/')[0] === 'image' ? blobType.split('/')[1] : '';
 	const buffer = Buffer.from(await blob.arrayBuffer());
 
 	const path = `${STORAGE_BASE}/${bucket}/${saveName}`.split('/').slice(0, -1).join('/');
 	if (!fs.existsSync(path)) {
 		fs.mkdirSync(path, { recursive: true });
 	}
-	fs.writeFileSync(`${STORAGE_BASE}/${bucket}/${saveName}`, buffer);
+	fs.writeFileSync(`${STORAGE_BASE}/${bucket}/${saveName}.${extension}`, buffer);
 	console.log(chalk.cyan(`file downloaded: ${bucket}/${name}`));
 }
 
 async function downloadUpdated(data: { table: BucketName; id: string }[]) {
+	const promises: Promise<any>[] = [];
 	for (const item of data) {
 		const { table, id } = item;
 		switch (table) {
 			case 'wearings':
 				for (const textureType of TEXTURE_TYPES) {
-					await downloadFile(
-						table,
-						`textures/${id}_${textureType}`,
-						`textures/${id}_${textureType}.jpg`
+					promises.push(
+						downloadFile(table, `textures/${id}_${textureType}`, `textures/${id}_${textureType}`)
 					);
 				}
 				break;
 			case 'meshes':
-				await downloadFile(table, `fbx/${id}`, `${id}.fbx`);
+				promises.push(downloadFile(table, `fbx/${id}`, `${id}.fbx`));
 				break;
 		}
 	}
+	await Promise.all(promises);
 	console.log(chalk.green('download finished'));
 }
 
