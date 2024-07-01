@@ -23,7 +23,7 @@ async function download(bucket: BucketName, filename: string, force: boolean = f
 	if (force) {
 		await run();
 	} else {
-		await Filesystem.readFile({ path, directory }).catch(async (e) => {
+		await Filesystem.readFile({ path, directory }).catch(async (_) => {
 			await run();
 		});
 	}
@@ -82,7 +82,7 @@ class FileDownloader {
 		await Promise.all(
 			folders.map((folder) =>
 				Filesystem.readdir({ path: folder, directory }).catch(
-					async (e) => await Filesystem.mkdir({ directory, path: folder })
+					async (_) => await Filesystem.mkdir({ directory, path: folder })
 				)
 			)
 		);
