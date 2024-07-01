@@ -20,7 +20,7 @@
 	});
 
 	onMount(() => {
-		subscribe.chat_members.subscribe();
+		const chatMemberSub = subscribe.chat_members();
 		const chatMsgSub = subscribe.chat_messages();
 		const leaverSub = subscribe.leaver();
 
@@ -28,11 +28,13 @@
 		else leaverSub.subscribe();
 		if (!chatMsgSub) console.error('chat_msgSub not sub');
 		else chatMsgSub.subscribe();
+		if (!chatMemberSub) console.error('leaver not sub');
+		else chatMemberSub.subscribe();
 
 		return () => {
 			leaverSub?.unsubscribe();
 			chatMsgSub?.unsubscribe();
-			subscribe.chat_members.unsubscribe();
+			chatMemberSub?.unsubscribe();
 		};
 	});
 </script>
@@ -52,7 +54,7 @@
 				)}
 
 				<button
-					class="center-content flex-col bg-lime-500/20 backdrop-blur-lg px-0.5 py-1 rounded-sm w-1/5"
+					class="center-content w-1/5 flex-col rounded-sm bg-lime-500/20 px-0.5 py-1 backdrop-blur-lg"
 					onclick={() => {
 						storyUserId = person.user;
 					}}

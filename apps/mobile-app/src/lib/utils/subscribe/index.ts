@@ -1,13 +1,19 @@
 import { getCurrentYearMonth, load, Subscription } from '@/utils';
 import { authState, gameState } from '@/states';
 
-const chat_members = new Subscription({
-	tableName: 'chat_members' as const,
-	callback: async (payload) => {
-		const { chat } = payload.new;
-		await load.chats([chat]);
-	}
-});
+function chat_members() {
+	const user_id = authState.user?.id;
+	if (!user_id) return null;
+
+	return new Subscription({
+		tableName: 'chat_members' as const,
+		filter: `user=neq.${user_id}`,
+		callback: async (payload) => {
+			const { chat } = payload.new;
+			await load.chats([chat]);
+		}
+	});
+}
 
 function chat_messages() {
 	const user_id = authState.user?.id;
