@@ -18,15 +18,23 @@ async function downloadFile(bucket: BucketName, name: string, saveName = name) {
 	}
 
 	const blobType = blob.type;
-	const extension = blobType.split('/')[0] === 'image' ? blobType.split('/')[1] : '';
+	const extension = blobType.split('/')[0] === 'image' ? `.${blobType.split('/')[1]}` : '';
+
+	if (!saveName.includes('.') && extension === '') {
+		console.log(chalk.red('About to save a file without extension...'));
+	}
+
+	// console.log(chalk.yellow(`file type: ${blobType}`));
 	const buffer = Buffer.from(await blob.arrayBuffer());
 
 	const path = `${STORAGE_BASE}/${bucket}/${saveName}`.split('/').slice(0, -1).join('/');
 	if (!fs.existsSync(path)) {
 		fs.mkdirSync(path, { recursive: true });
 	}
-	fs.writeFileSync(`${STORAGE_BASE}/${bucket}/${saveName}.${extension}`, buffer);
-	console.log(chalk.cyan(`file downloaded: ${bucket}/${name}`));
+	fs.writeFileSync(`${STORAGE_BASE}/${bucket}/${saveName}${extension}`, buffer);
+	console.log(
+		chalk.cyan(`file downloaded: ${bucket}/${name} -> ${bucket}/${saveName}${extension}`)
+	);
 }
 
 async function downloadUpdated(data: { table: BucketName; id: string }[]) {
@@ -36,9 +44,7 @@ async function downloadUpdated(data: { table: BucketName; id: string }[]) {
 		switch (table) {
 			case 'wearings':
 				for (const textureType of TEXTURE_TYPES) {
-					promises.push(
-						downloadFile(table, `textures/${id}_${textureType}`, `textures/${id}_${textureType}`)
-					);
+					promises.push(downloadFile(table, `textures/${id}_${textureType}`));
 				}
 				break;
 			case 'meshes':

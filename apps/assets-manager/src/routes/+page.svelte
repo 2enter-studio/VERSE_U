@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
+	import { TABLE_NAMES, TABLES_INFO } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/shared/utils';
 	import { backEditing, editing, setEditing } from '@/stores/edit_history';
 	import { SubmitBtn } from '@/components/index.js';
