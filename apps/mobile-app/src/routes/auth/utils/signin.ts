@@ -26,8 +26,11 @@ async function pwdSignIn(email: string, password: string) {
 
 	const { error } = await db.auth.signInWithPassword({ email, password });
 	if (error) {
+		console.error(error);
 		return createError('SIGNIN_FAILED');
 	}
+	window.location.reload();
+	// await new Promise(resolve => setTimeout(resolve, 5 * 1000));
 }
 
 export { providerSignIn, pwdSignIn };
