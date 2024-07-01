@@ -15,7 +15,8 @@ async function download(bucket: BucketName, filename: string, force: boolean = f
 		const data = encode(buffer);
 		await Filesystem.readdir({ path: bucket, directory }).catch(async (e) => {
 			console.error(e);
-			await Filesystem.mkdir({ path: bucket, directory });
+			await Filesystem.writeFile({ path, directory, data, recursive: true });
+			return;
 		});
 		await Filesystem.writeFile({ path, directory, data });
 	}

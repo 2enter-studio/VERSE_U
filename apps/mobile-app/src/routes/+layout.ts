@@ -7,7 +7,7 @@ export const ssr = false;
 
 export const load: Load = async () => {
 	if (!authState.loggedIn) {
-		// await authState.set();
+		await authState.set();
 	}
 	// const result = await updateActiveStatus();
 	// if (result?.error) console.error(result.error);

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { onMount, type Snippet } from 'svelte';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { App } from '@capacitor/app';
 	import { ScreenOrientation } from '@capacitor/screen-orientation';
@@ -10,16 +10,11 @@
 	import eruda from 'eruda';
 
 	import { db } from '@/db';
-	import { fileDownloader, load as loadData, load } from '@/utils';
+	import { fileDownloader, load } from '@/utils';
 	import { authState, sysState } from '@/states';
-	import { Menu, MyProfile, SideMenu, SystemMessage } from './';
+	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 	import type { TextCode } from '@/config/ui_texts/types';
-	import type { PageData } from './$types';
 	import { Dialog } from '@/components';
-	import { pages } from './';
-
-	// type Props = { children: Snippet };
-	// let { children }: Props = $props();
 
 	let loadingProgress = $state(0);
 
