@@ -26,12 +26,11 @@ async function downloadFile(bucket: BucketName, name: string, saveName = name) {
 
 	// console.log(chalk.yellow(`file type: ${blobType}`));
 	const buffer = Buffer.from(await blob.arrayBuffer());
-
 	const path = `${STORAGE_BASE}/${bucket}/${saveName}`.split('/').slice(0, -1).join('/');
 	if (!fs.existsSync(path)) {
 		fs.mkdirSync(path, { recursive: true });
 	}
-	fs.writeFileSync(`${STORAGE_BASE}/${bucket}/${saveName}${extension}`, buffer);
+	await fs.writeFile(`${STORAGE_BASE}/${bucket}/${saveName}${extension}`, buffer);
 	console.log(
 		chalk.cyan(`file downloaded: ${bucket}/${name} -> ${bucket}/${saveName}${extension}`)
 	);
