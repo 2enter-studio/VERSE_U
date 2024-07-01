@@ -106,7 +106,7 @@ async function wearings() {
 	const promises: Promise<void>[] = [];
 	for (const wearing of wearings) {
 		fileDownloader.add('meshes', `glb/${wearing.mesh}`);
-		fileDownloader.add('wearings', `thumbnails/${wearing.mesh}`);
+		fileDownloader.add('wearings', `thumbnails/${wearing.id}`);
 		for (const { value: texture_type } of wearing.texture_types) {
 			fileDownloader.add('wearings', `textures/${wearing.id}_${texture_type}`);
 		}
