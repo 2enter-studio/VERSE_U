@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import { TABLE_NAMES, TABLES_INFO } from '@/config';
+	import { TABLE_NAMES, type TableName, TABLES_INFO } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/shared/utils';
 	import { backEditing, editing, setEditing } from '@/stores/edit_history';
 	import { SubmitBtn } from '@/components/index.js';
@@ -13,7 +13,11 @@
 	let { data }: { data: PageData } = $props();
 	let showSysLog = $state(true);
 
-	// const TablesMap = Object.entries(TABLES_INFO) as Array<[TableName, TableContent]>;
+	const initSearchIds: Record<string, string | null> = {};
+	Object.keys(TABLE_NAMES).forEach((tableName) => {
+		initSearchIds[tableName] = null;
+	});
+	let searchIds = $state(initSearchIds);
 </script>
 
 {#await data.tables}
@@ -22,7 +26,7 @@
 	</div>
 {:then tablesData}
 	{#if tablesData}
-		<div class="flex flex-col w-[50vw]">
+		<div class="flex flex-col w-[50vw] gap-1">
 			{#each TABLE_NAMES as tableName}
 				<div class="flex flex-row justify-between mt-5 items-center">
 					{snakeCaseToCapitalize(tableName)} - {TABLES_INFO[tableName].description}
@@ -41,12 +45,17 @@
 						</div>
 					{/if}
 				</div>
+				<input type="text" bind:value={searchIds[tableName]} />
 				<div class="flex flex-col gap-1">
 					{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
 						{@const selected = $editing?.id === row.id}
 						{@const { id } = row}
 						{@const name = getRowName(row)}
-						<div class="flex flex-row">
+						<div
+							class="flex flex-row {id.includes(searchIds[tableName] ?? '') || !searchIds[tableName]
+								? ''
+								: 'hidden'}"
+						>
 							<button
 								class="hover:bg-white hover:text-black border-white border-2 px-2 text-left w-full {selected
 									? 'bg-white text-black'
