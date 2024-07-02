@@ -6,7 +6,7 @@
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
-	import { getFilePublicUrl } from '@/utils';
+	import { getFilePublicUrl, getFileUrl } from '@/utils';
 	import { uploadSelfie } from '$routes/me/utils';
 
 	const expressions = gameState.wearingTypes
@@ -65,11 +65,12 @@
 </div>
 
 {#if gameState.tripStatus.progress === 1}
-	{@const regionBgUrl = getFilePublicUrl('regions', `backgrounds/${gameState.trip?.to}`)}
-	<div
-		class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
-		style="background-image: url({regionBgUrl})"
-	></div>
+	{#await getFileUrl('regions', `backgrounds/${gameState.trip?.to}`) then { data: regionBgUrl }}
+		<div
+			class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
+			style="background-image: url({regionBgUrl})"
+		></div>
+	{/await}
 {/if}
 
 {#if dressing}
@@ -78,8 +79,8 @@
 
 {#if zoomIn}
 	<div class="center-content fixed bottom-32 w-full">
-		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}
-		></button>
+		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}>
+		</button>
 	</div>
 {/if}
 
