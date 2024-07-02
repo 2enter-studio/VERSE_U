@@ -27,7 +27,7 @@ async function createProfile(value: { name: string }) {
 
 	const now = new Date().toISOString();
 	const start_at = addTime(now, -1000 * 60 * 80);
-	const arrive_at = addTime(now, -100 * 60 * 60);
+	const arrive_at = addTime(now, -1000 * 60 * 60);
 
 	const { data: tripData, error: tripError } = await db
 		.from('trips')
