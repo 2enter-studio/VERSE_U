@@ -2,8 +2,9 @@ import type { Tables } from '@repo/shared/supatypes';
 
 import { genRandomNumbers, addTime } from '@repo/shared/utils';
 import { db } from '@/db';
-import { authState, gameState } from '@/states';
+import { authState, gameState, sysState } from '@/states';
 import { createError } from '@/utils';
+import { DEFAULT_ROUTE } from '@/config';
 
 async function createProfile(value: { name: string }) {
 	const user_id = authState.user?.id;
@@ -67,6 +68,7 @@ async function createProfile(value: { name: string }) {
 
 	gameState.trip = tripData;
 	authState.profile = profileData;
+	sysState.routeTo(DEFAULT_ROUTE);
 	window.location.reload();
 }
 
