@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { sysState } from '@/states';
+	import { MenuToggler } from '@/components/index';
 
 	type Props = { children: Snippet; class?: string; open: boolean; onclose?: () => void };
 	let { children, class: className, open = $bindable(false), onclose }: Props = $props();
@@ -11,13 +11,9 @@
 		if (onclose) onclose();
 		open = false;
 	}
-	onMount(() => {
-		sysState.showMenu = false;
-		return () => {
-			sysState.showMenu = true;
-		};
-	});
 </script>
+
+<MenuToggler />
 
 {#if open}
 	<div class="{className} center-content fixed bottom-0 flex-col rounded-t-2xl pb-6">

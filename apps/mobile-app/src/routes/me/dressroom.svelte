@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import Icon from '@iconify/svelte';
 
 	import { sysState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from './utils';
-	import { Drawer } from '@/components/index.js';
+	import { Drawer, MenuToggler } from '@/components/index.js';
 	import { getFileUrl } from '@/utils';
 
 	type Props = {
@@ -29,16 +29,13 @@
 		Object.values(selectedWearings).filter((w) => w !== '')
 	);
 
-	onMount(() => {
-		sysState.showMenu = false;
-
-		return () => {
-			selectedWearings = { ...initSelectedWearings };
-			selectedWearingType = gameState.wearingTypes[0].id;
-			sysState.showMenu = true;
-		};
+	onDestroy(() => {
+		selectedWearings = { ...initSelectedWearings };
+		selectedWearingType = gameState.wearingTypes[0].id;
 	});
 </script>
+
+<MenuToggler />
 
 <Drawer bind:open class="w-screen gap-2 bg-amber-500 px-1 pt-1">
 	{#each gameState.wearingTypes as wearingType}

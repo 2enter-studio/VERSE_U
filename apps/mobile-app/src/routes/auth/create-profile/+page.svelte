@@ -14,11 +14,6 @@
 			console.log(authState.loggedIn, authState.profile);
 			sysState.routeTo(DEFAULT_ROUTE);
 		}
-		sysState.showMenu = false;
-
-		return () => {
-			sysState.showMenu = true;
-		};
 	});
 
 	async function submit() {
@@ -33,6 +28,8 @@
 		sysState.routeTo(DEFAULT_ROUTE);
 	}
 </script>
+
+<MenuToggler />
 
 <Dialog title="Create Profile" open={true} closable={false} class="center-content">
 	<input

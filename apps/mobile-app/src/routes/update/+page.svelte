@@ -3,19 +3,14 @@
 	import { DEFAULT_ROUTE } from '@/config';
 	import { version } from '$app/environment';
 	import { sysState } from '@/states';
-	import { Dialog } from '@/components';
-	import { onMount } from 'svelte';
+	import { Dialog, MenuToggler } from '@/components';
 
-	onMount(() => {
-		sysState.showMenu = false;
-		return () => {
-			sysState.showMenu = true;
-		};
-	});
 	$effect(() => {
 		if (!needUpdate()) window.location.assign(DEFAULT_ROUTE);
 	});
 </script>
+
+<MenuToggler />
 
 {#if sysState.remoteAppVersion}
 	<Dialog

@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
 	import { getWearingsByUserId } from '$routes/me/utils';
-	import { Avatar, UModel } from '@/components';
-	import { sysState } from '@/states';
+	import { Avatar, UModel, MenuToggler } from '@/components';
 	import { CHARACTER_ANIMATIONS } from '@/config';
 	import randomItem from 'random-item';
 	import type { Tables } from '@repo/shared/supatypes';
@@ -28,19 +26,14 @@
 			return res;
 		}
 	}
-
-	onMount(() => {
-		sysState.showMenu = false;
-		return () => {
-			sysState.showMenu = true;
-		};
-	});
 </script>
+
+<MenuToggler />
 
 <div class="full-screen z-20 flex flex-col items-center justify-between bg-green-400">
 	{#await loading() then wearingIds}
 		<div class="flex w-full flex-row justify-between px-1 text-right">
-			<div class="flex flex-row items-center gap-2 my-1">
+			<div class="my-1 flex flex-row items-center gap-2">
 				<Avatar profile={person} />
 				{person.name}
 			</div>

@@ -6,7 +6,7 @@
 	import { validate } from '@/utils';
 	import { DEFAULT_ROUTE, OAUTH_PROVIDERS } from '@/config';
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
-	import { onMount } from 'svelte';
+	import { MenuToggler } from '@/components';
 
 	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD';
 	type InputType = 'EMAIL' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'NEW_PASSWORD';
@@ -73,14 +73,9 @@
 			sysState.routeTo(DEFAULT_ROUTE);
 		}
 	}
-
-	onMount(() => {
-		sysState.showMenu = false;
-		return () => {
-			sysState.showMenu = true;
-		};
-	});
 </script>
+
+<MenuToggler />
 
 <div class="center-content h-screen w-[60vw] flex-col gap-1">
 	<div class="mb-3 w-full border-black text-2xl font-extrabold text-white">

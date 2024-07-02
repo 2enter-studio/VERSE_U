@@ -5,7 +5,7 @@
 	import { agreeFriendShip, getMemberFromChat } from './utils';
 	import { ChatMessageBubble, ChatInput } from './';
 	import { authState, sysState, gameState } from '@/states';
-	import { Avatar } from '@/components';
+	import { Avatar, MenuToggler } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
 	let messagePool = $state<HTMLDivElement>();
@@ -15,10 +15,6 @@
 	onMount(() => {
 		if (!gameState.chat_id || !authState.user?.id) return;
 		onsend();
-		sysState.showMenu = false;
-		return () => {
-			sysState.showMenu = true;
-		};
 	});
 
 	$effect(() => {
@@ -32,6 +28,8 @@
 		});
 	}
 </script>
+
+<MenuToggler />
 
 {#if gameState.chat}
 	{@const person = getMemberFromChat(gameState.chat)}

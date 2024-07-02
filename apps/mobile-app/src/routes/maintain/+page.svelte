@@ -1,23 +1,16 @@
 <script lang="ts">
 	import moment from 'moment';
-	import { onMount } from 'svelte';
 	import { sysState } from '@/states';
-	import { Dialog } from '@/components';
+	import { Dialog, MenuToggler } from '@/components';
 	import { DEFAULT_ROUTE } from '@/config';
 	import { secToMin } from '@/utils';
 
 	$effect(() => {
 		if (!sysState.maintaining) window.location.assign(DEFAULT_ROUTE);
 	});
-
-	onMount(() => {
-		sysState.showMenu = false;
-
-		return () => {
-			sysState.showMenu = true;
-		};
-	});
 </script>
+
+<MenuToggler />
 
 {#if sysState.maintenance && sysState.maintaining}
 	<Dialog
