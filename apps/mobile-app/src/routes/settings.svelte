@@ -24,18 +24,10 @@
 			JSON.stringify(values) && values.profile?.name.trim() !== ''
 	);
 
-	$effect(() => {
-		// console.log('applying settings');
-		preferences.locale.set(values.locale);
-	});
 	async function save() {
 		if (!submittable) return;
 		const localeChanged = values.locale !== sysState.locale;
 		const profileChanged = JSON.stringify(authState.profile) !== JSON.stringify(values.profile);
-
-		if (localeChanged) {
-			await preferences.locale.set(values.locale);
-		}
 
 		if (values.profile && profileChanged) {
 			const res = await modifyProfile({ name: values.profile.name });
@@ -45,10 +37,8 @@
 		}
 
 		if (localeChanged) {
-			// const confirmed = confirm('sure!');
-			// if (confirmed) {
+			await preferences.locale.set(values.locale);
 			window.location.reload();
-			// }
 		}
 	}
 </script>
