@@ -8,6 +8,8 @@ PODS:
   - CapacitorCordova (6.1.0)
   - CapacitorFilesystem (6.0.0):
     - Capacitor
+  - CapacitorHaptics (6.0.0):
+    - Capacitor
   - CapacitorPreferences (6.0.1):
     - Capacitor
   - CapacitorScreenOrientation (6.0.1):
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../../../node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../../../node_modules/@capacitor/ios`)"
   - "CapacitorFilesystem (from `../../../../node_modules/@capacitor/filesystem`)"
+  - "CapacitorHaptics (from `../../../../node_modules/@capacitor/haptics`)"
   - "CapacitorPreferences (from `../../../../node_modules/@capacitor/preferences`)"
   - "CapacitorScreenOrientation (from `../../../../node_modules/@capacitor/screen-orientation`)"
 
@@ -33,6 +36,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/@capacitor/ios"
   CapacitorFilesystem:
     :path: "../../../../node_modules/@capacitor/filesystem"
+  CapacitorHaptics:
+    :path: "../../../../node_modules/@capacitor/haptics"
   CapacitorPreferences:
     :path: "../../../../node_modules/@capacitor/preferences"
   CapacitorScreenOrientation:
@@ -44,9 +49,10 @@ SPEC CHECKSUMS:
   CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
   CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
   CapacitorFilesystem: 60e59ba274c234a979e7a3be2552feaadcee4263
+  CapacitorHaptics: 9ebc9363f0e9b8eb4295088a0b474530acf1859b
   CapacitorPreferences: 72909b165bc7807103778ddbb86d5d8ce06abf71
   CapacitorScreenOrientation: 3d4965dcbda5d901b6a48350a5d270ad7d404e05
 
-PODFILE CHECKSUM: 596e14c61cda689e6425dd720c8b6aaa01a62d3d
+PODFILE CHECKSUM: 7985472c2448f6a0f961f97aa9682ee3a0f7f404
 
 COCOAPODS: 1.15.2
