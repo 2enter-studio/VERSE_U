@@ -6,7 +6,7 @@
 	import { Dialog, MenuToggler } from '@/components';
 
 	$effect(() => {
-		if (!needUpdate()) window.location.assign(DEFAULT_ROUTE);
+		if (!needUpdate()) sysState.routeTo(DEFAULT_ROUTE);
 	});
 </script>
 

@@ -6,7 +6,7 @@
 	import { secToMin } from '@/utils';
 
 	$effect(() => {
-		if (!sysState.maintaining) window.location.assign(DEFAULT_ROUTE);
+		if (!sysState.maintaining) sysState.routeTo(DEFAULT_ROUTE);
 	});
 </script>
 
