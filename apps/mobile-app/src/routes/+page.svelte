@@ -56,10 +56,8 @@
 
 	onMount(async () => {
 		await setUpSafeCSS();
-		// eruda.init();
 
 		await App.addListener('resume', init);
-
 		await App.addListener('appUrlOpen', async (event) => {
 			const { url } = event;
 			const Url = new URL(url);

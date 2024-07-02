@@ -34,11 +34,14 @@
 {#if gameState.chat}
 	{@const person = getMemberFromChat(gameState.chat)}
 	{@const me = getMemberFromChat(gameState.chat, 'me')}
-	<div class="fixed flex h-12 w-full gap-1 bg-black px-1 py-2 text-2xl">
+	<div class="flex-row fixed flex h-12 w-full gap-1 bg-black px-1 py-2 text-2xl">
 		<button onclick={() => (gameState.chat_id = null)}>
 			<Icon icon="mdi:arrow-back" />
 		</button>
-		<Avatar profile={person?.user} class="size-8" />
+		{#if person}
+				<Avatar profile={person.user} class="size-9" />
+				<span class="text-sm">{person?.user.name}</span>
+		{/if}
 		{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
 			<div class="center-content">
 				<span class="text-xs">add to friends?</span>

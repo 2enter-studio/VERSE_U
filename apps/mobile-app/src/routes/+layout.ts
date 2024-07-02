@@ -6,7 +6,7 @@ export const prerender = true;
 export const ssr = false;
 
 export const load: Load = async ({ url }) => {
-	if (url.pathname !== '/') window.location.assign('/');
+	// if (url.pathname !== '/') window.location.assign('/');
 
 	if (!authState.loggedIn) {
 		await authState.set();

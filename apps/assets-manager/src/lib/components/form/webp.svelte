@@ -6,9 +6,9 @@
 	let imageUrl = $state<string>();
 
 	async function onLoadFail() {
-		 	const res = await fetch('https://api.thecatapi.com/v1/images/search');
-		 	const json = await res.json();
-		 	imageUrl = json[0].url;
+		const res = await fetch('https://api.thecatapi.com/v1/images/search');
+		const json = await res.json();
+		imageUrl = json[0].url;
 	}
 
 	async function reloadFile(input: Blob) {
@@ -22,6 +22,11 @@
 		class="size-48 bg-white bg-center bg-contain bg-no-repeat cursor-pointer hover:opacity-80"
 		style="background-image: url({imageUrl})"
 	></label>
-
-	<FileViewer {bucket} {filename} accept="image/webp,image/png,image/jpeg" {reloadFile} {onLoadFail} />
+	<FileViewer
+		{bucket}
+		{filename}
+		accept="image/webp,image/png,image/jpeg"
+		{reloadFile}
+		{onLoadFail}
+	/>
 </div>
