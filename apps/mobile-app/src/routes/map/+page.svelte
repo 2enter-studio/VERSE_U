@@ -63,7 +63,6 @@
 			{#if gameState.trip}
 				{@const region_id = gameState.trip[`next_${num}`]}
 				<button
-					class={sysState.processing ? 'hidden' : ''}
 					onclick={async () => {
 						chooseNext = false;
 						await sysState.process(async () => {
@@ -92,12 +91,14 @@
 			y: region.y * MAP_SIZE - origin.y - height / 8
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
-			<div
-				class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
-				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
-			>
-				<img src={getFilePublicUrl('regions', `stickers/${region.id}`)} alt={region.name} />
-			</div>
+			{#await getFileUrl('regions', `stickers/${region.id}`) then { data: regionStickerUrl }}
+				<div
+					class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
+					style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
+				>
+					<img src={regionStickerUrl} alt={region.name} />
+				</div>
+			{/await}
 		{/if}
 	{/each}
 
@@ -111,15 +112,13 @@
 							<Avatar profile={person} class="size-7" />
 						{/each}
 					</div>
-					{#if gameState.tripStatus.progress === 1}
-						{#if gameState.tripStatus.timeRemain === 0}
-							<button
-								class="center-content rounded-full border-b-4 border-r-4 bg-green-700 p-1"
-								onclick={() => (chooseNext = true)}
-							>
-								<Icon icon="mingcute:run-fill" class="text-2xl" />
-							</button>
-						{/if}
+					{#if gameState.tripStatus.progress === 1 && gameState.tripStatus.timeRemain === 0 && !sysState.processing}
+						<button
+							class="center-content rounded-full border-b-4 border-r-4 bg-green-700 p-1"
+							onclick={() => (chooseNext = true)}
+						>
+							<Icon icon="mingcute:run-fill" class="text-2xl" />
+						</button>
 					{/if}
 				</div>
 			{/if}
