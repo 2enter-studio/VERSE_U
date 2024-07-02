@@ -63,9 +63,7 @@
 		{#if !sysState.processing}
 			<button
 				onclick={async () => {
-					await sysState.process(async () => {
-						await signOut();
-					});
+					await sysState.process(signOut);
 				}}
 				class="flex flex-row bg-black text-white"
 			>
@@ -74,18 +72,23 @@
 			</button>
 		{/if}
 	</div>
-	<div class="flex flex-col text-black">
-		<div class="center-content flex-row gap-2">
+	<div class="flex flex-col gap-1 text-black">
+		<div class="center-content flex-col gap-2">
 			<h2>{sysState.uiTexts.PROFILE}</h2>
-			<div class="flex w-fit flex-row rounded-sm bg-gray-600 px-1 text-xs text-white/80">
-				{authState.profile?.public_id}
-				<button
-					onclick={() => {
-						navigator.clipboard.writeText(authState.profile?.public_id || '');
-					}}
+			<div class="flex flex-row gap-2">
+				<span>Public ID</span>
+				<div
+					class="flex w-fit flex-row items-center rounded-sm bg-gray-600 px-1 text-xs text-white/80"
 				>
-					<Icon icon="ph:copy-fill" />
-				</button>
+					{authState.profile?.public_id}
+					<button
+						onclick={() => {
+							navigator.clipboard.writeText(authState.profile?.public_id || '');
+						}}
+					>
+						<Icon icon="ph:copy-fill" />
+					</button>
+				</div>
 			</div>
 		</div>
 		{#if values.profile}
@@ -109,7 +112,7 @@
 	</div>
 	<div class="center-content flex-col">
 		<h2>{sysState.uiTexts.SYSTEM}</h2>
-		<div class="flex flex-row">
+		<div class="flex flex-row gap-1">
 			<h3>{sysState.uiTexts.LANGUAGE}</h3>
 			{#each LOCALES as lang}
 				{@const selected = lang === values.locale}
