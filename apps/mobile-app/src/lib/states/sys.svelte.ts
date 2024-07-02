@@ -73,11 +73,11 @@ class SystemState {
 	async process(method: Function) {
 		this.processing = true;
 		const msg = sysState.defaultProcessing();
-		// const result = await method(;
-		// if (result?.error) {
-		// 	sysState.defaultError(result?.error);
-		// }
-		await method();
+		const result = await method();
+		if (result?.error) {
+			sysState.defaultError('OPERATION_FAILED');
+		}
+		// await method();
 		sysState.delSysMsg(msg.id);
 		this.processing = false;
 	}
