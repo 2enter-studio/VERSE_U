@@ -28,7 +28,10 @@
 </script>
 
 {#if open}
-	<div transition:fade={{ duration: 50 }} class="full-screen z-[100] bg-black/30 backdrop-blur-sm">
+	<div
+		transition:fade={{ duration: 50 }}
+		class="full-screen pointer-events-auto z-[100] bg-black/30 backdrop-blur-sm"
+	>
 		<div transition:flyAndScale class="center-content h-full w-full flex-col">
 			{#if closable}
 				<div class="flex w-9/12 justify-start">
