@@ -14,7 +14,7 @@ const CHARACTER_ANIMATIONS = [
 	'YMCA_dance',
 	'Macarena_Dance'
 ] as const;
-const ROUTES = ['me', 'map', 'social', 'maintain', 'update'] as const;
+const ROUTES = ['me', 'map', 'social', 'maintain', 'update', 'create_profile', 'account'] as const;
 
 type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 type BucketName = (typeof BUCKET_NAMES)[number];
@@ -23,7 +23,7 @@ type Route = (typeof ROUTES)[number];
 
 const DEFAULT_ROUTE = 'me';
 const DEFAULT_LOCALE = 'zh';
-const MAP_SIZE = 3200;
+const MAP_SIZE = 5000;
 const FRAME_RATE = 12;
 const DEFAULT_CAMERA_POS = [0.05, 1.65, 2.0] as const;
 const ZOOM_IN_CAMERA_POS = [0, 2.3, 0.5] as const;

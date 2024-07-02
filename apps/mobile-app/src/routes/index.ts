@@ -9,6 +9,8 @@ import social from './social/+page.svelte';
 import map from './map/+page.svelte';
 import update from './update/+page.svelte';
 import maintain from './maintain/+page.svelte';
+import create_profile from './auth/create-profile/+page.svelte';
+import account from './auth/account/+page.svelte';
 
-const pages = { me, map, social, update, maintain };
+const pages = { me, map, social, update, maintain, create_profile, account };
 export { pages };

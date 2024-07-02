@@ -1,5 +1,6 @@
 androidkey
 static/**/*.png
+*.zip
 
 *.pem
 .DS_Store

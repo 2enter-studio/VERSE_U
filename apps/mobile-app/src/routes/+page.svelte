@@ -1,64 +1,64 @@
 <script lang="ts">
-	import '../app.css';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { App } from '@capacitor/app';
 	import { ScreenOrientation } from '@capacitor/screen-orientation';
-	import Account from '$routes/auth/account/+page.svelte';
-	import CreateProfile from '$routes/auth/create-profile/+page.svelte';
 	import { SafeAreaController } from '@aashu-dubey/capacitor-statusbar-safe-area';
-	import eruda from 'eruda';
+	// import eruda from 'eruda';
 
+	import type { TextCode } from '@/config/ui_texts/types';
 	import { db } from '@/db';
 	import { fileDownloader, load } from '@/utils';
 	import { authState, sysState } from '@/states';
-	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
-	import type { TextCode } from '@/config/ui_texts/types';
 	import { Dialog } from '@/components';
+	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 
 	let loadingProgress = $state(0);
 
 	async function init() {
 		console.log('initializing');
 		await Promise.all((['locale', 'appVersion', 'maintenance'] as const).map((key) => load[key]()));
-
 		if (sysState.appLocked) return;
 
-		if (authState.loggedIn) {
-			await load.regions();
+		if (!authState.loggedIn) {
+			sysState.routeTo('account');
+			return;
+		}
 
-			if (authState.profile) {
-				const result = await load.trip();
+		await load.regions();
+
+		if (!authState.profile) {
+			sysState.routeTo('create_profile');
+			return;
+		}
+
+		const result = await load.trip();
+
+		if (result?.error) {
+			sysState.defaultError(result.error.message as TextCode);
+		}
+
+		const keywords = ['peopleNearBy', 'chats', 'wearings', 'ownedWearings'] as const;
+
+		await Promise.all(
+			keywords.map(async (key) => {
+				console.log(`loading ${key}`);
+				const result = await load[key]();
 				if (result?.error) {
 					sysState.defaultError(result.error.message as TextCode);
 				}
-
-				const keywords = ['peopleNearBy', 'chats', 'wearings', 'ownedWearings'] as const;
-
-				await Promise.all(
-					keywords.map(async (key) => {
-						console.log(`loading ${key}`);
-						const result = await load[key]();
-						if (result?.error) {
-							sysState.defaultError(result.error.message as TextCode);
-						}
-						loadingProgress += 1 / keywords.length;
-					})
-				);
-				await fileDownloader.start();
-			}
-		}
+				loadingProgress += 1 / keywords.length;
+			})
+		);
+		await fileDownloader.start();
 		console.log('initialized');
 	}
 
 	onMount(async () => {
 		await setUpSafeCSS();
+		// eruda.init();
 
-		eruda.init();
-
-		await App.addListener('resume', async () => {
-			await init();
-		});
+		await App.addListener('resume', init);
 
 		await App.addListener('appUrlOpen', async (event) => {
 			const { url } = event;
@@ -122,26 +122,18 @@
 			{/each}
 		</div>
 	{:then _}
-		<div id="layout" class="top-10 flex h-screen w-screen flex-col items-center">
-			{#if authState.loggedIn}
-				{#if authState.profile}
-					<svelte:component this={pages[sysState.route]} />
-					{#if sysState.showMenu}
-						<Menu />
-						<SideMenu />
-						<div class="flex w-full">
-							<MyProfile
-								class="fixed left-[var(--safe-area-inset-left)] top-3 mt-[var(--safe-area-inset-top)]"
-							/>
+		<div class="full-screen layout top-10 flex flex-col items-center">
+			<svelte:component this={pages[sysState.route]} />
+			{#if authState.profile}
+				{#if sysState.showMenu}
+					<div class="full-screen pointer-events-none flex flex-col justify-between pt-3">
+						<MyProfile />
+						<div class="flex flex-row justify-end">
+							<SideMenu />
 						</div>
-					{/if}
-				{:else}
-					{#await authState.set() then _}
-						<CreateProfile />
-					{/await}
+						<Menu />
+					</div>
 				{/if}
-			{:else}
-				<Account />
 			{/if}
 		</div>
 	{/await}
@@ -153,7 +145,7 @@
 {/if}
 
 <style>
-	#layout {
+	.layout {
 		padding: var(--safe-area-inset-top) var(--safe-area-inset-right) var(--safe-area-inset-bottom)
 			var(--safe-area-inset-left);
 	}
