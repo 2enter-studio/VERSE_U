@@ -6,6 +6,7 @@ const TEXT_CODES = [
 	'CHANGE_PWD',
 	'CHAT_NOT_FOUND',
 	'DATA',
+	'DELETE_ACCOUNT',
 	'ERROR',
 	'EQUIP',
 	'EMAIL',
@@ -50,7 +51,7 @@ const TEXT_CODES = [
 	'WELCOME',
 	'WHERE_ARE_YOU_GOING',
 	'YOUR_APP_VERSION',
-	'YOU_ARE_OFFLINE',
+	'YOU_ARE_OFFLINE'
 ] as const;
 
 type TextCode = (typeof TEXT_CODES)[number];

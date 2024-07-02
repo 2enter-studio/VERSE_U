@@ -79,12 +79,14 @@
 		@apply border-border;
 		font-family: 'Shippori Antique B1', sans-serif;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 		/*background-image: url('https://illustlive.com/photo/iphone/128.png');*/
 		background-image: url('/bg/1.webp');
 		background-position: center;
 		background-size: cover;
+		background-repeat: no-repeat;
 	}
 }
 

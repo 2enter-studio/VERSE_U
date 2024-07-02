@@ -4,6 +4,7 @@ const table: UITextTable = {
 	ACCOUNT: '帳戶',
 	YOU_ARE_OFFLINE: '您目前處於離線狀態，請連上網路以使用本 App',
 	ACCOUNT_NOT_FOUND: '找不到該帳戶',
+	DELETE_ACCOUNT: '刪除我的帳號',
 	USER_NOT_FOUND: '找不到用戶',
 	MUST_SIGNIN_FIRST: '請先登入',
 	VERSION: '版本',
