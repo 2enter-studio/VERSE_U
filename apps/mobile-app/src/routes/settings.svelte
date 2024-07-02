@@ -48,6 +48,12 @@
 	title={sysState.uiTexts.SETTINGS}
 	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
 >
+	<button
+		class="rounded-md bg-rose-800 px-2 text-white"
+		onclick={() => sysState.routeTo('account')}
+	>
+		Account Center
+	</button>
 	<div class="flex flex-row gap-2">
 		{sysState.uiTexts.VERSION}: {version}
 		{#if !sysState.processing}
