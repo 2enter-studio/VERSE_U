@@ -67,6 +67,7 @@ async function createProfile(value: { name: string }) {
 
 	gameState.trip = tripData;
 	authState.profile = profileData;
+	window.location.reload();
 }
 
 async function modifyProfile(value: { name: string }) {

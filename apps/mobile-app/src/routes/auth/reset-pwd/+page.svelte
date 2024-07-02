@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { validate } from '@/utils';
-	import { DEFAULT_ROUTE } from '@/config';
 
 	import { setPwd, signOut } from '$routes/auth/utils';
 
@@ -14,7 +13,6 @@
 		const res = await setPwd(pwd);
 		if (res?.error) errMsg = res.error.message;
 		await signOut();
-		window.location.assign(DEFAULT_ROUTE);
 	}
 </script>
 
