@@ -54,21 +54,6 @@
 ></div>
 
 {#if gameState.regions.length > 0 && gameState.trip}
-	{#if gameState.tripStatus.progress === 1}
-		<!--{#await load.peopleNearBy()}-->
-		<!--	loading-->
-		<!--{:then _}-->
-		{#if gameState.tripStatus.timeRemain === 0}
-			<button
-				class="center-content fixed left-[58vw] top-[50vh] size-10 rounded-full border-b-4 border-r-4 bg-green-700 p-1"
-				onclick={() => (chooseNext = true)}
-			>
-				<Icon icon="mingcute:run-fill" class="text-2xl" />
-			</button>
-		{/if}
-		<!--{/await}-->
-	{/if}
-
 	<Dialog
 		bind:open={chooseNext}
 		title={sysState.uiTexts.WHERE_ARE_YOU_GOING}
@@ -112,16 +97,32 @@
 				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
 			>
 				<img src={getFilePublicUrl('regions', `stickers/${region.id}`)} alt={region.name} />
-				{#if gameState.peopleNearBy.length > 0 && region.id === gameState.trip?.to}
-					<div class="center-content w-fit gap-1 rounded-full bg-orange-500 p-0.5">
-						{#each gameState.peopleNearBy as person}
-							<Avatar profile={person} class="size-8" />
-						{/each}
-					</div>
-				{/if}
 			</div>
 		{/if}
 	{/each}
 
-	<Icon icon="ph:map-pin-fill" class="fixed left-[50vw] top-[50vh] size-8 text-red-700" />
+	<div class="full-screen center-content pointer-events-none">
+		<div class="center-content flex flex-col">
+			<Icon icon="ph:arrow-fat-down-fill" class="size-10 text-red-700" />
+			{#if gameState.peopleNearBy.length > 0}
+				<div class="pointer-events-auto flex flex-row gap-1">
+					<div class="center-content flex flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">
+						{#each gameState.peopleNearBy as person}
+							<Avatar profile={person} class="size-7" />
+						{/each}
+					</div>
+					{#if gameState.tripStatus.progress === 1}
+						{#if gameState.tripStatus.timeRemain === 0}
+							<button
+								class="center-content rounded-full border-b-4 border-r-4 bg-green-700 p-1"
+								onclick={() => (chooseNext = true)}
+							>
+								<Icon icon="mingcute:run-fill" class="text-2xl" />
+							</button>
+						{/if}
+					{/if}
+				</div>
+			{/if}
+		</div>
+	</div>
 {/if}
