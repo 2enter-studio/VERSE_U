@@ -5,3 +5,4 @@ export { default as Dialog } from './dialog.svelte';
 export { default as Drawer } from './drawer.svelte';
 export { default as Form } from './form.svelte';
 export { default as SubmitBtn } from './submit_btn.svelte';
+export { default as MenuToggler } from './menu_toggler.svelte';
