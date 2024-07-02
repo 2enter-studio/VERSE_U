@@ -154,7 +154,7 @@ async function chats(chat_ids?: string[]) {
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
-		gameState.chats = data;
+		gameState.chats = data.filter((row) => row.chat_members.every((member) => member.user));
 	} else {
 		// validate chat ids
 		if (chat_ids.some((id) => !validate.uuid(id))) return createError('CHAT_NOT_FOUND');
@@ -167,7 +167,9 @@ async function chats(chat_ids?: string[]) {
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
-		for (const d of data) {
+		const result = data.filter((row) => row.chat_members.every((member) => member.user));
+
+		for (const d of result) {
 			const chat = gameState.chats.find((c) => c.id === d.id);
 			if (chat) {
 				Object.assign(chat, d);
@@ -218,7 +220,9 @@ async function peopleNearBy() {
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
-	gameState.peopleNearBy = data.map((d) => d.user);
+	const result = data.filter((row) => row.user);
+
+	gameState.peopleNearBy = result.map((row) => row.user);
 }
 
 export {
