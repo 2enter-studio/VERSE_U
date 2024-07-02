@@ -8,14 +8,17 @@
 	import { changePwd, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
 	import { MenuToggler } from '@/components';
 
-	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD';
+	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD' | 'DELETE_ACCOUNT';
 	type InputType = 'EMAIL' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'NEW_PASSWORD';
 
 	const submitMethods: Record<FormMode, Function> = {
 		SIGNIN: pwdSignIn,
 		SIGNUP: signUp,
 		CHANGE_PWD: changePwd,
-		FORGOT_PWD: forgotPwd
+		FORGOT_PWD: forgotPwd,
+		DELETE_ACCOUNT: () => {
+			window.open('https://verseu.app/account/delete');
+		}
 	} as const;
 
 	const inputClasses =
@@ -32,7 +35,9 @@
 	let args = $state.frozen<[string, string] | [string]>();
 
 	const formOptions = $derived(
-		authState.loggedIn ? (['CHANGE_PWD'] as const) : (['SIGNIN', 'SIGNUP'] as const)
+		authState.loggedIn
+			? (['CHANGE_PWD', 'DELETE_ACCOUNT'] as const)
+			: (['SIGNIN', 'SIGNUP'] as const)
 	);
 
 	$effect(() => {
@@ -56,6 +61,10 @@
 				submittable = pwdNew === pwdConfirm && validate.password(pwdNew) && pwdNew !== pwd;
 				formFields = ['PASSWORD', 'NEW_PASSWORD', 'CONFIRM_PASSWORD'] as const;
 				args = [pwd, pwdNew];
+				break;
+			case 'DELETE_ACCOUNT':
+				submittable = true;
+				formFields = [];
 				break;
 			default:
 				submittable = false;
@@ -100,7 +109,7 @@
 				for={choice}
 				class="{formMode === choice
 					? 'bg-gradient-to-l from-white/80 to-white text-black'
-					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-xs transition-colors duration-200"
+					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-center text-xs transition-colors duration-200"
 			>
 				{sysState.uiTexts[choice]}
 			</label>
@@ -160,13 +169,15 @@
 				{/if}
 			</div>
 		{/each}
-		<button type="submit" class="center-content mt-2" disabled={!submittable}>
-			<Icon
-				icon="carbon:next-filled"
-				class="{submittable ? 'text-red-500' : 'text-red-500/50'}
+		{#if !sysState.processing}
+			<button type="submit" class="center-content mt-2" disabled={!submittable}>
+				<Icon
+					icon="carbon:next-filled"
+					class="{submittable ? 'text-red-500' : 'text-red-500/50'}
 					 size-8 rounded-full shadow-inner shadow-amber-800"
-			/>
-		</button>
+				/>
+			</button>
+		{/if}
 	</form>
 	{#if !authState.loggedIn && OAUTH_PROVIDERS.length > 0}
 		<div
