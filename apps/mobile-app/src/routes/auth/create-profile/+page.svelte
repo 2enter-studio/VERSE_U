@@ -22,11 +22,13 @@
 	});
 
 	async function submit() {
-		const response = await createProfile({ name });
-		if (response?.error) {
-			sysState.defaultError('OPERATION_FAILED');
-			return;
-		}
+		await sysState.process(async () => {
+			const response = await createProfile({ name });
+			if (response?.error) {
+				sysState.defaultError('OPERATION_FAILED');
+				return;
+			}
+		});
 
 		sysState.routeTo(DEFAULT_ROUTE);
 	}
@@ -40,7 +42,9 @@
 		placeholder="enter your name"
 	/>
 
-	<button class="p-0" disabled={name.trim() === ''} onclick={submit}>
-		<Icon icon="carbon:next-outline" class="size-[10vw] text-rose-500/80" />
-	</button>
+	{#if !sysState.processing}
+		<button class="p-0" disabled={name.trim() === ''} onclick={submit}>
+			<Icon icon="carbon:next-outline" class="size-[10vw] text-rose-500/80" />
+		</button>
+	{/if}
 </Dialog>
