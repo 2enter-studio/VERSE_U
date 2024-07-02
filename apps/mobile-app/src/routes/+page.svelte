@@ -128,7 +128,7 @@
 				{#if sysState.showMenu}
 					<div class="full-screen pointer-events-none flex flex-col justify-between pt-3">
 						<MyProfile />
-						<div class="flex flex-row justify-end">
+						<div class="flex flex-row justify-end px-1">
 							<SideMenu />
 						</div>
 						<Menu />
