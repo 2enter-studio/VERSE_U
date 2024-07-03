@@ -13,7 +13,7 @@ const ALL_TABLE_NAMES = [
 	...TABLE_NAMES,
 	'ml_texts',
 	'j-wearings-texture_types',
-	'j-wearings-body_parts'
+	'j-meshes-body_parts'
 ] as const;
 
 const LOCALES = ['zh', 'en'] as const;
@@ -227,6 +227,12 @@ const TABLES_INFO: TableInfo = {
 			...CREATED_AT,
 			...UPDATED_AT,
 			...NAME_AND_DESCRIPTION
+		},
+		reference: {
+			hidden_body_parts: {
+				type: 'multi_ref',
+				target: 'body_parts'
+			}
 		},
 		storage: {
 			glb: {

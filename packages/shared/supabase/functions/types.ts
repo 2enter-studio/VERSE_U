@@ -27,6 +27,42 @@ export type Database = {
         }
         Relationships: []
       }
+      block_users: {
+        Row: {
+          blocked: string
+          blocker: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          blocked: string
+          blocker?: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          blocked?: string
+          blocker?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_block_users_blocked_fkey"
+            columns: ["blocked"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user"]
+          },
+          {
+            foreignKeyName: "public_block_users_blocker_fkey"
+            columns: ["blocker"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user"]
+          },
+        ]
+      }
       body_parts: {
         Row: {
           created_at: string
@@ -126,7 +162,34 @@ export type Database = {
           },
         ]
       }
-      chat_messages_2024_06: {
+      chat_messages_2024_07: {
+        Row: {
+          chat: string
+          content: string
+          created_at: string
+          id: string
+          reply_to: string | null
+          sender: string
+        }
+        Insert: {
+          chat: string
+          content: string
+          created_at?: string
+          id?: string
+          reply_to?: string | null
+          sender?: string
+        }
+        Update: {
+          chat?: string
+          content?: string
+          created_at?: string
+          id?: string
+          reply_to?: string | null
+          sender?: string
+        }
+        Relationships: []
+      }
+      chat_messages_2024_08: {
         Row: {
           chat: string
           content: string
@@ -197,6 +260,42 @@ export type Database = {
           },
         ]
       }
+      "j-meshes-body_parts": {
+        Row: {
+          body_part: string
+          created_at: string
+          id: string
+          mesh: string
+        }
+        Insert: {
+          body_part: string
+          created_at?: string
+          id?: string
+          mesh: string
+        }
+        Update: {
+          body_part?: string
+          created_at?: string
+          id?: string
+          mesh?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_j-meshes-body_parts_mesh_fkey"
+            columns: ["mesh"]
+            isOneToOne: false
+            referencedRelation: "meshes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_j-wearings-body_parts_related_fkey"
+            columns: ["body_part"]
+            isOneToOne: false
+            referencedRelation: "body_parts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       "j-users-tags": {
         Row: {
           created_at: string
@@ -229,42 +328,6 @@ export type Database = {
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      "j-wearings-body_parts": {
-        Row: {
-          body_part: string
-          created_at: string
-          id: string
-          wearing: string
-        }
-        Insert: {
-          body_part?: string
-          created_at?: string
-          id?: string
-          wearing?: string
-        }
-        Update: {
-          body_part?: string
-          created_at?: string
-          id?: string
-          wearing?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_j-wearings-body_parts_base_fkey"
-            columns: ["wearing"]
-            isOneToOne: false
-            referencedRelation: "wearings"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_j-wearings-body_parts_related_fkey"
-            columns: ["body_part"]
-            isOneToOne: false
-            referencedRelation: "body_parts"
             referencedColumns: ["id"]
           },
         ]
@@ -463,6 +526,51 @@ export type Database = {
         }
         Relationships: []
       }
+      report_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          message: string
+          perpetrator: string
+          reason: string | null
+          reporter: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          message: string
+          perpetrator: string
+          reason?: string | null
+          reporter?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          message?: string
+          perpetrator?: string
+          reason?: string | null
+          reporter?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_report_messages_perpetrator_fkey"
+            columns: ["perpetrator"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user"]
+          },
+          {
+            foreignKeyName: "public_report_messages_reporter_fkey"
+            columns: ["reporter"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user"]
+          },
+        ]
+      }
       tag_types: {
         Row: {
           created_at: string
@@ -610,21 +718,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_trips_archived_from_fkey"
+            foreignKeyName: "trips_archived_from_fkey"
             columns: ["from"]
             isOneToOne: false
             referencedRelation: "regions"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_trips_archived_to_fkey"
+            foreignKeyName: "trips_archived_to_fkey"
             columns: ["to"]
             isOneToOne: false
             referencedRelation: "regions"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_trips_archived_user_fkey"
+            foreignKeyName: "trips_archived_user_fkey"
             columns: ["user"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -714,6 +822,13 @@ export type Database = {
           ids: string[]
         }
         Returns: undefined
+      }
+      block_check: {
+        Args: {
+          user_0: string
+          user_1: string
+        }
+        Returns: boolean
       }
       gen_random_text: {
         Args: {
