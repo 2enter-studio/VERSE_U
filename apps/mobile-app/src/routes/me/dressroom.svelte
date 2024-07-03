@@ -74,14 +74,14 @@
 						hidden
 					/>
 					<label class="text-white {selected ? 'rounded-full bg-white' : ''}" for={wearing.id}>
-						{#await getFileUrl('wearings', `thumbnails/${wearing.id}`) then { data: url }}
+						{#await getFileUrl('wearings', `thumbnails/${wearing.id}`, 'image/webp') then { data: url }}
 							<img src={url} alt="loading" class="{thumbnailSize} " />
 						{/await}
 					</label>
 				{:else}
 					<div class="flex flex-col items-center">
 						<span class="text-cyan-500">
-							{#await getFileUrl('wearings', `thumbnails/${wearing.id}`) then { data: url }}
+							{#await getFileUrl('wearings', `thumbnails/${wearing.id}`, 'image/webp') then { data: url }}
 								<img src={url} alt="loading" class="{thumbnailSize} opacity-30" />
 							{/await}
 						</span>

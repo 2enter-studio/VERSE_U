@@ -159,7 +159,7 @@
 
 			promises.push(
 				new Promise<void>(async (resolve) => {
-					const { data } = await getFileUrl('meshes', `glb/${mesh}`);
+					const { data } = await getFileUrl('meshes', `glb/${mesh}`, 'model/gltf-binary');
 
 					const gltf = await loader.loadAsync(data, (progress) => {
 						const { loaded, total } = progress;

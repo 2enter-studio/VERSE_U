@@ -4,7 +4,7 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { getFilePublicUrl, getFileUrl, getTextFromObj, load, subscribe } from '@/utils';
+	import { getFileUrl, getTextFromObj, subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 	import { onMount } from 'svelte';
@@ -72,7 +72,7 @@
 					}}
 				>
 					<span class="center-content flex-col text-black">
-						{#await getFileUrl('regions', `stickers/${region_id}`) then { data }}
+						{#await getFileUrl('regions', `stickers/${region_id}`, 'image/webp') then { data }}
 							<span
 								style="background-image: url({data})"
 								class="size-32 bg-contain bg-center bg-no-repeat"
@@ -91,7 +91,7 @@
 			y: region.y * MAP_SIZE - origin.y - height / 8
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
-			{#await getFileUrl('regions', `stickers/${region.id}`) then { data: regionStickerUrl }}
+			{#await getFileUrl('regions', `stickers/${region.id}`, 'image/webp') then { data: regionStickerUrl }}
 				<div
 					class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
 					style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
