@@ -200,7 +200,9 @@
 		scene.add(body);
 
 		const skinMaterial = new THREE.MeshToonMaterial({
-			color: 'pink'
+			color: '#fdc6a2',
+			emissive: 'red',
+			emissiveIntensity: 0.4
 		});
 
 		for (const child of body.children.filter(
@@ -221,12 +223,11 @@
 		renderer.setPixelRatio(window.devicePixelRatio / 1.5);
 		dom.appendChild(renderer.domElement);
 		camera = new THREE.PerspectiveCamera(100, dom.clientWidth / dom.clientHeight, 0.1, 2000);
+
 		setCamera();
 
 		await loadBody();
-		console.log('body loaded');
 		await loadWearings();
-		console.log('wearings loaded');
 
 		animate();
 
