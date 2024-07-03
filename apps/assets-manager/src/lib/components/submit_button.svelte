@@ -52,7 +52,7 @@
 
 	onMount(() => {
 		if (!btn) return;
-		if (['?/update', '?/storage'].includes(action)) {
+		if (['?/update', '?/storage', '?/junction'].includes(action)) {
 			if (!disabled) updateBtns.add(btn);
 			$effect(() => {
 				if (!btn) return;
