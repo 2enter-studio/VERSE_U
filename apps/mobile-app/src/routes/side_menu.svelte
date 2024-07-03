@@ -1,5 +1,8 @@
 <script lang="ts">
+	import moment from 'moment';
 	import { triggerHaiAn } from '@/utils/hai_an';
+	import { unBlockUser } from '$routes/social/utils';
+	import { gameState, sysState } from '@/states';
 	import { Dialog, Form, SubmitBtn } from '@/components';
 	import Icon from '@iconify/svelte';
 
@@ -39,8 +42,13 @@
 </Dialog>
 
 <Dialog title="Block List" bind:open={items[1].open} class="center-content flex-col text-black">
-	<Form submitFunction={triggerHaiAn}>
-		<input type="text" name="passcode" />
-		<SubmitBtn>Go</SubmitBtn>
-	</Form>
+	{#each gameState.block_users as { blocked: id, created_at }}
+		<Form submitFunction={unBlockUser}>
+			<input id="block_user_{id}" name="blocked" value={id} hidden />
+			<label for="block_user_{id}">
+				{moment(created_at).format('YY-MM-DD HH:mm A')}
+			</label>
+			<SubmitBtn>Unblock</SubmitBtn>
+		</Form>
+	{/each}
 </Dialog>

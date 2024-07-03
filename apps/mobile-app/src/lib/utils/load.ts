@@ -214,6 +214,12 @@ async function peopleNearBy() {
 	gameState.peopleNearBy = result.map((row) => row.user);
 }
 
+async function block_users() {
+	const { data, error } = await db.from('block_users').select().returns<Tables<'block_users'>[]>();
+	if (error) return createError('FAILED_TO_LOAD_DATA');
+	gameState.block_users = data;
+}
+
 export {
 	locale,
 	app_version,
@@ -225,5 +231,6 @@ export {
 	owned_wearings,
 	chats,
 	peopleNearBy,
+	block_users,
 	trip
 };

@@ -9,6 +9,7 @@ class GameState {
 	wearings = $state<Wearing[]>([]);
 	meshes = $state<Mesh[]>([]);
 
+	block_users = $state<Tables<'block_users'>[]>([]);
 	trip = $state<Tables<'trips'> | null>(null);
 	peopleNearBy = $state<Tables<'profiles'>[]>([]);
 	chat_id = $state<string | null>(null);
