@@ -3,10 +3,6 @@
 
 	import { authState } from '@/states';
 	import { Avatar } from '@/components';
-	import { Settings } from './';
-
-	// type Props = { class?: string };
-	// let { class: className }: Props = $props();
 
 	let openSetting = $state(false);
 </script>
@@ -15,11 +11,9 @@
 	<button
 		onclick={() => (openSetting = !openSetting)}
 		transition:fly={{ x: -100 }}
-		class="center-content h-7 w-fit flex-row gap-1 rounded-xl bg-orange-500/90 pr-3 text-sm shadow-inner shadow-orange-600 pointer-events-auto"
+		class="center-content pointer-events-auto h-7 w-fit flex-row gap-1 rounded-xl bg-orange-500/90 pr-3 text-sm shadow-inner shadow-orange-600"
 	>
 		<Avatar profile={authState.profile} class="size-12 shadow-md shadow-orange-900/30" />
 		{authState.profile.name}
 	</button>
 {/if}
-
-<Settings bind:open={openSetting} />

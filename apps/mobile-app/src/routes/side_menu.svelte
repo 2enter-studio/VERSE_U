@@ -5,6 +5,7 @@
 	import { gameState, sysState } from '@/states';
 	import { Dialog, Form, SubmitBtn } from '@/components';
 	import Icon from '@iconify/svelte';
+	import { Settings } from '$routes';
 
 	const items = [
 		{
@@ -19,8 +20,9 @@
 			name: 'social',
 			icon: 'material-symbols:card-travel-outline-rounded',
 			open: false,
-			class: ''
-		}
+			class: 'bg-cyan-700'
+		},
+		{ id: 2, name: 'settings', icon: 'mage:settings-fill', class: 'bg-amber-300', open: false }
 	] as const;
 </script>
 
@@ -51,4 +53,11 @@
 			<SubmitBtn>Unblock</SubmitBtn>
 		</Form>
 	{/each}
+</Dialog>
+<Dialog
+	bind:open={items[2].open}
+	title={sysState.uiTexts.SETTINGS}
+	class="max-h-1/3 center-content flex-col gap-3 text-sm text-black"
+>
+	<Settings />
 </Dialog>
