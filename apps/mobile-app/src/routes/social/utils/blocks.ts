@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import type { Tables } from '@repo/shared/supatypes';
-import { authState, gameState } from '@/states';
+import { authState, gameState, sysState } from '@/states';
 import { createError, load } from '@/utils';
 
 async function reload() {
@@ -10,7 +10,7 @@ async function reload() {
 
 async function blockUser(args: { blocked: string }) {
 	if (!authState.user) return createError('USER_NOT_FOUND');
-	if (!confirm('Are you sure?')) return
+	if (!confirm(sysState.uiTexts.CONFIRM_EXECUTION)) return;
 	const { data, error } = await db
 		.from('block_users')
 		.insert(args)
@@ -26,6 +26,7 @@ async function blockUser(args: { blocked: string }) {
 async function unBlockUser(args: { blocked: string }) {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('USER_NOT_FOUND');
+	if (!confirm(sysState.uiTexts.CONFIRM_EXECUTION)) return;
 
 	const { blocked } = args;
 
