@@ -2,7 +2,7 @@
 	import moment from 'moment';
 	import { fly } from 'svelte/transition';
 	import { authState, gameState } from '@/states';
-	import { Avatar, Dialog } from '@/components';
+	import { Avatar, Dialog, Form, SubmitBtn } from '@/components';
 	import type { Tables } from '@repo/shared/supatypes';
 	import { HoldBtn } from '@/components/index.js';
 
@@ -12,10 +12,8 @@
 	let openInfo = $state(false);
 
 	const isMine = message.sender === authState.user?.id;
-	const dateTimeClassName = 'mx-1 mb-0.5 text-xs tracking-tighter text-black/70';
+	const dateTimeClassName = 'mx-1 mb-0.5 text-xs tracking-tighter text-white/70';
 </script>
-
-<Dialog title="message info" bind:open={openInfo}>report</Dialog>
 
 {#if gameState.chat}
 	<div
@@ -27,7 +25,7 @@
 				(m) => m.user.user === message.sender
 			)?.user}
 			{#if profile}
-				<Avatar {profile} class="mr-1 size-9" />
+				<Avatar {profile} class="mr-1 size-9" noInfo />
 			{/if}
 		{/if}
 
@@ -50,3 +48,14 @@
 		{/if}
 	</div>
 {/if}
+
+<Dialog title="message info" bind:open={openInfo}>
+	<Form
+		submitFunction={() => {
+			openInfo = false;
+		}}
+	>
+		<input type="text" name="id" value={message.id} hidden />
+		<SubmitBtn class="rounded-lg bg-rose-600 px-2 py-1 text-white">Report</SubmitBtn>
+	</Form>
+</Dialog>
