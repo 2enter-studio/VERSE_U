@@ -4,18 +4,18 @@ import { sysState } from '@/states';
 
 class GameState {
 	regions = $state<Region[]>([]);
+	chats = $state<Chatroom[]>([]);
+	wearings = $state<Wearing[]>([]);
+	meshes = $state<Mesh[]>([]);
+
 	trip = $state<Tables<'trips'> | null>(null);
 	peopleNearBy = $state<Tables<'profiles'>[]>([]);
-
-	chats = $state<Chatroom[]>([]);
 	chat_id = $state<string | null>(null);
-
-	wearings = $state<Wearing[]>([]);
 	wearingTypes = $state<WearingType[]>([]);
 	owned_wearings = $state<{ id: string; equipped: boolean }[]>([]);
 
 	readonly chat = $derived(this.chats.find((chat) => chat.id === this.chat_id));
-	readonly equippedWearings = $derived(this.ownedWearings.filter((wearing) => wearing.equipped));
+	readonly equippedWearings = $derived(this.owned_wearings.filter((wearing) => wearing.equipped));
 	readonly strangerChats = $derived(this.chats.filter((c) => c.chat_members.some((m) => !m.agree)));
 	readonly friendChats = $derived(this.chats.filter((c) => !this.strangerChats.includes(c)));
 	readonly tripStatus = $derived.by(() => {

@@ -88,10 +88,21 @@ async function regions() {
 	}
 }
 
+async function meshes() {
+	const { data: meshes, error } = await db.from('meshes').select('*, body_parts(*)');
+	if (error) return createError('FAILED_TO_LOAD_DATA');
+
+	gameState.meshes = meshes as Mesh[];
+
+	for (const mesh of meshes) {
+		fileDownloader.add('meshes', `glb/${mesh.id}`);
+	}
+}
+
 async function wearings() {
 	const { data: wearings, error } = await db
 		.from('wearings')
-		.select('*, category(*), texture_types(*), body_parts(*)')
+		.select('*, category(*), texture_types(*)')
 		.eq('enabled', true);
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
@@ -105,7 +116,6 @@ async function wearings() {
 
 	const promises: Promise<void>[] = [];
 	for (const wearing of wearings) {
-		fileDownloader.add('meshes', `glb/${wearing.mesh}`);
 		fileDownloader.add('wearings', `thumbnails/${wearing.id}`);
 		for (const { value: texture_type } of wearing.texture_types) {
 			fileDownloader.add('wearings', `textures/${wearing.id}_${texture_type}`);
@@ -132,7 +142,7 @@ async function owned_wearings() {
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
-	gameState.ownedWearings = data.map(({ wearing, equipped }) => {
+	gameState.owned_wearings = data.map(({ wearing, equipped }) => {
 		return {
 			id: wearing,
 			equipped
@@ -231,6 +241,7 @@ export {
 	maintenance,
 	profile,
 	regions,
+	meshes,
 	wearings,
 	owned_wearings,
 	chats,

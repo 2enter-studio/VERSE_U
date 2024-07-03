@@ -64,7 +64,7 @@
 
 			{#each gameState.wearings.filter((w) => w.category.id === wearingType.id) as wearing}
 				{@const selected = selectedWearings[wearingType.id] === wearing.id}
-				{@const owned = gameState.ownedWearings.some((w) => w.id === wearing.id)}
+				{@const owned = gameState.owned_wearings.some((w) => w.id === wearing.id)}
 				{#if owned}
 					<input
 						id={wearing.id}

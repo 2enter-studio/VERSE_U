@@ -24,13 +24,17 @@ declare global {
 	}>;
 
 	type WearingType = Prettify<Tables<'wearing_types'> & Named & Described>;
+	type Mesh = Prettify<
+		Tables<'meshes'> & {
+			body_parts: { value: string }[];
+		}
+	>;
 	type Wearing = Prettify<
-		Tables<'wearings'> &
+		Omit<Tables<'wearings'>> &
 			Named &
 			Described & {
 				category: Tables<'wearing_types'>;
 				texture_types: Tables<'texture_types'>[];
-				body_parts: Tables<'body_parts'>[];
 			}
 	>;
 }

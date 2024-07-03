@@ -142,7 +142,12 @@
 				return;
 			}
 
-			const { mesh, body_parts, id } = wearing;
+			const mesh = gameState.meshes.find((m) => m.id === wearing.mesh);
+			if (!mesh) {
+				return;
+			}
+			const { id } = wearing;
+			const { body_parts } = mesh;
 
 			for (const { value: body_part } of body_parts) {
 				const hidden = body.children.findIndex((c) => c.name === `${body_part}`);
@@ -159,7 +164,7 @@
 
 			promises.push(
 				new Promise<void>(async (resolve) => {
-					const { data } = await getFileUrl('meshes', `glb/${mesh}`, 'model/gltf-binary');
+					const { data } = await getFileUrl('meshes', `glb/${mesh.id}`, 'model/gltf-binary');
 
 					const gltf = await loader.loadAsync(data, (progress) => {
 						const { loaded, total } = progress;
