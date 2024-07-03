@@ -8,8 +8,8 @@
 
 	import type { TextCode } from '@/config/ui_texts/types';
 	import { db } from '@/db';
-	import { fileDownloader, load } from '@/utils';
-	import { authState, sysState } from '@/states';
+	import { load } from '@/utils';
+	import { authState, gameState, sysState } from '@/states';
 	import { Dialog } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 
@@ -52,7 +52,7 @@
 				loadingProgress += 1 / keywords.length;
 			})
 		);
-		await fileDownloader.start();
+		await gameState.checkAssetUpdates();
 		console.log('initialized');
 	}
 

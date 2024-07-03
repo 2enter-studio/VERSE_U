@@ -1,6 +1,7 @@
 import type { Tables } from '@repo/shared/supatypes';
 import { MIN_STAY_TIME } from '@repo/shared/config';
 import { sysState } from '@/states';
+import { FileDownloader, getLocalMetadata, setLocalMetadata } from '@/utils';
 
 class GameState {
 	regions = $state<Region[]>([]);
@@ -46,6 +47,44 @@ class GameState {
 		}
 		return result;
 	});
+	async checkAssetUpdates() {
+		const fileDownloader = new FileDownloader();
+		await fileDownloader.init();
+		const localData: AssetMetadata = await getLocalMetadata();
+		const remoteData: AssetMetadata = {
+			regions: $state.snapshot(this.regions),
+			wearings: $state.snapshot(this.wearings),
+			owned_wearings: $state.snapshot(this.owned_wearings),
+			meshes: $state.snapshot(this.meshes)
+		};
+		type Key = keyof AssetMetadata;
+		for (const key in remoteData) {
+			for (const remote of remoteData[key as Key]) {
+				const local = localData[key as Key].find((d) => d.id === remote.id);
+				if (!local || local.updated_at !== remote.updated_at) {
+					switch (key) {
+						case 'regions':
+							fileDownloader.add('regions', `stickers/${remote.id}`);
+							fileDownloader.add('regions', `backgrounds/${remote.id}`);
+							break;
+						case 'wearings':
+							fileDownloader.add('wearings', `thumbnails/${remote.id}`);
+							for (const { value: texture_type } of remote.texture_types) {
+								fileDownloader.add('wearings', `textures/${remote.id}_${texture_type}`);
+							}
+							break;
+						case 'meshes':
+							fileDownloader.add('meshes', `glb/${remote.id}`);
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+		await fileDownloader.start();
+		await setLocalMetadata(remoteData);
+	}
 }
 
 const gameState = new GameState();

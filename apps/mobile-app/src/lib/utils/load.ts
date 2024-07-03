@@ -2,14 +2,7 @@ import type { Tables } from '@repo/shared/supatypes';
 import { inPeriod } from '@repo/shared/utils';
 import { db } from '@/db';
 import { authState, gameState, sysState } from '@/states';
-import {
-	assignMLTexts,
-	createError,
-	fileDownloader,
-	needUpdate,
-	preferences,
-	validate
-} from '@/utils';
+import { assignMLTexts, createError, needUpdate, preferences, validate } from '@/utils';
 import { version } from '$app/environment';
 
 async function locale() {
@@ -82,10 +75,6 @@ async function regions() {
 		.returns<Tables<'regions'>[]>();
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 	gameState.regions = await assignMLTexts(data, ['name', 'description'] as const);
-	for (const region of data) {
-		fileDownloader.add('regions', `backgrounds/${region.id}`);
-		fileDownloader.add('regions', `stickers/${region.id}`);
-	}
 }
 
 async function meshes() {
@@ -93,10 +82,6 @@ async function meshes() {
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
 	gameState.meshes = meshes as Mesh[];
-
-	for (const mesh of meshes) {
-		fileDownloader.add('meshes', `glb/${mesh.id}`);
-	}
 }
 
 async function wearings() {
@@ -115,12 +100,6 @@ async function wearings() {
 	}
 
 	const promises: Promise<void>[] = [];
-	for (const wearing of wearings) {
-		fileDownloader.add('wearings', `thumbnails/${wearing.id}`);
-		for (const { value: texture_type } of wearing.texture_types) {
-			fileDownloader.add('wearings', `textures/${wearing.id}_${texture_type}`);
-		}
-	}
 
 	await Promise.all(promises);
 

@@ -1,6 +1,6 @@
 import type { BucketName } from '@/config';
 import { db } from '@/db';
-import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { encode } from 'base64-arraybuffer';
 import { sysState } from '@/states';
 
@@ -63,11 +63,32 @@ async function getFileUrl(bucket: BucketName, filename: string, mimetype?: strin
 	return { data: result };
 }
 
+async function getLocalMetadata() {
+	const { data } = await Filesystem.readFile({
+		path: 'metadata.json',
+		directory,
+		encoding: Encoding.UTF8
+	});
+
+	return JSON.parse(data as string) as AssetMetadata;
+}
+
+async function setLocalMetadata(data: AssetMetadata) {
+	await Filesystem.writeFile({
+		directory,
+		path: 'metadata.json',
+		data: JSON.stringify(data),
+		encoding: Encoding.UTF8
+	});
+}
+
 class FileDownloader {
 	list = new Set<{ bucket: BucketName; filename: string }>();
+
 	add(bucket: BucketName, filename: string) {
 		this.list.add({ bucket, filename });
 	}
+
 	async init() {
 		const folders = [
 			'wearings',
@@ -80,15 +101,31 @@ class FileDownloader {
 			'meshes/glb'
 		];
 		await Promise.all(
-			folders.map((folder) =>
-				Filesystem.readdir({ path: folder, directory }).catch(
-					async (_) => await Filesystem.mkdir({ directory, path: folder })
+			folders.map((path) =>
+				Filesystem.readdir({ path, directory }).catch(
+					async (_) => await Filesystem.mkdir({ directory, path })
 				)
 			)
 		);
+		await Filesystem.readFile({ path: 'metadata.json', directory, encoding: Encoding.UTF8 }).catch(
+			async (_) => {
+				console.log('error while finding metadata.json, creating new file');
+				await Filesystem.writeFile({
+					path: 'metadata.json',
+					directory,
+					data: JSON.stringify({
+						regions: [],
+						wearings: [],
+						owned_wearings: [],
+						meshes: []
+					}),
+					encoding: Encoding.UTF8
+				});
+			}
+		);
 	}
+
 	async start() {
-		await this.init();
 		if (this.list.size > 0) {
 			const size = this.list.size;
 			await Promise.all(
@@ -109,10 +146,17 @@ class FileDownloader {
 			console.log('download complete');
 		} else {
 			sysState.downloadProgress = 1;
+			console.log('no download needed');
 		}
 	}
 }
 
-const fileDownloader = new FileDownloader();
-
-export { download, getFilePublicUrl, getFile, getFileUrl, fileDownloader };
+export {
+	download,
+	getFilePublicUrl,
+	getFile,
+	getFileUrl,
+	getLocalMetadata,
+	setLocalMetadata,
+	FileDownloader
+};
