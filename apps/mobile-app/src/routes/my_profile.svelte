@@ -11,7 +11,7 @@
 	<button
 		onclick={() => (openSetting = !openSetting)}
 		transition:fly={{ x: -100 }}
-		class="center-content pointer-events-auto h-7 w-fit flex-row gap-1 rounded-xl bg-orange-500/90 pr-3 text-sm shadow-inner shadow-orange-600"
+		class="center-content pointer-events-auto h-7 w-fit flex-row gap-1 rounded-xl bg-orange-500/90 pr-3 text-sm mt-3 shadow-inner shadow-orange-600"
 	>
 		<Avatar profile={authState.profile} class="size-12 shadow-md shadow-orange-900/30" />
 		{authState.profile.name}
