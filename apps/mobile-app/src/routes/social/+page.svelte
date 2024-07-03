@@ -59,7 +59,7 @@
 						storyUserId = person.user;
 					}}
 				>
-					<Avatar profile={person} />
+					<Avatar profile={person} noInfo />
 					<small>{person.name}</small>
 				</button>
 				{#if storyUserId === person.user}

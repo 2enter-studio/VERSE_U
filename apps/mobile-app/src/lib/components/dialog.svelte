@@ -7,7 +7,7 @@
 	type Props = {
 		children: Snippet;
 		title: string;
-		open: boolean;
+		open?: boolean;
 		class?: string;
 		closable?: boolean;
 		onclose?: () => void;
@@ -17,7 +17,7 @@
 		title,
 		class: className = 'text-center text-black center-content',
 		closable = true,
-		open = $bindable<boolean>(),
+		open = $bindable<boolean>(true),
 		onclose
 	}: Props = $props();
 
