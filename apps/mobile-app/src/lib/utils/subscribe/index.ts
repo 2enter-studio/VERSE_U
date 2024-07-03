@@ -65,7 +65,7 @@ function leaver() {
 	});
 }
 
-function ownedWearings() {
+function owned_wearings() {
 	const user_id = authState.user?.id;
 	if (!user_id) return null;
 
@@ -73,7 +73,7 @@ function ownedWearings() {
 		tableName: 'owned_wearings',
 		filter: `owner=eq.${user_id}`,
 		callback: async (payload) => {
-			gameState.ownedWearings.push({
+			gameState.owned_wearings.push({
 				equipped: payload.new.equipped,
 				id: payload.new.wearing
 			});
@@ -81,4 +81,4 @@ function ownedWearings() {
 	});
 }
 
-export { chat_messages, chat_members, newTrip, leaver, ownedWearings };
+export { chat_messages, chat_members, newTrip, leaver, owned_wearings };

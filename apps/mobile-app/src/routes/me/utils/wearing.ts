@@ -20,7 +20,7 @@ async function buyWearing(wearing_id: string) {
 		equipped: data.equipped
 	};
 
-	gameState.ownedWearings.push(result);
+	gameState.owned_wearings.push(result);
 }
 
 async function equipWearings(wearing_ids: string[]) {
@@ -47,7 +47,7 @@ async function equipWearings(wearing_ids: string[]) {
 		if (error) return { error };
 	}
 
-	await load.ownedWearings();
+	await load.owned_wearings();
 }
 
 async function getWearingsByUserId(user_id: string) {

@@ -12,7 +12,7 @@ class GameState {
 
 	wearings = $state<Wearing[]>([]);
 	wearingTypes = $state<WearingType[]>([]);
-	ownedWearings = $state<{ id: string; equipped: boolean }[]>([]);
+	owned_wearings = $state<{ id: string; equipped: boolean }[]>([]);
 
 	readonly chat = $derived(this.chats.find((chat) => chat.id === this.chat_id));
 	readonly equippedWearings = $derived(this.ownedWearings.filter((wearing) => wearing.equipped));
