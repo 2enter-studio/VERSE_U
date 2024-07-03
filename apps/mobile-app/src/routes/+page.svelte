@@ -17,7 +17,9 @@
 
 	async function init() {
 		console.log('initializing');
-		await Promise.all((['locale', 'appVersion', 'maintenance'] as const).map((key) => load[key]()));
+		await Promise.all(
+			(['locale', 'app_version', 'maintenance'] as const).map((key) => load[key]())
+		);
 		if (sysState.appLocked) return;
 
 		if (!authState.loggedIn) {
@@ -38,7 +40,7 @@
 			sysState.defaultError(result.error.message as TextCode);
 		}
 
-		const keywords = ['peopleNearBy', 'chats', 'wearings', 'ownedWearings'] as const;
+		const keywords = ['peopleNearBy', 'chats', 'wearings', 'owned_wearings'] as const;
 
 		await Promise.all(
 			keywords.map(async (key) => {

@@ -34,7 +34,7 @@ async function maintenance() {
 	}
 }
 
-async function appVersion() {
+async function app_version() {
 	const { data, error } = await db
 		.from('app_versions')
 		.select()
@@ -121,12 +121,12 @@ async function wearings() {
 	] as const)) as Wearing[];
 }
 
-async function ownedWearings() {
+async function owned_wearings() {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('USER_NOT_FOUND');
 	const { data, error } = await db
 		.from('owned_wearings')
-		.select('wearing,equipped')
+		.select('wearing, equipped')
 		.eq('owner', user_id)
 		.returns<{ wearing: string; equipped: boolean }[]>();
 
@@ -227,12 +227,12 @@ async function peopleNearBy() {
 
 export {
 	locale,
-	appVersion,
+	app_version,
 	maintenance,
 	profile,
 	regions,
 	wearings,
-	ownedWearings,
+	owned_wearings,
 	chats,
 	peopleNearBy,
 	trip
