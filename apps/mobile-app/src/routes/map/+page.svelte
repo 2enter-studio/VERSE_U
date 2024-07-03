@@ -4,7 +4,7 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { getFileUrl, getTextFromObj, subscribe } from '@/utils';
+	import { getFileUrl, subscribe } from '@/utils';
 
 	import { Avatar, Dialog } from '@/components';
 	import { onMount } from 'svelte';
@@ -78,7 +78,7 @@
 								class="size-32 bg-contain bg-center bg-no-repeat"
 							></span>
 						{/await}
-						{getTextFromObj(gameState.regions, 'name', region_id)}
+						{gameState.regions.find((r) => r.id === region_id)?.name}
 					</span>
 				</button>
 			{/if}

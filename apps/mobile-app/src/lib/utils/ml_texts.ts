@@ -34,11 +34,4 @@ async function assignMLTexts<T extends any[], P extends string[]>(data: T, colum
 
 	return data as (T[number] & Record<P[number], string>)[];
 }
-
-function getTextFromObj(obj: Record<string, any>[], column_name: string, id: string) {
-	if (!obj) return '';
-	if (obj.length === 0) return '';
-	return obj.find((o) => o.id === id)?.[column_name] ?? '';
-}
-
-export { assignMLTexts, getTextFromObj };
+export { assignMLTexts };
