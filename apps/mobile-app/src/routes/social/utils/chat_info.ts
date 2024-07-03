@@ -40,7 +40,7 @@ async function agreeFriendShip() {
 	await load.chats([chat_id]);
 }
 
-function getMemberFromChat(chat: Chatroom, target: 'me' | 'other' = 'other') {
+function getMemberFromChat(chat: ChatRoom, target: 'me' | 'other' = 'other') {
 	if (target === 'me') {
 		return chat.chat_members.find((m) => m.user.user === authState.user?.id);
 	} else {

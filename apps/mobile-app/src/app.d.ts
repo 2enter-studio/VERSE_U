@@ -17,7 +17,7 @@ declare global {
 	type Region = Prettify<Tables<'regions'> & Named & Described>;
 
 	type ChatMember = Prettify<Omit<Tables<'chats_members'>, 'user'> & { user: Tables<'profiles'> }>;
-	type Chatroom = Prettify<{
+	type ChatRoom = Prettify<{
 		id: string;
 		chat_members: ChatMember[];
 		chat_messages: Tables<'chat_messages'>[];
@@ -29,6 +29,7 @@ declare global {
 			body_parts: { value: string }[];
 		}
 	>;
+
 	type Wearing = Prettify<
 		Omit<Tables<'wearings'>> &
 			Named &
@@ -37,6 +38,18 @@ declare global {
 				texture_types: Tables<'texture_types'>[];
 			}
 	>;
+
+	type OwnedWearing = Prettify<{
+		id: string;
+		equipped: boolean;
+	}>;
+
+	type AssetMetadata = Prettify<{
+		regions: Region[];
+		wearings: Wearing[];
+		owned_wearings: OwnedWearing[];
+		meshes: Mesh[];
+	}>;
 }
 
 export {};

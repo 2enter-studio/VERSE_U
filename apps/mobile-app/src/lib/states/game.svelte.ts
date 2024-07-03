@@ -5,7 +5,7 @@ import { FileDownloader, getLocalMetadata, setLocalMetadata } from '@/utils';
 
 class GameState {
 	regions = $state<Region[]>([]);
-	chats = $state<Chatroom[]>([]);
+	chats = $state<ChatRoom[]>([]);
 	wearings = $state<Wearing[]>([]);
 	meshes = $state<Mesh[]>([]);
 

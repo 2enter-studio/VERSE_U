@@ -126,7 +126,7 @@ async function owned_wearings() {
 			id: wearing,
 			equipped
 		};
-	});
+	}) as OwnedWearing[];
 }
 
 async function chats(chat_ids?: string[]) {
@@ -139,7 +139,7 @@ async function chats(chat_ids?: string[]) {
 		const { data, error } = await db
 			.from('chats')
 			.select('*, chat_members(*, user(*)), chat_messages(*)')
-			.returns<Chatroom[]>();
+			.returns<ChatRoom[]>();
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
@@ -152,7 +152,7 @@ async function chats(chat_ids?: string[]) {
 			.from('chats')
 			.select('*, chat_members(*, user(*)), chat_messages(*)')
 			.in('id', chat_ids)
-			.returns<Chatroom[]>();
+			.returns<ChatRoom[]>();
 
 		if (error) return createError('FAILED_TO_LOAD_DATA');
 
