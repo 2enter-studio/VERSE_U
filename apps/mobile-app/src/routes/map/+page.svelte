@@ -105,23 +105,23 @@
 	<div class="full-screen center-content pointer-events-none">
 		<div class="center-content flex flex-col">
 			<Icon icon="ph:arrow-fat-down-fill" class="size-10 text-red-700" />
-			{#if gameState.peopleNearBy.length > 0}
-				<div class="pointer-events-auto flex flex-row gap-1">
+			<div class="pointer-events-auto flex flex-row gap-1">
+				{#if gameState.peopleNearBy.length > 0}
 					<div class="center-content flex flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">
 						{#each gameState.peopleNearBy as person}
 							<Avatar profile={person} class="size-7" />
 						{/each}
 					</div>
-					{#if gameState.tripStatus.progress === 1 && gameState.tripStatus.timeRemain === 0 && !sysState.processing}
-						<button
-							class="center-content rounded-full border-b-4 border-r-4 bg-green-700 p-1"
-							onclick={() => (chooseNext = true)}
-						>
-							<Icon icon="mingcute:run-fill" class="text-2xl" />
-						</button>
-					{/if}
-				</div>
-			{/if}
+				{/if}
+				{#if gameState.tripStatus.progress === 1 && gameState.tripStatus.timeRemain === 0 && !sysState.processing}
+					<button
+						class="center-content rounded-full border-b-4 border-r-4 bg-green-700 p-1"
+						onclick={() => (chooseNext = true)}
+					>
+						<Icon icon="mingcute:run-fill" class="text-2xl" />
+					</button>
+				{/if}
+			</div>
 		</div>
 	</div>
 {/if}
