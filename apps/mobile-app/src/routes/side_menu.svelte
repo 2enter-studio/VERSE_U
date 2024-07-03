@@ -1,6 +1,6 @@
 <script lang="ts">
 	import moment from 'moment';
-	import { triggerHaiAn } from '@/utils/hai_an';
+	import { triggerHaiAn } from '@/utils';
 	import { unBlockUser } from '$routes/social/utils';
 	import { gameState, sysState } from '@/states';
 	import { Dialog, Form, SubmitBtn } from '@/components';
@@ -44,15 +44,19 @@
 </Dialog>
 
 <Dialog title="Block List" bind:open={items[1].open} class="center-content flex-col text-black">
-	{#each gameState.block_users as { blocked: id, created_at }}
-		<Form submitFunction={unBlockUser}>
-			<input id="block_user_{id}" name="blocked" value={id} hidden />
-			<label for="block_user_{id}">
-				{moment(created_at).format('YY-MM-DD HH:mm A')}
-			</label>
-			<SubmitBtn>Unblock</SubmitBtn>
-		</Form>
-	{/each}
+	{#if gameState.block_users.length !== 0}
+		{#each gameState.block_users as { blocked: id, created_at }}
+			<Form submitFunction={unBlockUser}>
+				<input id="block_user_{id}" name="blocked" value={id} hidden />
+				<label for="block_user_{id}">
+					{moment(created_at).format('YY-MM-DD HH:mm A')}
+				</label>
+				<SubmitBtn>Unblock</SubmitBtn>
+			</Form>
+		{/each}
+	{:else}
+		You haven't block anyone
+	{/if}
 </Dialog>
 <Dialog
 	bind:open={items[2].open}
