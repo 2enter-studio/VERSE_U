@@ -54,7 +54,7 @@
 			/>
 			<label
 				for="{wearingType.id}-none"
-				class="center-content flex items-center text-3xl {thumbnailSize}"
+				class="center-content items-center text-3xl {thumbnailSize}"
 			>
 				<Icon
 					icon="ion:ban-sharp"

@@ -100,7 +100,7 @@
 	{#await init()}
 		{@const loadingTexts = [sysState.uiTexts.DATA, sysState.uiTexts.LOADING]}
 		<div class="full-screen center-content">
-			<div class="center-content flex h-screen w-3 flex-col">
+			<div class="center-content h-screen w-3 flex-col">
 				<div class="w-full bg-red-800" style="height: {100 * sysState.downloadProgress}%"></div>
 			</div>
 		</div>

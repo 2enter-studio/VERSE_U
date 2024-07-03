@@ -103,11 +103,11 @@
 	{/each}
 
 	<div class="full-screen center-content pointer-events-none">
-		<div class="center-content flex flex-col">
+		<div class="center-content flex-col">
 			<Icon icon="ph:arrow-fat-down-fill" class="size-10 text-red-700" />
 			<div class="pointer-events-auto flex flex-row gap-1">
 				{#if gameState.peopleNearBy.length > 0}
-					<div class="center-content flex flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">
+					<div class="center-content flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">
 						{#each gameState.peopleNearBy as person}
 							<Avatar profile={person} class="size-7" />
 						{/each}
