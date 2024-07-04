@@ -1,6 +1,6 @@
 <script lang="ts">
 	import moment from 'moment';
-	import { triggerHaiAn } from '@/utils';
+	// import { triggerHaiAn } from '@/utils';
 	import { unBlockUser } from '$routes/social/utils';
 	import { gameState, sysState } from '@/states';
 	import { Dialog, Form, SubmitBtn } from '@/components';
