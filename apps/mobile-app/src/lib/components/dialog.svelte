@@ -12,6 +12,7 @@
 		closable?: boolean;
 		onclose?: () => void;
 	};
+
 	let {
 		children,
 		title,
@@ -28,11 +29,8 @@
 </script>
 
 {#if open}
-	<div
-		transition:fade={{ duration: 50 }}
-		class="full-screen pointer-events-auto z-[100] bg-black/30 backdrop-blur-sm"
-	>
-		<div transition:flyAndScale class="center-content h-full w-full flex-col">
+	<div transition:fade={{ duration: 50 }} class="full-screen pointer-events-auto z-[100] backdrop-blur-[2px]">
+		<div transition:flyAndScale class="center-content h-full w-full flex-col text-white">
 			{#if closable}
 				<div class="flex w-9/12 justify-start">
 					<button
@@ -47,7 +45,7 @@
 				{title}
 			</h1>
 			<div
-				class="max-w-9/12 z-[110] flex gap-1 rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 p-2 px-3 text-black shadow-inner shadow-yellow-900/30 {className}"
+				class="z-[110] flex min-w-[50%] max-w-[90%] rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 px-3 py-2 text-black shadow-inner shadow-yellow-900/30 {className}"
 			>
 				{@render children()}
 			</div>
