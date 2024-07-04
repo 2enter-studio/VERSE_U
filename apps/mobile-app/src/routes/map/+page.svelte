@@ -35,18 +35,17 @@
 
 	onMount(() => {
 		const newTripSub = subscribe.newTrip();
-		if (!newTripSub) console.error('Trip was not subscribed');
 		newTripSub?.subscribe();
 
-		return async () => {
-			await newTripSub?.unsubscribe();
+		return () => {
+			newTripSub?.unsubscribe();
 		};
 	});
 </script>
 
 <div
 	bind:this={dom}
-	class="absolute z-[-10] h-screen w-screen bg-no-repeat {transitionClasses}"
+	class="full-screen z-[-10] bg-no-repeat {transitionClasses}"
 	style="
 		background-image: url('/map.webp');
 		background-position: -{position.x}px -{position.y}px;

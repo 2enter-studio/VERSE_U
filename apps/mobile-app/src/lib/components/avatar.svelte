@@ -39,9 +39,7 @@
 		});
 	}
 
-	onMount(async () => {
-		await reloadSelfie();
-	});
+	onMount(reloadSelfie);
 </script>
 
 {#if selfieUrl}

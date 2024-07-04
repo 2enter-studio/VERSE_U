@@ -16,10 +16,7 @@
 </script>
 
 <div class="{className} flex flex-row">
-	<button
-		class="flex h-2 w-full justify-start bg-white"
-		onclick={() => (openDetail = !openDetail)}
-	>
+	<button class="flex h-2 w-full justify-start bg-white" onclick={() => (openDetail = true)}>
 		{#if tripStatus.progress < 1}
 			<div
 				class="flex h-full items-center bg-rose-500"

@@ -22,7 +22,6 @@ async function startNewChat(target_user_id: string, firstMessage: string) {
 	}
 	console.log(data);
 	await load.chats([data]);
-	// await loadChats([new_chat_id]);
 	gameState.chat_id = data;
 }
 
@@ -34,7 +33,6 @@ async function agreeFriendShip() {
 	const { error } = await db.rpc('agree_friendship', { chat_id });
 
 	if (error) {
-		console.error(error);
 		return createError('OPERATION_FAILED');
 	}
 	await load.chats([chat_id]);

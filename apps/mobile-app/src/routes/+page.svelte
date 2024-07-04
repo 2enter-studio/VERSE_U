@@ -40,7 +40,14 @@
 			sysState.defaultError(result.error.message as TextCode);
 		}
 
-		const keywords = ['peopleNearBy', 'chats', 'wearings', 'meshes', 'owned_wearings'] as const;
+		const keywords = [
+			'peopleNearBy',
+			'chats',
+			'wearings',
+			'meshes',
+			'owned_wearings',
+			'block_users'
+		] as const;
 
 		await Promise.all(
 			keywords.map(async (key) => {
