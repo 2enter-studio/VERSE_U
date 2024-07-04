@@ -64,6 +64,7 @@
 	}
 
 	onMount(async () => {
+		// eruda.init();
 		await setUpSafeCSS();
 
 		await App.addListener('resume', init);
@@ -133,7 +134,9 @@
 			<svelte:component this={pages[sysState.route]} />
 			{#if authState.profile}
 				{#if sysState.showMenu}
-					<div class="full-screen pointer-events-none flex flex-col justify-between pt-3">
+					<div
+						class="full-screen pointer-events-none flex flex-col justify-between pt-[var(--safe-area-inset-top)]"
+					>
 						<MyProfile />
 						<div class="flex flex-row justify-end px-1">
 							<SideMenu />
