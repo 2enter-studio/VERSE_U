@@ -16,6 +16,12 @@ const table: UITextTable = {
 	LOCALE: 'EN',
 	MAKE_FRIEND: 'Make friend?',
 	YES: 'Yes',
+	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',
+	SIDE_MENU_SETTINGS_TITLE: 'Settings',
+	SIDE_MENU_SOCIAL_TITLE: 'People',
+	SIDE_MENU_TRIP_INFO_TITLE: 'Trip Info',
+	MINI_GAME_HAI_AN_TITLE: 'Hai An Road',
+	HAI_AN_ROAD: 'Hai An Road',
 	NO: 'No',
 	HOW_TO_USE: 'How to use?',
 	CHATROOM_TUTOR: `
