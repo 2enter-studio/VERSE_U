@@ -29,25 +29,30 @@
 	let frame = 0;
 	let mixer: THREE.AnimationMixer;
 	let skeleton: THREE.Skeleton;
-	let loadProgress = $state(0);
+	// let loadProgress = $state(0);
 	let subLoadProgress = $state([0, 0]);
 
 	let camera = $state<THREE.PerspectiveCamera>();
 	let dom = $state<HTMLElement>();
 	let body = $state<THREE.Object3D<THREE.Object3DEventMap>>();
-	let modelLoaded = $derived(loadProgress >= 1);
 
 	const animating = $derived(
 		body?.animations?.some((a) => mixer?.clipAction(a).isRunning()) || false
 	);
 
+	const wearingGroup = new THREE.Group();
 	const loader = new GLTFLoader();
 	const renderer = new THREE.WebGLRenderer({ alpha: true, preserveDrawingBuffer: true });
 	const textureLoader = new THREE.TextureLoader();
-	const wearingGroup = new THREE.Group();
 	const scene = new THREE.Scene();
 	const clock = new THREE.Clock();
 	const light = new THREE.DirectionalLight('white', 3.3);
+
+	// const loadProgress = $derived(wearingGroup?.children.length / wearingIds.length);
+	// const modelLoaded = $derived(loadProgress >= 1);
+
+	let ready = $state(false);
+	let loaded = $state(0);
 
 	light.position.set(1, 1, 1);
 	renderer.domElement.id = 'u-model-renderer';
@@ -121,7 +126,7 @@
 	}
 
 	async function loadWearings() {
-		loadProgress = wearingIds.length > 0 ? 0 : 1;
+		// loadProgress = wearingIds.length > 0 ? 0 : 1;
 
 		if (!body) {
 			console.log('body not found');
@@ -139,15 +144,20 @@
 
 		for (const wearing of wearingIds.map((id) => gameState.wearings.find((w) => w.id === id))) {
 			if (!wearing) {
+				console.error(`wearing ${wearing.id} not found`);
+				loaded++;
 				return;
 			}
 
 			const mesh = gameState.meshes.find((m) => m.id === wearing.mesh);
 			if (!mesh) {
+				console.error(`mesh of wearing ${wearing.id} not found`);
+				loaded++;
 				return;
 			}
-			const { id } = wearing;
+
 			const { body_parts } = mesh;
+			const { id } = wearing;
 
 			for (const { value: body_part } of body_parts) {
 				const hidden = body.children.findIndex((c) => c.name === `${body_part}`);
@@ -158,7 +168,8 @@
 			}
 
 			if (wearingGroup.children.some((c) => c.name === id)) {
-				loadProgress += 1 / wearingIds.length;
+				// loadProgress += 1 / wearingIds.length;
+				loaded++;
 				continue;
 			}
 
@@ -180,7 +191,8 @@
 					obj.name = id;
 					wearingGroup.add(obj);
 					subLoadProgress[0] = 0;
-					loadProgress += 1 / wearingIds.length;
+					loaded++;
+					// loadProgress += 1 / (wearingIds.length - 1);
 					resolve();
 				})
 			);
@@ -233,6 +245,7 @@
 
 		await loadBody();
 		await loadWearings();
+		ready = true;
 
 		animate();
 
@@ -241,7 +254,7 @@
 				obj.frustumCulled = false;
 			});
 
-			if (animating && modelLoaded && camera) {
+			if (animating && ready && camera) {
 				if (body && selfRotate) body.rotateY(-0.1);
 				const deltaTime = clock.getDelta();
 				if (mixer) mixer.update(deltaTime);
@@ -261,12 +274,9 @@
 	});
 </script>
 
-<div
-	bind:this={dom}
-	class="{className} {modelLoaded && animating ? 'opacity-100' : 'opacity-10'}"
-></div>
+<div bind:this={dom} class="{className} "></div>
 
-{#if !modelLoaded}
+{#if !ready}
 	<div class="full-screen center-content pointer-events-none flex flex-col gap-1">
 		<span>
 			loading{'.'.repeat(sysState.now.getTime() % 4)}
@@ -274,7 +284,7 @@
 		<div class="flex h-3 w-[80vw] flex-row bg-white">
 			<div
 				class="h-full bg-rose-800 transition-all duration-500"
-				style="width: {(100 * loadProgress).toFixed(2)}%"
+				style="width: {(100 * (loaded / wearingIds.length)).toFixed(2)}%"
 			></div>
 			{#each { length: 2 } as _, i}
 				<div class="flex flex-row" style="width: {50 / wearingIds.length}%;">
