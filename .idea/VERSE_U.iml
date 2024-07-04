@@ -19,6 +19,7 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/.temp" />
       <excludeFolder url="file://$MODULE_DIR$/packages/shared/supabase/old_migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/website/.svelte-kit" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
