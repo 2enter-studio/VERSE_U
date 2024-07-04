@@ -104,10 +104,11 @@ async function wearings() {
 	await Promise.all(promises);
 
 	gameState.wearingTypes = await assignMLTexts(wearingTypes, ['name', 'description'] as const);
-	gameState.wearings = (await assignMLTexts(wearings, [
-		'name',
-		'description'
-	] as const)) as Wearing[];
+	// gameState.wearings = (await assignMLTexts(wearings, [
+	// 	'name',
+	// 	'description'
+	// ] as const)) as Wearing[];
+	gameState.wearings = wearings as Wearing[];
 }
 
 async function owned_wearings() {
