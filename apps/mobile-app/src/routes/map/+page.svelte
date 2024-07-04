@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import P5 from 'p5';
 
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
@@ -8,15 +9,17 @@
 
 	import { Avatar, Dialog, LocalImg } from '@/components';
 	import { onMount } from 'svelte';
+	import { watch } from 'runed';
 
 	const tripOptions = [0, 1] as const;
-
-	let chooseNext = $state(false);
 	const transitionClasses = USE_SMOOTH_MAP_MOTION ? 'transition-all duration-1000 ease-linear' : '';
 
+	let chooseNext = $state(false);
 	let dom = $state<HTMLElement>();
+	let tripRouteDom = $state<HTMLDivElement>();
 	let width = $derived(dom?.clientWidth || 0);
 	let height = $derived(dom?.clientHeight || 0);
+	let p5: P5;
 
 	const from = $derived(gameState.regions.find((r) => r.id === gameState.trip?.from) as Region);
 	const to = $derived(gameState.regions.find((r) => r.id === gameState.trip?.to) as Region);
@@ -28,10 +31,66 @@
 			y: (from.y + (to.y - from.y) * gameState.tripStatus.progress) * MAP_SIZE
 		};
 	});
+
 	const origin = $derived({
 		x: position.x - width / 2,
 		y: position.y - height / 2
 	});
+
+	type Point = { x: number; y: number };
+	const sketch = (p: P5) => {
+		if (!tripRouteDom) return;
+		const [w, h] = [tripRouteDom.clientWidth, tripRouteDom.clientHeight];
+		const dist = p.dist(0, 0, w, h);
+		const numPoints = dist / 10;
+
+		const x1 = from.x < to.x ? w : 0;
+		const y1 = from.y < to.y ? h : 0;
+		const x2 = x1 === 0 ? w : 0;
+		const y2 = y1 === 0 ? h : 0;
+
+		const noiseFactor = 12;
+		const points: Point[] = [];
+
+		p.setup = () => {
+			if (!gameState.trip) return;
+			p.createCanvas(w, h).parent('trip_route');
+			p.noiseSeed(new Date(gameState.trip.created_at).getTime());
+			p.strokeCap(p.PROJECT);
+			p.noLoop();
+			p.strokeWeight(14);
+			p.stroke(250);
+		};
+
+		p.draw = () => {
+			for (let i = 0; i <= numPoints; i++) {
+				const t = i / numPoints;
+				const x = p.lerp(x1, x2, t);
+				const y = p.lerp(y1, y2, t);
+				const noiseOffset = (p.noise(t * 15) - 1) * noiseFactor;
+				const result = {
+					x: x + noiseOffset,
+					y: y + noiseOffset
+				};
+				points.push(result);
+			}
+
+			for (let i = 0; i < points.length - 1; i++) {
+				const p1 = points[i];
+				const p2 = points[i + 1];
+
+				if (i % 5 >= 3) p.line(p1.x, p1.y, p2.x, p2.y);
+			}
+		};
+	};
+
+	watch(
+		() => gameState.trip,
+		() => {
+			p5?.remove();
+			p5 = new P5(sketch);
+		}
+	);
 
 	onMount(() => {
 		const newTripSub = subscribe.newTrip();
@@ -39,13 +98,14 @@
 
 		return () => {
 			newTripSub?.unsubscribe();
+			p5?.remove();
 		};
 	});
 </script>
 
 <div
 	bind:this={dom}
-	class="full-screen z-[-10] bg-no-repeat {transitionClasses}"
+	class="full-screen z-[-12] bg-no-repeat {transitionClasses}"
 	style="
 		background-image: url('/map.jpg');
 		background-position: -{position.x}px -{position.y}px;
@@ -86,13 +146,13 @@
 
 	{#each gameState.regions as region}
 		{@const fixedPos = {
-			x: region.x * MAP_SIZE - origin.x - width / 10,
-			y: region.y * MAP_SIZE - origin.y - height / 8
+			x: region.x * MAP_SIZE - origin.x,
+			y: region.y * MAP_SIZE - origin.y
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
 			<div
-				class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
-				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
+				class="center-content absolute z-[-10] {transitionClasses}"
+				style="top: calc({fixedPos.y}px - 4rem); left: calc({fixedPos.x}px - 4rem);"
 			>
 				<LocalImg
 					bucket="regions"
@@ -103,6 +163,19 @@
 			</div>
 		{/if}
 	{/each}
+
+	{#if gameState.tripStatus}
+		{@const w = Math.abs(from.x - to.x) * MAP_SIZE}
+		{@const h = Math.abs(from.y - to.y) * MAP_SIZE}
+		{@const x = Math.min(from.x, to.x) * MAP_SIZE - origin.x}
+		{@const y = Math.min(from.y, to.y) * MAP_SIZE - origin.y}
+		<div
+			id="trip_route"
+			bind:this={tripRouteDom}
+			style="width: {w}px; height: {h}px; top: {y}px; left: {x}px;"
+			class="fixed z-[-11] mix-blend-soft-light"
+		></div>
+	{/if}
 
 	<div class="full-screen center-content pointer-events-none">
 		<div class="center-content flex-col">
