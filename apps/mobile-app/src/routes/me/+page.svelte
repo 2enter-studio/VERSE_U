@@ -4,9 +4,8 @@
 
 	import { gameState, sysState } from '@/states';
 	import { type CharacterAnimation, CHARACTER_ANIMATIONS, ZOOM_IN_CAMERA_POS } from '@/config';
-	import { Dialog, UModel } from '@/components';
+	import { Dialog, LocalImg, UModel } from '@/components';
 	import DressRoom from './dressroom.svelte';
-	import { getFileUrl } from '@/utils';
 	import { uploadSelfie } from '$routes/me/utils';
 
 	const expressions = gameState.wearingTypes
@@ -63,12 +62,12 @@
 </div>
 
 {#if gameState.tripStatus.progress === 1}
-	{#await getFileUrl('regions', `backgrounds/${gameState.trip?.to}`, 'image/webp') then { data: regionBgUrl }}
-		<div
-			class="full-screen z-[-11] bg-cover bg-center bg-no-repeat"
-			style="background-image: url({regionBgUrl})"
-		></div>
-	{/await}
+	<LocalImg
+		bucket="regions"
+		filename="backgrounds/{gameState.trip?.to}"
+		mimetype="image/webp"
+		class="full-screen z-[-11] bg-cover"
+	/>
 {/if}
 
 {#if dressing}

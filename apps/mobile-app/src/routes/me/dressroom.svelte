@@ -4,8 +4,7 @@
 
 	import { sysState, gameState } from '@/states';
 	import { buyWearing, equipWearings } from './utils';
-	import { Drawer, MenuToggler } from '@/components/index.js';
-	import { getFileUrl } from '@/utils';
+	import { Drawer, LocalImg, MenuToggler } from '@/components/index.js';
 
 	type Props = {
 		open: boolean;
@@ -74,16 +73,22 @@
 						hidden
 					/>
 					<label class="text-white {selected ? 'rounded-full bg-white' : ''}" for={wearing.id}>
-						{#await getFileUrl('wearings', `thumbnails/${wearing.id}`, 'image/webp') then { data: url }}
-							<img src={url} alt="loading" class="{thumbnailSize} " />
-						{/await}
+						<LocalImg
+							bucket="wearings"
+							filename="thumbnails/{wearing.id}"
+							mimetype="image/webp"
+							class="size-20"
+						/>
 					</label>
 				{:else}
 					<div class="flex flex-col items-center">
 						<span class="text-cyan-500">
-							{#await getFileUrl('wearings', `thumbnails/${wearing.id}`, 'image/webp') then { data: url }}
-								<img src={url} alt="loading" class="{thumbnailSize} opacity-30" />
-							{/await}
+							<LocalImg
+								bucket="wearings"
+								filename="thumbnails/{wearing.id}"
+								mimetype="image/webp"
+								class="size-20 opacity-30"
+							/>
 						</span>
 						<!--												<button-->
 						<!--													onclick={async () => {-->

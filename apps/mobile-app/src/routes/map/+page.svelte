@@ -4,9 +4,9 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { getFileUrl, subscribe } from '@/utils';
+	import { subscribe } from '@/utils';
 
-	import { Avatar, Dialog } from '@/components';
+	import { Avatar, Dialog, LocalImg } from '@/components';
 	import { onMount } from 'svelte';
 
 	const tripOptions = [0, 1] as const;
@@ -71,12 +71,12 @@
 					}}
 				>
 					<span class="center-content flex-col text-black">
-						{#await getFileUrl('regions', `stickers/${region_id}`, 'image/webp') then { data }}
-							<span
-								style="background-image: url({data})"
-								class="size-32 bg-contain bg-center bg-no-repeat"
-							></span>
-						{/await}
+						<LocalImg
+							bucket="regions"
+							filename="stickers/{region_id}"
+							mimetype="image/webp"
+							class="size-32"
+						/>
 						{gameState.regions.find((r) => r.id === region_id)?.name}
 					</span>
 				</button>
@@ -90,14 +90,17 @@
 			y: region.y * MAP_SIZE - origin.y - height / 8
 		}}
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
-			{#await getFileUrl('regions', `stickers/${region.id}`, 'image/webp') then { data: regionStickerUrl }}
-				<div
-					class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
-					style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
-				>
-					<img src={regionStickerUrl} alt={region.name} />
-				</div>
-			{/await}
+			<div
+				class="center-content fixed z-[-10] w-[35vw] flex-col {transitionClasses}"
+				style="top: {fixedPos.y}px; left: {fixedPos.x}px;"
+			>
+				<LocalImg
+					bucket="regions"
+					filename="stickers/{region.id}"
+					mimetype="image/webp"
+					class="size-32"
+				/>
+			</div>
 		{/if}
 	{/each}
 
