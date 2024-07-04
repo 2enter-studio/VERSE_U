@@ -47,7 +47,7 @@
 				{title}
 			</h1>
 			<div
-				class="z-[110] flex w-9/12 gap-1 rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 p-2 shadow-inner shadow-yellow-900/30 {className}"
+				class="max-w-9/12 z-[110] flex gap-1 rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 p-2 px-3 text-black shadow-inner shadow-yellow-900/30 {className}"
 			>
 				{@render children()}
 			</div>

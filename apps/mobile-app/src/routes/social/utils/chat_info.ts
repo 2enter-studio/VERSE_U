@@ -60,6 +60,7 @@ async function clearExpiredChats() {
 	const { error } = await db.from('chats').delete().in('id', deleteIds);
 	if (error) {
 		console.error(error);
+		return createError('OPERATION_FAILED');
 	}
 	await load.chats();
 }
