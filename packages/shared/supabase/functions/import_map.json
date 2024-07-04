@@ -4,6 +4,7 @@
     "moment": "npm:moment@latest",
     "sha256": "npm:sha256@latest",
     "capitalize": "npm:capitalize@latest",
-    "rfdc": "npm:rfdc@latest"
+    "rfdc": "npm:rfdc@latest",
+    "validator": "npm:validator@latest"
   }
 }
