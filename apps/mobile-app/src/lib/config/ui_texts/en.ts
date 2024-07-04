@@ -5,8 +5,23 @@ const table: UITextTable = {
 	DELETE_ACCOUNT: 'Delete My Account',
 	YOU_ARE_OFFLINE: 'You are currently offline, please connect to the internet.',
 	ACCOUNT_NOT_FOUND: 'Account Not Found',
+	BLOCK: 'Block',
+	BLOCK_LIST: 'Block List',
+	REPORT: 'Report',
+	NOT_FOUND: 'Not Found',
+	BLOCK_LIST_EMPTY: "You haven't blocked anyone",
 	VERSION: 'Version',
+	SUBMIT: 'Submit',
+	ENTER_REPORT_REASON: 'Enter the reason for this report',
 	LOCALE: 'EN',
+	MAKE_FRIEND: 'Make friend?',
+	YES: 'Yes',
+	NO: 'No',
+	HOW_TO_USE: 'How to use?',
+	CHATROOM_TUTOR: `
+		<li>Press the arrow at top-left corner to leave chat room</li>
+		<li>Use the bottom area to text messages</li>
+		<li>You can send reports by long-pressing any message bubbles</li>`,
 	YOUR_APP_VERSION: 'Your Version',
 	LATEST_APP_VERSION: 'Latest Version',
 	NEED_UPDATE: 'Please update the app',
