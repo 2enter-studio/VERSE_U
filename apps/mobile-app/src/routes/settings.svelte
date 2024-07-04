@@ -9,6 +9,7 @@
 	import { preferences } from '@/utils';
 
 	import { UI_TEXTS } from '@/config';
+	import { Form, SubmitBtn } from '@/components';
 
 	let values = $state({
 		profile: $state.snapshot(authState.profile),
@@ -39,59 +40,45 @@
 	}
 </script>
 
-<button class="rounded-md bg-rose-800 px-2 text-white" onclick={() => sysState.routeTo('account')}>
-	Account Center
-</button>
-<div class="flex flex-row gap-2">
-	{sysState.uiTexts.VERSION}: {version}
+{sysState.uiTexts.VERSION}: {version}
+{#if sysState.remoteAppVersion?.value === version}
+	(latest)
+{:else}
+	(↑{sysState.remoteAppVersion?.value})
+{/if}
+
+<div
+	class="center-content flex-row flex-wrap gap-1 *:rounded-md *:px-1.5 *:py-0.5 *:text-white *:shadow-inner *:shadow-black/30"
+>
+	<button class="bg-rose-800" onclick={() => sysState.routeTo('account')}>
+		{sysState.uiTexts.ACCOUNT}
+	</button>
 	{#if !sysState.processing}
-		<button
-			onclick={async () => {
-				await sysState.process(signOut);
-			}}
-			class="flex flex-row bg-black text-white"
-		>
+		<button onclick={() => sysState.process(signOut)} class="flex flex-row bg-purple-700">
 			{sysState.uiTexts.SIGNOUT}
 			<Icon icon="mdi:exit-run" class="text-xl" />
 		</button>
 	{/if}
 </div>
-<div class="flex flex-col gap-1 text-black">
-	<div class="center-content flex-col gap-2">
-		<h2>{sysState.uiTexts.PROFILE}</h2>
-		<div class="flex flex-row gap-2">
-			<span>Public ID</span>
-			<div
-				class="flex w-fit flex-row items-center rounded-sm bg-gray-600 px-1 text-xs text-white/80"
-			>
-				{authState.profile?.public_id}
-				<button
-					onclick={() => {
-						navigator.clipboard.writeText(authState.profile?.public_id || '');
-					}}
-				>
-					<Icon icon="ph:copy-fill" />
-				</button>
-			</div>
-		</div>
-	</div>
+
+<div class="flex flex-col gap-1 text-center text-black">
+	<h2>{sysState.uiTexts.PROFILE}</h2>
 	{#if values.profile}
-		<div class="flex flex-row">
-			<label
-				for="my-name"
-				class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900"
-			>
+		<Form submitFunction={modifyProfile} class="flex flex-row">
+			<span class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900">
 				{sysState.uiTexts.NAME}
-			</label>
+			</span>
 			<input
-				id="my-name"
-				maxlength="12"
+				maxlength="10"
 				minlength="1"
 				type="text"
 				bind:value={values.profile.name}
-				class="w-4/5 rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
+				class="rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
 			/>
-		</div>
+			<SubmitBtn>
+				<Icon icon="zondicons:save-disk" class="ml-1 text-cyan-800" />
+			</SubmitBtn>
+		</Form>
 	{/if}
 </div>
 <div class="center-content flex-col">
