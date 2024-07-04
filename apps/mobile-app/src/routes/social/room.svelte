@@ -5,10 +5,11 @@
 	import { agreeFriendShip, getMemberFromChat } from './utils';
 	import { ChatMessageBubble, ChatInput } from './';
 	import { authState, sysState, gameState } from '@/states';
-	import { Avatar, MenuToggler } from '@/components';
+	import { Avatar, Dialog, MenuToggler } from '@/components';
 
 	let chatInput = $state<HTMLElement>();
 	let messagePool = $state<HTMLDivElement>();
+	let showInfo = $state(false);
 
 	const inputHeight = $derived(chatInput?.clientHeight ?? 0);
 
@@ -34,28 +35,35 @@
 {#if gameState.chat}
 	{@const person = getMemberFromChat(gameState.chat)}
 	{@const me = getMemberFromChat(gameState.chat, 'me')}
-	<div class="fixed flex h-12 w-full flex-row items-center gap-1 bg-black px-1 py-2">
-		<button onclick={() => (gameState.chat_id = null)}>
-			<Icon icon="mdi:arrow-back" class="text-2xl" />
-		</button>
-		{#if person}
-			<Avatar profile={person.user} class="size-9" />
-			<span class="text-sm">{person?.user.name}</span>
-		{/if}
-		{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
-			<div class="center-content">
-				<span class="text-xs">add to friends?</span>
-				<button
-					class="bg-white px-1 text-xs text-black"
-					onclick={async () => {
-						const result = await agreeFriendShip();
-						if (result?.error) sysState.defaultError('OPERATION_FAILED');
-					}}
-				>
-					YES
-				</button>
-			</div>
-		{/if}
+	<div
+		class="fixed flex h-12 w-full flex-row items-center justify-between gap-1 bg-black px-1 py-2"
+	>
+		<div class="flex flex-row items-center gap-1">
+			<button onclick={() => (gameState.chat_id = null)}>
+				<Icon icon="mdi:arrow-back" class="text-2xl" />
+			</button>
+			{#if person}
+				<Avatar profile={person.user} class="size-9" />
+				<span class="text-sm">{person?.user.name}</span>
+			{/if}
+			{#if gameState.chat.chat_messages.some((m) => m.sender === authState.user?.id) && gameState.chat.chat_messages.some((m) => m.sender === person?.user.user) && !me?.agree}
+				<div class="center-content">
+					<span class="text-xs">
+						{sysState.uiTexts.MAKE_FRIEND}
+					</span>
+					<button
+						class="bg-white px-1 text-xs text-black"
+						onclick={async () => {
+							const result = await agreeFriendShip();
+							if (result?.error) sysState.defaultError('OPERATION_FAILED');
+						}}
+					>
+						YES
+					</button>
+				</div>
+			{/if}
+		</div>
+		<Icon icon="eva:info-outline" class="mr-1 size-5" onclick={() => (showInfo = true)} />
 	</div>
 	<div
 		bind:this={messagePool}
@@ -74,3 +82,7 @@
 		</div>
 	</div>
 {/if}
+
+<Dialog title={sysState.uiTexts.HOW_TO_USE} bind:open={showInfo} class="flex-col text-black text-xs">
+	{@html sysState.uiTexts.CHATROOM_TUTOR}
+</Dialog>
