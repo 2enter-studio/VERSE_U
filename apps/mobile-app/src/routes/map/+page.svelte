@@ -47,7 +47,7 @@
 	bind:this={dom}
 	class="full-screen z-[-10] bg-no-repeat {transitionClasses}"
 	style="
-		background-image: url('/map.webp');
+		background-image: url('/map.jpg');
 		background-position: -{position.x}px -{position.y}px;
 	"
 ></div>
