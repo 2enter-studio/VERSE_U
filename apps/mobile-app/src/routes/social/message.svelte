@@ -1,10 +1,11 @@
 <script lang="ts">
 	import moment from 'moment';
 	import { fly } from 'svelte/transition';
-	import { authState, gameState } from '@/states';
+	import { authState, gameState, sysState } from '@/states';
 	import { Avatar, Dialog, Form, SubmitBtn } from '@/components';
 	import type { Tables } from '@repo/shared/supatypes';
 	import { HoldBtn } from '@/components/index.js';
+	import { reportMessage } from '$routes/social/utils';
 
 	type Props = { message: Tables<'chat_messages'> };
 	let { message }: Props = $props();
@@ -49,13 +50,13 @@
 	</div>
 {/if}
 
-<Dialog title="message info" bind:open={openInfo}>
-	<Form
-		submitFunction={() => {
-			openInfo = false;
-		}}
-	>
-		<input type="text" name="id" value={message.id} hidden />
-		<SubmitBtn class="rounded-lg bg-rose-600 px-2 py-1 text-white">Report</SubmitBtn>
+<Dialog title={sysState.uiTexts.REPORT} bind:open={openInfo}>
+	<Form submitFunction={reportMessage}>
+		<h1>{sysState.uiTexts.ENTER_REPORT_REASON}</h1>
+		<input type="text" name="message_id" value={message.id} hidden />
+		<input type="text" name="reason" placeholder="Enter your reason" class="rounded-xl" required />
+		<SubmitBtn class="rounded-lg bg-rose-600 px-2 py-1 text-white">
+			{sysState.uiTexts.SUBMIT}
+		</SubmitBtn>
 	</Form>
 </Dialog>
