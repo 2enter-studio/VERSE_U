@@ -5,7 +5,7 @@ import type { Tables } from '@repo/shared/supatypes';
 import { inPeriod, type Prettify } from '@repo/shared/utils';
 import type { Locale } from '@repo/shared/config';
 
-import type { TextCode } from '@/config/ui_texts/types';
+import type { TextCode, UITextTable } from '@/config/ui_texts/types';
 import { DEFAULT_LOCALE, DEFAULT_ROUTE, type Route, UI_TEXTS } from '@/config';
 import { needUpdate } from '@/utils';
 
@@ -31,7 +31,7 @@ class SystemState {
 	downloadProgress = $state(0);
 
 	systemMessage = $state<SystemMessage[]>([]);
-	readonly uiTexts = $derived(UI_TEXTS[this.locale]);
+	readonly uiTexts: UITextTable = $derived(UI_TEXTS[this.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
 	readonly maintaining = $derived(
 		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
