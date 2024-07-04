@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Icon from '@iconify/svelte';
+
 	import { getFilePublicUrl } from '@/utils';
 	import { authState, gameState, sysState } from '@/states';
 	import type { Tables } from '@repo/shared/supatypes';
 	import { Dialog, Form, SubmitBtn } from '@/components';
 	import { blockUser } from '$routes/social/utils';
-	import Icon from '@iconify/svelte';
 
 	type Props = {
 		profile: Tables<'profiles'>;
@@ -18,6 +19,7 @@
 	let selfieUrl = $state<string>('');
 	let selfieAvailable = $state(false);
 	let openInfo = $state(false);
+
 	const relation = $derived.by(() => {
 		if (
 			gameState.friendChats.some((chat) =>
@@ -73,6 +75,14 @@
 {/if}
 
 <Dialog title="Player Info" bind:open={openInfo} class="flex-col items-center text-black">
+	<div
+		class="center-content size-16 rounded-full border-2 border-amber-500 bg-amber-300 bg-cover bg-center bg-no-repeat text-black"
+		style="background-image: url({selfieUrl})"
+	>
+		{#if !selfieAvailable}
+			{profile?.name.slice(0, 1).toUpperCase()}
+		{/if}
+	</div>
 	<span>name: {profile.name}</span>
 	<div class="flex flex-row gap-2">
 		<span>Public ID</span>
@@ -83,7 +93,9 @@
 			</button>
 		</div>
 	</div>
-	<span>your relation: {relation}</span>
+	{#if profile.user !== authState.user?.id}
+		<span>your relation: {relation}</span>
+	{/if}
 	{#if profile.user !== authState.user?.id}
 		<Form submitFunction={blockUser}>
 			<input type="text" name="blocked" value={profile.user} hidden />
