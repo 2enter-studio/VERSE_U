@@ -101,38 +101,34 @@ class FileDownloader {
 
 	async init() {
 		const folders = [
-			'wearings',
 			'wearings/textures',
 			'wearings/thumbnails',
-			'regions',
 			'regions/stickers',
 			'regions/backgrounds',
-			'meshes',
 			'meshes/glb'
 		];
 		await Promise.all(
 			folders.map((path) =>
 				Filesystem.readdir({ path, directory }).catch(
-					async (_) => await Filesystem.mkdir({ directory, path })
+					async (_) => await Filesystem.mkdir({ directory, path, recursive: true })
 				)
 			)
 		);
-		await Filesystem.readFile({ path: 'metadata.json', directory, encoding: Encoding.UTF8 }).catch(
-			async (_) => {
-				console.log('error while finding metadata.json, creating new file');
-				await Filesystem.writeFile({
-					path: 'metadata.json',
-					directory,
-					data: JSON.stringify({
-						regions: [],
-						wearings: [],
-						owned_wearings: [],
-						meshes: []
-					}),
-					encoding: Encoding.UTF8
-				});
-			}
-		);
+
+		await Filesystem.readFile({ path: 'metadata.json', directory }).catch(async (_) => {
+			console.log('error while finding metadata.json, creating new file');
+			await Filesystem.writeFile({
+				path: 'metadata.json',
+				directory,
+				data: JSON.stringify({
+					regions: [],
+					wearings: [],
+					owned_wearings: [],
+					meshes: []
+				}),
+				encoding: Encoding.UTF8
+			});
+		});
 	}
 
 	async start() {
