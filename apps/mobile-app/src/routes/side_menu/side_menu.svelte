@@ -23,21 +23,21 @@
 			icon: 'fluent-emoji-high-contrast:joystick',
 			class: 'bg-purple-700',
 			open: false,
-			dialogClass: ''
+			dialogClass: 'flex-col text-center'
 		},
 		{
 			name: 'TRIP_INFO',
 			icon: 'material-symbols:trip-outline-sharp',
 			class: 'bg-amber-700',
 			open: false,
-			dialogClass: ''
+			dialogClass: 'flex-col text-center'
 		},
 		{
 			name: 'SOCIAL',
 			icon: 'fluent:people-48-filled',
 			class: 'bg-cyan-700',
 			open: false,
-			dialogClass: 'flex-col'
+			dialogClass: 'flex-col text-center'
 		},
 		{
 			name: 'SETTINGS',
@@ -50,7 +50,7 @@
 </script>
 
 <div
-	transition:fly={{ x: -100 }}
+	transition:fly={{ x: 100 }}
 	class="pointer-events-auto z-[10] flex flex-col gap-1 rounded-l-3xl bg-gray-200 p-1.5 shadow-inner shadow-black/40"
 >
 	{#each items as item, i}
