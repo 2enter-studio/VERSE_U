@@ -35,7 +35,7 @@ function genUEPlayer(player: Player): UEPlayer {
 	return {
 		id: player.user,
 		wearings: player.wearings,
-		skinCol: { X: 0, Y: 0, Z: 0 }
+		skinCol: { X: 253, Y: 198, Z: 162 }
 	};
 }
 
