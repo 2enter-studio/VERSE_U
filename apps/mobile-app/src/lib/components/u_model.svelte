@@ -63,10 +63,7 @@
 		watch(
 			() => wearingIds,
 			() => {
-				if (!body) {
-					// console.error('body not found');
-					return;
-				}
+				if (!body) return;
 				console.log('reloading wearings');
 				loadWearings().catch((error) => {
 					console.error(error);
@@ -80,7 +77,7 @@
 			}
 		);
 
-		watch(() => camera, setCamera);
+		watch(() => cameraPosition, setCamera);
 	}
 
 	function setCamera() {
