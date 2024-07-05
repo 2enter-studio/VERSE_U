@@ -4,7 +4,7 @@ import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { encode } from 'base64-arraybuffer';
 import { sysState } from '@/states';
 
-const directory = Directory.Documents;
+const directory = Directory.Cache;
 
 async function download(bucket: BucketName, filename: string, force: boolean = false) {
 	const path = `${bucket}/${filename}`;
@@ -36,6 +36,7 @@ async function getFile(bucket: BucketName, filename: string) {
 		return { data };
 	} catch (e) {
 		console.error(e);
+		await download(bucket, filename);
 		const { data, error } = await db.storage.from(bucket).download(filename);
 		if (error) return { error };
 		return { data };
@@ -61,6 +62,15 @@ async function getFileUrl(bucket: BucketName, filename: string, mimetype?: strin
 			: URL.createObjectURL(data);
 
 	return { data: result };
+}
+
+async function fileExists(bucket: BucketName, filename: string) {
+	try {
+		await Filesystem.stat({ path: `${bucket}/${filename}`, directory });
+		return true;
+	} catch (_) {
+		return false;
+	}
 }
 
 async function getLocalMetadata() {
@@ -158,5 +168,6 @@ export {
 	getFileUrl,
 	getLocalMetadata,
 	setLocalMetadata,
+	fileExists,
 	FileDownloader
 };
