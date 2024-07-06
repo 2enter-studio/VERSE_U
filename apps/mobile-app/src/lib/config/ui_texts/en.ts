@@ -11,6 +11,9 @@ const table: UITextTable = {
 	NOT_FOUND: 'Not Found',
 	BLOCK_LIST_EMPTY: "You haven't blocked anyone",
 	VERSION: 'Version',
+	HAI_AN_SUCCESS: "You've successfully uploaded, find your guy in the LED screen!",
+	HAI_AN_HINT:
+		'On Hai-An Road in Tainan, there are two LED billboards displaying the world of Verse U. Enter the passcode shown on the billboard to have your character appear inside!',
 	SUBMIT: 'Submit',
 	ENTER_REPORT_REASON: 'Enter the reason for this report',
 	LOCALE: 'EN',
