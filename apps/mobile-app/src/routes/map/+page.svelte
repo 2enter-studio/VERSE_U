@@ -100,7 +100,7 @@
 	bind:this={dom}
 	class="full-screen z-[-12] bg-no-repeat {transitionClasses}"
 	style="
-		background-image: url('/map.jpg');
+		background-image: url('/images/map.jpg');
 		background-position: -{position.x}px -{position.y}px;
 	"
 ></div>
