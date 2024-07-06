@@ -71,6 +71,7 @@ function owned_wearings() {
 
 	return new Subscription({
 		tableName: 'owned_wearings',
+		channelName: `owned_wearings_${user_id}`,
 		filter: `owner=eq.${user_id}`,
 		callback: async (payload) => {
 			gameState.owned_wearings.push({
