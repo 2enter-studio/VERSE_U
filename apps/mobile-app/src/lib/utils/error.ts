@@ -10,7 +10,7 @@ function createError(message: TextCode, options?: ErrorOptions) {
 	return { error };
 }
 
-async function handleEFResponse(error: any, callback: Function) {
+async function handleEFResponse(error: any, callback?: Function) {
 	if (error instanceof FunctionsHttpError) {
 		const errorMessage = await error.context.json();
 		console.log('Function returned an error', errorMessage);
@@ -22,7 +22,7 @@ async function handleEFResponse(error: any, callback: Function) {
 		console.log('Fetch error:', error.message);
 		// throw Error('OPERATION_FAILED');
 	} else {
-		await callback();
+		await callback?.();
 	}
 }
 
