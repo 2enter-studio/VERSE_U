@@ -64,7 +64,7 @@
 		</Dialog>
 	{:else if display === 'side'}
 		<div
-			class="fixed left-0 top-0 w-screen bg-black px-1 pt-[var(--safe-area-inset-top)] text-center text-white {getStyle(
+			class="z-[300] fixed left-0 top-0 w-screen bg-black px-1 pt-[var(--safe-area-inset-top)] text-center text-white {getStyle(
 				type
 			)}"
 		>
