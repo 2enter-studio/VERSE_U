@@ -3,7 +3,6 @@
 	import Icon from '@iconify/svelte';
 	import { fly } from 'svelte/transition';
 
-	import { subscribe } from '@/utils';
 	import { gameState, sysState } from '@/states';
 	import { type CharacterAnimation, ZOOM_IN_CAMERA_POS } from '@/config';
 	import { Dialog, LocalImg, UModel } from '@/components';
@@ -52,7 +51,6 @@
 				})?.id || '';
 		}
 		selectedWearingCopy = { ...selectedWearings };
-		subscribe.owned_wearings()?.subscribe();
 	});
 </script>
 

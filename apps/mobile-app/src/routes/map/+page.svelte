@@ -5,10 +5,9 @@
 	import { MAP_SIZE, USE_SMOOTH_MAP_MOTION } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { startNextTrip } from './utils';
-	import { subscribe } from '@/utils';
 
 	import { Avatar, Dialog, LocalImg } from '@/components';
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { watch } from 'runed';
 
 	const tripOptions = [0, 1] as const;
@@ -92,14 +91,8 @@
 		}
 	);
 
-	onMount(() => {
-		const newTripSub = subscribe.newTrip();
-		newTripSub?.subscribe();
-
-		return () => {
-			newTripSub?.unsubscribe();
-			p5?.remove();
-		};
+	onDestroy(() => {
+		p5?.remove;
 	});
 </script>
 
@@ -152,13 +145,13 @@
 		{#if fixedPos.x < width * 2 && fixedPos.y < height * 2 && fixedPos.x > -width && fixedPos.y > -height}
 			<div
 				class="center-content absolute z-[-10] {transitionClasses}"
-				style="top: calc({fixedPos.y}px - 4rem); left: calc({fixedPos.x}px - 4rem);"
+				style="top: calc({fixedPos.y}px - 4.5rem); left: calc({fixedPos.x}px - 4.5rem);"
 			>
 				<LocalImg
 					bucket="regions"
 					filename="stickers/{region.id}"
 					mimetype="image/webp"
-					class="size-32"
+					class="size-36"
 				/>
 			</div>
 		{/if}
@@ -173,13 +166,13 @@
 			id="trip_route"
 			bind:this={tripRouteDom}
 			style="width: {w}px; height: {h}px; top: {y}px; left: {x}px;"
-			class="fixed z-[-11] mix-blend-soft-light"
+			class="fixed z-[-11] mix-blend-soft-light {transitionClasses}"
 		></div>
 	{/if}
 
 	<div class="full-screen center-content pointer-events-none">
 		<div class="center-content flex-col">
-			<Icon icon="ph:arrow-fat-down-fill" class="size-10 text-red-700" />
+			<Icon icon="ph:arrow-fat-down-fill" class="size-10 animate-bounce text-red-700 delay-1000" />
 			<div class="pointer-events-auto flex flex-row gap-1">
 				{#if gameState.peopleNearBy.length > 0}
 					<div class="center-content flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">

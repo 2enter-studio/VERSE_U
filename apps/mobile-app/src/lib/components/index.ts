@@ -8,3 +8,4 @@ export { default as SubmitBtn } from './submit_btn.svelte';
 export { default as MenuToggler } from './menu_toggler.svelte';
 export { default as HoldBtn } from './hold_btn.svelte';
 export { default as LocalImg } from './local_img.svelte';
+export { default as Subscriber } from './subscriber.svelte';

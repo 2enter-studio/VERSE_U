@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
 	import { startNewChat } from './utils';
-	import { subscribe } from '@/utils';
 
 	import { gameState, sysState } from '@/states';
 	import { ChatList, Chatroom, Story } from './';
@@ -17,25 +15,6 @@
 
 	$effect(() => {
 		if (gameState.chat_id) storyUserId = '';
-	});
-
-	onMount(() => {
-		const chatMemberSub = subscribe.chat_members();
-		const chatMsgSub = subscribe.chat_messages();
-		const leaverSub = subscribe.leaver();
-
-		if (!leaverSub) console.error('leaver not sub');
-		else leaverSub.subscribe();
-		if (!chatMsgSub) console.error('chat_msgSub not sub');
-		else chatMsgSub.subscribe();
-		if (!chatMemberSub) console.error('leaver not sub');
-		else chatMemberSub.subscribe();
-
-		return () => {
-			leaverSub?.unsubscribe();
-			chatMsgSub?.unsubscribe();
-			chatMemberSub?.unsubscribe();
-		};
 	});
 </script>
 

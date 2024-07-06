@@ -12,6 +12,7 @@
 	import { authState, gameState, sysState } from '@/states';
 	import { Dialog } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
+	import { Subscriber } from '@/components';
 
 	let loadingProgress = $state(0);
 
@@ -130,6 +131,9 @@
 			{/each}
 		</div>
 	{:then _}
+		<Subscriber
+			targets={['chat_members', 'leaver', 'chat_messages', 'newTrip', 'owned_wearings']}
+		/>
 		<div class="full-screen layout top-10 flex flex-col items-center">
 			<svelte:component this={pages[sysState.route]} />
 			{#if authState.profile}
