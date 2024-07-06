@@ -9,11 +9,11 @@ async function triggerHaiAn(args: { passcode: string }) {
 	const { data, error } = await db.functions.invoke('hai-an-road', {
 		body: JSON.stringify(args)
 	});
-	await handleEFResponse(error, () => {
-		console.error(error);
-		// const newStatus = get(tripStatus);
-	});
-	console.log(data);
+
+	if (error) {
+		await handleEFResponse(error);
+		return { error };
+	}
 }
 
 export { triggerHaiAn };
