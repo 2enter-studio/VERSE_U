@@ -23,7 +23,7 @@
 			icon: 'fluent-emoji-high-contrast:joystick',
 			class: 'bg-purple-700',
 			open: false,
-			dialogClass: 'flex-col text-center'
+			dialogClass: 'flex-col text-center p-0'
 		},
 		{
 			name: 'TRIP_INFO',

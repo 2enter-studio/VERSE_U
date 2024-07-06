@@ -84,6 +84,7 @@ class SystemState {
 }
 
 const sysState = new SystemState();
+
 setInterval(() => {
 	sysState.now = new Date();
 }, 1000);

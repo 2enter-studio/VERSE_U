@@ -83,6 +83,10 @@
 	</div>
 {/if}
 
-<Dialog title={sysState.uiTexts.HOW_TO_USE} bind:open={showInfo} class="flex-col text-black text-xs">
+<Dialog
+	title={sysState.uiTexts.HOW_TO_USE}
+	bind:open={showInfo}
+	class="flex-col text-xs text-black"
+>
 	{@html sysState.uiTexts.CHATROOM_TUTOR}
 </Dialog>

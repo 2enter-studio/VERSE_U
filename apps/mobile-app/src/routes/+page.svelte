@@ -142,7 +142,7 @@
 						class="full-screen pointer-events-none flex flex-col justify-between pt-[var(--safe-area-inset-top)]"
 					>
 						<MyProfile />
-						<div class="flex flex-row justify-end px-1">
+						<div class="flex flex-row justify-end">
 							<SideMenu />
 						</div>
 						<Menu />
