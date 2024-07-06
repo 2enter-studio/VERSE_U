@@ -44,7 +44,7 @@
 			icon: 'mage:settings-fill',
 			class: 'bg-gray-400',
 			open: false,
-			dialogClass: 'flex-col text-center text-sm gap-1'
+			dialogClass: 'center-content flex-col text-center text-sm gap-1'
 		}
 	]);
 </script>
