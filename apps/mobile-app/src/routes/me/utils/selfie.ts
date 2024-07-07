@@ -1,27 +1,21 @@
 import { decode } from 'base64-arraybuffer';
 import { authState } from '@/states';
 import { db } from '@/db';
+import { createError } from '@/utils';
 
 // import { handleEFResponse } from '@/utils';
 
-async function uploadSelfie(image: string) {
+async function uploadSelfie(args: { image: string }) {
+	const { image } = args;
+
 	const user_id = authState.user?.id;
-	if (!user_id) return;
+	if (!user_id) return createError('USER_NOT_FOUND');
 
-	// const { data, error } = await db.functions.invoke('upload-selfie', {
-	// 	body: JSON.stringify({ image: decode(image) })
-	// });
-	// await handleEFResponse(error, () => {
-	// 	console.log(data);
-	// });
-
-	const { error } = await db.storage
-		.from('user_data')
-		.upload(`${user_id}/selfie`, decode(image), {
-			upsert: true,
-			contentType: 'image/webp',
-			cacheControl: 'no-cache'
-		});
+	const { error } = await db.storage.from('user_data').upload(`${user_id}/selfie`, decode(image), {
+		upsert: true,
+		contentType: 'image/webp',
+		cacheControl: '0'
+	});
 	if (error) {
 		console.error(error);
 		return { error };

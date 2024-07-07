@@ -1,25 +1,41 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
-	import { fly } from 'svelte/transition';
+	import { fly, fade } from 'svelte/transition';
 
 	import { gameState, sysState } from '@/states';
-	import { type CharacterAnimation, ZOOM_IN_CAMERA_POS } from '@/config';
-	import { Dialog, LocalImg, UModel } from '@/components';
-	import { equipWearings, uploadSelfie } from '$routes/me/utils';
+	import {
+		// type CharacterAnimation,
+		DRESSROOM_CAMERA_POS,
+		EXPRESSION_CAMERA_POS,
+		SELFIE_CAMERA_POS
+	} from '@/config';
+	import { Dialog, Form, LocalImg, SubmitBtn, UModel } from '@/components';
+	import { equipWearings, uploadSelfie, buyWearing } from '$routes/me/utils';
 	import { MenuToggler } from '@/components/index.js';
 
 	const expressions = gameState.wearingTypes
 		.filter((type) => type.is_expression)
 		.map((type) => type.id);
 
-	let animation = $state<CharacterAnimation>('idle');
+	// let animation = $state<CharacterAnimation>('idle');
 	let dressing = $state(false);
+	let takingSelfie = $state(false);
 	let selfieUrl = $state('');
+	let spark = $state(false);
 
 	let selectedWearingType = $state(gameState.wearingTypes[0].id);
 	let selectedWearings: Record<string, string> = $state({});
 	let selectedWearingCopy: Record<string, string> = $state({});
+
+	const expressing = $derived(expressions.includes(selectedWearingType));
+	const cameraPosition = $derived.by(() => {
+		if (dressing) {
+			return expressing ? EXPRESSION_CAMERA_POS : DRESSROOM_CAMERA_POS;
+		} else if (takingSelfie) {
+			return SELFIE_CAMERA_POS;
+		}
+	});
 
 	const filteredSelectedWearings = $derived(
 		Object.values(selectedWearings).filter((w) => w !== '')
@@ -29,16 +45,16 @@
 		JSON.stringify(selectedWearings) !== JSON.stringify(selectedWearingCopy)
 	);
 
-	const zoomIn = $derived(expressions.includes(selectedWearingType) && dressing);
-
 	$effect(() => {
 		if (!dressing) selectedWearings = { ...selectedWearingCopy };
 	});
 
 	function takeSelfie() {
+		spark = true;
 		const canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
 		if (!canvas) return;
 		selfieUrl = canvas.toDataURL('image/webp');
+		setTimeout(() => (spark = false), 120);
 	}
 
 	onMount(() => {
@@ -54,40 +70,42 @@
 	});
 </script>
 
-<div class="center-content fixed bottom-0 flex-row gap-3">
-	{#if !dressing}
-		<input bind:checked={dressing} id="toggle-dressroom" type="checkbox" hidden />
-		<label for="toggle-dressroom">
+{#if !dressing && !takingSelfie}
+	<div
+		class="full-screen pointer-events-none flex flex-col items-start justify-center gap-2 px-2 *:pointer-events-auto"
+	>
+		<button onclick={() => (dressing = true)}>
 			<Icon
 				icon="game-icons:clothes"
-				class="mb-[9vh] size-16 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
+				class="size-14 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
 			/>
-		</label>
-	{/if}
-</div>
-
-{#if gameState.tripStatus.progress === 1}
-	<LocalImg
-		bucket="regions"
-		filename="backgrounds/{gameState.trip?.to}"
-		mimetype="image/webp"
-		class="full-screen z-[-11] bg-cover"
-	/>
+		</button>
+		<button onclick={() => (takingSelfie = true)}>
+			<Icon
+				icon="fa-regular:id-badge"
+				class="size-14 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
+			/>
+		</button>
+	</div>
 {/if}
 
-{#if zoomIn}
-	<div class="center-content fixed bottom-32 w-full">
+{#if takingSelfie}
+	<div class="fixed bottom-32 flex w-full justify-evenly">
+		<button class="text-rose-700" onclick={() => (takingSelfie = false)}>
+			<Icon icon="carbon:previous-filled" class="size-10 rounded-full bg-white/80" />
+		</button>
 		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}>
 		</button>
+		<div class="size-10"></div>
 	</div>
 {/if}
 
 <UModel
 	class="full-screen z-[-10]"
 	wearingIds={filteredSelectedWearings}
-	animation={zoomIn ? 'idle' : animation}
-	cameraPosition={zoomIn ? [...ZOOM_IN_CAMERA_POS] : dressing ? [-0.41, 1.65, 2.0] : undefined}
-	selfRotate={dressing && !zoomIn}
+	selfRotate={dressing && !expressing}
+	animation="idle"
+	{cameraPosition}
 />
 
 {#if selfieUrl !== ''}
@@ -101,21 +119,21 @@
 			class="size-64 bg-green-500 bg-cover bg-center bg-no-repeat"
 			style="background-image:url({selfieUrl})"
 		></div>
-		you just took a selfie, upload it?
-		<button
-			onclick={async () => {
-				const res = await uploadSelfie(selfieUrl.split('base64,')[1]);
-				if (res?.error) {
-					sysState.defaultError(res.error.message);
-				} else {
-					console.log('selfie uploaded');
+		{sysState.uiTexts.YOU_JUST_TOOK_SELFIE}
+		<Form
+			submitFunction={uploadSelfie}
+			afterSubmit={(result) => {
+				if (!result?.error) {
+					selfieUrl = '';
+					takingSelfie = false;
 				}
-				sysState.selfieUpdated = true;
-				selfieUrl = '';
 			}}
 		>
-			yes
-		</button>
+			<input type="text" value={selfieUrl.split('base64,')[1]} name="image" hidden />
+			<SubmitBtn class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
+				{sysState.uiTexts.YES}
+			</SubmitBtn>
+		</Form>
 	</Dialog>
 {/if}
 
@@ -131,7 +149,7 @@
 		</button>
 		<div class="flex flex-row justify-start">
 			<div
-				class="flex h-fit max-h-[50vh] flex-col gap-1 overflow-auto rounded-l-2xl bg-orange-400 px-2 py-3 shadow-inner shadow-white/30"
+				class="flex h-fit max-h-[50vh] flex-col gap-1 overflow-auto rounded-l-2xl rounded-br-2xl bg-orange-400 px-2 py-3 shadow-inner shadow-white/30"
 			>
 				<input
 					id="wear-none"
@@ -171,6 +189,16 @@
 									: ''}"
 							/>
 						</label>
+						<!--{#if !owned}-->
+						<!--	<button-->
+						<!--		class="bg-black p-1"-->
+						<!--		onclick={() =>  -->
+						<!--			buyWearing(id) -->
+						<!--		}-->
+						<!--	>-->
+						<!--		buy-->
+						<!--	</button>-->
+						<!--{/if}-->
 					{/key}
 				{/each}
 			</div>
@@ -207,4 +235,17 @@
 			</button>
 		{/if}
 	</div>
+{/if}
+
+{#if gameState.tripStatus.progress === 1}
+	<LocalImg
+		bucket="regions"
+		filename="backgrounds/{gameState.trip?.to}"
+		mimetype="image/webp"
+		class="full-screen z-[-11] bg-cover"
+	/>
+{/if}
+
+{#if spark}
+	<div out:fade={{ duration: 300 }} class="full-screen pointer-events-none bg-white"></div>
 {/if}

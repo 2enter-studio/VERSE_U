@@ -14,7 +14,7 @@
 		readonly?: boolean;
 		animation?: CharacterAnimation;
 		class?: string;
-		cameraPosition?: [number, number, number];
+		cameraPosition?: readonly [number, number, number];
 		selfRotate?: boolean;
 	};
 
