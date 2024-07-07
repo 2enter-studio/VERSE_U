@@ -87,11 +87,14 @@
 		camera.lookAt(0, cameraPosition[1] - 0.8, -2.5);
 	}
 
-	async function makeMaterial(wearing_id: string) {
+	async function makeMaterial(wearing_id: string, is_expression: boolean) {
 		// const isNew = !$equippedWearings.includes(wearing_id);
 		try {
 			subLoadProgress[1] = 0;
-			const TEXTURE_TYPES = ['baseColor', 'metallic', 'roughness', 'normal'] as const;
+			const TEXTURE_TYPES = is_expression
+				? ['baseColor']
+				: ['baseColor', 'metallic', 'roughness', 'normal'];
+
 			//@ts-ignore
 			let result: Record<(typeof TEXTURE_TYPES)[number], THREE.Texture> = {};
 			await Promise.all(
@@ -111,12 +114,18 @@
 				)
 			);
 
-			return new THREE.MeshStandardMaterial({
-				map: result.baseColor,
-				normalMap: result.normal,
-				roughnessMap: result.roughness,
-				metalnessMap: result.metallic
-			});
+			return is_expression
+				? new THREE.MeshStandardMaterial({
+						map: result.baseColor,
+						transparent: true
+						// side: THREE.DoubleSide
+					})
+				: new THREE.MeshStandardMaterial({
+						map: result.baseColor,
+						normalMap: result.normal,
+						roughnessMap: result.roughness,
+						metalnessMap: result.metallic
+					});
 		} catch (error) {
 			console.error(error);
 			return new THREE.MeshBasicMaterial();
@@ -183,8 +192,9 @@
 					const skinnedMesh = obj.children[0].children[0] as THREE.SkinnedMesh;
 
 					if (skeleton) skinnedMesh.skeleton = skeleton;
+					const { is_expression } = wearing.category;
 					if (wearing.texture_types.length > 0) {
-						skinnedMesh.material = await makeMaterial(id);
+						skinnedMesh.material = await makeMaterial(id, is_expression);
 					}
 					obj.name = id;
 					wearingGroup.add(obj);

@@ -29,7 +29,7 @@
 		JSON.stringify(selectedWearings) !== JSON.stringify(selectedWearingCopy)
 	);
 
-	const zoomIn = $derived(expressions.includes(selectedWearingType));
+	const zoomIn = $derived(expressions.includes(selectedWearingType) && dressing);
 
 	$effect(() => {
 		if (!dressing) selectedWearings = { ...selectedWearingCopy };
@@ -87,7 +87,7 @@
 	wearingIds={filteredSelectedWearings}
 	animation={zoomIn ? 'idle' : animation}
 	cameraPosition={zoomIn ? [...ZOOM_IN_CAMERA_POS] : dressing ? [-0.41, 1.65, 2.0] : undefined}
-	selfRotate={dressing}
+	selfRotate={dressing && !zoomIn}
 />
 
 {#if selfieUrl !== ''}

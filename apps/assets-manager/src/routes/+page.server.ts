@@ -170,7 +170,7 @@ const storage: Action = async ({ request }) => {
 	let target_id = filename.split('/').at(-1) as string;
 	if (target_id.includes('_')) target_id = target_id.split('_')[0];
 
-	const { error } = await admin.storage.from(bucketName).update(filename, file, {
+	const { error } = await admin.storage.from(bucketName).upload(filename, file, {
 		upsert: true
 	});
 
