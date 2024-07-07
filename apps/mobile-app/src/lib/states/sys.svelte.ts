@@ -46,11 +46,11 @@ class SystemState {
 		this.systemMessage.push(result);
 		return result;
 	}
-	defaultError(message: TextCode) {
+	defaultError(message?: TextCode) {
 		return this.addSysMsg({
 			type: 'ERROR',
 			display: 'side',
-			message: this.uiTexts[message]
+			message: this.uiTexts[message ?? 'OPERATION_FAILED']
 		});
 	}
 	defaultSuccess(message?: TextCode) {
@@ -70,16 +70,18 @@ class SystemState {
 	delSysMsg(id: string) {
 		this.systemMessage = this.systemMessage.filter((msg) => msg.id !== id);
 	}
-	async process(method: Function) {
+	async process(method: Function, successCode?: TextCode, errorCode?: TextCode, after?: Function) {
 		this.processing = true;
 		const msg = sysState.defaultProcessing();
 		const result = await method();
 		if (result?.error) {
-			sysState.defaultError('OPERATION_FAILED');
+			sysState.defaultError(successCode);
+		} else {
+			sysState.defaultSuccess(errorCode);
 		}
-		// await method();
 		sysState.delSysMsg(msg.id);
 		this.processing = false;
+		await after?.();
 	}
 }
 
