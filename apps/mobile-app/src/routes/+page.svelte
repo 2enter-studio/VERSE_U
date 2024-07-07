@@ -152,9 +152,18 @@
 		</div>
 	{/await}
 {:else}
-	<Dialog title={sysState.uiTexts.ERROR} closable={false} open={true}>
+	<Dialog
+		title={sysState.uiTexts.ERROR}
+		closable={false}
+		class="center-content flex-col text-center"
+	>
 		{sysState.uiTexts.YOU_ARE_OFFLINE}
-		<button onclick={() => window.location.reload()}>refresh</button>
+		<button
+			onclick={() => window.location.reload()}
+			class="w-fit rounded-xl bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30"
+		>
+			{sysState.uiTexts.REFRESH}
+		</button>
 	</Dialog>
 {/if}
 
