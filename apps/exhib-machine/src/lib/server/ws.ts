@@ -1,19 +1,19 @@
 import type { ServerWebSocket, WebSocketHandler } from 'svelte-adapter-bun';
 import chalk from 'chalk';
 
-let wsClients = new Set<ServerWebSocket>();
+const clients = new Set<ServerWebSocket>();
 
 const wsHandler: WebSocketHandler = {
 	open(ws) {
-		wsClients.add(ws);
-		broadcastMessage('we got a new client');
+		clients.add(ws);
+		broadcastMessage({ message: 'we got a new client' });
 	},
 	message(ws, message) {
-		console.log(message);
+		console.log('received message', message);
 	},
-	close: (ws) => {
-		broadcastMessage('we lost a client');
-		wsClients.delete(ws);
+	close(ws) {
+		clients.delete(ws);
+		broadcastMessage({ message: 'we lost a client' });
 	},
 	upgrade(request, upgrade: Function) {
 		const url = new URL(request.url);
@@ -24,15 +24,11 @@ const wsHandler: WebSocketHandler = {
 	}
 };
 
-function broadcastMessage(message: string) {
-	for (let client of getWebSocketClients()) {
-		client.send(message);
+function broadcastMessage(message: Record<string, any>) {
+	for (let client of clients) {
+		client.send(JSON.stringify(message));
 	}
-	console.log(chalk.cyan(`broadcast message: ${JSON.stringify(message, null, 2)}`));
+	console.log(chalk.cyan('broadcast message'), message);
 }
 
-function getWebSocketClients() {
-	return wsClients;
-}
-
-export { wsHandler, broadcastMessage, getWebSocketClients };
+export { wsHandler, broadcastMessage };
