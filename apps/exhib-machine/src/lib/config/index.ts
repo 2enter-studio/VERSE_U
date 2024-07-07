@@ -11,10 +11,18 @@ const EMPTY_METADATA = { wearings: [], meshes: [] };
 type BucketName = (typeof BUCKET_NAMES)[number];
 type MetaData = { [P in BucketName]: Tables<P>[] };
 
-type Player = Tables<'profiles'> & { wearings: { id: string; mesh: string }[] };
+type PlayerWearing = {
+	id: string;
+	mesh: string;
+	is_expression: boolean;
+};
+
+type Player = Tables<'profiles'> & {
+	wearings: PlayerWearing[];
+};
 type UEPlayer = {
 	id: string;
-	wearings: { id: string; mesh: string }[];
+	wearings: PlayerWearing[];
 	skinCol: { X: number; Y: number; Z: number };
 };
 
