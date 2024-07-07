@@ -7,6 +7,7 @@
 	import { DEFAULT_CAMERA_POS, FRAME_RATE, type CharacterAnimation } from '@/config';
 	import { gameState, sysState } from '@/states';
 	import { getFileUrl } from '@/utils';
+	import { DEFAULT_SKIN_COLOR } from '@repo/shared/config';
 
 	type Props = {
 		wearingIds: string[];
@@ -214,7 +215,9 @@
 		scene.add(body);
 
 		const skinMaterial = new THREE.MeshToonMaterial({
-			color: '#fdc6a2',
+			color: new THREE.Color(
+				`rgb(${DEFAULT_SKIN_COLOR.X}, ${DEFAULT_SKIN_COLOR.Y}, ${DEFAULT_SKIN_COLOR.Z})`
+			),
 			emissive: 'red',
 			emissiveIntensity: 0.4
 		});
