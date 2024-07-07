@@ -2,6 +2,7 @@ import type { UITextTable } from '@/config/ui_texts/types';
 
 const table: UITextTable = {
 	ACCOUNT: '帳戶',
+	PLAYER_INFO: '玩家資訊',
 	YOU_ARE_OFFLINE: '您目前處於離線狀態，請連上網路以使用本 App',
 	ACCOUNT_NOT_FOUND: '找不到該帳戶',
 	HAI_AN_SUCCESS: '互動成功，在LED螢幕裡尋找自己的化身吧！',
@@ -9,6 +10,8 @@ const table: UITextTable = {
 		'臺南海安路上，有兩座LED看板，那裡展示著Verse U的世界。輸入看板上的通關密碼，讓自己的角色出現在裡面吧！',
 	HAI_AN_ROAD: '海安路',
 	DELETE_ACCOUNT: '刪除我的帳號',
+	REFRESH: '重新整理',
+	YOU_JUST_TOOK_SELFIE: '要上傳這張自拍照嗎？',
 	HOW_TO_USE: '如何使用',
 	MAKE_FRIEND: '交個朋友？',
 	CHATROOM_TUTOR: `
