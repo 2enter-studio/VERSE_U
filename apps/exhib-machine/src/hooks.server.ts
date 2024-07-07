@@ -9,6 +9,7 @@ import { serverState } from '@/server/state';
 import { HAI_AN_CALL_TIMEOUT } from '@/config';
 
 async function serverInit() {
+	console.log(chalk.yellowBright('Initializing server...'));
 	initFileStorage();
 	initMetaData();
 	setInterval(async () => {
@@ -16,21 +17,17 @@ async function serverInit() {
 	}, HAI_AN_CALL_TIMEOUT);
 
 	serverState.initialized = true;
+	console.log(chalk.yellowBright('Server initialized!'));
 }
 
 const handle: Handle = async ({ event, resolve }) => {
 	if (!serverState.initialized) {
-		console.log(chalk.yellowBright('Initializing server...'));
 		await serverInit();
-		// console.table(serverState);
 	}
 
-	// const res = await resolve(event);
-	// // console.log(event);
-	// return res;
 	return resolve(event);
 };
 
-export const handleWebsocket = wsHandler;
+const handleWebsocket = wsHandler;
 
-export { handle };
+export { handle, handleWebsocket };

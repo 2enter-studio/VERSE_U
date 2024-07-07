@@ -1,13 +1,8 @@
 import { json } from '@sveltejs/kit';
-import sha256 from 'sha256';
-import moment from 'moment';
 import { HAI_AN_KEY } from '$env/static/private';
+import { genHaiAnPasscode } from '@repo/shared/utils';
 
 export const GET = async () => {
-	const now = moment().utc().format('YYYY-MM-DD HH');
-	const passcode = sha256(now + HAI_AN_KEY)
-		.slice(0, 5)
-		.toUpperCase();
-
+	const passcode = genHaiAnPasscode(HAI_AN_KEY);
 	return json({ passcode });
 };

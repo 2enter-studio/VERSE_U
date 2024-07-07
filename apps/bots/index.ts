@@ -1,5 +1,5 @@
 import { getExpiredTrips, upsertTrips } from './db/trips';
-import { TRIP_UPDATE_TIMEOUT } from './config/index.ts';
+import { TRIP_UPDATE_TIMEOUT } from './config';
 
 // Start auto-tripper
 setInterval(async () => {
