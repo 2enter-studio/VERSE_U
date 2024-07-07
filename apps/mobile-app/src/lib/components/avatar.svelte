@@ -2,11 +2,12 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	import { getFilePublicUrl } from '@/utils';
 	import { authState, gameState, sysState } from '@/states';
+	import { Clipboard } from '@capacitor/clipboard';
 	import type { Tables } from '@repo/shared/supatypes';
 	import { Dialog, Form, SubmitBtn } from '@/components';
 	import { blockUser } from '$routes/social/utils';
+	import { db } from '@/db';
 
 	type Props = {
 		profile: Tables<'profiles'>;
@@ -14,11 +15,12 @@
 		readonly?: boolean;
 		noInfo?: boolean;
 	};
-	let { profile, class: className = 'size-12', readonly = false, noInfo = false }: Props = $props();
+	let { profile, class: className = 'size-12', readonly = true, noInfo = false }: Props = $props();
 
 	let selfieUrl = $state<string>('');
 	let selfieAvailable = $state(false);
 	let openInfo = $state(false);
+	let idCopied = $state(false);
 
 	const relation = $derived.by(() => {
 		if (
@@ -37,13 +39,17 @@
 	});
 
 	async function reloadSelfie() {
-		if (profile)
-			selfieUrl =
-				getFilePublicUrl('user_data', `${profile?.user}/selfie`) + `?t=${new Date().getTime()}`;
-		// const res = await fetch(selfieUrl);
-		// if (!res.ok) {
-		// 	selfieAvailable = false;
-		// }
+		if (profile) {
+			const { data, error } = await db.storage
+				.from('user_data')
+				.download(`${profile?.user}/selfie`);
+			if (error) {
+				selfieAvailable = false;
+				return;
+			}
+			selfieUrl = URL.createObjectURL(data);
+			selfieAvailable = true;
+		}
 	}
 
 	if (!readonly) {
@@ -60,23 +66,24 @@
 	onMount(reloadSelfie);
 </script>
 
-{#if selfieUrl}
-	<button
-		class="center-content rounded-full border-2 border-amber-500 bg-amber-300 bg-cover bg-center bg-no-repeat text-black {className}"
-		style="background-image: url({selfieUrl})"
-		onclick={() => {
-			if (!noInfo) openInfo = true;
-		}}
-	>
-		{#if !selfieAvailable}
-			{profile?.name.slice(0, 1).toUpperCase()}
-		{/if}
-	</button>
-{/if}
+<button
+	class="avatar bg-amber-300 shadow-inner shadow-rose-800/40 {className}"
+	style="background-image: url({selfieUrl})"
+	onclick={() => (openInfo = !noInfo)}
+>
+	{#if !selfieAvailable}
+		{profile?.name.slice(0, 1).toUpperCase()}
+	{/if}
+</button>
 
-<Dialog title="Player Info" bind:open={openInfo} class="flex-col items-center text-black">
+<Dialog
+	title={sysState.uiTexts.PLAYER_INFO}
+	onclose={() => (idCopied = false)}
+	bind:open={openInfo}
+	class="flex-col items-center text-black"
+>
 	<div
-		class="center-content size-16 rounded-full border-2 border-amber-500 bg-amber-300 bg-cover bg-center bg-no-repeat text-black"
+		class="avatar size-16 rounded-full bg-amber-300 shadow-inner shadow-rose-800/40"
 		style="background-image: url({selfieUrl})"
 	>
 		{#if !selfieAvailable}
@@ -86,10 +93,20 @@
 	<span>name: {profile.name}</span>
 	<div class="flex flex-row gap-2">
 		<span>Public ID</span>
-		<div class="flex w-fit flex-row items-center rounded-sm bg-gray-600 px-1 text-xs text-white/80">
+		<div class="center-content w-fit gap-1 rounded-sm bg-gray-600 px-1 text-xs text-white/80">
 			{profile.public_id}
-			<button onclick={() => navigator.clipboard.writeText(profile.public_id || '')}>
-				<Icon icon="ph:copy-fill" />
+			<button
+				onclick={() => {
+					Clipboard.write({ string: profile.public_id }).then(() => {
+						idCopied = true;
+					});
+				}}
+			>
+				{#if idCopied}
+					Copied
+				{:else}
+					<Icon icon="ph:copy-fill" />
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -108,3 +125,16 @@
 		</Form>
 	{/if}
 </Dialog>
+
+<style>
+	.avatar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		border-radius: 9999px;
+		color: black;
+	}
+</style>
