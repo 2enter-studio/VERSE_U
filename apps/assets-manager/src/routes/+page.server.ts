@@ -171,7 +171,8 @@ const storage: Action = async ({ request }) => {
 	if (target_id.includes('_')) target_id = target_id.split('_')[0];
 
 	const { error } = await admin.storage.from(bucketName).upload(filename, file, {
-		upsert: true
+		upsert: true,
+		cacheControl: '0'
 	});
 
 	if (error) {
