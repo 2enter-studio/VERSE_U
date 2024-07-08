@@ -73,9 +73,9 @@
 				if (body) body.rotation.set(0, 0, 0);
 			}
 		);
-
-		watch(() => cameraPosition, setCamera);
 	}
+
+	$effect(setCamera);
 
 	function setCamera() {
 		if (!camera) return;
