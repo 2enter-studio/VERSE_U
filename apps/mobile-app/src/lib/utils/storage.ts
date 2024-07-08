@@ -6,27 +6,18 @@ import { sysState } from '@/states';
 
 const directory = Directory.Cache;
 
-async function download(bucket: BucketName, filename: string, force: boolean = false) {
+async function download(bucket: BucketName, filename: string) {
 	const path = `${bucket}/${filename}`;
-	async function run() {
-		const res = await fetch(getFilePublicUrl(bucket, filename));
-		if (!res.ok) return;
-		const buffer = await res.arrayBuffer();
-		const data = encode(buffer);
-		await Filesystem.readdir({ path: bucket, directory }).catch(async (e) => {
-			console.error(e);
-			await Filesystem.writeFile({ path, directory, data, recursive: true });
-			return;
-		});
-		await Filesystem.writeFile({ path, directory, data });
-	}
-	if (force) {
-		await run();
-	} else {
-		await Filesystem.readFile({ path, directory }).catch(async (_) => {
-			await run();
-		});
-	}
+	const res = await fetch(getFilePublicUrl(bucket, filename));
+	if (!res.ok) return;
+	const buffer = await res.arrayBuffer();
+	const data = encode(buffer);
+	await Filesystem.readdir({ path: bucket, directory }).catch(async (e) => {
+		console.error(e);
+		await Filesystem.writeFile({ path, directory, data, recursive: true });
+		return;
+	});
+	await Filesystem.writeFile({ path, directory, data });
 }
 
 async function getFile(bucket: BucketName, filename: string) {
