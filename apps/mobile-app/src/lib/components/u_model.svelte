@@ -117,14 +117,15 @@
 			return is_expression
 				? new THREE.MeshStandardMaterial({
 						map: result.baseColor,
-						transparent: true
-						// side: THREE.DoubleSide
+						transparent: true,
+						side: THREE.DoubleSide
 					})
 				: new THREE.MeshStandardMaterial({
 						map: result.baseColor,
 						normalMap: result.normal,
 						roughnessMap: result.roughness,
-						metalnessMap: result.metallic
+						metalnessMap: result.metallic,
+						side: THREE.DoubleSide
 					});
 		} catch (error) {
 			console.error(error);
