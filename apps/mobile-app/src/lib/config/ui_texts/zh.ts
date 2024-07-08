@@ -6,6 +6,8 @@ const table: UITextTable = {
 	YOU_ARE_OFFLINE: '您目前處於離線狀態，請連上網路以使用本 App',
 	ACCOUNT_NOT_FOUND: '找不到該帳戶',
 	HAI_AN_SUCCESS: '互動成功，在LED螢幕裡尋找自己的化身吧！',
+	NOTHING: '無',
+	RELATIONSHIP: '關係',
 	HAI_AN_HINT:
 		'臺南海安路上，有兩座LED看板，那裡展示著Verse U的世界。輸入看板上的通關密碼，讓自己的角色出現在裡面吧！',
 	HAI_AN_ROAD: '海安路',
