@@ -31,6 +31,7 @@ const SELFIE_CAMERA_POS = [0, 2.25, 0.55] as const;
 const DRESSROOM_CAMERA_POS = [-0.41, 1.65, 2.0] as const;
 const SYS_MSG_LIFE_TIME = 3000;
 const USE_SMOOTH_MAP_MOTION = false;
+const APP_STORE_LINK = 'https://apps.apple.com/tw/app/verse-u/id6502902450';
 
 export {
 	UI_TEXTS,
@@ -40,6 +41,7 @@ export {
 	DEFAULT_ROUTE,
 	DEFAULT_LOCALE,
 	MAP_SIZE,
+	APP_STORE_LINK,
 	FRAME_RATE,
 	DEFAULT_CAMERA_POS,
 	EXPRESSION_CAMERA_POS,

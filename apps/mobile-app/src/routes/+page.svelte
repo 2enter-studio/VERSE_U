@@ -19,7 +19,7 @@
 	async function init() {
 		console.log('initializing');
 		await Promise.all(
-			(['locale', 'app_version', 'maintenance'] as const).map((key) => load[key]())
+			(['preference', 'app_version', 'maintenance'] as const).map((key) => load[key]())
 		);
 		if (sysState.appLocked) return;
 

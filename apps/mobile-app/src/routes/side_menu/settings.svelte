@@ -27,7 +27,9 @@
 {#if sysState.remoteAppVersion?.value === version}
 	(latest)
 {:else}
-	(↑{sysState.remoteAppVersion?.value})
+	<a href={APP_STORE_LINK}>
+		(↑{sysState.remoteAppVersion?.value})
+	</a>
 {/if}
 
 <div
