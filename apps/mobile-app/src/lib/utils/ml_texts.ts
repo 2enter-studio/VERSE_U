@@ -9,7 +9,7 @@ async function getMLTexts(row_ids: string[], column_names: string[]) {
 		.select('*')
 		.in('row_id', row_ids)
 		.in('column_name', column_names)
-		.eq('locale', sysState.locale)
+		.eq('locale', sysState.pref.locale)
 		.returns<Tables<'ml_texts'>[]>();
 
 	if (error) {

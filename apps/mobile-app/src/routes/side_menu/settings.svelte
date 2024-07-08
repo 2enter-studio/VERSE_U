@@ -1,43 +1,26 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { LOCALES } from '@repo/shared/config';
 	import { version } from '$app/environment';
+	import { LOCALES } from '@repo/shared/config';
 
-	import type { TextCode } from '@/config/ui_texts/types';
-	import { authState, sysState } from '@/states';
-	import { modifyProfile, signOut } from '$routes/auth/utils';
+	import { sysState } from '@/states';
+	import { signOut } from '$routes/auth/utils';
 	import { preferences } from '@/utils';
 
-	import { UI_TEXTS } from '@/config';
+	import { APP_STORE_LINK, UI_TEXTS } from '@/config';
 	import { Form, SubmitBtn } from '@/components';
+	import { watch } from 'runed';
 
-	let values = $state({
-		profile: $state.snapshot(authState.profile),
-		locale: $state.snapshot(sysState.locale)
-	});
+	const volumeKeys = ['music_volume', 'sound_volume'] as const;
 
-	const submittable = $derived(
-		JSON.stringify({ profile: authState.profile, locale: sysState.locale }) !==
-			JSON.stringify(values) && values.profile?.name.trim() !== ''
+	watch(
+		() => sysState.pref,
+		() => {
+			preferences.locale.set(sysState.pref.locale);
+			preferences.music_volume.set(sysState.pref.music_volume);
+			preferences.sound_volume.set(sysState.pref.sound_volume);
+		}
 	);
-
-	async function save() {
-		if (!submittable) return;
-		const localeChanged = values.locale !== sysState.locale;
-		const profileChanged = JSON.stringify(authState.profile) !== JSON.stringify(values.profile);
-
-		if (values.profile && profileChanged) {
-			const res = await modifyProfile({ name: values.profile.name });
-			if (res?.error) {
-				sysState.defaultError(res.error.message as TextCode);
-			}
-		}
-
-		if (localeChanged) {
-			await preferences.locale.set(values.locale);
-			window.location.reload();
-		}
-	}
 </script>
 
 {sysState.uiTexts.VERSION}: {version}
@@ -53,49 +36,37 @@
 	<button class="bg-rose-800" onclick={() => sysState.routeTo('account')}>
 		{sysState.uiTexts.ACCOUNT}
 	</button>
-	{#if !sysState.processing}
-		<button onclick={() => sysState.process(signOut)} class="flex flex-row bg-purple-700">
+	<Form submitFunction={signOut} class="bg-purple-700">
+		<SubmitBtn class="flex flex-row">
 			{sysState.uiTexts.SIGNOUT}
 			<Icon icon="mdi:exit-run" class="text-xl" />
-		</button>
-	{/if}
+		</SubmitBtn>
+	</Form>
 </div>
 
-<div class="flex flex-col gap-1 text-center text-black">
-	<h2>{sysState.uiTexts.PROFILE}</h2>
-	{#if values.profile}
-		<Form submitFunction={modifyProfile} class="flex flex-row">
-			<span class="rounded-l-lg bg-red-600 px-3 text-white shadow-inner shadow-red-900">
-				{sysState.uiTexts.NAME}
-			</span>
-			<input
-				maxlength="10"
-				minlength="1"
-				type="text"
-				bind:value={values.profile.name}
-				class="rounded-r-lg border-y-[1px] border-r-2 border-red-600 bg-yellow-100 text-black"
-			/>
-			<SubmitBtn>
-				<Icon icon="zondicons:save-disk" class="ml-1 text-cyan-800" />
-			</SubmitBtn>
-		</Form>
-	{/if}
-</div>
-<div class="center-content flex-col">
-	<h2>{sysState.uiTexts.SYSTEM}</h2>
+<div class="center-content flex-col gap-1">
+	<!--	<h2>{sysState.uiTexts.SYSTEM}</h2>-->
 	<div class="flex flex-row gap-1">
 		<h3>{sysState.uiTexts.LANGUAGE}</h3>
 		{#each LOCALES as lang}
-			{@const selected = lang === values.locale}
-			<input id="{lang}-option" type="radio" value={lang} bind:group={values.locale} hidden />
+			{@const selected = lang === sysState.pref.locale}
+			<input
+				id="{lang}-option"
+				type="radio"
+				value={lang}
+				bind:group={sysState.pref.locale}
+				hidden
+			/>
 			<label for="{lang}-option" class="{selected ? 'bg-black text-white' : ''} px-1">
 				{UI_TEXTS[lang].LOCALE}
 			</label>
 		{/each}
 	</div>
+	{#each volumeKeys as volumeKey}
+		<span>{sysState.uiTexts[volumeKey.toUpperCase()]}</span>
+		<div class="flex flex-row items-center gap-1">
+			<input type="range" min="0" max="100" step="1" bind:value={sysState.pref[volumeKey]} />
+			{sysState.pref[volumeKey]}
+		</div>
+	{/each}
 </div>
-{#if submittable}
-	<button class="center-content w-full" onclick={save}>
-		<Icon icon="zondicons:save-disk" class="size-5 text-cyan-800" />
-	</button>
-{/if}

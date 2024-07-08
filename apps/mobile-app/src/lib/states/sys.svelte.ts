@@ -3,11 +3,11 @@ import { Capacitor } from '@capacitor/core';
 
 import type { Tables } from '@repo/shared/supatypes';
 import { inPeriod, type Prettify } from '@repo/shared/utils';
-import type { Locale } from '@repo/shared/config';
 
 import type { TextCode, UITextTable } from '@/config/ui_texts/types';
 import { DEFAULT_LOCALE, DEFAULT_ROUTE, type Route, UI_TEXTS } from '@/config';
 import { needUpdate } from '@/utils';
+import { type MyPref } from '@/utils/preferences';
 
 type SystemMessage = {
 	id: string;
@@ -22,16 +22,21 @@ class SystemState {
 	processing = $state(false);
 	showMenu = $state(true);
 	selfieUpdated = $state(false);
-	locale = $state<Locale>(DEFAULT_LOCALE);
 	now = $state<Date>(new Date());
 	route = $state<Route>(DEFAULT_ROUTE);
+
+	pref = $state<MyPref>({
+		locale: DEFAULT_LOCALE,
+		music_volume: 50,
+		sound_volume: 50
+	});
 
 	remoteAppVersion = $state<Tables<'app_versions'> | null>(null);
 	maintenance = $state<Tables<'maintenance'> | null>(null);
 	downloadProgress = $state(0);
 
 	systemMessage = $state<SystemMessage[]>([]);
-	readonly uiTexts: UITextTable = $derived(UI_TEXTS[this.locale]);
+	uiTexts: UITextTable = $derived(UI_TEXTS[this.pref.locale]);
 	readonly platform = $state.frozen(Capacitor.getPlatform());
 	readonly maintaining = $derived(
 		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)

@@ -5,8 +5,10 @@ import { authState, gameState, sysState } from '@/states';
 import { assignMLTexts, createError, needUpdate, preferences, validate } from '@/utils';
 import { version } from '$app/environment';
 
-async function locale() {
-	sysState.locale = await preferences.locale.get();
+async function preference() {
+	sysState.pref.locale = await preferences.locale.get();
+	sysState.pref.music_volume = await preferences.music_volume.get();
+	sysState.pref.sound_volume = await preferences.sound_volume.get();
 }
 
 async function maintenance() {
@@ -19,8 +21,8 @@ async function maintenance() {
 
 	if (error) return;
 
-	if (authState.user?.email === 'demodemo@2enter.art' || !authState.loggedIn) return
-		
+	if (authState.user?.email === 'demodemo@2enter.art' || !authState.loggedIn) return;
+
 	sysState.maintenance = data;
 	const { start, end } = data;
 
@@ -224,7 +226,7 @@ async function block_users() {
 }
 
 export {
-	locale,
+	preference,
 	app_version,
 	maintenance,
 	profile,
