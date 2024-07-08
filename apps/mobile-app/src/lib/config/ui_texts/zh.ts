@@ -8,6 +8,8 @@ const table: UITextTable = {
 	HAI_AN_SUCCESS: '互動成功，在LED螢幕裡尋找自己的化身吧！',
 	NOTHING: '無',
 	RELATIONSHIP: '關係',
+	SOUND_VOLUME: '音效音量',
+	MUSIC_VOLUME: '音樂音量',
 	HAI_AN_HINT:
 		'臺南海安路上，有兩座LED看板，那裡展示著Verse U的世界。輸入看板上的通關密碼，讓自己的角色出現在裡面吧！',
 	HAI_AN_ROAD: '海安路',

@@ -52,6 +52,8 @@ const table: UITextTable = {
 	LOADING: 'Loading',
 	NOTHING: 'None',
 	RELATIONSHIP: 'Relation',
+	SOUND_VOLUME: 'Sound Volume',
+	MUSIC_VOLUME: 'Music Volume',
 	SAVE_MODIFIED: 'Save Modified',
 	MUST_STAY_FOR_A_SEC: 'Your must stay for a while before leaving',
 	READY_TO_GO: 'Off you go, wanna start a new trip',
