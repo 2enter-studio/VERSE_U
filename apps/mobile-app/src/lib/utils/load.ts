@@ -19,6 +19,8 @@ async function maintenance() {
 
 	if (error) return;
 
+	if (authState.user?.email === 'demodemo@2enter.art' || !authState.loggedIn) return
+		
 	sysState.maintenance = data;
 	const { start, end } = data;
 
