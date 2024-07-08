@@ -10,6 +10,7 @@
 	import { APP_STORE_LINK, UI_TEXTS } from '@/config';
 	import { Form, SubmitBtn } from '@/components';
 	import { watch } from 'runed';
+	import { NativeAudio } from '@capacitor-community/native-audio';
 
 	const volumeKeys = ['music_volume', 'sound_volume'] as const;
 
@@ -19,6 +20,10 @@
 			preferences.locale.set(sysState.pref.locale);
 			preferences.music_volume.set(sysState.pref.music_volume);
 			preferences.sound_volume.set(sysState.pref.sound_volume);
+			NativeAudio.setVolume({
+				assetId: 'bg',
+				volume: sysState.pref.music_volume / 100,
+			});
 		}
 	);
 </script>
