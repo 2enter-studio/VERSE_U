@@ -7,6 +7,8 @@ PODS:
     - Capacitor
   - CapacitorClipboard (6.0.0):
     - Capacitor
+  - CapacitorCommunityNativeAudio (6.0.0):
+    - Capacitor
   - CapacitorCordova (6.1.0)
   - CapacitorFilesystem (6.0.0):
     - Capacitor
@@ -22,6 +24,7 @@ DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../../../node_modules/@capacitor/app`)"
   - "CapacitorClipboard (from `../../../../node_modules/@capacitor/clipboard`)"
+  - "CapacitorCommunityNativeAudio (from `../../../../node_modules/@capacitor-community/native-audio`)"
   - "CapacitorCordova (from `../../../../node_modules/@capacitor/ios`)"
   - "CapacitorFilesystem (from `../../../../node_modules/@capacitor/filesystem`)"
   - "CapacitorHaptics (from `../../../../node_modules/@capacitor/haptics`)"
@@ -37,6 +40,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/@capacitor/app"
   CapacitorClipboard:
     :path: "../../../../node_modules/@capacitor/clipboard"
+  CapacitorCommunityNativeAudio:
+    :path: "../../../../node_modules/@capacitor-community/native-audio"
   CapacitorCordova:
     :path: "../../../../node_modules/@capacitor/ios"
   CapacitorFilesystem:
@@ -53,12 +58,13 @@ SPEC CHECKSUMS:
   Capacitor: 187bd7847b6f71467015a20200a1a071be3e5f14
   CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
   CapacitorClipboard: 80282f684154124b9019ebf401235b70b0cf4994
+  CapacitorCommunityNativeAudio: 73a5eee63b9b5b5ff67e640da97ff38341f5606d
   CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
   CapacitorFilesystem: 60e59ba274c234a979e7a3be2552feaadcee4263
   CapacitorHaptics: 9ebc9363f0e9b8eb4295088a0b474530acf1859b
   CapacitorPreferences: 72909b165bc7807103778ddbb86d5d8ce06abf71
   CapacitorScreenOrientation: 3d4965dcbda5d901b6a48350a5d270ad7d404e05
 
-PODFILE CHECKSUM: e95307f7cb5104bf02408fbc28d74144434aac4f
+PODFILE CHECKSUM: 92dac8d8708d2e0a4de4d9b4e5780a8cf04e0e6a
 
 COCOAPODS: 1.15.2
