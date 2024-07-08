@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[mobile-app] Build &amp; Sync" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="bun run build; bunx cap sync;" />
+  <configuration default="false" name="[mobile-app] Build &amp; Copy" type="ShConfigurationType" singleton="false">
+    <option name="SCRIPT_TEXT" value="bun run build; bunx cap copy;" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />

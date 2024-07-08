@@ -10,7 +10,7 @@
 	import { db } from '@/db';
 	import { load } from '@/utils';
 	import { authState, gameState, sysState } from '@/states';
-	import { Dialog } from '@/components';
+	import { AudioLoader, Dialog } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 	import { Subscriber } from '@/components';
 
@@ -131,6 +131,7 @@
 			{/each}
 		</div>
 	{:then _}
+		<AudioLoader />
 		<Subscriber
 			targets={['chat_members', 'leaver', 'chat_messages', 'newTrip', 'owned_wearings']}
 		/>
