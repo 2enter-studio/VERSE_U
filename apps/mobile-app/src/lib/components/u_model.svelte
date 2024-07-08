@@ -14,13 +14,13 @@
 		readonly?: boolean;
 		animation?: CharacterAnimation;
 		class?: string;
-		cameraPosition?: readonly [number, number, number];
+		cameraPosition?: [number, number, number];
 		selfRotate?: boolean;
 	};
 
 	let {
 		wearingIds,
-		animation,
+		animation = 'idle',
 		cameraPosition = [...DEFAULT_CAMERA_POS],
 		class: className,
 		readonly = false,
@@ -30,7 +30,6 @@
 	let frame = 0;
 	let mixer: THREE.AnimationMixer;
 	let skeleton: THREE.Skeleton;
-	// let loadProgress = $state(0);
 	let subLoadProgress = $state([0, 0]);
 
 	let camera = $state<THREE.PerspectiveCamera>();
@@ -48,9 +47,6 @@
 	const scene = new THREE.Scene();
 	const clock = new THREE.Clock();
 	const light = new THREE.DirectionalLight('white', 3.3);
-
-	// const loadProgress = $derived(wearingGroup?.children.length / wearingIds.length);
-	// const modelLoaded = $derived(loadProgress >= 1);
 
 	let ready = $state(false);
 	let loaded = $state(0);
@@ -152,7 +148,7 @@
 
 		for (const wearing of wearingIds.map((id) => gameState.wearings.find((w) => w.id === id))) {
 			if (!wearing) {
-				console.error(`wearing ${wearing.id} not found`);
+				console.error(`wearing not found`);
 				loaded++;
 				return;
 			}

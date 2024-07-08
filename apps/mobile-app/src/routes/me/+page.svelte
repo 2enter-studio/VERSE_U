@@ -5,6 +5,7 @@
 
 	import { gameState, sysState } from '@/states';
 	import {
+		DEFAULT_CAMERA_POS,
 		// type CharacterAnimation,
 		DRESSROOM_CAMERA_POS,
 		EXPRESSION_CAMERA_POS,
@@ -29,12 +30,13 @@
 	let selectedWearingCopy: Record<string, string> = $state({});
 
 	const expressing = $derived(expressions.includes(selectedWearingType));
-	const cameraPosition = $derived.by(() => {
+	const cameraPosition = $derived.by<[number, number, number]>(() => {
 		if (dressing) {
-			return expressing ? EXPRESSION_CAMERA_POS : DRESSROOM_CAMERA_POS;
+			return expressing ? [...EXPRESSION_CAMERA_POS] : [...DRESSROOM_CAMERA_POS];
 		} else if (takingSelfie) {
-			return SELFIE_CAMERA_POS;
+			return [...SELFIE_CAMERA_POS];
 		}
+		return [...DEFAULT_CAMERA_POS];
 	});
 
 	const filteredSelectedWearings = $derived(
@@ -104,7 +106,6 @@
 	class="full-screen z-[-10]"
 	wearingIds={filteredSelectedWearings}
 	selfRotate={dressing && !expressing}
-	animation="idle"
 	{cameraPosition}
 />
 
@@ -122,11 +123,9 @@
 		{sysState.uiTexts.YOU_JUST_TOOK_SELFIE}
 		<Form
 			submitFunction={uploadSelfie}
-			afterSubmit={(result) => {
-				if (!result?.error) {
-					selfieUrl = '';
-					takingSelfie = false;
-				}
+			afterSubmit={() => {
+				selfieUrl = '';
+				takingSelfie = false;
 			}}
 		>
 			<input type="text" value={selfieUrl.split('base64,')[1]} name="image" hidden />
