@@ -281,7 +281,7 @@
 	});
 </script>
 
-<div bind:this={dom} class="{className} "></div>
+<div bind:this={dom} class="{className} {animating && ready ? 'visible' : 'invisible'}"></div>
 
 {#if !ready}
 	<div class="full-screen center-content pointer-events-none flex flex-col gap-1">
