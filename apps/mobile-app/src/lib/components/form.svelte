@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { sysState } from '@/states';
 
-	type Props<T = any, K = any> = {
+	type Props = {
 		children: Snippet;
 		submitFunction: Function;
 		afterSubmit?: Function;
@@ -23,7 +23,12 @@
 				result = await submitFunction(args);
 			}
 
-			await afterSubmit?.(result);
+			if (result?.error) {
+				sysState.defaultError();
+			} else {
+				sysState.defaultSuccess();
+				await afterSubmit?.(result);
+			}
 		});
 	}
 </script>

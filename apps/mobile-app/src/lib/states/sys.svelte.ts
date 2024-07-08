@@ -78,12 +78,7 @@ class SystemState {
 	async process(method: Function, successCode?: TextCode, errorCode?: TextCode, after?: Function) {
 		this.processing = true;
 		const msg = sysState.defaultProcessing();
-		const result = await method();
-		if (result?.error) {
-			sysState.defaultError(successCode);
-		} else {
-			sysState.defaultSuccess(errorCode);
-		}
+		await method();
 		sysState.delSysMsg(msg.id);
 		this.processing = false;
 		await after?.();
