@@ -8,6 +8,7 @@
 	import { Dialog, Form, SubmitBtn } from '@/components';
 	import { blockUser } from '$routes/social/utils';
 	import { db } from '@/db';
+	import { modifyProfile } from '$routes/auth/utils';
 
 	type Props = {
 		profile: Tables<'profiles'>;
@@ -21,6 +22,9 @@
 	let selfieAvailable = $state(false);
 	let openInfo = $state(false);
 	let idCopied = $state(false);
+	let nameCopy = $state(profile.name);
+
+	const isMe = $derived(profile.user === authState.user?.id);
 
 	const relation = $derived.by(() => {
 		if (
@@ -28,14 +32,14 @@
 				chat.chat_members.some((member) => member.user.user === profile.user)
 			)
 		) {
-			return 'friend';
+			return 'FRIENDS';
 		} else if (
 			gameState.strangerChats.some((chat) =>
 				chat.chat_members.some((member) => member.user.user === profile.user)
 			)
 		) {
-			return 'stranger';
-		} else return 'nothing';
+			return 'STRANGERS';
+		} else return 'NOTHING';
 	});
 
 	async function reloadSelfie() {
@@ -80,7 +84,7 @@
 	title={sysState.uiTexts.PLAYER_INFO}
 	onclose={() => (idCopied = false)}
 	bind:open={openInfo}
-	class="flex-col items-center text-black"
+	class="flex-col items-center gap-2 text-black"
 >
 	<div
 		class="avatar size-16 rounded-full bg-amber-300 shadow-inner shadow-rose-800/40"
@@ -90,7 +94,21 @@
 			{profile?.name.slice(0, 1).toUpperCase()}
 		{/if}
 	</div>
-	<span>name: {profile.name}</span>
+	<div class="flex flex-row gap-2">
+		<span>{sysState.uiTexts.NAME}:</span>
+		{#if isMe}
+			<Form submitFunction={modifyProfile}>
+				<input type="text" name="name" bind:value={nameCopy} minlength="1" maxlength="10" />
+				{#if nameCopy !== authState.profile?.name}
+					<SubmitBtn>
+						<Icon icon="zondicons:save-disk" class="ml-1 text-cyan-800" />
+					</SubmitBtn>
+				{/if}
+			</Form>
+		{:else}
+			{profile.name}
+		{/if}
+	</div>
 	<div class="flex flex-row gap-2">
 		<span>Public ID</span>
 		<div class="center-content w-fit gap-1 rounded-sm bg-gray-600 px-1 text-xs text-white/80">
@@ -110,10 +128,8 @@
 			</button>
 		</div>
 	</div>
-	{#if profile.user !== authState.user?.id}
-		<span>your relation: {relation}</span>
-	{/if}
-	{#if profile.user !== authState.user?.id}
+	{#if !isMe}
+		<span>{sysState.uiTexts.RELATIONSHIP}: {sysState.uiTexts[relation]}</span>
 		<Form submitFunction={blockUser}>
 			<input type="text" name="blocked" value={profile.user} hidden />
 			<SubmitBtn
