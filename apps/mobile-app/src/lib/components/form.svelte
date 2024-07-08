@@ -4,8 +4,8 @@
 
 	type Props<T = any, K = any> = {
 		children: Snippet;
-		submitFunction: (args: T) => Promise<K>;
-		afterSubmit?: (args: K) => Promise<void> | void;
+		submitFunction: Function;
+		afterSubmit?: Function;
 		class?: string;
 	};
 	let { children, submitFunction, afterSubmit, class: className }: Props = $props();
@@ -16,7 +16,13 @@
 		const formData = new FormData(form);
 		const args = Object.fromEntries(formData);
 		await sysState.process(async () => {
-			const result = await submitFunction(args);
+			let result: any;
+			if (JSON.stringify(args) === '{}') {
+				result = await submitFunction();
+			} else {
+				result = await submitFunction(args);
+			}
+
 			await afterSubmit?.(result);
 		});
 	}
