@@ -6,7 +6,7 @@ const APP_LINKS = {
 const MIN_STAY_TIME = 1000 * 60 * 10;
 const MAX_STAY_TIME = 1000 * 60 * 60 * 2;
 const MAX_TRAVEL_TIME = 1000 * 60 * 60;
-const HAI_AN_PASSCODE_DIGIT = 5;
+const HAI_AN_PASSCODE_DIGIT = 6;
 const DEFAULT_SKIN_COLOR = {
   X: 253,
   Y: 198,
