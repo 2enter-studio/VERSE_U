@@ -1,5 +1,6 @@
 import { getExpiredTrips, upsertTrips } from './db/trips';
 import { TRIP_UPDATE_TIMEOUT } from './config';
+import { fillStarterPack } from './db/wearings.ts';
 
 // Start auto-tripper
 setInterval(async () => {
@@ -24,3 +25,6 @@ setInterval(async () => {
     console.log(`No expired trips found, do nothing.`);
   }
 }, TRIP_UPDATE_TIMEOUT);
+
+// const result = await fillStarterPack();
+// if (result?.error) console.error(result.error);
