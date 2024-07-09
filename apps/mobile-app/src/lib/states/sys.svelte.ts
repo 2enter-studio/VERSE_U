@@ -37,7 +37,9 @@ class SystemState {
 
 	systemMessage = $state<SystemMessage[]>([]);
 	uiTexts: UITextTable = $derived(UI_TEXTS[this.pref.locale]);
-	readonly platform = $state.frozen(Capacitor.getPlatform());
+	readonly platform = $state.frozen<'web' | 'ios' | 'android'>(
+		Capacitor.getPlatform() as 'web' | 'ios' | 'android'
+	);
 	readonly maintaining = $derived(
 		inPeriod(this.maintenance?.start ?? 0, this.maintenance?.end ?? 0, this.now)
 	);

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { version } from '$app/environment';
-	import { LOCALES } from '@repo/shared/config';
+	import { LOCALES, APP_LINKS } from '@repo/shared/config';
 
 	import { sysState } from '@/states';
 	import { signOut } from '$routes/auth/utils';
 	import { preferences } from '@/utils';
 
-	import { APP_STORE_LINK, UI_TEXTS } from '@/config';
+	import { UI_TEXTS } from '@/config';
 	import { Form, SubmitBtn } from '@/components';
 	import { watch } from 'runed';
 	import { NativeAudio } from '@capacitor-community/native-audio';
@@ -22,7 +22,7 @@
 			preferences.sound_volume.set(sysState.pref.sound_volume);
 			NativeAudio.setVolume({
 				assetId: 'bg',
-				volume: sysState.pref.music_volume / 100,
+				volume: sysState.pref.music_volume / 100
 			});
 		}
 	);
@@ -32,7 +32,7 @@
 {#if sysState.remoteAppVersion?.value === version}
 	(latest)
 {:else}
-	<a href={APP_STORE_LINK}>
+	<a href={APP_LINKS[sysState.platform]}>
 		(↑{sysState.remoteAppVersion?.value})
 	</a>
 {/if}

@@ -1,3 +1,8 @@
+const APP_LINKS = {
+  ios: 'https://apps.apple.com/tw/app/verse-u/id6502902450',
+  android: 'https://app.verseu.app',
+  web: 'https://app.verseu.app'
+};
 const MIN_STAY_TIME = 1000 * 60 * 10;
 const MAX_STAY_TIME = 1000 * 60 * 60 * 2;
 const MAX_TRAVEL_TIME = 1000 * 60 * 60;
@@ -13,6 +18,7 @@ const LOCALES = ['en', 'zh'] as const;
 type Locale = (typeof LOCALES)[number];
 
 export {
+  APP_LINKS,
   MAX_STAY_TIME,
   MIN_STAY_TIME,
   LOCALES,
