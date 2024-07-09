@@ -5,7 +5,7 @@ import { DEFAULT_SKIN_COLOR } from '@repo/shared/config';
 async function getPlayerByIds(ids: string[]): Promise<Player[]> {
 	const { data, error } = await db
 		.from('profiles')
-		.select('user, owned_wearings(wearing(id,mesh,category(is_expression)),equipped)')
+		.select('*, owned_wearings(wearing(id,mesh,category(is_expression)),equipped)')
 		.eq('owned_wearings.equipped', true)
 		.in('user', ids)
 		.order('last_active')
@@ -35,6 +35,7 @@ async function getPlayerByIds(ids: string[]): Promise<Player[]> {
 function genUEPlayer(player: Player): UEPlayer {
 	return {
 		id: player.user,
+		name: player.name,
 		wearings: player.wearings,
 		skinCol: DEFAULT_SKIN_COLOR
 	};
