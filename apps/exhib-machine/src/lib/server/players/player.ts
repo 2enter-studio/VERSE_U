@@ -23,7 +23,7 @@ async function getPlayerByIds(ids: string[]): Promise<Player[]> {
 		player.wearings = player.owned_wearings.map(({ wearing }) => {
 			return {
 				id: wearing.id,
-				mesh: wearing.id,
+				mesh: wearing.mesh,
 				is_expression: wearing.category.is_expression
 			};
 		});

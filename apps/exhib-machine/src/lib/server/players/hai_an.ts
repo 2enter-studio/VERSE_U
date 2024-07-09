@@ -1,5 +1,5 @@
 import { db } from '@/server/db';
-import type { Player, UEPlayerBundle } from '@/config';
+import type { UEPlayerBundle } from '@/config';
 import { broadcastMessage } from '@/server/ws';
 import { genUEPlayer, getPlayerByIds } from './player';
 
