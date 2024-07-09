@@ -1,4 +1,4 @@
-import { STORAGE_BASEPATH } from '$env/static/private';
+import { STORAGE_BASEPATH } from '$env/static/public';
 import type { Tables } from '@repo/shared/supatypes';
 
 const BUCKET_NAMES = ['wearings', 'meshes'] as const;
@@ -20,8 +20,10 @@ type PlayerWearing = {
 type Player = Tables<'profiles'> & {
 	wearings: PlayerWearing[];
 };
+
 type UEPlayer = {
 	id: string;
+	name: string;
 	wearings: PlayerWearing[];
 	skinCol: { X: number; Y: number; Z: number };
 };
