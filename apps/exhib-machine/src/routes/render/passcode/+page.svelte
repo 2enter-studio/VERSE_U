@@ -8,7 +8,7 @@
 	const { passcode } = data;
 	onMount(() => {
 		const interval = setInterval(() => {
-			if (moment.utc().format('MM:SS') === '00:00') {
+			if (moment.utc().format('mm:ss') === '00:00') {
 				window.location.reload();
 			}
 		}, 500);
