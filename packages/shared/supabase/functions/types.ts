@@ -12,16 +12,19 @@ export type Database = {
       app_versions: {
         Row: {
           created_at: string
+          force_update: boolean
           id: string
           value: string
         }
         Insert: {
           created_at?: string
+          force_update?: boolean
           id?: string
           value?: string
         }
         Update: {
           created_at?: string
+          force_update?: boolean
           id?: string
           value?: string
         }
@@ -233,6 +236,45 @@ export type Database = {
           is_group_chat?: boolean
         }
         Relationships: []
+      }
+      coupons: {
+        Row: {
+          created_at: string
+          id: string
+          sponsor: string
+          used: boolean
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          sponsor: string
+          used?: boolean
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          sponsor?: string
+          used?: boolean
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_coupons_sponsor_fkey"
+            columns: ["sponsor"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_coupons_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user"]
+          },
+        ]
       }
       hai_an_players: {
         Row: {
@@ -531,28 +573,31 @@ export type Database = {
           content: string
           created_at: string
           id: string
-          message: string
+          message_id: string
           perpetrator: string
           reason: string | null
           reporter: string
+          resolve: boolean
         }
         Insert: {
           content: string
           created_at?: string
           id?: string
-          message: string
+          message_id: string
           perpetrator: string
           reason?: string | null
           reporter?: string
+          resolve?: boolean
         }
         Update: {
           content?: string
           created_at?: string
           id?: string
-          message?: string
+          message_id?: string
           perpetrator?: string
           reason?: string | null
           reporter?: string
+          resolve?: boolean
         }
         Relationships: [
           {
@@ -570,6 +615,24 @@ export type Database = {
             referencedColumns: ["user"]
           },
         ]
+      }
+      sponsors: {
+        Row: {
+          created_at: string
+          id: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          value?: string
+        }
+        Relationships: []
       }
       tag_types: {
         Row: {

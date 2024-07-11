@@ -1,6 +1,7 @@
 const TABLE_NAMES = [
 	'app_versions',
 	'maintenance',
+	'sponsors',
 	'regions',
 	'wearings',
 	'meshes',
@@ -106,6 +107,14 @@ const TABLES_INFO: TableInfo = {
 			end: {
 				type: 'datetime'
 			},
+			...NAME_AND_DESCRIPTION
+		}
+	},
+	sponsors: {
+		description: '',
+		metadata: {
+			...ID,
+			value: { type: 'plain_text' },
 			...NAME_AND_DESCRIPTION
 		}
 	},
