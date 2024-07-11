@@ -21,47 +21,49 @@
 {#if gameState.chat}
 	<Chatroom />
 {:else}
-	<div class="center-content mb-3 mt-12 flex-col">
+	<div class="center-content mb-3 mt-12 flex-col gap-2">
 		<h1>{sysState.uiTexts.PEOPLE_NEARBY}</h1>
-		<div class="flex w-[88vw] flex-row gap-2">
-			{#each gameState.peopleNearBy as person, i}
-				{@const friend = gameState.friendChats.find((f) =>
-					f.chat_members.some((c) => c.user.user === person.user)
-				)}
-				{@const stranger = gameState.strangerChats.find((s) =>
-					s.chat_members.some((c) => c.user.user === person.user)
-				)}
+		<div class="w-[88vw] overflow-x-auto">
+			<div class="flex flex-row gap-2 w-fit">
+				{#each gameState.peopleNearBy as person, i}
+					{@const friend = gameState.friendChats.find((f) =>
+						f.chat_members.some((c) => c.user.user === person.user)
+					)}
+					{@const stranger = gameState.strangerChats.find((s) =>
+						s.chat_members.some((c) => c.user.user === person.user)
+					)}
 
-				<button
-					class="center-content w-1/5 flex-col rounded-sm px-0.5 py-1 backdrop-blur-lg"
-					onclick={() => {
-						storyUserId = person.user;
-					}}
-				>
-					<Avatar profile={person} noInfo />
-					<small>{person.name}</small>
-				</button>
-				{#if storyUserId === person.user}
-					<Story
-						{person}
-						close={() => (storyUserId = '')}
-						next={() => {
-							if (i + 1 < gameState.peopleNearBy.length)
-								storyUserId = gameState.peopleNearBy[i + 1].user;
-							else storyUserId = '';
+					<button
+						class="center-content w-[15vw] flex-col rounded-md bg-black/30 p-1 backdrop-blur-sm"
+						onclick={() => {
+							storyUserId = person.user;
 						}}
-						previous={() => {
-							if (i - 1 >= 0) storyUserId = gameState.peopleNearBy[i - 1].user;
-							else storyUserId = '';
-						}}
-						startChat={() => {
-							if (friend) gameState.chat_id = friend.id;
-							else if (stranger) gameState.chat_id = stranger.id;
-							else startingNewChat = true;
-						}}
-					/>
-				{/if}
-			{/each}
+					>
+						<Avatar profile={person} noInfo />
+						<small class="text-xs">{person.name}</small>
+					</button>
+					{#if storyUserId === person.user}
+						<Story
+							{person}
+							close={() => (storyUserId = '')}
+							next={() => {
+								if (i + 1 < gameState.peopleNearBy.length)
+									storyUserId = gameState.peopleNearBy[i + 1].user;
+								else storyUserId = '';
+							}}
+							previous={() => {
+								if (i - 1 >= 0) storyUserId = gameState.peopleNearBy[i - 1].user;
+								else storyUserId = '';
+							}}
+							startChat={() => {
+								if (friend) gameState.chat_id = friend.id;
+								else if (stranger) gameState.chat_id = stranger.id;
+								else startingNewChat = true;
+							}}
+						/>
+					{/if}
+				{/each}
+			</div>
 		</div>
 	</div>
 	<div class="b flex h-full w-[88vw] flex-col items-start justify-center">
