@@ -55,7 +55,7 @@
 		spark = true;
 		const canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
 		if (!canvas) return;
-		selfieUrl = canvas.toDataURL('image/webp');
+		selfieUrl = canvas.toDataURL('image/webp', 0.1);
 		setTimeout(() => (spark = false), 120);
 	}
 
@@ -118,7 +118,7 @@
 	>
 		<div
 			class="size-64 bg-green-500 bg-cover bg-center bg-no-repeat"
-			style="background-image:url({selfieUrl})"
+			style="background-image: url({selfieUrl})"
 		></div>
 		{sysState.uiTexts.YOU_JUST_TOOK_SELFIE}
 		<Form
@@ -128,7 +128,7 @@
 				takingSelfie = false;
 			}}
 		>
-			<input type="text" value={selfieUrl.split('base64,')[1]} name="image" hidden />
+			<input type="text" value={selfieUrl} name="imageUrl" hidden />
 			<SubmitBtn class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
 				{sysState.uiTexts.YES}
 			</SubmitBtn>

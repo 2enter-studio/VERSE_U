@@ -1,5 +1,6 @@
 import type { Tables } from '@repo/shared/supatypes';
 import type { Prettify } from '@repo/shared/utils';
+import type { SponsorName } from '@repo/shared/config';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -50,6 +51,10 @@ declare global {
 		owned_wearings: OwnedWearing[];
 		meshes: Mesh[];
 	}>;
+
+	type Sponsor = Prettify<
+		Tables<'sponsors'> & { value: SponsorName } & { coupons: Tables<'coupons'>[] } & Named
+	>;
 }
 
 export {};
