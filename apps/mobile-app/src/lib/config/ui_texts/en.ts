@@ -26,6 +26,8 @@ const table: UITextTable = {
 	CANCEL: 'Cancel',
 	COUPON_USED: 'Redeemed',
 	SIDE_MENU_COUPONS_TITLE: 'Coupons',
+	COUPON_LIMIT: 'Limited to',
+	COUPON_UNIT: 'units',
 	REDEEM_CONFIRM:
 		'Attention! Please confirm with the counter staff before pressing the confirmation redeem button. Otherwise, the ticket will be marked as redeemed, resulting in the inability to enjoy the discount.',
 	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',

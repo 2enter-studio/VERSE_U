@@ -68,6 +68,8 @@ const table: UITextTable = {
 	SETTINGS: '設定',
 	FRIENDS: '好友',
 	STRANGERS: '過客',
+	COUPON_LIMIT: '限量',
+	COUPON_UNIT: '份',
 	REDEEM_CONFIRM: '注意！請經櫃檯人員確認過後，再按下確認兌換鍵。否則票券將顯示為已兌換，導致無法享有優惠。',
 	PEOPLE_NEARBY: '附近的玩家',
 	PROFILE: '個人資料',

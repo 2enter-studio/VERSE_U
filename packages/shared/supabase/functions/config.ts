@@ -18,6 +18,9 @@ const SPONSOR_NAMES = ['the_place'] as const;
 
 type Locale = (typeof LOCALES)[number];
 type SponsorName = (typeof SPONSOR_NAMES)[number];
+const COUPON_LIMITS: Record<SponsorName, number> = {
+  the_place: 200
+} as const;
 
 export {
   APP_LINKS,
@@ -25,6 +28,7 @@ export {
   MIN_STAY_TIME,
   LOCALES,
   SPONSOR_NAMES,
+  COUPON_LIMITS,
   MAX_TRAVEL_TIME,
   HAI_AN_PASSCODE_DIGIT,
   DEFAULT_SKIN_COLOR

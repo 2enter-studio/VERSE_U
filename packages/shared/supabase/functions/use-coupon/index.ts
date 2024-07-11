@@ -2,10 +2,7 @@ import { corsHeaders } from '../_shared/cors.ts';
 import { admin, validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
 import validator from 'validator';
-
-const COUPON_LIMITS = {
-  the_place: 200
-} as const;
+import { COUPON_LIMITS } from '../config.ts';
 
 // @ts-ignore
 Deno.serve(async (req) => {
