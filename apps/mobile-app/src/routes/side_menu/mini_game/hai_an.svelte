@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Form, SubmitBtn, UModel } from '@/components';
-	import { triggerHaiAn } from '@/utils';
-	import { gameState, sysState } from '@/states';
+	import { createError, handleEFResponse } from '@/utils';
+	import { authState, gameState, sysState } from '@/states';
 	import { HAI_AN_PASSCODE_DIGIT } from '@repo/shared/config';
 	import { FRAME_RATE } from '@/config';
+	import { db } from '@/db';
 
 	let passcode = $state<string>('');
 	let success = $state(false);
@@ -27,6 +28,19 @@
 	$effect(() => {
 		passcode = passcode.toUpperCase();
 	});
+
+	async function triggerHaiAn(args: { passcode: string }) {
+		const user_id = authState.user?.id;
+		if (!user_id) return createError('USER_NOT_FOUND');
+
+		const { error } = await db.functions.invoke('hai-an-road', {
+			body: JSON.stringify(args)
+		});
+
+		if (error) {
+			return { error: await handleEFResponse(error) };
+		}
+	}
 </script>
 
 <img
@@ -66,7 +80,7 @@
 		{#if passcode.trim() !== '' && !sysState.processing && !success}
 			<div class="center-content h-full">
 				<SubmitBtn
-					class="size-[30vw] rounded-3xl bg-rose-500 text-[15vw] text-white shadow-inner shadow-white/50"
+					class="size-[30vw] rounded-3xl bg-rose-500 text-[15vw] font-bold text-white shadow-inner shadow-white/50"
 				>
 					GO
 				</SubmitBtn>
