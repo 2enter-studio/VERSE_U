@@ -14,17 +14,20 @@ const DEFAULT_SKIN_COLOR = {
 } as const;
 
 const LOCALES = ['en', 'zh'] as const;
+const SPONSOR_NAMES = ['the_place'] as const;
 
 type Locale = (typeof LOCALES)[number];
+type SponsorName = (typeof SPONSOR_NAMES)[number];
 
 export {
   APP_LINKS,
   MAX_STAY_TIME,
   MIN_STAY_TIME,
   LOCALES,
+  SPONSOR_NAMES,
   MAX_TRAVEL_TIME,
   HAI_AN_PASSCODE_DIGIT,
   DEFAULT_SKIN_COLOR
 };
 
-export type { Locale };
+export type { Locale, SponsorName };
