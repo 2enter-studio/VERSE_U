@@ -22,6 +22,7 @@ async function callHaiAnPlayer() {
 		.select('player')
 		.order('created_at', { ascending: true })
 		.returns<{ player: string }[]>()
+		.limit(1)
 		.single();
 
 	if (error) {
