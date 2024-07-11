@@ -57,7 +57,7 @@
 				type="text"
 				id="passcode"
 				name="passcode"
-				maxlength={HAI_AN_PASSCODE_DIGIT}
+				maxlength={HAI_AN_PASSCODE_DIGIT + 2}
 				bind:value={passcode}
 				class="w-full bg-purple-900 text-white"
 				placeholder="PASSCODE HERE"
