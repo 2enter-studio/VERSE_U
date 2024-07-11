@@ -3,7 +3,7 @@
 	import { sysState } from '@/states';
 	import { onMount } from 'svelte';
 
-	const audios = [{ name: 'bg', path: 'bg_music_0.m4a' }] as const;
+	const audios = [{ name: 'bg', path: 'bg_music_0.mp3' }] as const;
 	const usingWeb = $derived(sysState.platform === 'web');
 	// const usingWeb = true;
 	let touched = $state(sysState.platform !== 'web');
