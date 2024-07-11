@@ -11,7 +11,7 @@ const table: UITextTable = {
 	SOUND_VOLUME: '音效音量',
 	MUSIC_VOLUME: '音樂音量',
 	HAI_AN_HINT:
-		'臺南海安路上，有兩座LED看板，那裡展示著Verse U的世界。輸入看板上的通關密碼，讓自己的角色出現在裡面吧！',
+		'臺南海安路上，有兩座LED螢幕，那裡展示著Verse U的世界。輸入螢幕上的通關密碼，讓自己的角色出現在裡面吧！',
 	HAI_AN_ROAD: '海安路',
 	DELETE_ACCOUNT: '刪除我的帳號',
 	REFRESH: '重新整理',
