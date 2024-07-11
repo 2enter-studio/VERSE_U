@@ -53,6 +53,16 @@ async function app_version() {
 	}
 }
 
+async function sponsors() {
+	const user_id = authState.user?.id;
+	if (!user_id) return createError('USER_NOT_FOUND');
+	const { data, error } = await db.from('sponsors').select('*,coupons(*)').returns<Sponsor[]>();
+
+	if (error) return createError('FAILED_TO_LOAD_DATA');
+
+	gameState.sponsors = await assignMLTexts(data, ['name'] as const);
+}
+
 async function profile(user_id?: string) {
 	if (!user_id) user_id = authState.user?.id;
 	if (!user_id) return createError('USER_NOT_FOUND');
@@ -169,7 +179,6 @@ async function chats(chat_ids?: string[]) {
 				Object.assign(chat, d);
 			} else {
 				gameState.chats.push(d);
-				// chats.set([...get(chats), d]);
 			}
 		}
 	}
@@ -235,6 +244,7 @@ export {
 	wearings,
 	owned_wearings,
 	chats,
+	sponsors,
 	peopleNearBy,
 	block_users,
 	trip

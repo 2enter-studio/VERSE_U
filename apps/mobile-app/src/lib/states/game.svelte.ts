@@ -8,6 +8,7 @@ class GameState {
 	chats = $state<ChatRoom[]>([]);
 	wearings = $state<Wearing[]>([]);
 	meshes = $state<Mesh[]>([]);
+	sponsors = $state<Sponsor[]>([])
 
 	block_users = $state<Tables<'block_users'>[]>([]);
 	trip = $state<Tables<'trips'> | null>(null);

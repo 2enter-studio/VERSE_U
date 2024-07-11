@@ -47,7 +47,8 @@
 			'wearings',
 			'meshes',
 			'owned_wearings',
-			'block_users'
+			'block_users',
+			'sponsors'
 		] as const;
 
 		await Promise.all(
