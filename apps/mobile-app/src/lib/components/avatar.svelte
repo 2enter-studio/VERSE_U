@@ -6,7 +6,7 @@
 	import { Clipboard } from '@capacitor/clipboard';
 	import type { Tables } from '@repo/shared/supatypes';
 	import { Dialog, Form, SubmitBtn } from '@/components';
-	import { blockUser } from '$routes/social/utils';
+	import { blockUser } from '$routes/side_menu/others/blocks.svelte';
 	import { db } from '@/db';
 	import { modifyProfile } from '$routes/auth/utils';
 
@@ -46,7 +46,7 @@
 		if (profile) {
 			const { data, error } = await db.storage
 				.from('user_data')
-				.download(`${profile?.user}/selfie`);
+				.download(`${profile?.user}/selfie?t=${new Date().getTime()}`);
 			if (error) {
 				selfieAvailable = false;
 				return;
@@ -62,7 +62,7 @@
 				setTimeout(() => {
 					reloadSelfie();
 					sysState.selfieUpdated = false;
-				}, 1000);
+				}, 5000);
 			}
 		});
 	}
@@ -97,7 +97,7 @@
 	<div class="flex flex-row gap-2">
 		<span>{sysState.uiTexts.NAME}:</span>
 		{#if isMe}
-			<Form submitFunction={modifyProfile}>
+			<Form submitFunction={modifyProfile} confirmMessage="CONFIRM_EXECUTION">
 				<input type="text" name="name" bind:value={nameCopy} minlength="1" maxlength="10" />
 				{#if nameCopy !== authState.profile?.name}
 					<SubmitBtn>
