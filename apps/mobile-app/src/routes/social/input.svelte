@@ -4,8 +4,7 @@
 	import { sendMessage } from './utils';
 	import { sysState } from '@/states';
 
-	let { dom = $bindable<HTMLElement>(), onsend }: { dom?: HTMLElement; onsend: () => void } =
-		$props();
+	let { onsend }: { onsend: Function } = $props();
 
 	let content = $state('');
 	let textAreaDom: HTMLTextAreaElement;
@@ -40,10 +39,7 @@
 	}
 </script>
 
-<div
-	bind:this={dom}
-	class="fixed bottom-0 left-0 flex h-fit w-screen flex-row items-end bg-black px-1 pb-3"
->
+<div class="flex h-fit w-screen flex-row items-end bg-black pb-3 px-1">
 	<textarea
 		class="spacing-1 my-1 w-[90%] resize-y rounded-xl bg-white/20 p-2 text-white"
 		rows="1"
