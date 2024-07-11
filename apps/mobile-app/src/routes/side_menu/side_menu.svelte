@@ -6,8 +6,10 @@
 	import { Dialog } from '@/components';
 	import { elements } from './config';
 	import { elements as games } from './mini_game/config';
+	import { elements as others } from './others/config';
 
 	let gameSelected = $state<keyof typeof games | null>(null);
+	let otherSelected = $state<keyof typeof others | null>(null);
 
 	type Item = {
 		name: keyof typeof elements;
@@ -33,18 +35,18 @@
 			dialogClass: 'flex-col text-center'
 		},
 		{
-			name: 'SOCIAL',
-			icon: 'fluent:people-48-filled',
-			class: 'bg-cyan-700',
-			open: false,
-			dialogClass: 'flex-col text-center'
-		},
-		{
 			name: 'SETTINGS',
 			icon: 'mage:settings-fill',
 			class: 'bg-gray-400',
 			open: false,
 			dialogClass: 'center-content flex-col text-center text-sm gap-1'
+		},
+		{
+			name: 'OTHERS',
+			icon: 'pepicons-pop:dots-y-circle-filled',
+			class: 'bg-gray-400',
+			open: false,
+			dialogClass: 'flex-col text-center p-0'
 		}
 	]);
 </script>
@@ -55,9 +57,7 @@
 >
 	{#each items as item, i}
 		{@const { icon, class: className, name, dialogClass } = item}
-		{@const textCode = gameSelected
-			? `MINI_GAME_${gameSelected ?? name}_TITLE`
-			: `SIDE_MENU_${name}_TITLE`}
+		{@const textCode = `SIDE_MENU_${gameSelected ?? otherSelected ?? name}_TITLE`}
 		{@const title = sysState.uiTexts[textCode]}
 		<input id="side_menu_item_{name}" type="checkbox" bind:checked={items[i].open} hidden />
 		<label for="side_menu_item_{name}">
@@ -66,6 +66,8 @@
 		<Dialog {title} bind:open={items[i].open} class="{dialogClass} ">
 			{#if name === 'MINI_GAME'}
 				<svelte:component this={elements.MINI_GAME} bind:selected={gameSelected} />
+			{:else if name === 'OTHERS'}
+				<svelte:component this={elements.OTHERS} bind:selected={otherSelected} />
 			{:else}
 				<svelte:component this={elements[name]} />
 			{/if}
