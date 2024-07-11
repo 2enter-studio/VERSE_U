@@ -63,18 +63,24 @@
 			</div>
 			<Icon icon="eva:info-outline" class="mr-1 size-5" onclick={() => (showInfo = true)} />
 		</div>
-		<div bind:this={messagePool} class="w-screen overflow-x-hidden overflow-y-scroll px-1">
+		<div bind:this={messagePool} class="h-full w-screen overflow-x-hidden overflow-y-scroll px-1">
 			<div class="flex h-fit w-full flex-col justify-end">
 				{#if gameState.chat.chat_messages.length > 0}
 					{@const messages = gameState.chat.chat_messages}
 					{#each messages as message, i}
 						{@const sameSender = message.sender === messages[i - 1]?.sender}
 						{@const sameDate =
-							moment(message.created_at).format('YYYY-MM-DD') ===
-							moment(messages[i - 1]?.created_at).format('YYYY-MM-DD')}
-						{@const sameMinute =
-							moment(message.created_at).format('hh-mm') ===
-								moment(messages[i - 1]?.created_at).format('hh-mm') && sameDate}
+							i === 0
+								? false
+								: moment(message.created_at).format('YYYY-MM-DD') ===
+									moment(messages[i - 1]?.created_at).format('YYYY-MM-DD')}
+						{#if !sameDate}
+							<div class="center-content my-2 w-screen">
+								<span class="rounded-xl bg-black/60 px-4 text-sm">
+									{moment(message.created_at).format('YYYY-MM-DD')}
+								</span>
+							</div>
+						{/if}
 						<ChatMessageBubble {message} showAvatar={!sameSender} />
 					{/each}
 				{/if}
