@@ -22,11 +22,18 @@ const table: UITextTable = {
 	LOCALE: 'EN',
 	MAKE_FRIEND: 'Make friend?',
 	YES: 'Yes',
+	REDEEM: 'Redeem',
+	CANCEL: 'Cancel',
+	COUPON_USED: 'Redeemed',
+	SIDE_MENU_COUPONS_TITLE: 'Coupons',
+	REDEEM_CONFIRM:
+		'Attention! Please confirm with the counter staff before pressing the confirmation redeem button. Otherwise, the ticket will be marked as redeemed, resulting in the inability to enjoy the discount.',
 	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',
 	SIDE_MENU_SETTINGS_TITLE: 'Settings',
-	SIDE_MENU_SOCIAL_TITLE: 'People',
+	SIDE_MENU_BLOCKS_TITLE: 'Blocked Players',
 	SIDE_MENU_TRIP_INFO_TITLE: 'Trip Info',
-	MINI_GAME_HAI_AN_TITLE: 'Hai An Road',
+	SIDE_MENU_HAI_AN_TITLE: 'Hai An Road',
+	SIDE_MENU_OTHERS_TITLE: 'Others',
 	HAI_AN_ROAD: 'Hai An Road',
 	NO: 'No',
 	HOW_TO_USE: 'How to use?',
@@ -57,7 +64,7 @@ const table: UITextTable = {
 	SAVE_MODIFIED: 'Save Modified',
 	MUST_STAY_FOR_A_SEC: 'Your must stay for a while before leaving',
 	READY_TO_GO: 'Off you go, wanna start a new trip',
-	PEOPLE_NEARBY: 'People nearby',
+	PEOPLE_NEARBY: 'Players nearby',
 	PROFILE: 'Profile',
 	USER_NOT_FOUND: 'User not found',
 	SYSTEM: 'System',
@@ -85,9 +92,6 @@ const table: UITextTable = {
 	SIGNIN_FAILED: 'Sign in failed',
 	WARNING: 'Warning',
 	SUCCESS: 'Success'
-	// ERROR_UNKNOWN: 'An unknown error has occurred',
-	// ERROR_INVALID_EMAIL: 'Invalid email',
-	// ERROR_INVALID_PASSWORD: 'Invalid password'
 };
 
 export { table as en };
