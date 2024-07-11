@@ -3,6 +3,7 @@
 	import { Form, SubmitBtn } from '@/components';
 	import { db } from '@/db';
 	import { handleEFResponse, load } from '@/utils';
+	import { COUPON_LIMITS } from '@repo/shared/config';
 
 	let selected = $state<Sponsor | null>(null);
 
@@ -36,8 +37,15 @@
 			{:else}
 				<Form submitFunction={redeemCoupon} confirmMessage="REDEEM_CONFIRM">
 					<input type="text" name="sponsor_id" value={selected.id} hidden />
-					<SubmitBtn class="rounded-xl bg-orange-500 p-2 shadow-inner shadow-white/30">
+					<SubmitBtn
+						class="center-content flex-col rounded-xl bg-yellow-500 px-7 py-2 text-white shadow-inner shadow-white/30"
+					>
 						{sysState.uiTexts.REDEEM}
+						<small class="text-xs">
+							({sysState.uiTexts.COUPON_LIMIT}
+							{COUPON_LIMITS[selected.value]}
+							{sysState.uiTexts.COUPON_UNIT})
+						</small>
 					</SubmitBtn>
 				</Form>
 			{/if}
