@@ -9,6 +9,9 @@
 	import { Editor, SystemLog } from './';
 	import Icon from '@iconify/svelte';
 	import { getRowName } from '@/index';
+	import { writable } from 'svelte/store';
+	import type { Tables } from '@repo/shared/supatypes';
+	import { setContext } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
 	let showSysLog = $state(true);
@@ -18,6 +21,12 @@
 		initSearchIds[tableName] = null;
 	});
 	let searchIds = $state(initSearchIds);
+
+	const ml_texts = writable<Tables<'ml_texts'>[]>();
+	$effect(() => {
+		ml_texts.set(data.ml_texts);
+	});
+	setContext('ml_texts', ml_texts);
 </script>
 
 {#await data.tables}

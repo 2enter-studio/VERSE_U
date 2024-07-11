@@ -1,49 +1,41 @@
 <script lang="ts">
 	import type { Locale } from '@/config';
-	import { page } from '$app/stores';
-	import type { PageData } from '../../../routes/$types';
 	import { SubmitBtn } from '@/components';
-	import { onMount } from 'svelte';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+	import type { Tables } from '@repo/shared/supatypes';
 
 	type Props = { column_name: string; row_id: string; locale: Locale };
 	let { column_name, row_id, locale }: Props = $props();
 
-	const { ml_texts } = $page.data as PageData;
+	const ml_texts = getContext<Writable<Tables<'ml_texts'>[]>>('ml_texts');
 
-	const index = ml_texts.findIndex(
+	const index = $ml_texts.findIndex(
 		(ml_text) =>
 			ml_text.row_id === row_id && ml_text.column_name === column_name && ml_text.locale === locale
 	);
 
-	let valueCopy = $state(ml_texts[index]?.value ?? '');
-	const modified = $derived(ml_texts[index]?.value !== valueCopy);
-
-	onMount(() => {
-		return () => {
-			if (index === -1) return;
-			ml_texts[index].value = valueCopy;
-		};
-	});
+	let value = $state($ml_texts[index]?.value ?? '');
+	const modified = $derived($ml_texts[index]?.value !== value);
 
 	function afterSubmit() {
-		valueCopy = ml_texts[index]?.value ?? '';
+		if (index === -1) return;
+		$ml_texts[index].value = value;
 	}
 </script>
 
 <div class="flex flex-row gap-1">
 	{locale}
 	{#if index !== -1}
-		<input type="text" bind:value={ml_texts[index].value} />
+		<input type="text" bind:value />
 		{#if modified}
 			<SubmitBtn
 				icon="mingcute:save-2-line"
 				action="?/update"
 				data={{
 					table: 'ml_texts',
-					data: JSON.stringify({
-						value: ml_texts[index]?.value ?? ''
-					}),
-					id: ml_texts[index]?.id ?? ''
+					data: JSON.stringify({ value }),
+					id: $ml_texts[index]?.id ?? ''
 				}}
 				class="hover:bg-amber-700 center-content"
 				{afterSubmit}
@@ -57,7 +49,7 @@
 			data={{
 				table: 'ml_texts',
 				data: JSON.stringify({
-					value: ml_texts[index]?.value ?? '',
+					value,
 					column_name,
 					row_id,
 					locale
