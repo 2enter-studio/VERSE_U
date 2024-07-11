@@ -44,7 +44,7 @@
 		{
 			name: 'OTHERS',
 			icon: 'pepicons-pop:dots-y-circle-filled',
-			class: 'bg-gray-400',
+			class: 'bg-gray-700',
 			open: false,
 			dialogClass: 'flex-col text-center p-0'
 		}
