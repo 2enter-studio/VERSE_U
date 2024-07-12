@@ -2,6 +2,8 @@ androidkey
 static/**/*.png
 *.zip
 
+logs
+
 *.pem
 .DS_Store
 node_modules
