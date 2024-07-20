@@ -274,8 +274,15 @@
 {/if}
 
 <Dialog title={sysState.uiTexts.GET_COUPON} bind:open={showCoupon} class="center-content flex-col">
+	<div class="text-center">
+		{sysState.uiTexts.CONGRATULATION}!{sysState.uiTexts.YOU_CAN_HAVE_COUPON}
+		<br />
+		{sysState.uiTexts.COUPON_INFO}:{gameState.sponsors[0].coupon_info}
+		<br />
+		<small>({sysState.uiTexts.HOW_TO_VIEW_COUPON})</small>
+	</div>
 	<Form submitFunction={useCoupon} afterSubmit={() => (showCoupon = false)}>
 		<input type="text" name="sponsor_id" value={gameState.sponsors[0].id} hidden />
-		<SubmitBtn class="rounded-lg bg-emerald-700 p-1 text-white">{sysState.uiTexts.GET}</SubmitBtn>
+		<SubmitBtn class="rounded-lg bg-emerald-700 py-1 px-2 text-white">{sysState.uiTexts.GET}</SubmitBtn>
 	</Form>
 </Dialog>
