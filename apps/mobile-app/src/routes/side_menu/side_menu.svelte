@@ -35,18 +35,18 @@
 			dialogClass: 'flex-col text-center'
 		},
 		{
-			name: 'SETTINGS',
-			icon: 'mage:settings-fill',
-			class: 'bg-gray-400',
-			open: false,
-			dialogClass: 'center-content flex-col text-center text-sm gap-1'
-		},
-		{
 			name: 'OTHERS',
 			icon: 'pepicons-pop:dots-y-circle-filled',
 			class: 'bg-gray-700',
 			open: false,
 			dialogClass: 'flex-col text-center p-0'
+		},
+		{
+			name: 'SETTINGS',
+			icon: 'mage:settings-fill',
+			class: 'bg-gray-400',
+			open: false,
+			dialogClass: 'center-content flex-col text-center text-sm gap-1'
 		}
 	]);
 </script>
