@@ -1,13 +1,8 @@
-<script lang="ts">
-	import { gameState, sysState } from '@/states';
-	import { Form, SubmitBtn } from '@/components';
+<script lang="ts" context="module">
 	import { db } from '@/db';
 	import { handleEFResponse, load } from '@/utils';
-	import { COUPON_LIMITS } from '@repo/shared/config';
 
-	let selected = $state<Sponsor | null>(null);
-
-	async function redeemCoupon(args: { sponsor_id: string }) {
+	export async function useCoupon(args: { sponsor_id: string }) {
 		const { error } = await db.functions.invoke('use-coupon', {
 			body: JSON.stringify(args)
 		});
@@ -17,6 +12,17 @@
 			return { error: err };
 		}
 		await load.sponsors();
+	}
+</script>
+
+<script lang="ts">
+	import { COUPON_LIMITS } from '@repo/shared/config';
+	import { gameState, sysState } from '@/states';
+	import { Form, SubmitBtn } from '@/components';
+
+	let selected = $state<Sponsor | null>(null);
+
+	function afterSubmit() {
 		selected = gameState.sponsors.find((s) => s.id === selected?.id) ?? null;
 	}
 </script>
@@ -28,14 +34,14 @@
 	>
 		<div class="center-content flex-row gap-2">
 			{#if !sysState.processing}
-				<button class="bg-gray-300 text-xl" onclick={() => (selected = null)}>
+				<button class="bg-gray-300 text-xl text-black" onclick={() => (selected = null)}>
 					{'<-' + sysState.uiTexts.CANCEL}
 				</button>
 			{/if}
 			{#if selected.coupons[0]?.used}
 				<div class="rounded-xl bg-gray-200 p-2">{sysState.uiTexts.COUPON_USED}</div>
 			{:else}
-				<Form submitFunction={redeemCoupon} confirmMessage="REDEEM_CONFIRM">
+				<Form submitFunction={useCoupon} {afterSubmit} confirmMessage="REDEEM_CONFIRM">
 					<input type="text" name="sponsor_id" value={selected.id} hidden />
 					<SubmitBtn
 						class="center-content flex-col rounded-xl bg-yellow-500 px-7 py-2 text-white shadow-inner shadow-white/30"
@@ -53,8 +59,10 @@
 	</div>
 {:else}
 	{#each gameState.sponsors as sponsor}
-		<button class="bg-black px-2 py-1 text-white" onclick={() => (selected = sponsor)}>
-			{sponsor.name}
-		</button>
+		{#if sponsor.coupons.length}
+			<button class="bg-black rounded-sm px-2 py-1 text-white" onclick={() => (selected = sponsor)}>
+				{sponsor.name}
+			</button>
+		{/if}
 	{/each}
 {/if}

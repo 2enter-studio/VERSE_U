@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Icon from '@iconify/svelte';
 	import { fly, fade } from 'svelte/transition';
+	import Icon from '@iconify/svelte';
+	import { useCoupon } from '$routes/side_menu/others/coupons.svelte';
 
 	import { gameState, sysState } from '@/states';
 	import {
@@ -14,6 +15,7 @@
 	import { Dialog, Form, LocalImg, SubmitBtn, UModel } from '@/components';
 	import { equipWearings, uploadSelfie, buyWearing } from '$routes/me/utils';
 	import { MenuToggler } from '@/components/index.js';
+	import { watch } from 'runed';
 
 	const expressions = gameState.wearingTypes
 		.filter((type) => type.is_expression)
@@ -25,9 +27,15 @@
 	let selfieUrl = $state('');
 	let spark = $state(false);
 
+	let showCoupon = $state(false);
+
 	let selectedWearingType = $state(gameState.wearingTypes[0].id);
 	let selectedWearings: Record<string, string> = $state({});
 	let selectedWearingCopy: Record<string, string> = $state({});
+
+	const focusedWearing = $derived(
+		gameState.wearings.find(({ id }) => selectedWearings[selectedWearingType] === id)
+	);
 
 	const expressing = $derived(expressions.includes(selectedWearingType));
 	const cameraPosition = $derived.by<[number, number, number]>(() => {
@@ -50,6 +58,17 @@
 	$effect(() => {
 		if (!dressing) selectedWearings = { ...selectedWearingCopy };
 	});
+
+	watch(
+		() => gameState.equippedWearings,
+		() => {
+			console.log(gameState.equippedWearings);
+			const sponsorWearing = gameState.sponsors[0].sponsor_wearings[0].wearing;
+			if (gameState.equippedWearings.some((w) => w.id === sponsorWearing)) {
+				if (!gameState.sponsors[0].coupons.length) showCoupon = true;
+			}
+		}
+	);
 
 	function takeSelfie() {
 		spark = true;
@@ -233,6 +252,11 @@
 				{sysState.uiTexts.SAVE_MODIFIED}
 			</button>
 		{/if}
+		{#if focusedWearing?.description}
+			<div class="center-content w-full rounded-sm bg-black/30 p-2 text-center">
+				{@html focusedWearing.description}
+			</div>
+		{/if}
 	</div>
 {/if}
 
@@ -248,3 +272,10 @@
 {#if spark}
 	<div out:fade={{ duration: 300 }} class="full-screen pointer-events-none bg-white"></div>
 {/if}
+
+<Dialog title={sysState.uiTexts.GET_COUPON} bind:open={showCoupon} class="center-content flex-col">
+	<Form submitFunction={useCoupon} afterSubmit={() => (showCoupon = false)}>
+		<input type="text" name="sponsor_id" value={gameState.sponsors[0].id} hidden />
+		<SubmitBtn class="rounded-lg bg-emerald-700 p-1 text-white">{sysState.uiTexts.GET}</SubmitBtn>
+	</Form>
+</Dialog>
