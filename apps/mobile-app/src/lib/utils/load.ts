@@ -60,7 +60,7 @@ async function sponsors() {
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
-	gameState.sponsors = await assignMLTexts(data, ['name'] as const);
+	gameState.sponsors = await assignMLTexts(data, ['name', 'coupon_info'] as const);
 }
 
 async function profile(user_id?: string) {

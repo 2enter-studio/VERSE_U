@@ -115,6 +115,9 @@ const TABLES_INFO: TableInfo = {
 		metadata: {
 			...ID,
 			value: { type: 'plain_text' },
+			coupon_info: {
+				type: 'ml_texts'
+			},
 			...NAME_AND_DESCRIPTION
 		}
 	},
