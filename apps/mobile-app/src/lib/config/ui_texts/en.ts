@@ -30,7 +30,11 @@ const table: UITextTable = {
 	GET_COUPON: 'New Coupon',
 	GET: 'Get',
 	PASSWORD_LIMIT: 'password needs to be at least 8 digits',
+	CONGRATULATION: 'Congratulation',
 	COUPON_UNIT: 'units',
+	YOU_CAN_HAVE_COUPON: 'You are eligible to receive a coupon',
+	COUPON_INFO: 'Coupon info',
+	HOW_TO_VIEW_COUPON: 'After receiving it, you can go to the menu on the right [Others]->[Coupons] to view the coupons you have.',
 	REDEEM_CONFIRM:
 		'Attention! Please confirm with the counter staff before pressing the confirmation redeem button. Otherwise, the ticket will be marked as redeemed, resulting in the inability to enjoy the discount.',
 	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',

@@ -166,6 +166,7 @@
 						bind:value={pwdConfirm}
 						required
 					/>
+					<small class="text-red-900">{sysState.uiTexts.PASSWORD_LIMIT}</small>
 				{/if}
 			</div>
 		{/each}
