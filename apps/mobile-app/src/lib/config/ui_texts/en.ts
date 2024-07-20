@@ -27,6 +27,9 @@ const table: UITextTable = {
 	COUPON_USED: 'Redeemed',
 	SIDE_MENU_COUPONS_TITLE: 'Coupons',
 	COUPON_LIMIT: 'Limited to',
+	GET_COUPON: 'New Coupon',
+	GET: 'Get',
+	PASSWORD_LIMIT: 'password needs to be at least 8 digits',
 	COUPON_UNIT: 'units',
 	REDEEM_CONFIRM:
 		'Attention! Please confirm with the counter staff before pressing the confirmation redeem button. Otherwise, the ticket will be marked as redeemed, resulting in the inability to enjoy the discount.',
