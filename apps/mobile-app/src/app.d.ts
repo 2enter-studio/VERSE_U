@@ -53,7 +53,9 @@ declare global {
 	}>;
 
 	type Sponsor = Prettify<
-		Tables<'sponsors'> & { value: SponsorName } & { coupons: Tables<'coupons'>[] } & Named
+		Tables<'sponsors'> & { value: SponsorName } & { coupons: Tables<'coupons'>[] } & {
+			sponsor_wearings: { wearing: string }[];
+		} & Named
 	>;
 }
 

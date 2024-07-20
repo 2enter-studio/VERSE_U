@@ -56,7 +56,7 @@ async function app_version() {
 async function sponsors() {
 	const user_id = authState.user?.id;
 	if (!user_id) return createError('USER_NOT_FOUND');
-	const { data, error } = await db.from('sponsors').select('*,coupons(*)').returns<Sponsor[]>();
+	const { data, error } = await db.from('sponsors').select('*,coupons(*),sponsor_wearings(wearing)').returns<Sponsor[]>();
 
 	if (error) return createError('FAILED_TO_LOAD_DATA');
 
