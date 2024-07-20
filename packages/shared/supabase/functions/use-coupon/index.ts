@@ -3,6 +3,7 @@ import { admin, validateUser } from '../_shared/db.ts';
 import { createError, createSuccess } from '../_shared/response.ts';
 import validator from 'validator';
 import { COUPON_LIMITS } from '../config.ts';
+import type { Tables } from '../types.ts';
 
 // @ts-ignore
 Deno.serve(async (req) => {
@@ -17,8 +18,10 @@ Deno.serve(async (req) => {
 
   // get option from request body
   const body = await req.json();
+
   const sponsor_id = body.sponsor_id as string;
   if (!sponsor_id) return createError('received no sponsor id');
+
   if (!validator.isUUID(sponsor_id)) return createError('invalid sponsor ID', { status: 500 });
 
   const { data, error } = await admin
@@ -36,12 +39,30 @@ Deno.serve(async (req) => {
   }
 
   {
-    const { error } = await admin.from('coupons').insert({
-      user: user.id,
-      sponsor: sponsor_id,
-      used: true
-    });
-    if (error) return createError(error.message, { status: 500 });
+    const { error, data } = await admin
+      .from('coupons')
+      .select()
+      .eq('user', user.id)
+      .eq('sponsor', sponsor_id)
+      .returns<Tables<'coupons'>[]>()
+      .single();
+
+    if (error) {
+      const { error } = await admin.from('coupons').insert({
+        user: user.id,
+        sponsor: sponsor_id
+      });
+      if (error) return createError(error.message, { status: 500 });
+    } else {
+      if (data.used) return createError('coupon already used', { status: 500 });
+      const { error } = await admin
+        .from('coupons')
+        .update({ used: true })
+        .eq('user', user.id)
+        .eq('sponsor', sponsor_id);
+
+      if (error) return createError(error.message, { status: 500 });
+    }
   }
 
   return createSuccess({ success: true });
