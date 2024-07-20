@@ -616,6 +616,42 @@ export type Database = {
           },
         ]
       }
+      sponsor_wearings: {
+        Row: {
+          created_at: string
+          id: string
+          sponsor: string | null
+          wearing: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          sponsor?: string | null
+          wearing?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          sponsor?: string | null
+          wearing?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_wearings_sponsor_fkey"
+            columns: ["sponsor"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sponsor_wearings_wearing_fkey"
+            columns: ["wearing"]
+            isOneToOne: false
+            referencedRelation: "wearings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsors: {
         Row: {
           created_at: string
@@ -625,7 +661,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          value: string
+          value?: string
         }
         Update: {
           created_at?: string
