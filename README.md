@@ -7,8 +7,6 @@
 ```sh
 # first attempt
 bun install; bun dev;
-# to re-install packages, which is often used after upgrading Svelte
-rm ./**/node_modules; bun install;
 ```
 
 ## What's next?
