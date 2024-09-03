@@ -2,11 +2,10 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { APPS } from '@/config';
+	import { Menu } from '@/components';
 
 	let { children } = $props();
-	$effect(() => {
-		console.log($page.url);
-	});
+	let contentWindow = $state<HTMLDivElement>();
 </script>
 
 <div class="full-screen flex flex-row">
@@ -53,7 +52,18 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex flex-col p-5 w-[calc(100vw-16rem)] overflow-y-auto">
+
+	<div bind:this={contentWindow} class="flex flex-col p-5 w-[calc(100vw-16rem)] overflow-y-auto">
+		<Menu class="fixed top-5 right-5 z-10" />
 		{@render children()}
 	</div>
+
+	<button
+		class="absolute right-5 bottom-5 btn text-3xl btn-primary rounded-full"
+		onclick={() => {
+			if (contentWindow) contentWindow.scrollTo({ top: 0, behavior: 'smooth' });
+		}}
+	>
+		☝🏻
+	</button>
 </div>

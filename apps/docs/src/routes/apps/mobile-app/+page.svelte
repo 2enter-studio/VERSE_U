@@ -1,44 +1,34 @@
 <script lang="ts">
-	const FILES = [
-		{ name: 'android/', description: '' },
-		{ name: 'ios/', description: '' },
-		{ name: 'assets/', description: '' },
-		{
-			name: 'src/',
-			content: [
-				{ name: 'assets/', description: '' },
-				{
-					name: 'lib/',
-					description: '',
-					content: [
-						{ name: 'components/', description: '' },
-						{ name: 'config/', description: '' },
-						{ name: 'shadcn-components', description: '' },
-						{ name: 'states', description: '' },
-						{ name: 'utils', description: '' },
-						{ name: 'db.ts', description: '' }
-					]
-				},
-				{ name: 'routes/', description: '' }
-			]
-		},
-		{ name: 'static/', content: [] },
-		{ name: 'capacitor.config.ts' },
-		{ name: 'components.json' },
-		{ name: 'ecosystem.config.cjs' },
-		{ name: 'package.json' }
-	] as const;
-
-	const FLATTEN_FILES = FILES.forEach((file) => {});
+	import { FileStructSection, Section } from '@/components/index.js';
+	import { FILES } from './files';
 </script>
 
-<div class="flex flex-col">
+<Section name="DB client">
+	This code-base will eventually compiled into a native mobile app. Which means there's no back-end.
+	The database client is declared in /src/lib/db.ts using SUPABASE_ANON_KEY.
+</Section>
+<Section name="Data loading">
+	There are lots of data need to be loaded before user can actually use the app. All load functions
+	are declared in /src/lib/utils/load.ts. Which is well-integrated with the states declared in
+	/src/lib/states. Depending on the auth state, we'll call the corresponding load when initializing
+	the page.
+</Section>
+<Section name="Local storage">
+	By using the capacitor.js built-in FileSystem. We can download large files into device's local
+	storage and reuse them locally. The core functions are declared in /src/lib/storage.ts
+</Section>
+<Section name="Constant values">dkdk</Section>
+<Section name="Multilingual UI texts and database texts">dkdk</Section>
+<Section name="State management">dkdk</Section>
+<Section name="Routes">dkdk</Section>
+<Section name="Subscribe">dkdk</Section>
+<Section name="Components">dkdk</Section>
+<Section name="Custom form">dkdk</Section>
+<Section name="Audio loader">dkdk</Section>
+<Section name="System messages">dkdk</Section>
+
+<Section name="(Almost) every files explained" useToggle>
 	{#each FILES as file}
-		<span>{file.name}</span>
-		{#if file.content}
-			{#each file.content as subFile}
-				<span class="pl-4">{subFile.name}</span>
-			{/each}
-		{/if}
+		<FileStructSection {...file} />
 	{/each}
-</div>
+</Section>

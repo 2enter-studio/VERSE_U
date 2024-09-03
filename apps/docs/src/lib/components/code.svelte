@@ -27,7 +27,7 @@
 	};
 </script>
 
-<div class="mockup-code bg-black w-fit max-w-[60vw] overflow-x-auto language-{language}">
+<div class="mockup-code bg-black w-fit max-w-full overflow-x-auto language-{language}">
 	{#if typeof lines === 'string'}
 		<pre data-prefix={prefix} use:highlight><code>{lines}</code></pre>
 	{:else}
