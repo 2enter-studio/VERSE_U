@@ -24,10 +24,12 @@
 	}
 </script>
 
-<div class="flex flex-row gap-1">
-	{locale}
+<div class="flex flex-row gap-1 justify-center my-2">
 	{#if index !== -1}
-		<input type="text" bind:value />
+		<label>
+			{locale}
+			<input type="text" class="input input-bordered input-sm" bind:value />
+		</label>
 		{#if modified}
 			<SubmitBtn
 				icon="mingcute:save-2-line"

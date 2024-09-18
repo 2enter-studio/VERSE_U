@@ -31,8 +31,8 @@
 	let pwdVisible = $state(false);
 	let email = $state(authState.user?.email || '');
 	let submittable = $state<boolean>(false);
-	let formFields = $state.frozen<InputType[]>([]);
-	let args = $state.frozen<[string, string] | [string]>();
+	let formFields = $state.raw<InputType[]>([]);
+	let args = $state.raw<[string, string] | [string]>();
 
 	const formOptions = $derived(
 		authState.loggedIn

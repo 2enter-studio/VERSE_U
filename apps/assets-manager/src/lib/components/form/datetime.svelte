@@ -23,4 +23,7 @@
 	});
 </script>
 
-<input type="datetime-local" bind:value={datetime} class={className} />
+<div class="flex h-10 items-center">
+	<input type="datetime-local" bind:value={datetime} class={` datetime-local input input-bordered input-sm ${className}`} />
+</div>
+

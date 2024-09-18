@@ -4,4 +4,4 @@
 	let { name, data = $bindable(), class: className }: MetaDataProps<boolean> = $props();
 </script>
 
-<input type="checkbox" bind:checked={data} class={className} />
+<input type="checkbox" bind:checked={data} class={`${className} toggle`} />

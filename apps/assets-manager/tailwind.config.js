@@ -4,5 +4,8 @@ export default {
 	theme: {
 		extend: {}
 	},
-	plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-svelte']
+	plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-svelte', require('daisyui')],
+	daisyui: {
+		themes: ['dark', 'sunset']
+	}
 };

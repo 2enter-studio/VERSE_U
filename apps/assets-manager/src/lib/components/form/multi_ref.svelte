@@ -21,6 +21,7 @@
 	const modified = $derived(
 		selected.length !== selectedCopy.length || !selected.every((d) => selectedCopy.includes(d))
 	);
+	const isSelected = $derived((id: string) => selected.includes(id));
 
 	onMount(async () => {
 		const tablesData = await tables;
@@ -39,12 +40,10 @@
 
 <div class="flex flex-col text-left">
 	{#each options as option}
-		{@const isSelected = selected.includes(option.id)}
-
 		<input id="option-{option.id}" type="checkbox" bind:group={selected} value={option.id} hidden />
 		<label
 			for="option-{option.id}"
-			class="{isSelected
+			class="{isSelected(option.id)
 				? 'bg-white text-black'
 				: ''} flex flex-row justify-between gap-3 px-1 cursor-pointer hover:border-white border-white/0 border-2"
 		>
