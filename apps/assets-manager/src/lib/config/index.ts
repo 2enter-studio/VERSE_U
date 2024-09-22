@@ -111,7 +111,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	sponsors: {
-		description: '',
+		description: '贊助商',
 		metadata: {
 			...ID,
 			value: { type: 'plain_text' },
