@@ -70,7 +70,7 @@
 
 	const handleSubmit = (e: Event) => {
 		if (confirmMessage && !confirm(confirmMessage)) return e.preventDefault();
-	}
+	};
 
 	const enhanceHandler: SubmitFunction = () => {
 		return async ({ update, result }) => {
@@ -96,9 +96,9 @@
 			}
 
 			if (data.table === 'ml_texts') {
-				setMlTexts(resp.data.result, data.id)
+				setMlTexts(resp.data.result, data.id);
 			} else {
-				setTable(data.table as TableName, resp.data.result, data.id, action.includes('?/create'))
+				setTable(data.table as TableName, resp.data.result, data.id, action.includes('?/create'));
 			}
 		};
 	};
@@ -110,7 +110,13 @@
 			<HiddenInput name={key} {value} />
 		{/each}
 	{/if}
-	<button type="submit" bind:this={btn} {disabled} class={className} onclick={(e) => handleSubmit(e)}>
+	<button
+		type="submit"
+		bind:this={btn}
+		{disabled}
+		class={className}
+		onclick={(e) => handleSubmit(e)}
+	>
 		{#if children}
 			{@render children()}
 		{/if}

@@ -40,7 +40,6 @@ const create: Action = async ({ request }) => {
 		.select()
 		.returns()
 		.single();
-	
 
 	if (error) return makeFormDataResponse('error', `failed to create ${tableName}`, error.message);
 
@@ -66,7 +65,13 @@ const update: Action = async ({ request }) => {
 		);
 	}
 
-	const { data: result, error } = await admin.from(tableName).update(JSON.parse(data)).eq('id', id).select().returns().single();
+	const { data: result, error } = await admin
+		.from(tableName)
+		.update(JSON.parse(data))
+		.eq('id', id)
+		.select()
+		.returns()
+		.single();
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 

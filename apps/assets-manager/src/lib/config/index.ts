@@ -136,7 +136,7 @@ const TABLES_INFO: TableInfo = {
 			},
 			y: {
 				type: 'number'
-			},
+			}
 		},
 		storage: {
 			sticker: {

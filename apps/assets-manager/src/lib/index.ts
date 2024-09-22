@@ -13,7 +13,7 @@ function getRowName(row: { id: string; value?: string }) {
 		return LOCALES.map((locale) => texts.find((text) => text.locale === locale))
 			.map((t) => t?.value)
 			.join('/');
-	return (row as { value?: string })?.value ??  '?????????';
+	return (row as { value?: string })?.value ?? '?????????';
 }
 
 function makeTableMessage(data: Record<string, string | number | boolean>, sep = '<br/>') {
