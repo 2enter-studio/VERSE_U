@@ -15,7 +15,7 @@
 
 <script lang="ts">
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { submitting, setSystemLog, setTable, setMlTexts } from '@/stores';
+	import { submitting, setSystemLog, setTable, setMlTexts, removeTable } from '@/stores';
 	import Icon from '@iconify/svelte';
 	import { onMount, type Snippet } from 'svelte';
 	import { enhance } from '$app/forms';
@@ -95,10 +95,15 @@
 				}
 			}
 
+			if (action.includes('?/remove')) {
+				removeTable(data);
+				return;
+			}
+
 			if (data.table === 'ml_texts') {
-				setMlTexts(resp.data.result, data.id);
+				setMlTexts(resp.data.result, action.includes('?/create'));
 			} else {
-				setTable(data.table as TableName, resp.data.result, data.id, action.includes('?/create'));
+				setTable(data.table as TableName, resp.data.result, action.includes('?/create'));
 			}
 		};
 	};

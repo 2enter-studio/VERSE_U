@@ -4,28 +4,25 @@
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Tables } from '@repo/shared/supatypes';
+	import { tables } from '@/stores';
 
 	type Props = { column_name: string; row_id: string; locale: Locale };
 	let { column_name, row_id, locale }: Props = $props();
 
-	const ml_texts = getContext<Writable<Tables<'ml_texts'>[]>>('ml_texts');
-
-	const index = $ml_texts.findIndex(
-		(ml_text) =>
-			ml_text.row_id === row_id && ml_text.column_name === column_name && ml_text.locale === locale
+	const ml_text = $derived.by(() =>  $tables.ml_texts.find(
+			(ml_text) => {
+				return ml_text.row_id === row_id && ml_text.column_name === column_name && ml_text.locale === locale
+			}	
+		)
 	);
 
-	let value = $state($ml_texts[index]?.value ?? '');
-	const modified = $derived($ml_texts[index]?.value !== value);
+	let value = $state.raw(ml_text?.value ?? '');
+	const modified = $derived(ml_text?.value !== value);
 
-	function afterSubmit() {
-		if (index === -1) return;
-		$ml_texts[index].value = value;
-	}
 </script>
 
 <div class="flex flex-row gap-1 justify-center my-2">
-	{#if index !== -1}
+	{#if ml_text}
 		<label>
 			{locale}
 			<input type="text" class="input input-bordered input-sm" bind:value />
@@ -37,10 +34,9 @@
 				data={{
 					table: 'ml_texts',
 					data: JSON.stringify({ value }),
-					id: $ml_texts[index]?.id ?? ''
+					id: ml_text.id
 				}}
 				class="hover:bg-amber-700 center-content"
-				{afterSubmit}
 			/>
 		{/if}
 	{:else}

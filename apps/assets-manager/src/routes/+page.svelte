@@ -38,7 +38,7 @@
 
 	const ml_texts = writable<Tables<'ml_texts'>[]>();
 	$effect(() => {
-		ml_texts.set(data.ml_texts);
+		ml_texts.set($tables.ml_texts);
 	});
 	setContext('ml_texts', ml_texts);
 
