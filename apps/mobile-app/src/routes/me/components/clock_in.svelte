@@ -8,7 +8,7 @@
 const weekDays = ['sun','mon', 'tue', 'wed', 'thu', 'fri',  'sat'];
 const weekDaysName = ['日', '一', '二', '三', '四', '五', '六'];
 
-let notClockedInYet = $state(true);
+let notClockedInYet = $state(false);
 let clockinAnimation = $state(false);
 const everyDayClockIn = $derived.by(() => Object.values(clockInState.clockIn).every(value => Boolean(value) === true))
 const fadeOutUpText = $derived.by(() => {
