@@ -9,7 +9,7 @@
 	import type { TextCode } from '@/config/ui_texts/types';
 	import { db } from '@/db';
 	import { load } from '@/utils';
-	import { authState, gameState, sysState, unergyState } from '@/states';
+	import { authState, clockInState, gameState, sysState, unergyState } from '@/states';
 	import { AudioLoader, Dialog } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 	import { Subscriber } from '@/components';
@@ -36,6 +36,7 @@
 		}
 
 		unergyState.setUnergy(authState.profile.unergy);
+		clockInState.initClockIn();
 
 		const result = await load.trip();
 

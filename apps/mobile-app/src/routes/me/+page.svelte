@@ -81,8 +81,6 @@
 
 	onMount(() => {
 		// init selectedWearings
-		clockInState.setClockIn(authState.profile?.clock_in);
-
 		for (const type of gameState.wearingTypes) {
 			selectedWearings[type.id] =
 				gameState.equippedWearings.find(({ id }) => {

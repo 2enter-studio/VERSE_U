@@ -16,7 +16,7 @@ const fadeOutUpText = $derived.by(() => {
 })
 const dayOfWeek = $derived(weekDays[new Date().getDay()])
 function checkClockIn() {
-  const clockIn = authState.profile?.clock_in;
+  const clockIn = clockInState.clockIn
   if (clockIn) {
     const clockInToday = clockIn[dayOfWeek as keyof typeof clockIn];
     if (!clockInToday) {
@@ -27,12 +27,13 @@ function checkClockIn() {
 
 function onSubmit() {
   if(!clockInState.clockIn) return notClockedInYet = false
-  clockInState.setClockIn({...clockInState.clockIn, [dayOfWeek as keyof typeof clockInState.clockIn]: new Date().toISOString().split('T')[0]});
+  const today = new Date().toISOString().split('T')[0]
+  clockInState.setClockIn({...clockInState.clockIn, [dayOfWeek as keyof typeof clockInState.clockIn]: today});
     if (dayOfWeek === 'sat' && Object.values(clockInState.clockIn).every(value => Boolean(value) === true)) {
       unergyState.addUnergy(100)
     } else {
       unergyState.addUnergy(50)
-    }
+    } 
     clockinAnimation = true
     setTimeout(() => {
       clockinAnimation = false
@@ -65,7 +66,7 @@ $effect.root(checkClockIn);
     <div class="flex flex-row gap-2 flex-wrap justify-center items-center">
       
       {#each weekDays as day, index}
-        {@const checked = clockInState.clockIn[day]}
+        {@const checked = Boolean(clockInState.clockIn[day])}
         <div class="w-16 h-30 p-2 {checked ? 'bg-black' : 'bg-white'} bg-opacity-50 rounded-lg flex flex-col justify-center items-center shadow-inner {checked ? 'text-white' : 'text-gray-500'}">
           {#if day === dayOfWeek && clockinAnimation} 
             <CheckAnimation />
