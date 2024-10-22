@@ -115,7 +115,7 @@
 	<div class="flex flex-row gap-2">
 	<input
 		bind:value={firstMessage}
-		class="rounded-lg bg-black text-white"
+		class="rounded-lg bg-black text-white w-60"
 		id="first-message"
 		type="text"
 	/>
