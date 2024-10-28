@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import { TABLE_NAMES, TABLES_INFO } from '@/config';
+	import { TABLE_NAMES, TABLES_INFO, type TableName } from '@/config';
 	import { snakeCaseToCapitalize } from '@repo/shared/utils';
-	import { backEditing, editing, setEditing } from '@/stores/edit_history';
-	import { SubmitBtn } from '@/components/index.js';
+	import { editing, setEditing } from '@/stores/edit_history';
+	import { tables, setTables } from '@/stores/data';
 
 	import { Editor, SystemLog } from './';
 	import Icon from '@iconify/svelte';
@@ -14,7 +14,21 @@
 	import { setContext } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
-	let showSysLog = $state(true);
+
+	let tablesData = $state<Tables>(null);
+	$effect(() => {
+		async function fetchData() {
+			await data.tables.then((t) => {
+				setTables({ ml_texts: data.ml_texts, tables: t });
+				tablesData = t;
+			});
+		}
+		fetchData();
+	});
+
+	$effect(() => {
+		tablesData = $tables.tables;
+	});
 
 	const initSearchIds: Record<string, string | null> = {};
 	Object.keys(TABLE_NAMES).forEach((tableName) => {
@@ -24,100 +38,101 @@
 
 	const ml_texts = writable<Tables<'ml_texts'>[]>();
 	$effect(() => {
-		ml_texts.set(data.ml_texts);
+		ml_texts.set($tables.ml_texts);
 	});
 	setContext('ml_texts', ml_texts);
+
+	const onAdd = (tableName: TableName) => {
+		setEditing({ tableName, id: '' });
+	};
 </script>
 
-{#await data.tables}
+{#if !tablesData}
 	<div class="full-screen center-content">
 		<Icon icon="mingcute:loading-fill" class="text-6xl animate-spin" />
 	</div>
-{:then tablesData}
-	{#if tablesData}
-		<div class="flex flex-col w-[50vw] gap-1">
+{:else}
+	<div class="flex flex-row full-screen">
+		<div
+			class="w-96 gap-1 backdrop-blur-sm bg-white/5 shadow-inner shadow-black/40 rounded-lg m-4 overflow-scroll p-2 h-[calc(100%-2rem)]"
+		>
 			{#each TABLE_NAMES as tableName}
-				<div class="flex flex-row justify-between mt-5 items-center">
-					{snakeCaseToCapitalize(tableName)} - {TABLES_INFO[tableName].description}
-					{#if !TABLES_INFO[tableName].readonly}
-						<div class="flex flex-row justify-end">
-							<SubmitBtn
-								action="?/create"
-								data={{ table: tableName }}
-								icon="memory:plus-box"
-								class="hover:text-amber-400 center-content"
-								reload
-								afterSubmit={(data) => {
-									setEditing({ tableName, id: data.id });
-								}}
+				<div class="collapse collapse-plus">
+					<input type="checkbox" />
+					<div class="flex flex-row justify-between mt-4 items-center collapse-title text-md">
+						{snakeCaseToCapitalize(tableName)} - {TABLES_INFO[tableName].description}
+					</div>
+					<div class="collapse-content">
+						<div class="flex flex-rol mb-4 items-center">
+							<span
+								class="rounded bg-white text-center p-2 flex items-center mr-4 text-info-content text-xs"
+								>search (id)</span
+							>
+							<input
+								type="text"
+								class="input input-bordered input-sm max-w-xs"
+								bind:value={searchIds[tableName]}
 							/>
 						</div>
-					{/if}
-				</div>
-				<div class="flex flex-rol divide-black divide-x-4">
-					<span class="bg-white text-black px-1 whitespace-nowrap">search (id)</span>
-					<input type="text" class="w-full" bind:value={searchIds[tableName]} />
-				</div>
-				<div class="flex flex-col gap-1">
-					{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
-						{@const selected = $editing?.id === row.id}
-						{@const { id } = row}
-						{@const name = getRowName(row)}
-						<div
-							class="flex flex-row {id.includes(searchIds[tableName] ?? '') || !searchIds[tableName]
-								? ''
-								: 'hidden'}"
-						>
-							<button
-								class="hover:bg-white hover:text-black border-white border-2 px-2 text-left w-full {selected
-									? 'bg-white text-black'
-									: ''}"
-								onclick={() => setEditing({ tableName, id })}
-							>
-								{name}
-							</button>
-							{#if selected}
-								<SubmitBtn
-									action="?/remove"
-									data={{ table: tableName, id }}
-									icon="mdi:trashcan-outline"
-									class="center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 px-1"
-									confirmMessage="You're about to delete a row from {tableName}, sure?"
-									afterSubmit={backEditing}
-									reload
-								/>
-							{/if}
+						<div class="flex flex-col gap-1">
+							{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
+								{@const selected = $editing?.id === row.id}
+								{@const { id } = row}
+								{@const name = getRowName(row)}
+								<div
+									class="flex flex-row mb-1 {id.includes(searchIds[tableName] ?? '') ||
+									!searchIds[tableName]
+										? ''
+										: 'hidden'}"
+								>
+									<button
+										class="btn btn-sm hover:bg-white hover:text-accent-content border-base-content border-2 px-1 w-full {selected
+											? 'bg-white text-info-content'
+											: ''}"
+										onclick={() => setEditing({ tableName, id })}
+									>
+										{name}
+									</button>
+								</div>
+							{/each}
 						</div>
-					{/each}
+						{#if !TABLES_INFO[tableName].readonly}
+							<button
+								class="btn btn-sm btn-accent w-full text-white"
+								onclick={() => onAdd(tableName)}>Add +</button
+							>
+						{/if}
+					</div>
 				</div>
 			{/each}
 		</div>
 
-		<div class="fixed right-0 top-0 w-[45vw]">
-			<div class="flex flex-row justify-between">
-				<Icon
-					icon={showSysLog ? 'mingcute:eye-fill' : 'mingcute:eye-close-fill'}
-					onclick={() => (showSysLog = !showSysLog)}
-					class="text-2xl center-content hover:bg-orange-600"
-				/>
-				{#if showSysLog}
-					<SystemLog class="bg-black p-1 h-[10vh] overflow-y-auto overflow-x-hidden" />
-				{/if}
+		<div class="w-[calc(100%-424px)] h-full">
+			<div
+				class="backdrop-blur-sm bg-white/5 shadow-inner shadow-black/40 rounded-lg m-4 h-108 overflow-auto h-4/5 p-2"
+			>
+				<h1 class="flex text-xl justify-center">
+					Editor - {$editing && TABLES_INFO[$editing.tableName].description}
+				</h1>
+				{#key $editing}
+					{#if $editing?.id}
+						{@const { tableName } = $editing}
+						{@const index = tablesData[$editing.tableName].findIndex(
+							(table) => table.id === $editing?.id
+						)}
+						<Editor {tableName} tableData={tablesData[tableName][index]} />
+					{:else if $editing?.tableName}
+						{@const { tableName } = $editing}
+						<Editor {tableName} />
+					{/if}
+				{/key}
 			</div>
-
-			{#key $editing}
-				{#if $editing?.id}
-					{@const { tableName } = $editing}
-					{@const index = tablesData[$editing.tableName].findIndex(
-						(table) => table.id === $editing?.id
-					)}
-					<Editor
-						{tableName}
-						tableData={tablesData[tableName][index]}
-						class="border-2 border-white max-h-[80vh]"
-					/>
-				{/if}
-			{/key}
+			<div
+				class="flex flex-col items-center m-4 p-2 backdrop-blur-sm bg-white/5 shadow-inner shadow-black/40 rounded-lg h-[calc(20%-3rem)]"
+			>
+				<h1 class="text-xl">System Log</h1>
+				<SystemLog class="p-1 overflow-y-auto overflow-x-hidden" />
+			</div>
 		</div>
-	{/if}
-{/await}
+	</div>
+{/if}

@@ -7,8 +7,7 @@
 
 	import Forms from '@/components/form';
 	import { SubmitBtn } from '@/components';
-	import Icon from '@iconify/svelte';
-	import { backEditing } from '@/stores/edit_history';
+	import { backEditing, setEditing } from '@/stores/edit_history';
 
 	type Props = { tableName: TableName; tableData: Tables<TableName>; class?: string };
 	let { tableName, tableData, class: className }: Props = $props();
@@ -37,88 +36,118 @@
 	}
 
 	const returnComponent = (c: any) => typeOverRide<Component>(c);
+
+	const CancelData = () => {
+		backEditing();
+	};
 </script>
 
-{#if data}
-	<div class="flex flex-row items-start divide-white divide-x-2">
-		<div class="flex flex-col p-0.5">
-			<Icon
-				icon="lets-icons:back"
-				class="text-2xl center-content hover:bg-violet-600"
-				onclick={backEditing}
+<div class="h-[calc(100%-6rem)]">
+	<div class="flex flex-row items-start h-full {className}">
+		{#if data}
+			<SubmitBtn
+				action="?/remove"
+				data={{ table: tableName, id: data.id }}
+				icon="mdi:trashcan-outline"
+				class="btn center-content hover:bg-rose-500 hover:text-white bg-rose-300 text-rose-800 px-1 absolute top-4 right-4 aspect-square"
+				confirmMessage="You're about to delete a row from {tableName}, sure?"
 			/>
-			{#if modified}
-				<SubmitBtn
-					action="?/update"
-					data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
-					icon="mingcute:save-2-line"
-					class="center-content	pointer-events-auto hover:bg-cyan-800"
-					{afterSubmit}
-				/>
-			{/if}
-		</div>
-		<div class="flex flex-col gap-3 items-start text-center w-full p-2 overflow-y-auto {className}">
-			{#each Object.entries(metadata) as [name, content]}
-				{@const isMLTexts = content.type === 'ml_texts'}
-				{@const form = returnComponent(Forms[content.type])}
-				<div class="flex items-start gap-0.5 {isMLTexts ? 'flex-col' : 'flex-row flex-wrap'}">
-					{#if !isMLTexts}
-						<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
-						{#if content.readonly}
-							<svelte:component
-								this={form}
-								data={data[name]}
+			<div class="flex flex-col gap-3 items-start text-center w-full h-full p-4 overflow-y-auto">
+				{#each Object.entries(metadata) as [name, content]}
+					{@const isMLTexts = content.type === 'ml_texts'}
+					{@const Form = returnComponent(Forms[content.type])}
+					<div class="flex items-start gap-0.5 {isMLTexts ? 'flex-col' : 'flex-row flex-wrap'}">
+						{#if !isMLTexts}
+							<h2
+								class="rounded text-center p-2 flex items-center mr-4 text-white text-bold bg-orange-600"
+							>
 								{name}
-								class="bg-gray-500 pointer-events-none text-sm"
-							/>
+							</h2>
+							{#if content.readonly}
+								<Form data={data[name]} {name} class="bg-gray-500 pointer-events-none text-sm" />
+							{:else}
+								<Form bind:data={data[name]} {name}></Form>
+							{/if}
 						{:else}
-							<svelte:component this={form} bind:data={data[name]} {name} />
-						{/if}
-					{:else}
-						<h2 class="text-bold bg-cyan-600 px-1">{name}</h2>
-						<svelte:component this={Forms.ml_texts} data={{ row_id: data.id }} {name} />
-					{/if}
-				</div>
-			{/each}
-
-			{#if tableInfo?.reference}
-				{#each Object.entries(tableInfo.reference) as [name, content]}
-					<div class="flex items-start gap-0.5 flex-col">
-						{#if content.type === 'single_ref'}
-							<h2 class="text-bold bg-orange-600 px-1">{name}</h2>
-							<svelte:component
-								this={Forms.single_ref}
-								base={tableName}
-								target={content.target}
+							<h2
+								class="rounded text-center p-2 flex items-center mr-4 text-white text-bold bg-cyan-600"
+							>
 								{name}
-								bind:selected={data[name]}
-							/>
-						{:else if content.type === 'multi_ref'}
-							<h2 class="text-bold bg-cyan-700 px-1">{name}</h2>
-							<svelte:component
-								this={Forms.multi_ref}
-								base={tableName}
-								target={content.target}
-								{name}
-								id={data.id}
-							/>
+							</h2>
+							<Forms.ml_texts data={{ row_id: data.id }} {name} />
 						{/if}
 					</div>
 				{/each}
-			{/if}
 
-			{#if tableInfo?.storage}
-				{#each Object.entries(tableInfo.storage) as [name, content]}
-					{@const { path, suffix, type, bucket } = content}
-					{@const filename = `${path}/${tableData.id}${suffix ?? ''}`}
-					<h2 class="text-bold bg-cyan-700 px-1">{name}</h2>
-					{#if type === 'webp'}
-						<svelte:component this={Forms[type]} {bucket} {filename} />
-					{:else}
-						<svelte:component this={Forms.model} {bucket} {filename} filetype={type} />
-					{/if}
-				{/each}
-			{/if}
-		</div>
+				{#if tableInfo?.reference}
+					{#each Object.entries(tableInfo.reference) as [name, content]}
+						<div class="flex items-start gap-0.5 flex-col">
+							{#if content.type === 'single_ref'}
+								<h2
+									class="rounded text-center p-2 flex items-center mr-4 text-white text-bold bg-orange-600"
+								>
+									{name}
+								</h2>
+								<Forms.single_ref
+									base={tableName}
+									target={content.target}
+									{name}
+									bind:selected={data[name]}
+								/>
+							{:else if content.type === 'multi_ref'}
+								<h2
+									class="rounded text-center p-2 flex items-center mr-4 text-white text-bold bg-cyan-700"
+								>
+									{name}
+								</h2>
+								<Forms.multi_ref base={tableName} target={content.target} {name} id={data.id} />
+							{/if}
+						</div>
+					{/each}
+				{/if}
+
+				{#if tableInfo?.storage && tableData}
+					{#each Object.entries(tableInfo.storage) as [name, content]}
+						{@const { path, suffix, type, bucket } = content}
+						{@const filename = `${path}/${tableData.id}${suffix ?? ''}`}
+						<h2
+							class="rounded text-center p-2 flex items-center mr-4 text-white text-bold bg-cyan-700"
+						>
+							{name}
+						</h2>
+						{#if type === 'webp'}
+							{@const Form = returnComponent(Forms[type])}
+							<Form {bucket} {filename} />
+						{:else}
+							<Forms.model {bucket} {filename} filetype={type} />
+						{/if}
+					{/each}
+				{/if}
+			</div>
+		{/if}
 	</div>
-{/if}
+	<div class="flex justify-between w-full p-2">
+		<button class="btn btn-error text-white" onclick={CancelData}>Cancel</button>
+		{#if data?.id}
+			<SubmitBtn
+				action="?/update"
+				data={{ id: data.id, data: JSON.stringify(modified), table: tableName }}
+				class="btn  text-white btn-success {modified ? '' : 'btn-disabled'} "
+				{afterSubmit}
+			>
+				Save
+			</SubmitBtn>
+		{:else}
+			<SubmitBtn
+				action="?/create"
+				data={{ table: tableName, data: JSON.stringify(data) }}
+				class="btn text-white btn-success"
+				afterSubmit={(data) => {
+					setEditing({ tableName, id: data.id });
+				}}
+			>
+				Create
+			</SubmitBtn>
+		{/if}
+	</div>
+</div>

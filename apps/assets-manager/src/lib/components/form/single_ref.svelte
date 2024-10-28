@@ -9,6 +9,7 @@
 	let { base, target, class: className, selected = $bindable() }: RefProps = $props();
 
 	const selectedCopy = selected;
+	const isSelected = $derived((id: string) => id === selected);
 
 	onDestroy(() => {
 		selected = selectedCopy;
@@ -22,20 +23,19 @@
 	<div class="flex flex-col text-left {className}">
 		{#each options as option}
 			{@const { id } = option}
-			{@const isSelected = id === selected}
 			<input
 				id="option-{id}"
 				type="radio"
 				bind:group={selected}
 				value={id}
-				class="text-white"
+				class="text-white radio radio-sm"
 				hidden
 			/>
 			<label
 				for="option-{id}"
-				class="{isSelected
+				class="{isSelected(id)
 					? 'bg-white text-black'
-					: 'bg-black text-white'} cursor-pointer hover:border-white border-white/0 border-2 px-1"
+					: 'text-white'} cursor-pointer hover:border-white border-white/0 border-2 px-1"
 			>
 				<button
 					class="hover:bg-amber-500"

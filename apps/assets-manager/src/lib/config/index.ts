@@ -111,7 +111,7 @@ const TABLES_INFO: TableInfo = {
 		}
 	},
 	sponsors: {
-		description: '',
+		description: '贊助商',
 		metadata: {
 			...ID,
 			value: { type: 'plain_text' },
@@ -136,7 +136,7 @@ const TABLES_INFO: TableInfo = {
 			},
 			y: {
 				type: 'number'
-			},
+			}
 		},
 		storage: {
 			sticker: {

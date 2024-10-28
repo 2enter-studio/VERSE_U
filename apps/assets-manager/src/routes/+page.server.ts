@@ -22,6 +22,7 @@ export const load = async () => {
 
 const create: Action = async ({ request }) => {
 	const formData = await request.formData();
+	console.log('formData', formData);
 	const tableName = formData.get('table') as TableName;
 	const data = formData.get('data') as string;
 
@@ -29,17 +30,15 @@ const create: Action = async ({ request }) => {
 		return makeFormDataResponse('error', `invalid table name ${tableName}`);
 	}
 
-	if (data) {
-		if (!validator.isJSON(data)) {
-			return makeFormDataResponse('error', `invalid init data ${data}`);
-		}
+	if (data && !validator.isJSON(data)) {
+		return makeFormDataResponse('error', `invalid init data ${data}`);
 	}
 
 	const { data: result, error } = await admin
 		.from(tableName)
 		.insert(JSON.parse(data) ?? {})
-		.select('id')
-		.returns<{ id: string }[]>()
+		.select()
+		.returns()
 		.single();
 
 	if (error) return makeFormDataResponse('error', `failed to create ${tableName}`, error.message);
@@ -48,7 +47,7 @@ const create: Action = async ({ request }) => {
 		'success',
 		`inserted 1 row into ${tableName}`,
 		`- row id: ${result.id}`,
-		{ id: result.id }
+		{ result }
 	);
 };
 
@@ -66,14 +65,21 @@ const update: Action = async ({ request }) => {
 		);
 	}
 
-	const { error } = await admin.from(tableName).update(JSON.parse(data)).eq('id', id);
+	const { data: result, error } = await admin
+		.from(tableName)
+		.update(JSON.parse(data))
+		.eq('id', id)
+		.select()
+		.returns()
+		.single();
 
 	if (error) return makeFormDataResponse('error', `failed to update ${tableName}`, error.message);
 
 	return makeFormDataResponse(
 		'success',
 		`updated 1 row from ${tableName}`,
-		makeTableMessage({ id, ...JSON.parse(data) })
+		makeTableMessage({ id, ...JSON.parse(data) }),
+		{ result }
 	);
 };
 
@@ -148,7 +154,9 @@ const junction: Action = async ({ request }) => {
 			.from(junctionName)
 			.delete()
 			.filter(baseColumnName, 'eq', id)
-			.in(targetColumnName, deleteIds);
+			.in(targetColumnName, deleteIds)
+			.select()
+			.returns();
 		if (error) {
 			return makeFormDataResponse('error', 'failed to delete junctions', error.message);
 		}
@@ -182,7 +190,9 @@ const storage: Action = async ({ request }) => {
 		const { error } = await admin
 			.from(bucketName)
 			.update({ updated_at: new Date().toISOString() })
-			.eq('id', target_id);
+			.eq('id', target_id)
+			.select()
+			.returns();
 		if (error) {
 			return makeFormDataResponse('error', 'file uploaded but failed to update metadata');
 		}

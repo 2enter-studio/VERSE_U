@@ -17,8 +17,8 @@
 				onclick={() => (showDetail = created_at)}
 				class="flex flex-row justify-end hover:before:content-['->'] border-black/0 border-2 whitespace-nowrap"
 			>
-				<span class="{type} px-1">{message}</span>
-				<span class="bg-white text-black px-1">
+				<span class="{type} rounded-l-lg px-2 text-white">{message}</span>
+				<span class="bg-white text-black px-2 rounded-r-lg">
 					{moment(created_at).format('HH:mm:ss')}
 				</span>
 			</button>
