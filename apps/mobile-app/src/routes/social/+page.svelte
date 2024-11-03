@@ -21,7 +21,7 @@
 {#if gameState.chat}
 	<Chatroom />
 {:else}
-	<div class="center-content mb-3 mt-12 flex-col gap-2">
+	<div class="center-content mb-3 mt-12 flex-col gap-2 shepherd-social-players">
 		<h1>{sysState.uiTexts.PEOPLE_NEARBY}</h1>
 		<div class="w-[88vw] overflow-x-auto">
 			<div class="flex flex-row gap-2 w-fit">
@@ -34,11 +34,12 @@
 					)}
 
 					<button
-						class="center-content w-[15vw] flex-col rounded-md bg-black/30 p-1 backdrop-blur-sm"
+						class="center-content w-[15vw] flex-col rounded-md bg-black/30 p-1 backdrop-blur-sm shepherd-social-player-story relative"
 						onclick={() => {
 							storyUserId = person.user;
 						}}
 					>
+						<div class="pulsing"></div>
 						<Avatar profile={person} noInfo />
 						<small class="text-xs">{person.name}</small>
 					</button>
@@ -66,7 +67,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="b flex h-full w-[88vw] flex-col items-start justify-center">
+	<div class="b flex h-full w-[88vw] flex-col items-start justify-center shepherd-social-chats">
 		<div class="flex w-full flex-row justify-between">
 			{#each chatTypes as option}
 				<input

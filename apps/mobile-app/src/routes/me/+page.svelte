@@ -95,13 +95,16 @@
 	<div
 		class="full-screen pointer-events-none flex flex-col items-start justify-center gap-2 px-2 *:pointer-events-auto"
 	>
-		<button onclick={() => (dressing = true)}>
+		<button onclick={() => (dressing = true)} class="shepherd-clothes relative">
+			<div class="pulsing"></div>
 			<Icon
 				icon="game-icons:clothes"
 				class="size-14 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
 			/>
+			
 		</button>
-		<button onclick={() => (takingSelfie = true)}>
+		<button onclick={() => (takingSelfie = true)} class="shepherd-selfie relative">
+			<div class="pulsing"></div>
 			<Icon
 				icon="fa-regular:id-badge"
 				class="size-14 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
@@ -112,10 +115,10 @@
 
 {#if takingSelfie}
 	<div class="fixed bottom-32 flex w-full justify-evenly">
-		<button class="text-rose-700" onclick={() => (takingSelfie = false)}>
+		<button class="text-rose-700 shepherd-selfie-back" onclick={() => (takingSelfie = false)}>
 			<Icon icon="carbon:previous-filled" class="size-10 rounded-full bg-white/80" />
 		</button>
-		<button class="size-20 rounded-full border-4 border-white bg-white/60" onclick={takeSelfie}>
+		<button class="size-20 rounded-full border-4 border-white bg-white/60 shepherd-selfie-take" onclick={takeSelfie}>
 		</button>
 		<div class="size-10"></div>
 	</div>
@@ -162,10 +165,10 @@
 		class="full-screen pointer-events-none flex flex-col items-start gap-1 px-1 *:pointer-events-auto"
 	>
 		<div class="h-[15vh]"></div>
-		<button class="text-rose-700" onclick={() => (dressing = false)}>
+		<button class="text-rose-700 shepherd-clothes-back" onclick={() => (dressing = false)}>
 			<Icon icon="carbon:previous-filled" class="size-7 rounded-full bg-white/80" />
 		</button>
-		<div class="flex flex-row justify-start">
+		<div class="flex flex-row justify-start shepherd-clothes-content">
 			<div
 				class="flex h-fit max-h-[50vh] flex-col gap-1 overflow-auto rounded-l-2xl rounded-br-2xl bg-orange-400 px-2 py-3 shadow-inner shadow-white/30"
 			>

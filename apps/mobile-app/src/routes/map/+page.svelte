@@ -173,7 +173,7 @@
 	<div class="full-screen center-content pointer-events-none">
 		<div class="center-content flex-col">
 			<Icon icon="ph:arrow-fat-down-fill" class="size-10 animate-bounce text-red-700 delay-1000" />
-			<div class="pointer-events-auto flex flex-row gap-1">
+			<div class="pointer-events-auto flex flex-row gap-1 shepherd-map-content">
 				{#if gameState.peopleNearBy.length > 0}
 					{@const sliced = gameState.peopleNearBy.length >= 5 ? 5 : gameState.peopleNearBy.length}
 					<div class="center-content flex-row gap-0.5 rounded-full bg-orange-600 p-0.5">

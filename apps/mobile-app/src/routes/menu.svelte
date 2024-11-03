@@ -24,15 +24,17 @@
 	>
 		{#each routes as { route, icon }}
 			{@const active = sysState.route === route}
+			
 			<button
 				onclick={() => sysState.routeTo(route)}
 				class="{active
 					? 'size-[6.5vh] border-8 border-dashed border-cyan-700 bg-yellow-300 text-black'
 					: 'size-[6vh] border-2 border-white bg-black/90'}
-				center-content my-0.5 rounded-full text-[2.9vh] shadow-lg shadow-black/70"
-			>
-				<Icon {icon} />
-			</button>
+					center-content my-0.5 rounded-full text-[2.9vh] shadow-lg shadow-black/70 shepherd-{route} relative"
+				>
+					<div class="pulsing"></div>
+					<Icon {icon} />
+				</button>
 		{/each}
 	</div>
 </div>

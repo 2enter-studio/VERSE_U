@@ -10,7 +10,7 @@
 	import { db } from '@/db';
 	import { load } from '@/utils';
 	import { authState, gameState, sysState } from '@/states';
-	import { AudioLoader, Dialog } from '@/components';
+	import { AudioLoader, Dialog, Shepherd } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 	import { Subscriber } from '@/components';
 
@@ -108,6 +108,7 @@
 
 {#if window.navigator.onLine}
 	{#await init()}
+		<Shepherd />
 		{@const loadingTexts = [sysState.uiTexts.DATA, sysState.uiTexts.LOADING]}
 		<div class="full-screen center-content">
 			<div class="center-content h-screen w-3 flex-col">

@@ -34,7 +34,7 @@
 			{#if closable}
 				<div class="flex w-9/12 justify-start">
 					<button
-						class="center-content size-6 rounded-full border-b-2 border-r-2 border-rose-800 bg-rose-600"
+						class="center-content size-6 rounded-full border-b-2 border-r-2 border-rose-800 bg-rose-600 shepherd-close-modal"
 						onclick={close}
 					>
 						<Icon icon="iconamoon:close-bold" />
@@ -45,7 +45,7 @@
 				{title}
 			</h1>
 			<div
-				class="z-[110] flex min-w-[50%] max-w-[90%] rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 px-3 py-2 text-black shadow-inner shadow-yellow-900/30 {className}"
+				class="z-[110] flex min-w-[50%] max-w-[90%] rounded-2xl border-b-4 border-r-4 border-black bg-yellow-100 px-3 py-2 text-black shadow-inner shadow-yellow-900/30 shepherd-dialog-content {className}"
 			>
 				{@render children()}
 			</div>
