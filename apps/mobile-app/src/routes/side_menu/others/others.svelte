@@ -4,15 +4,15 @@
 	import { onDestroy } from 'svelte';
 	import { sysState } from '@/states';
 
-	type Props = { selected: keyof typeof elements | null };
-	let { selected = $bindable(null) }: Props = $props();
+	type Props = { selected: keyof typeof elements | null; open: boolean };
+	let { selected = $bindable(null), open = $bindable(false) }: Props = $props();
 
 	onDestroy(() => (selected = null));
 </script>
 
-<div class="center-content w-full flex-row flex-wrap gap-1">
+<div class="center-content w-full flex-row flex-wrap gap-4">
 	{#if selected}
-		<svelte:component this={elements[selected]} />
+		<svelte:component this={elements[selected]} bind:open={open} />
 	{:else}
 		{#each items as item}
 			{@const { icon, class: className, name } = item}

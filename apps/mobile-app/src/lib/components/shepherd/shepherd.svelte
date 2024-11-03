@@ -1,10 +1,9 @@
 <script lang="ts">
-import { onMount, type Snippet } from 'svelte';
+import { onMount } from 'svelte';
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css'
 import './shepherd.css'
-
-let { children }: { children: Snippet } = $props();
+	import { localStorageState } from '@/states';
 
 let shepherd = new Shepherd.Tour({
 	defaultStepOptions: {
@@ -17,6 +16,14 @@ let shepherd = new Shepherd.Tour({
     modalOverlayOpeningRadius: 4,
 	},
 	useModalOverlay: true
+});
+
+shepherd.on('complete', () => {
+  localStorageState.setCompletedTutorial(true);
+});
+
+shepherd.on('cancel', () => {
+  localStorageState.setCompletedTutorial(true);
 });
 
 const steps = [
@@ -443,14 +450,17 @@ const steps = [
 
 ]
 
-shepherd.addSteps(steps);
+
 
 
 onMount(() => {
+  console.log('shepherd mounted');
+  shepherd.addSteps(steps);
 
 	shepherd.start();
 });
 </script>
+
 
 <style>
 
