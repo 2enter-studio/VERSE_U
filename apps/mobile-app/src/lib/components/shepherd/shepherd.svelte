@@ -62,7 +62,7 @@ const steps = [
       element: '.shepherd-info',
       on: 'bottom'
     },
-    classes: 'shepherd-bottom-aligned highlight-element',
+    classes: 'shepherd-bottom-aligned highlight-element rounded',
     advanceOn: {
       selector: '.shepherd-info',
       event: 'click'
@@ -98,7 +98,11 @@ const steps = [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const back = document.querySelector('.shepherd-close-modal');
+          back?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -112,12 +116,110 @@ const steps = [
     ]
   },
   {
+    id: 'little-game',
+    text: '當我們有活動時，您可以在這裡進行一些小遊戲，與現場的展覽互動。',
+    classes: 'shepherd-left-aligned',
+    attachTo: {
+      element: '.shepherd-side-menu-MINI_GAME',
+      on: 'left'
+    },
+    buttons: [
+      {
+        classes: 'shepherd-button-red',
+        text: '上一步',
+        action: () => {
+          const info = document.querySelector('.shepherd-info');
+          info?.click();
+          shepherd.back();
+        }
+      },
+      {
+        classes: 'shepherd-button-green',
+        text: '下一步',
+        action: shepherd.next
+      }
+    ]
+  },
+  {
+    id: 'trip-info',
+    text: '點擊這裡，可以前往下一個地點。',
+    classes: 'shepherd-left-aligned',
+    attachTo: {
+      element: '.shepherd-side-menu-TRIP_INFO',
+      on: 'left'
+    },
+    buttons: [
+      {
+        classes: 'shepherd-button-red',
+        text: '上一步',
+        action: shepherd.back
+      },
+      {
+        classes: 'shepherd-button-green',
+        text: '下一步',
+        action: shepherd.next
+      }
+    ]
+  },
+  {
+    id: 'others',
+    text: '封鎖名單、優惠券以及新手教學都在這裡。',
+    classes: 'shepherd-left-aligned',
+    attachTo: {
+      element: '.shepherd-side-menu-OTHERS',
+      on: 'left'
+    },
+    buttons: [
+      {
+        classes: 'shepherd-button-red',
+        text: '上一步',
+        action: shepherd.back
+      },
+      {
+        classes: 'shepherd-button-green',
+        text: '下一步',
+        action: shepherd.next
+      }
+    ]
+  },
+  {
+    id: 'settings',
+    text: '音效、音量以及語言還有帳戶相關都在這裡。',
+    classes: 'shepherd-left-aligned',
+    attachTo: {
+      element: '.shepherd-side-menu-SETTINGS',
+      on: 'left'
+    },
+    buttons: [
+      {
+        classes: 'shepherd-button-red',
+        text: '上一步',
+        action: shepherd.back
+      },
+      {
+        classes: 'shepherd-button-green',
+        text: '下一步',
+        action: shepherd.next
+      }
+    ]
+  },
+  {
     id: 'change-clothes',
     attachTo: {
       element: '.shepherd-clothes',
       on: 'right'
     },
-    classes: 'shepherd-right-aligned highlight-element',
+    beforeShowPromise: () =>   {
+      return new Promise((resolve) => {
+        const checkExist = setInterval(() => {
+          if (document.querySelector('.shepherd-clothes')) {
+            clearInterval(checkExist);
+            resolve(void 0);
+          }
+        }, 100);
+      });
+    },
+    classes: 'shepherd-right-aligned highlight-element rounded',
     advanceOn: {
       selector: '.shepherd-clothes',
       event: 'click'
@@ -153,7 +255,11 @@ const steps = [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const back = document.querySelector('.shepherd-clothes-back');
+          back?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -173,7 +279,7 @@ const steps = [
       element: '.shepherd-selfie',
       on: 'right'
     },
-    classes: 'shepherd-right-aligned highlight-element',
+    classes: 'shepherd-right-aligned highlight-element rounded',
     beforeShowPromise: () =>   {
       return new Promise((resolve) => {
         const checkExist = setInterval(() => {
@@ -193,7 +299,11 @@ const steps = [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const clothes = document.querySelector('.shepherd-clothes');
+          clothes?.click();
+          shepherd.back();
+        }
       },
     ]
   },
@@ -214,12 +324,16 @@ const steps = [
       element: '.shepherd-selfie-take',
       on: 'top'
     },
-    classes: 'shepherd-top-aligned',
+    classes: 'shepherd-top-aligned rounded',
     buttons: [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const back = document.querySelector('.shepherd-selfie-back');
+          back?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -238,13 +352,17 @@ const steps = [
       element: '.shepherd-me',
       on: 'top'
     },
-    classes: 'shepherd-top-aligned',
+    classes: 'shepherd-top-aligned rounded',
     text: '這裡可以看到您自己的角色，也就是是我們目前在的畫面，您可以在這裡進行剛才提到的所有操作。',
     buttons: [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const selfie = document.querySelector('.shepherd-selfie');
+          selfie?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -259,7 +377,7 @@ const steps = [
       element: '.shepherd-map',
       on: 'top'
     },
-    classes: 'shepherd-top-aligned highlight-element',
+    classes: 'shepherd-top-aligned highlight-element rounded',
     advanceOn: {
       selector: '.shepherd-map',
       event: 'click'
@@ -295,7 +413,11 @@ const steps = [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const me = document.querySelector('.shepherd-me');
+          me?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -314,13 +436,17 @@ const steps = [
       selector: '.shepherd-social',
       event: 'click'
     },
-    classes: 'shepherd-top-aligned highlight-element',
+    classes: 'shepherd-top-aligned highlight-element rounded',
     text: '在這裡，您可以與其他玩家交流，並查看他們的個人資料。',
     buttons: [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const map = document.querySelector('.shepherd-map');
+          map?.click();
+          shepherd.back();
+        }
       },
     ]
   },
@@ -366,7 +492,7 @@ const steps = [
       selector: '.shepherd-social-player-story',
       event: 'click'
     },
-    classes: 'shepherd-bottom-aligned highlight-element',
+    classes: 'shepherd-bottom-aligned highlight-element rounded',
     buttons: [
       {
         classes: 'shepherd-button-red',
@@ -392,12 +518,16 @@ const steps = [
       element: '.shepherd-social-player-story-chat',
       on: 'top'
     },
-    classes: 'shepherd-top-aligned',
+    classes: 'shepherd-top-aligned rounded',
     buttons: [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const close = document.querySelector('.shepherd-social-player-story-close');
+          close?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
@@ -421,7 +551,11 @@ const steps = [
       {
         classes: 'shepherd-button-red',
         text: '上一步',
-        action: shepherd.back
+        action: () => {
+          const story = document.querySelector('.shepherd-social-player-story');
+          story?.click();
+          shepherd.back();
+        }
       },
       {
         classes: 'shepherd-button-green',
