@@ -1,22 +1,22 @@
 PODS:
   - AashuDubeyCapacitorStatusbarSafeArea (3.0.0):
     - Capacitor
-  - Capacitor (6.1.2):
+  - Capacitor (6.1.0):
     - CapacitorCordova
-  - CapacitorApp (6.0.1):
+  - CapacitorApp (6.0.0):
     - Capacitor
-  - CapacitorClipboard (6.0.1):
+  - CapacitorClipboard (6.0.0):
     - Capacitor
   - CapacitorCommunityNativeAudio (6.0.0):
     - Capacitor
-  - CapacitorCordova (6.1.2)
-  - CapacitorFilesystem (6.0.1):
+  - CapacitorCordova (6.1.0)
+  - CapacitorFilesystem (6.0.0):
     - Capacitor
-  - CapacitorHaptics (6.0.1):
+  - CapacitorHaptics (6.0.0):
     - Capacitor
-  - CapacitorPreferences (6.0.2):
+  - CapacitorPreferences (6.0.1):
     - Capacitor
-  - CapacitorScreenOrientation (6.0.2):
+  - CapacitorScreenOrientation (6.0.1):
     - Capacitor
 
 DEPENDENCIES:
@@ -55,15 +55,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AashuDubeyCapacitorStatusbarSafeArea: b32e282503c277e7e6bd2b030feef16658476b5b
-  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
-  CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
-  CapacitorClipboard: 756cd7e83e8d5d19b0c74f40b57517c287bd5fe2
+  Capacitor: 187bd7847b6f71467015a20200a1a071be3e5f14
+  CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
+  CapacitorClipboard: 80282f684154124b9019ebf401235b70b0cf4994
   CapacitorCommunityNativeAudio: 73a5eee63b9b5b5ff67e640da97ff38341f5606d
-  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
-  CapacitorFilesystem: 37fb3aa5c945b4539ab11c74a5c57925a302bf24
-  CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
-  CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
-  CapacitorScreenOrientation: 6039dc2ea4a8596b79316709d5727e8bb7e32845
+  CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
+  CapacitorFilesystem: 60e59ba274c234a979e7a3be2552feaadcee4263
+  CapacitorHaptics: 9ebc9363f0e9b8eb4295088a0b474530acf1859b
+  CapacitorPreferences: 72909b165bc7807103778ddbb86d5d8ce06abf71
+  CapacitorScreenOrientation: 3d4965dcbda5d901b6a48350a5d270ad7d404e05
 
 PODFILE CHECKSUM: 92dac8d8708d2e0a4de4d9b4e5780a8cf04e0e6a
 
