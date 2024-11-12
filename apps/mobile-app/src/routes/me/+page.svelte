@@ -25,6 +25,7 @@
 	let dressing = $state(false);
 	let takingSelfie = $state(false);
 	let selfieUrl = $state('');
+	let canvas = $state<HTMLCanvasElement | null>(null);
 	let spark = $state(false);
 
 	let showCoupon = $state(false);
@@ -72,10 +73,23 @@
 
 	function takeSelfie() {
 		spark = true;
-		const canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
+		canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
 		if (!canvas) return;
 		selfieUrl = canvas.toDataURL('image/webp', 0.1);
 		setTimeout(() => (spark = false), 120);
+	}
+
+	async function handleUploadSelfie() {
+		if (!canvas) return;
+		try {
+			await uploadSelfie({ canvas });
+		} catch (error) {
+			console.error(error);
+		} finally {
+			selfieUrl = '';
+			canvas = null;
+			takingSelfie = false;
+		}
 	}
 
 	onMount(() => {
@@ -140,18 +154,10 @@
 			style="background-image: url({selfieUrl})"
 		></div>
 		{sysState.uiTexts.YOU_JUST_TOOK_SELFIE}
-		<Form
-			submitFunction={uploadSelfie}
-			afterSubmit={() => {
-				selfieUrl = '';
-				takingSelfie = false;
-			}}
-		>
-			<input type="text" value={selfieUrl} name="imageUrl" hidden />
-			<SubmitBtn class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
-				{sysState.uiTexts.YES}
-			</SubmitBtn>
-		</Form>
+		<button onclick={handleUploadSelfie} class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
+			{sysState.uiTexts.YES}
+		</button>
+		
 	</Dialog>
 {/if}
 
