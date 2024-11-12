@@ -516,6 +516,16 @@ export type Database = {
           name: string
           public_id: string
           user: string
+          unergy: number
+          clock_in: {
+            mon: string | null
+            tue: string | null
+            wed: string | null
+            thu: string | null
+            fri: string | null
+            sat: string | null
+            sun: string | null
+          }
         }
         Insert: {
           id?: string
@@ -523,6 +533,16 @@ export type Database = {
           name: string
           public_id?: string
           user?: string
+          unergy?: number
+          clock_in?: {
+            mon: boolean
+            tue: boolean
+            wed: boolean
+            thu: boolean
+            fri: boolean
+            sat: boolean
+            sun: boolean
+          }
         }
         Update: {
           id?: string
@@ -530,6 +550,16 @@ export type Database = {
           name?: string
           public_id?: string
           user?: string
+          unergy?: number
+          clock_in?: {
+            mon: boolean
+            tue: boolean
+            wed: boolean
+            thu: boolean
+            fri: boolean
+            sat: boolean
+            sun: boolean
+          }
         }
         Relationships: [
           {
@@ -869,6 +899,7 @@ export type Database = {
           in_starter_pack: boolean
           mesh: string
           updated_at: string
+          price: number
         }
         Insert: {
           category?: string
@@ -878,6 +909,7 @@ export type Database = {
           in_starter_pack?: boolean
           mesh?: string
           updated_at?: string
+          price?: number
         }
         Update: {
           category?: string
@@ -887,6 +919,7 @@ export type Database = {
           in_starter_pack?: boolean
           mesh?: string
           updated_at?: string
+          price?: number
         }
         Relationships: [
           {

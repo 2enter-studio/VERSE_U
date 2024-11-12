@@ -4,7 +4,7 @@
 	import Icon from '@iconify/svelte';
 	import { useCoupon } from '$routes/side_menu/others/coupons.svelte';
 
-	import { gameState, sysState } from '@/states';
+	import { authState, clockInState, gameState, sysState } from '@/states';
 	import {
 		DEFAULT_CAMERA_POS,
 		// type CharacterAnimation,
@@ -16,6 +16,7 @@
 	import { equipWearings, uploadSelfie, buyWearing } from '$routes/me/utils';
 	import { MenuToggler } from '@/components/index.js';
 	import { watch } from 'runed';
+	import { ClockIn }from './components';
 
 	const expressions = gameState.wearingTypes
 		.filter((type) => type.is_expression)
@@ -109,6 +110,9 @@
 	<div
 		class="full-screen pointer-events-none flex flex-col items-start justify-center gap-2 px-2 *:pointer-events-auto"
 	>
+	{#if clockInState.clockIn}
+		<ClockIn />
+	{/if}
 		<button onclick={() => (dressing = true)}>
 			<Icon
 				icon="game-icons:clothes"

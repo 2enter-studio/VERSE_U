@@ -9,3 +9,4 @@ export { default as HoldBtn } from './hold_btn.svelte';
 export { default as LocalImg } from './local_img.svelte';
 export { default as Subscriber } from './subscriber.svelte';
 export { default as AudioLoader } from './audio_loader.svelte';
+export { default as FadeOutUp } from './animations/fade_out_up.svelte';
