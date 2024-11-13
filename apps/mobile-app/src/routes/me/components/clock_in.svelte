@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Dialog, FadeOutUp, SubmitBtn } from '@/components';
-	import { authState, clockInState, unergyState } from '@/states';
+	import { clockInState, unergyState } from '@/states';
 	import Icon from '@iconify/svelte';
 	import { CoinAnimation, CheckAnimation } from '.';
 	import { onMount } from 'svelte';
@@ -42,19 +42,31 @@ function onSubmit() {
     
 }
 
+function getResetDate(date: Date) {
+  const resetDate = new Date(date);
+  const dayOfWeek = date.getDay();
+  resetDate.setDate(date.getDate() - dayOfWeek + 7);
+  resetDate.setHours(0, 0, 0, 0);
+  return resetDate;
+}
+
 onMount(() => {
-  const today = new Date().toISOString().split('T')[0]
-  if(dayOfWeek === 'sun' && clockInState.clockIn?.sun !== today) {
-    // reset clockIn
-    clockInState.setClockIn({
-      mon: null,
-      tue: null,
-      wed: null,
-      thu: null,
-      fri: null,
-      sat: null,
-      sun: null
-    })
+  const currentDate = new Date()
+  const resetDate = getResetDate(currentDate);
+  let needReset = true;
+  for (let day in clockInState.clockIn) {
+      if (clockInState.clockIn[day]) {
+          const signInDate = new Date(clockInState.clockIn[day]);
+          if (signInDate >= resetDate - 7 * 24 * 60 * 60 * 1000) {
+              needReset = false;
+              break;
+          }
+      }
+  }
+  if (needReset) {
+    for (let day in clockInState.clockIn) {
+        clockInState.setClockIn({...clockInState.clockIn, [day]: null})
+    }
   }
 })
 
