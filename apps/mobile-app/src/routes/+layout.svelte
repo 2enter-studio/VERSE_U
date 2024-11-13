@@ -2,7 +2,7 @@
 	import { Shepherd } from '@/components';
 	import '../app.css';
 	import { type Snippet } from 'svelte';
-	import { localStorageState } from '@/states';
+	import { localStorageState, authState } from '@/states';
 
 	let { children }: { children: Snippet } = $props();
 	let hasCompletedTutorial = $state(true);
@@ -14,7 +14,7 @@
 </script>
 
 <div class="h-screen w-screen">
-	{#if !hasCompletedTutorial}
+	{#if !hasCompletedTutorial && authState.profile}
 		<Shepherd />
 	{/if}
 	{@render children()}

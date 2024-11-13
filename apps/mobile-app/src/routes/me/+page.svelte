@@ -4,7 +4,7 @@
 	import Icon from '@iconify/svelte';
 	import { useCoupon } from '$routes/side_menu/others/coupons.svelte';
 
-	import { gameState, sysState } from '@/states';
+	import { authState, clockInState, gameState, sysState, localStorageState } from '@/states';
 	import {
 		DEFAULT_CAMERA_POS,
 		// type CharacterAnimation,
@@ -16,6 +16,7 @@
 	import { equipWearings, uploadSelfie, buyWearing } from '$routes/me/utils';
 	import { MenuToggler } from '@/components/index.js';
 	import { watch } from 'runed';
+	import { ClockIn }from './components';
 
 	const expressions = gameState.wearingTypes
 		.filter((type) => type.is_expression)
@@ -25,6 +26,7 @@
 	let dressing = $state(false);
 	let takingSelfie = $state(false);
 	let selfieUrl = $state('');
+	let canvas = $state<HTMLCanvasElement | null>(null);
 	let spark = $state(false);
 
 	let showCoupon = $state(false);
@@ -72,10 +74,23 @@
 
 	function takeSelfie() {
 		spark = true;
-		const canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
+		canvas = document.querySelector<HTMLCanvasElement>('#u-model-renderer');
 		if (!canvas) return;
 		selfieUrl = canvas.toDataURL('image/webp', 0.1);
 		setTimeout(() => (spark = false), 120);
+	}
+
+	async function handleUploadSelfie() {
+		if (!canvas) return;
+		try {
+			await uploadSelfie({ canvas });
+		} catch (error) {
+			console.error(error);
+		} finally {
+			selfieUrl = '';
+			canvas = null;
+			takingSelfie = false;
+		}
 	}
 
 	onMount(() => {
@@ -95,6 +110,10 @@
 	<div
 		class="full-screen pointer-events-none flex flex-col items-start justify-center gap-2 px-2 *:pointer-events-auto"
 	>
+		
+	{#if clockInState.clockIn && localStorageState.hasCompletedTutorial}
+		<ClockIn />
+	{/if}
 		<button onclick={() => (dressing = true)} class="shepherd-clothes relative">
 			<div class="pulsing"></div>
 			<Icon
@@ -143,18 +162,10 @@
 			style="background-image: url({selfieUrl})"
 		></div>
 		{sysState.uiTexts.YOU_JUST_TOOK_SELFIE}
-		<Form
-			submitFunction={uploadSelfie}
-			afterSubmit={() => {
-				selfieUrl = '';
-				takingSelfie = false;
-			}}
-		>
-			<input type="text" value={selfieUrl} name="imageUrl" hidden />
-			<SubmitBtn class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
-				{sysState.uiTexts.YES}
-			</SubmitBtn>
-		</Form>
+		<button onclick={handleUploadSelfie} class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
+			{sysState.uiTexts.YES}
+		</button>
+		
 	</Dialog>
 {/if}
 

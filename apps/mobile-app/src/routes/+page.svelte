@@ -9,8 +9,8 @@
 	import type { TextCode } from '@/config/ui_texts/types';
 	import { db } from '@/db';
 	import { load } from '@/utils';
-	import { authState, gameState, sysState } from '@/states';
-	import { AudioLoader, Dialog, Shepherd } from '@/components';
+	import { authState, clockInState, gameState, sysState, unergyState } from '@/states';
+	import { AudioLoader, Dialog } from '@/components';
 	import { Menu, MyProfile, pages, SideMenu, SystemMessage } from './';
 	import { Subscriber } from '@/components';
 
@@ -34,6 +34,9 @@
 			sysState.routeTo('create_profile');
 			return;
 		}
+
+		unergyState.setUnergy(authState.profile.unergy);
+		clockInState.initClockIn();
 
 		const result = await load.trip();
 

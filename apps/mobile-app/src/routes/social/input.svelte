@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	import { sendMessage } from './utils';
-	import { sysState } from '@/states';
+	import { authState, gameState, sysState, unergyState } from '@/states';
 
 	let { onsend }: { onsend: Function } = $props();
 
@@ -22,6 +22,18 @@
 		sysState.processing = false;
 		setHeight(true);
 		onsend();
+		// if the person is your friend, you will get 1 unergy
+		const currentChat = gameState.friendChats.find(chat => chat.id === gameState.chat_id)
+		if (currentChat) {
+			unergyState.addUnergy(1)
+
+			const person = currentChat?.chat_members.find(member => member.user.id !== authState.user?.id)
+			const isFriendNearBy = gameState.peopleNearBy.find(p => p.id === person?.user.id)
+			// if the friend is near by, you will get 1 more unergy
+			if (isFriendNearBy) {
+				unergyState.addUnergy(1)
+			}
+		}
 	}
 
 	// Auto adjust text area's height

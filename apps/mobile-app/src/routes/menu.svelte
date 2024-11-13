@@ -7,7 +7,8 @@
 	const routes = [
 		{ route: 'social', icon: 'iconoir:chat-bubble' },
 		{ route: 'map', icon: 'gis:map-poi' },
-		{ route: 'me', icon: 'fa6-solid:face-laugh' }
+		{ route: 'me', icon: 'fa6-solid:face-laugh' },
+		{ route: 'shop', icon: 'fa6-solid:shop' }
 	] as const;
 </script>
 

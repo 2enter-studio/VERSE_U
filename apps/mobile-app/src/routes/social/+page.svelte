@@ -3,7 +3,7 @@
 
 	import { startNewChat } from './utils';
 
-	import { gameState, sysState } from '@/states';
+	import { gameState, sysState, unergyState } from '@/states';
 	import { ChatList, Chatroom, Story } from './';
 	import { Avatar, Dialog } from '@/components';
 
@@ -16,6 +16,18 @@
 	$effect(() => {
 		if (gameState.chat_id) storyUserId = '';
 	});
+
+	async function startChat() {
+		if (firstMessage.trim() === '') return;
+			const result = await startNewChat(storyUserId, firstMessage);
+			if (result?.error) {
+				sysState.defaultError('OPERATION_FAILED');
+			} else {
+				startingNewChat = false;
+				storyUserId = '';
+				unergyState.subUnergy(50);
+			}
+	}
 </script>
 
 {#if gameState.chat}
@@ -96,27 +108,26 @@
 	</div>
 {/if}
 
-<Dialog title={sysState.uiTexts.START_CHAT} bind:open={startingNewChat} class="center-content">
+<Dialog title={sysState.uiTexts.START_CHAT} bind:open={startingNewChat} class="center-content flex flex-col gap-2 text-center">
+	這是你第一次與這位過客聊天，需要耗費 50 點 U-nergy。
+	{#if unergyState.unergy < 50}
+		<small class="text-red-500">U-nergy 不足</small>
+	{/if}
+	<div class="flex flex-row gap-2">
 	<input
 		bind:value={firstMessage}
-		class="rounded-lg bg-black text-white"
+		class="rounded-lg bg-black text-white w-60"
 		id="first-message"
 		type="text"
 	/>
 	<button
-		onclick={async () => {
-			if (firstMessage.trim() === '') return;
-			const result = await startNewChat(storyUserId, firstMessage);
-			if (result?.error) {
-				sysState.defaultError('OPERATION_FAILED');
-			} else {
-				startingNewChat = false;
-				storyUserId = '';
-			}
-		}}
+		class="disabled:opacity-50"
+	  disabled={unergyState.unergy < 50}
+		onclick={startChat}
 	>
 		<Icon icon="mingcute:send-plane-fill" class="size-10 rounded-full text-cyan-800" />
-	</button>
+		</button>
+	</div>
 </Dialog>
 
 <style>
