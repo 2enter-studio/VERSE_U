@@ -20,6 +20,7 @@
   "dependencies": {
     "capitalize": "^2.0.4",
     "rfdc": "^1.4.1",
-    "sha256": "^0.2.0"
+    "sha256": "^0.2.0",
+    "shepherd.js": "^14.1.0"
   }
 }

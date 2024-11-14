@@ -40,6 +40,7 @@ const table: UITextTable = {
 	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',
 	SIDE_MENU_SETTINGS_TITLE: 'Settings',
 	SIDE_MENU_BLOCKS_TITLE: 'Blocked Players',
+	SIDE_MENU_TUTORIAL_TITLE: 'Tutorial',
 	SIDE_MENU_TRIP_INFO_TITLE: 'Trip Info',
 	SIDE_MENU_HAI_AN_TITLE: 'Hai An Road',
 	SIDE_MENU_OTHERS_TITLE: 'Others',

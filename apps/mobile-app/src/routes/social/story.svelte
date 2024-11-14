@@ -37,7 +37,7 @@
 				<Avatar profile={person} />
 				{person.name}
 			</div>
-			<button onclick={close} class="mt-[var(--safe-area-inset-top)]">
+			<button onclick={close} class="mt-[var(--safe-area-inset-top)] shepherd-social-player-story-close">
 				<Icon icon="iconamoon:close-bold" class="size-8" />
 			</button>
 		</div>
@@ -46,7 +46,7 @@
 			<button onclick={next} class="h-4/5 w-1/2"></button>
 		</div>
 		<button class="mb-10 flex flex-row" onclick={startChat}>
-			<Icon icon="solar:chat-dots-bold" class="size-14 rounded-full bg-rose-600 p-3" />
+			<Icon icon="solar:chat-dots-bold" class="size-14 rounded-full bg-rose-600 p-3 shepherd-social-player-story-chat" />
 		</button>
 		<UModel
 			class="full-screen z-[-10] text-black"

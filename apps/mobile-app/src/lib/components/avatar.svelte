@@ -71,10 +71,11 @@
 </script>
 
 <button
-	class="avatar bg-amber-300 shadow-inner shadow-rose-800/40 {className}"
+	class="avatar bg-amber-300 shadow-inner shadow-rose-800/40 shepherd-info {className}"
 	style="background-image: url({selfieUrl})"
 	onclick={() => (openInfo = !noInfo)}
 >
+	<div class="pulsing"></div>
 	{#if !selfieAvailable}
 		{profile?.name.slice(0, 1).toUpperCase()}
 	{/if}
