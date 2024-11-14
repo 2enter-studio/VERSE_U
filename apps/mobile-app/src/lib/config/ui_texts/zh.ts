@@ -31,6 +31,7 @@ const table: UITextTable = {
 	REDEEM: '兌換',
 	SIDE_MENU_BLOCKS_TITLE: '封鎖名單',
 	SIDE_MENU_OTHERS_TITLE: '其他',
+	SIDE_MENU_TUTORIAL_TITLE: '教學',
 	PASSWORD_LIMIT: '密碼必須至少八個字元',
 	CONGRATULATION: '恭喜',
 	SIDE_MENU_COUPONS_TITLE: '優惠券',

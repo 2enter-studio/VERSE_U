@@ -18,7 +18,7 @@
 		<Avatar
 			profile={authState.profile}
 			readonly={false}
-			class="size-12 shadow-md shadow-orange-900/30"
+			class="size-12 shadow-md shadow-orange-900/30 relative"
 		/>
 			{authState.profile.name}
 		</button>

@@ -141,18 +141,16 @@
 		/>
 		<div class="full-screen layout top-10 flex flex-col items-center">
 			<svelte:component this={pages[sysState.route]} />
-			{#if authState.profile}
-				{#if sysState.showMenu}
-					<div
-						class="full-screen pointer-events-none flex flex-col justify-between pt-[var(--safe-area-inset-top)]"
-					>
-						<MyProfile />
-						<div class="flex flex-row justify-end">
-							<SideMenu />
-						</div>
-						<Menu />
+			{#if authState.profile && sysState.showMenu}
+				<div
+					class="full-screen pointer-events-none flex flex-col justify-between pt-[var(--safe-area-inset-top)]"
+				>
+					<MyProfile />
+					<div class="flex flex-row justify-end">
+						<SideMenu />
 					</div>
-				{/if}
+					<Menu />
+				</div>
 			{/if}
 		</div>
 	{/await}

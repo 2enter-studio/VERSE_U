@@ -59,15 +59,15 @@
 		{@const { icon, class: className, name, dialogClass } = item}
 		{@const textCode = `SIDE_MENU_${gameSelected ?? otherSelected ?? name}_TITLE`}
 		{@const title = sysState.uiTexts[textCode]}
-		<input id="side_menu_item_{name}" type="checkbox" bind:checked={items[i].open} hidden />
+		<input id="side_menu_item_{name}" type="checkbox" bind:checked={item.open} hidden />
 		<label for="side_menu_item_{name}">
-			<Icon {icon} class="size-10 rounded-full p-1.5 shadow-inner shadow-black/40 {className}" />
+			<Icon {icon} class="size-10 rounded-full p-1.5 shadow-inner shadow-black/40 {className} shepherd-side-menu-{name}" />
 		</label>
-		<Dialog {title} bind:open={items[i].open} class="{dialogClass} ">
+		<Dialog {title} bind:open={item.open} class="{dialogClass} ">
 			{#if name === 'MINI_GAME'}
 				<svelte:component this={elements.MINI_GAME} bind:selected={gameSelected} />
 			{:else if name === 'OTHERS'}
-				<svelte:component this={elements.OTHERS} bind:selected={otherSelected} />
+				<svelte:component this={elements.OTHERS} bind:selected={otherSelected} bind:open={item.open} />
 			{:else}
 				<svelte:component this={elements[name]} />
 			{/if}
