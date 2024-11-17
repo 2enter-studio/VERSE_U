@@ -535,13 +535,13 @@ export type Database = {
           user?: string
           unergy?: number
           clock_in?: {
-            mon: boolean
-            tue: boolean
-            wed: boolean
-            thu: boolean
-            fri: boolean
-            sat: boolean
-            sun: boolean
+            mon: string | null
+            tue: string | null
+            wed: string | null
+            thu: string | null
+            fri: string | null
+            sat: string | null
+            sun: string | null
           }
         }
         Update: {
@@ -552,13 +552,13 @@ export type Database = {
           user?: string
           unergy?: number
           clock_in?: {
-            mon: boolean
-            tue: boolean
-            wed: boolean
-            thu: boolean
-            fri: boolean
-            sat: boolean
-            sun: boolean
+            mon: string | null
+            tue: string | null
+            wed: string | null
+            thu: string | null
+            fri: string | null
+            sat: string | null
+            sun: string | null
           }
         }
         Relationships: [
