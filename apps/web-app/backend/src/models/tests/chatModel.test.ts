@@ -1,30 +1,25 @@
+import { assertEquals } from "https://deno.land/std@0.220.1/assert/mod.ts";
 import { getUserChats, getChatMessages, sendMessage } from "../chatModel.ts";
 
 Deno.test("getUserChats: should return chats for a user", async () => {
-  const mockUserId = "user_123";
-
+  const mockUserId = "123e4567-e89b-12d3-a456-426614174000";
   const { data, error } = await getUserChats(mockUserId);
-
-  console.assert(data !== undefined, "Data should be defined");
-  console.assert(error === null, "Error should be null");
+  assertEquals(error, null);
 });
 
 Deno.test("getChatMessages: should return messages for a chat", async () => {
-  const mockChatId = "chat_123";
-
+  const mockChatId = "123e4567-e89b-12d3-a456-426614174001";
   const { data, error } = await getChatMessages(mockChatId);
-
-  console.assert(data !== undefined, "Data should be defined");
-  console.assert(error === null, "Error should be null");
+  assertEquals(error, null);
 });
 
 Deno.test("sendMessage: should send a message successfully", async () => {
-  const mockChatId = "chat_123";
-  const mockContent = "Hello, World!";
-  const mockSender = "user_123";
-
-  const { data, error } = await sendMessage(mockChatId, mockContent, mockSender);
-
-  console.assert(data !== undefined, "Data should be defined");
-  console.assert(error === null, "Error should be null");
+  const mockMessage = {
+    chat: "123e4567-e89b-12d3-a456-426614174001",
+    content: "Test message",
+    sender: "123e4567-e89b-12d3-a456-426614174000"
+  };
+  
+  const { data, error } = await sendMessage(mockMessage.chat, mockMessage.content, mockMessage.sender);
+  assertEquals(error, null);
 });

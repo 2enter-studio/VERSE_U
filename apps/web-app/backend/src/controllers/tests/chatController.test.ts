@@ -1,27 +1,25 @@
+import { assertEquals } from "https://deno.land/std@0.220.1/assert/mod.ts";
 import { fetchUserChats, fetchChatMessages, postMessage } from "../chatController.ts";
 
 Deno.test("fetchUserChats: should fetch user chats successfully", async () => {
-  const mockUserId = "user_123";
-
+  const mockUserId = "123e4567-e89b-12d3-a456-426614174000";
   const result = await fetchUserChats(mockUserId);
-
-  console.assert(result !== undefined, "Chats should be defined");
+  assertEquals(Array.isArray(result), true);
 });
 
 Deno.test("fetchChatMessages: should fetch chat messages successfully", async () => {
-  const mockChatId = "chat_123";
-
+  const mockChatId = "123e4567-e89b-12d3-a456-426614174001";
   const result = await fetchChatMessages(mockChatId);
-
-  console.assert(result !== undefined, "Messages should be defined");
+  assertEquals(Array.isArray(result), true);
 });
 
 Deno.test("postMessage: should send a message successfully", async () => {
-  const mockChatId = "chat_123";
-  const mockContent = "Hello, World!";
-  const mockSender = "user_123";
-
-  const result = await postMessage(mockChatId, mockContent, mockSender);
-
-  console.assert(result !== undefined, "Message should be sent");
+  const mockMessage = {
+    chat: "123e4567-e89b-12d3-a456-426614174001",
+    content: "Test message",
+    sender: "123e4567-e89b-12d3-a456-426614174000"
+  };
+  
+  const result = await postMessage(mockMessage.chat, mockMessage.content, mockMessage.sender);
+  assertEquals(result.content, mockMessage.content);
 });

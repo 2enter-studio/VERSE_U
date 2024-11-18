@@ -17,18 +17,9 @@ export function getEnv(key: string): string {
 
 // 創建 Supabase 客戶端
 export function makeSupaClient() {
-  console.log("DEVELOPING", getEnv("DEVELOPING"));
-  console.log("SUPABASE_URL", getEnv("SUPABASE_URL"));
-  console.log("SUPABASE_ANON_KEY", getEnv("SUPABASE_ANON_KEY"));
-  console.log("LOCAL_SUPABASE_URL", getEnv("LOCAL_SUPABASE_URL"));
-  console.log("LOCAL_SUPABASE_ANON_KEY", getEnv("LOCAL_SUPABASE_ANON_KEY"));
   const isDeveloping = getEnv("DEVELOPING") === "1";
-  console.log("isDeveloping", isDeveloping);
   const url = isDeveloping ? getEnv("LOCAL_SUPABASE_URL") : getEnv("SUPABASE_URL");
   const key = isDeveloping ? getEnv("LOCAL_SUPABASE_ANON_KEY") : getEnv("SUPABASE_ANON_KEY");
-
-  console.log("url", url);
-  console.log("key", key);
 
   if (!url || !key) {
     throw new Error("Missing Supabase environment variables");
