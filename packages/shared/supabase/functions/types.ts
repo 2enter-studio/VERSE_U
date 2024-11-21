@@ -365,13 +365,6 @@ export type Database = {
             referencedRelation: "tags"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "public_j-users-tags_user_fkey"
-            columns: ["user"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
         ]
       }
       "j-wearings-texture_types": {
@@ -511,65 +504,33 @@ export type Database = {
       }
       profiles: {
         Row: {
+          clock_in: Json
           id: string
           last_active: string
           name: string
           public_id: string
-          user: string
           unergy: number
-          clock_in: {
-            mon: string | null
-            tue: string | null
-            wed: string | null
-            thu: string | null
-            fri: string | null
-            sat: string | null
-            sun: string | null
-          }
+          user: string
         }
         Insert: {
+          clock_in?: Json
           id?: string
           last_active?: string
           name: string
           public_id?: string
-          user?: string
           unergy?: number
-          clock_in?: {
-            mon: string | null
-            tue: string | null
-            wed: string | null
-            thu: string | null
-            fri: string | null
-            sat: string | null
-            sun: string | null
-          }
+          user?: string
         }
         Update: {
+          clock_in?: Json
           id?: string
           last_active?: string
           name?: string
           public_id?: string
-          user?: string
           unergy?: number
-          clock_in?: {
-            mon: string | null
-            tue: string | null
-            wed: string | null
-            thu: string | null
-            fri: string | null
-            sat: string | null
-            sun: string | null
-          }
+          user?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_profiles_user_fkey"
-            columns: ["user"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       regions: {
         Row: {
@@ -898,8 +859,8 @@ export type Database = {
           id: string
           in_starter_pack: boolean
           mesh: string
+          price: number | null
           updated_at: string
-          price: number
         }
         Insert: {
           category?: string
@@ -908,8 +869,8 @@ export type Database = {
           id?: string
           in_starter_pack?: boolean
           mesh?: string
+          price?: number | null
           updated_at?: string
-          price?: number
         }
         Update: {
           category?: string
@@ -918,8 +879,8 @@ export type Database = {
           id?: string
           in_starter_pack?: boolean
           mesh?: string
+          price?: number | null
           updated_at?: string
-          price?: number
         }
         Relationships: [
           {
@@ -1086,5 +1047,20 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
