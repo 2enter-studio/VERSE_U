@@ -216,61 +216,6 @@ CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_06" (
 
 ALTER TABLE "public"."chat_messages_2024_06" OWNER TO "postgres";
 
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_07" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid"
-);
-
-ALTER TABLE "public"."chat_messages_2024_07" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_08" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid"
-);
-
-ALTER TABLE "public"."chat_messages_2024_08" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_09" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid"
-);
-
-ALTER TABLE "public"."chat_messages_2024_09" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_10" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid"
-);
-
-ALTER TABLE "public"."chat_messages_2024_10" OWNER TO "postgres";
-
-CREATE TABLE IF NOT EXISTS "public"."chat_messages_2024_11" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "sender" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "chat" "uuid" NOT NULL,
-    "content" "text" NOT NULL,
-    "reply_to" "uuid"
-);
-
-ALTER TABLE "public"."chat_messages_2024_16" OWNER TO "postgres";
-
 CREATE TABLE IF NOT EXISTS "public"."chats" (
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -442,16 +387,6 @@ ALTER TABLE "public"."wearings" OWNER TO "postgres";
 
 ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_06" FOR VALUES FROM ('2024-06-01 00:00:00+00') TO ('2024-07-01 00:00:00+00');
 
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_07" FOR VALUES FROM ('2024-07-01 00:00:00+00') TO ('2024-08-01 00:00:00+00');
-
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_08" FOR VALUES FROM ('2024-08-01 00:00:00+00') TO ('2024-09-01 00:00:00+00');
-
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_09" FOR VALUES FROM ('2024-09-01 00:00:00+00') TO ('2024-10-01 00:00:00+00');
-
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_10" FOR VALUES FROM ('2024-10-01 00:00:00+00') TO ('2024-11-01 00:00:00+00');
-
-ALTER TABLE ONLY "public"."chat_messages" ATTACH PARTITION "public"."chat_messages_2024_11" FOR VALUES FROM ('2024-11-01 00:00:00+00') TO ('2024-12-01 00:00:00+00');
-
 ALTER TABLE ONLY "public"."app_versions"
     ADD CONSTRAINT "app_updates_id_key" UNIQUE ("id");
 
@@ -475,21 +410,6 @@ ALTER TABLE ONLY "public"."chat_messages"
 
 ALTER TABLE ONLY "public"."chat_messages_2024_06"
     ADD CONSTRAINT "chat_messages_2024_06_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_07"
-    ADD CONSTRAINT "chat_messages_2024_07_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_08"
-    ADD CONSTRAINT "chat_messages_2024_08_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_09"
-    ADD CONSTRAINT "chat_messages_2024_09_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_10"
-    ADD CONSTRAINT "chat_messages_2024_10_pkey" PRIMARY KEY ("id", "created_at");
-
-ALTER TABLE ONLY "public"."chat_messages_2024_11"
-    ADD CONSTRAINT "chat_messages_2024_11_pkey" PRIMARY KEY ("id", "created_at");
 
 ALTER TABLE ONLY "public"."chats"
     ADD CONSTRAINT "chats_pkey" PRIMARY KEY ("id");
@@ -597,16 +517,6 @@ ALTER TABLE ONLY "public"."wearings"
     ADD CONSTRAINT "wearings_pkey" PRIMARY KEY ("id");
 
 ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_06_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_07_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_08_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_09_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_10_pkey";
-
-ALTER INDEX "public"."chat_messages_pkey" ATTACH PARTITION "public"."chat_messages_2024_11_pkey";
 
 CREATE OR REPLACE TRIGGER "trigger_archive_trip" BEFORE UPDATE ON "public"."trips" FOR EACH ROW EXECUTE FUNCTION "public"."archive_trip"();
 
@@ -730,16 +640,6 @@ CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_mes
 
 CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_06" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_07" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_08" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_09" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_10" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can insert messages into their chats" ON "public"."chat_messages_2024_11" FOR INSERT TO "authenticated" WITH CHECK ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
 CREATE POLICY "Users can see their chat members" ON "public"."chat_members" FOR SELECT USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
 CREATE POLICY "Users can see their own chats" ON "public"."chats" FOR SELECT USING ("public"."is_chat_member"("auth"."uid"(), "id"));
@@ -748,16 +648,6 @@ CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messa
 
 CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_06" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_07" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_08" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_09" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_10" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
-
-
-CREATE POLICY "Users can select messages of their chats" ON "public"."chat_messages_2024_11" FOR SELECT TO "authenticated" USING ("public"."is_chat_member"("auth"."uid"(), "chat"));
 CREATE POLICY "Users can select their wearings or every equipped wearings" ON "public"."owned_wearings" FOR SELECT TO "authenticated" USING ((("auth"."uid"() = "owner") OR ("equipped" = true)));
 
 ALTER TABLE "public"."app_versions" ENABLE ROW LEVEL SECURITY;
@@ -769,16 +659,6 @@ ALTER TABLE "public"."chat_members" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."chat_messages" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."chat_messages_2024_06" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_07" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_08" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_09" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_10" ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE "public"."chat_messages_2024_11" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."chats" ENABLE ROW LEVEL SECURITY;
 
@@ -819,16 +699,6 @@ ALTER TABLE "public"."wearings" ENABLE ROW LEVEL SECURITY;
 ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
 
 ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_06";
-
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_07";
-
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_08";
-
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_09";
-
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_10";
-
-ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."chat_messages_2024_11";
 
 ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."trips";
 
@@ -893,25 +763,9 @@ GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "anon";
 GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "authenticated";
 GRANT ALL ON TABLE "public"."chat_messages_2024_06" TO "service_role";
 
-GRANT ALL ON TABLE "public"."chat_messages_2024_07" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_07" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_07" TO "service_role";
-
-GRANT ALL ON TABLE "public"."chat_messages_2024_08" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_08" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_08" TO "service_role";
-
-GRANT ALL ON TABLE "public"."chat_messages_2024_09" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_09" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_09" TO "service_role";
-
-GRANT ALL ON TABLE "public"."chat_messages_2024_10" TO "anon";
+GRANT ALL ON TABLE "public"."chats" TO "anon";
 GRANT ALL ON TABLE "public"."chats" TO "authenticated";
 GRANT ALL ON TABLE "public"."chats" TO "service_role";
-
-GRANT ALL ON TABLE "public"."chat_messages_2024_11" TO "anon";
-GRANT ALL ON TABLE "public"."chat_messages_2024_11" TO "authenticated";
-GRANT ALL ON TABLE "public"."chat_messages_2024_11" TO "service_role";
 
 GRANT ALL ON TABLE "public"."hai_an_players" TO "anon";
 GRANT ALL ON TABLE "public"."hai_an_players" TO "authenticated";
