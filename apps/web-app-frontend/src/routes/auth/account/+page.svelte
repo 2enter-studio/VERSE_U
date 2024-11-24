@@ -6,15 +6,35 @@
 	import { authState, sysState } from '@/states';
 	import { validate } from '@/utils';
 	import { DEFAULT_ROUTE, OAUTH_PROVIDERS } from '@/config';
-	import { changePwd, createAnonymousProfile, forgotPwd, providerSignIn, pwdSignIn, signUp } from '$routes/auth/utils';
+	import {
+		changePwd,
+		createAnonymousProfile,
+		forgotPwd,
+		providerSignIn,
+		pwdSignIn,
+		signUp
+	} from '$routes/auth/utils';
 	import { MenuToggler } from '@/components';
 	import { TridimensionalButton } from '@/components';
 	import { CurrentConfigSetting } from '@/config/system';
 	import * as authApi from '@/api/auth';
 	import type { TextCode } from '@/config/ui_texts/types';
 	import { goto } from '$app/navigation';
-	type FormMode = 'SIGNIN' | 'SIGNUP' | 'FORGOT_PWD' | 'CHANGE_PWD' | 'DELETE_ACCOUNT' | 'ONE_O_ONE';
-	type InputType = 'EMAIL' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'NEW_PASSWORD' | 'ANONYMOUS_LOGIN' | 'SELECT_LOCALE' | 'CAPTCHA';
+	type FormMode =
+		| 'SIGNIN'
+		| 'SIGNUP'
+		| 'FORGOT_PWD'
+		| 'CHANGE_PWD'
+		| 'DELETE_ACCOUNT'
+		| 'ONE_O_ONE';
+	type InputType =
+		| 'EMAIL'
+		| 'PASSWORD'
+		| 'CONFIRM_PASSWORD'
+		| 'NEW_PASSWORD'
+		| 'ANONYMOUS_LOGIN'
+		| 'SELECT_LOCALE'
+		| 'CAPTCHA';
 
 	const submitMethods: Record<FormMode, Function> = {
 		SIGNIN: pwdSignIn,
@@ -25,8 +45,8 @@
 			window.open('https://verseu.app/account/delete');
 		},
 		ONE_O_ONE: async (locale: 'en' | 'zh') => {
-			const {data, error} = await authApi.anonymousLogin();
-			if(error) {
+			const { data, error } = await authApi.anonymousLogin();
+			if (error) {
 				sysState.defaultError(error.message as TextCode);
 				return;
 			}
@@ -34,20 +54,24 @@
 			console.log('submit sysState.pref.locale', sysState.pref.locale);
 			sysState.routeTo(DEFAULT_ROUTE);
 			goto(`/`);
-			
-		},
+		}
 	} as const;
 
 	const inputClasses =
 		'rounded-md text-sm py-0.5 w-full bg-black text-white border-white border-[1px] pl-2';
-	
+
 	const isOneOOne = CurrentConfigSetting === 'one_o_one';
 	const anonymousKey = authState.isAnonymous && authState.profile?.id;
 	const anonymousSignup = isOneOOne && anonymousKey;
 
-
 	let formMode = $state<FormMode>(
-		anonymousSignup ? 'SIGNUP' : (isOneOOne ? 'ONE_O_ONE' : (authState.loggedIn ? 'CHANGE_PWD' : 'SIGNIN'))
+		anonymousSignup
+			? 'SIGNUP'
+			: isOneOOne
+				? 'ONE_O_ONE'
+				: authState.loggedIn
+					? 'CHANGE_PWD'
+					: 'SIGNIN'
 	);
 	let pwd = $state('');
 	let pwdConfirm = $state('');
@@ -129,18 +153,25 @@
 	</div>
 	{#if CurrentConfigSetting !== 'one_o_one'}
 		<div
-		class="flex w-full flex-row justify-between gap-2 rounded-md bg-black/90 p-1 shadow-inner shadow-white/50"
-	>
-		{#each formOptions as choice}
-			<input id={choice} type="radio" value={choice} hidden bind:group={formMode} class="hidden" />
-			<label
-				for={choice}
-				class="{formMode === choice
-					? 'bg-gradient-to-l from-white/80 to-white text-black'
-					: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-center text-xs transition-colors duration-200"
-			>
-				{sysState.uiTexts[choice]}
-			</label>
+			class="flex w-full flex-row justify-between gap-2 rounded-md bg-black/90 p-1 shadow-inner shadow-white/50"
+		>
+			{#each formOptions as choice}
+				<input
+					id={choice}
+					type="radio"
+					value={choice}
+					hidden
+					bind:group={formMode}
+					class="hidden"
+				/>
+				<label
+					for={choice}
+					class="{formMode === choice
+						? 'bg-gradient-to-l from-white/80 to-white text-black'
+						: 'bg-transparent text-white/90'} rounded-sm px-3 py-0.5 text-center text-xs transition-colors duration-200"
+				>
+					{sysState.uiTexts[choice]}
+				</label>
 			{/each}
 		</div>
 	{/if}
@@ -198,13 +229,15 @@
 					<small class="text-red-900">{sysState.uiTexts.PASSWORD_LIMIT}</small>
 				{/if}
 				{#if field === 'ANONYMOUS_LOGIN'}
-				<div class="flex w-full justify-center">
-					<TridimensionalButton
-						onClick={() => {submitMethods.ONE_O_ONE()}}
-						text={sysState.uiTexts.ANONYMOUS_LOGIN}
-						style="w-full"
-						disabled={false}
-					/>
+					<div class="flex w-full justify-center">
+						<TridimensionalButton
+							onClick={() => {
+								submitMethods.ONE_O_ONE();
+							}}
+							text={sysState.uiTexts.START_EXPERIENCE}
+							style="w-full"
+							disabled={false}
+						/>
 					</div>
 				{/if}
 				{#if field === 'SELECT_LOCALE'}
@@ -213,9 +246,21 @@
 							{#each LOCALES as lang}
 								{@const selected = lang === sysState.pref.locale}
 								<div>
-								<input type="radio" name="lang" id="{lang}-option" value={lang} bind:group={sysState.pref.locale} class="peer hidden" checked={selected} />
-								<label for="{lang}-option" class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-[#fb7475] peer-checked:font-bold peer-checked:text-white transition-colors duration-200">{UI_TEXTS[lang].LOCALE}</label>
-							</div>
+									<input
+										type="radio"
+										name="lang"
+										id="{lang}-option"
+										value={lang}
+										bind:group={sysState.pref.locale}
+										class="peer hidden"
+										checked={selected}
+									/>
+									<label
+										for="{lang}-option"
+										class="block cursor-pointer select-none rounded-xl p-2 text-center transition-colors duration-200 peer-checked:bg-[#fb7475] peer-checked:font-bold peer-checked:text-white"
+										>{UI_TEXTS[lang].LOCALE}</label
+									>
+								</div>
 							{/each}
 						</div>
 					</div>

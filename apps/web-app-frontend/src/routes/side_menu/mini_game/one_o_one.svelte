@@ -24,7 +24,7 @@
 
 	function playAnimation() {
 		animating = true;
-		
+
 		let speed = 0.01;
 		const interval = setInterval(() => {
 			cameraPosition[1] -= speed;
@@ -58,13 +58,14 @@
 	}
 </script>
 
-<!-- <img
+<img
 	src="/images/tube.png"
 	alt="tube"
-	class="{animating
-		? 'top-[-20px]'
-		: 'top-[-50vh]'} absolute z-[120] rotate-180 transition-all duration-500"
-/> -->
+	class="
+		w-screen absolute z-[120] left-0 m-auto rotate-180 transition-all duration-500
+		{animating ? 'top-[-20px]' : 'top-[-50vh]'}
+	"
+/>
 
 {#if animating}
 	<UModel
@@ -102,11 +103,16 @@
 				</button>
 			</div>
 		{:else if success}
-			<div class="center-content h-full font-bold flex flex-col">
+			<div class="center-content flex h-full flex-col font-bold">
 				<h1 class="h-fit bg-pink-300 p-1">
 					{sysState.uiTexts.HAI_AN_SUCCESS}
 				</h1>
-				<TridimensionalButton onClick={signup} text={sysState.uiTexts.SIGNUP} disabled={false} style="mt-2"/>
+				<TridimensionalButton
+					onClick={signup}
+					text={sysState.uiTexts.SIGNUP}
+					disabled={false}
+					style="mt-2"
+				/>
 			</div>
 		{/if}
 	</div>
