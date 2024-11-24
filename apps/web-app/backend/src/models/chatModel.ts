@@ -36,3 +36,29 @@ export const sendMessage = async (chatId: string, content: string, sender: strin
     .select()
     .single();
 };
+
+export const getReloadChats = async (user_id: string, chat_ids?: string[]) => {
+  return await supabase
+    .from('chats')
+    .select('*, chat_members(*, user(*)), chat_messages(*)');
+};
+
+export const getChatsWithoutIds = async (user_id: string) => {
+  return await supabase
+    .from('chats')
+    .select('*, chat_members(*, user(*)), chat_messages(*)')
+    .in('id', chat_ids);
+};
+
+export const getChats = async (user_id: string, chat_ids?: string[]) => {
+  return await supabase
+    .from('chats')
+    .select('*, chat_members(*, user(*)), chat_messages(*)')
+    .in('id', chat_ids);
+};
+
+export const getChatWithoutIds = async () => {
+  return await supabase
+    .from('chats')
+    .select('*, chat_members(*, user(*)), chat_messages(*)')
+};

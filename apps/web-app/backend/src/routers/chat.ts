@@ -1,42 +1,45 @@
-import {
-  fetchUserChats,
-  fetchChatMessages,
-  postMessage,
-} from "../controllers/chatController.ts";
+import { Router } from "https://deno.land/x/oak/mod.ts";
+import * as ChatController from "../controllers/chatController.ts";
 
-export const chatRouter = async (req: Request): Promise<Response> => {
-  const url = new URL(req.url);
-  const path = url.pathname;
-  const method = req.method;
+export const chatRouter = new Router();
 
+chatRouter.get("/chats/:userId", async (ctx) => {
+  const userId = ctx.params.userId;
+  const chatIds = ctx.query.chatIds;
   try {
-    // Get user's chats
-    if (path.startsWith("/chats/") && method === "GET") {
-      const userId = path.split("/")[2];
-      const data = await fetchUserChats(userId);
-      return new Response(JSON.stringify(data), { status: 200 });
+    if (chatIds) {
+      const data = await ChatController.fetchChats(userId, chatIds);
+    } else {
+      const data = await ChatController.fetchUserChats(userId);
     }
-
-    // Get chat messages
-    if (path.startsWith("/chats/") && path.includes("/messages") && method === "GET") {
-      const chatId = path.split("/")[2];
-      const data = await fetchChatMessages(chatId);
-      return new Response(JSON.stringify(data), { status: 200 });
-    }
-
-    // Send message
-    if (path.startsWith("/chats/") && path.includes("/messages") && method === "POST") {
-      const chatId = path.split("/")[2];
-      const { content, sender } = await req.json();
-      const data = await postMessage(chatId, content, sender);
-      return new Response(JSON.stringify(data), { status: 201 });
-    }
-
-    return new Response("Not Found", { status: 404 });
+    ctx.response.body = JSON.stringify(data);
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    ctx.response.status = 400;
+    ctx.response.body = JSON.stringify({ error: error.message });
   }
-};
+});
+
+chatRouter.get("/chats/:userId/messages", async (ctx) => {
+  const userId = ctx.params.userId;
+  const chatId = ctx.params.chatId;
+  try {
+    const data = await ChatController.fetchChatMessages(chatId);
+    ctx.response.body = JSON.stringify(data);
+  } catch (error) {
+    ctx.response.status = 400;
+    ctx.response.body = JSON.stringify({ error: error.message });
+  }
+});
+
+chatRouter.post("/chats/:chatId/messages", async (ctx) => {
+  const chatId = ctx.params.chatId;
+  const { content, sender } = await ctx.request.body.json();
+  try {
+    const data = await ChatController.postMessage(chatId, content, sender);
+    ctx.response.body = JSON.stringify(data);
+  } catch (error) {
+    ctx.response.status = 400;
+    ctx.response.body = JSON.stringify({ error: error.message });
+  }
+});
+
