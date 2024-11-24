@@ -113,6 +113,7 @@ const table: UITextTable = {
 	ONE_O_ONE_REGISTER_HINT:
 		'Enter email, password and register here to get 500 Unergy, after registration, you will be redirected to the download game page.',
 	START_EXPERIENCE: 'Start experience',
+	SIGNUP_APP_ACCOUNT: 'Register App Account',
 	INTRODUCTION: 'Introduction',
 	INTRODUCTION_CONTENT: ''
 };

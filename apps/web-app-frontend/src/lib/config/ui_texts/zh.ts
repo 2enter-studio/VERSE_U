@@ -88,6 +88,7 @@ const table: UITextTable = {
 	SIGNIN: '登入',
 	SIGNOUT: '登出',
 	SIGNUP: '註冊',
+	SIGNUP_APP_ACCOUNT: '註冊 App 帳號',
 	PASSWORD: '密碼',
 	CONFIRM_EXECUTION: '確定執行',
 	CONFIRM_PASSWORD: '確認密碼',
