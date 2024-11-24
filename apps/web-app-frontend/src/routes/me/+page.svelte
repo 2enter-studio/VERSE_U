@@ -17,7 +17,7 @@
 	import { equipWearings } from '$routes/me/utils';
 	import { MenuToggler } from '@/components/index.js';
 	import { watch } from 'runed';
-	import { ClockIn }from './components';
+	import { ClockIn } from './components';
 	import { CurrentConfigSetting } from '@/config/system';
 	import TridimensionalButton from '@/components/tridimensional_button.svelte';
 	import OneOOne from '$routes/side_menu/mini_game/one_o_one.svelte';
@@ -122,17 +122,15 @@
 	<div
 		class="full-screen pointer-events-none flex flex-col items-start justify-center gap-2 px-2 *:pointer-events-auto"
 	>
-		
-	{#if clockInState.clockIn && localStorageState.hasCompletedTutorial}
-		<ClockIn />
-	{/if}
+		{#if clockInState.clockIn && localStorageState.hasCompletedTutorial}
+			<ClockIn />
+		{/if}
 		<button onclick={() => (dressing = true)} class="shepherd-clothes relative">
 			<div class="pulsing"></div>
 			<Icon
 				icon="game-icons:clothes"
 				class="size-14 overflow-visible rounded-full border-b-4 border-r-4 border-black bg-white p-2 text-black"
 			/>
-			
 		</button>
 		<button onclick={() => (takingSelfie = true)} class="shepherd-selfie relative">
 			<div class="pulsing"></div>
@@ -145,23 +143,34 @@
 {/if}
 
 {#if introduction}
-	<Dialog title={sysState.uiTexts.INTRODUCTION} bind:open={introduction} class="center-content flex-col">
+	<Dialog
+		title={sysState.uiTexts.INTRODUCTION}
+		bind:open={introduction}
+		class="center-content flex-col"
+	>
 		<div class="text-center">
 			{sysState.uiTexts.ONE_O_ONE_TELEPORT_HINT}
-			<div class="flex justify-center mt-2">
-				<TridimensionalButton onClick={() => (introduction = false)} text={sysState.uiTexts.YES} disabled={false} style="w-20"/>
+			<div class="mt-2 flex justify-center">
+				<TridimensionalButton
+					onClick={() => (introduction = false)}
+					text={sysState.uiTexts.YES}
+					disabled={false}
+					style="w-20"
+				/>
 			</div>
 		</div>
-		
 	</Dialog>
 {/if}
 
 {#if takingSelfie}
 	<div class="fixed bottom-32 flex w-full justify-evenly">
-		<button class="text-rose-700 shepherd-selfie-back" onclick={() => (takingSelfie = false)}>
+		<button class="shepherd-selfie-back text-rose-700" onclick={() => (takingSelfie = false)}>
 			<Icon icon="carbon:previous-filled" class="size-10 rounded-full bg-white/80" />
 		</button>
-		<button class="size-20 rounded-full border-4 border-white bg-white/60 shepherd-selfie-take" onclick={takeSelfie}>
+		<button
+			class="shepherd-selfie-take size-20 rounded-full border-4 border-white bg-white/60"
+			onclick={takeSelfie}
+		>
 		</button>
 		<div class="size-10"></div>
 	</div>
@@ -189,7 +198,6 @@
 		<!-- <button onclick={handleUploadSelfie} class="rounded-md bg-emerald-500 px-2 py-1 shadow-inner shadow-black/30">
 			{sysState.uiTexts.YES}
 		</button> -->
-		
 	</Dialog>
 {/if}
 
@@ -201,11 +209,11 @@
 	>
 		<div class="h-[15vh]"></div>
 		{#if CurrentConfigSetting !== 'one_o_one'}
-			<button class="text-rose-700 shepherd-clothes-back" onclick={() => (dressing = false)}>
+			<button class="shepherd-clothes-back text-rose-700" onclick={() => (dressing = false)}>
 				<Icon icon="carbon:previous-filled" class="size-7 rounded-full bg-white/80" />
 			</button>
 		{/if}
-		<div class="flex flex-row justify-start shepherd-clothes-content">
+		<div class="shepherd-clothes-content flex flex-row justify-start">
 			<div
 				class="flex h-fit max-h-[50vh] flex-col gap-1 overflow-auto rounded-l-2xl rounded-br-2xl bg-orange-400 px-2 py-3 shadow-inner shadow-white/30"
 			>
@@ -265,7 +273,14 @@
 			<div class="flex h-fit flex-col gap-1 rounded-r-xl text-sm">
 				{#each gameState.wearingTypes as { id, name }}
 					{@const selected = selectedWearingType === id}
-					<input {id} type="radio" value={id} bind:group={selectedWearingType} hidden class="hidden"/>
+					<input
+						{id}
+						type="radio"
+						value={id}
+						bind:group={selectedWearingType}
+						hidden
+						class="hidden"
+					/>
 					<label
 						for={id}
 						class="{selected
@@ -294,11 +309,11 @@
 				{sysState.uiTexts.SAVE_MODIFIED}
 			</button>
 		{/if}
-		{#if focusedWearing?.description}
-			<div class="center-content w-full rounded-sm bg-black/30 p-2 text-center">
-				{@html focusedWearing.description}
-			</div>
-		{/if}
+		<!--{#if focusedWearing?.description}-->
+		<!--	<div class="center-content w-full rounded-sm bg-black/30 p-2 text-center">-->
+		<!--		{@html focusedWearing.description}-->
+		<!--	</div>-->
+		<!--{/if}-->
 	</div>
 {/if}
 
@@ -316,14 +331,23 @@
 {/if}
 
 {#if IS_101}
-<div class="absolute bottom-20">
-	<TridimensionalButton onClick={() => (open101Modal = true, selectedWearingCopy = { ...selectedWearings })} text={sysState.uiTexts.TELEPORT} disabled={false} style="w-40"/>
-</div>
+	<div class="absolute bottom-20">
+		<TridimensionalButton
+			onClick={() => ((open101Modal = true), (selectedWearingCopy = { ...selectedWearings }))}
+			text={sysState.uiTexts.TELEPORT}
+			disabled={false}
+			style="w-40"
+		/>
+	</div>
 
-	<Dialog title={sysState.uiTexts.TELEPORT} bind:open={open101Modal} class="center-content flex-col">
+	<Dialog
+		title={sysState.uiTexts.TELEPORT}
+		bind:open={open101Modal}
+		class="center-content flex-col"
+	>
 		<div class="text-center">
 			{sysState.uiTexts.ONE_O_ONE}
-			<OneOOne selectedWearing={selectedWearings}/>
+			<OneOOne selectedWearing={selectedWearings} />
 		</div>
 	</Dialog>
 {/if}
@@ -338,6 +362,8 @@
 	</div>
 	<Form submitFunction={useCoupon} afterSubmit={() => (showCoupon = false)}>
 		<input type="text" name="sponsor_id" value={gameState.sponsors[0].id} hidden />
-		<SubmitBtn class="rounded-lg bg-emerald-700 py-1 px-2 text-white">{sysState.uiTexts.GET}</SubmitBtn>
+		<SubmitBtn class="rounded-lg bg-emerald-700 px-2 py-1 text-white"
+			>{sysState.uiTexts.GET}</SubmitBtn
+		>
 	</Form>
 </Dialog>
