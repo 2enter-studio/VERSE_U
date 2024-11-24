@@ -46,8 +46,8 @@
 		if (!anonKey) return;
 		const res = await authApi.triggerOneOOne(anonKey, args.passcode, selectedWearing);
 		if (res.error) {
-			const err = createError(res.error);
-			return { error: await handleEFResponse(err) }
+			// const err = createError(res.error);
+			return createError(await handleEFResponse(res.error));
 		}
 	}
 
