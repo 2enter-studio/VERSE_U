@@ -3,7 +3,7 @@ import type { Handle } from '@sveltejs/kit';
 
 import { initFileStorage } from '@/server/download';
 import { initMetaData } from '@/server/metadata';
-import { callHaiAnPlayer } from '@/server/players/hai_an';
+import { call101Player, callHaiAnPlayer } from '@/server/players/hai_an';
 import { wsHandler } from '@/server/ws';
 import { serverState } from '@/server/state';
 import { HAI_AN_CALL_TIMEOUT } from '@/config';
@@ -14,6 +14,7 @@ async function serverInit() {
 	initMetaData();
 	setInterval(async () => {
 		await callHaiAnPlayer();
+		await call101Player();
 	}, HAI_AN_CALL_TIMEOUT);
 
 	serverState.initialized = true;
