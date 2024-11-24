@@ -6,6 +6,6 @@
   <h1>嗨！請於下方點擊您的作業系統 / 運行環境</h1>
   <h1>開始體驗 Verse U 吧！</h1>
   {#each Object.entries(APP_LINKS) as [key, value]}
-    <a href={value} class="text-xl" target="_blank">{key}</a>
+    <a href={value} class="text-xl bg-white text-black py-1 px-2 rounded-lg" target="_blank">{key}</a>
   {/each}
 </div>
