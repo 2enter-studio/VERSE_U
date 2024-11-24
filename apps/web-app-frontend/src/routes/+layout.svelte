@@ -14,8 +14,8 @@
 </script>
 
 <div class="h-screen w-screen">
-	{#if !hasCompletedTutorial && authState.profile}
-		<Shepherd />
-	{/if}
+	<!--{#if !hasCompletedTutorial && authState.profile}-->
+	<!--	<Shepherd />-->
+	<!--{/if}-->
 	{@render children()}
 </div>
