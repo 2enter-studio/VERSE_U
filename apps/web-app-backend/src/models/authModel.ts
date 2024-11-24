@@ -1,4 +1,4 @@
-import { db as supabase } from "../utils/supabaseClient.ts";
+import { db as supabase } from '../utils/supabaseClient.ts';
 
 export const signIn = async (email: string, password: string) => {
   return await supabase.auth.signInWithPassword({ email, password });
@@ -13,7 +13,7 @@ export const getSession = async (access_token?: string, refresh_token?: string) 
 };
 
 export const signInAnonymous = async () => {
-  return await supabase.auth.signInAnonymously()
+  return await supabase.auth.signInAnonymously();
 };
 
 export const setPassword = async (password: string) => {
@@ -26,11 +26,14 @@ export const changePassword = async (old_password: string, new_password: string)
 
 export const forgetPassword = async (email: string) => {
   return await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.PUBLIC_URL}/reset-password`,
+    redirectTo: `${process.env.PUBLIC_URL}/reset-password`
   });
 };
 
-export const signInWithOAuth = async (provider: OAuthProvider, options?: { redirectTo?: string }) => {
+export const signInWithOAuth = async (
+  provider: OAuthProvider,
+  options?: { redirectTo?: string }
+) => {
   return await supabase.auth.signInWithOAuth({ provider, options });
 };
 
@@ -38,18 +41,22 @@ export const logout = async () => {
   return await supabase.auth.signOut();
 };
 
-export const removeOneOOnePlayer = async (anon_key: string ) => {
+export const removeOneOOnePlayer = async (anon_key: string) => {
   return await supabase.from('one_o_one_player').delete().eq('anon_key', anon_key);
 };
 
 export const insertOneOOnePlayer = async (anon_key: string, wearings) => {
   console.log('insertOneOOnePlayer', anon_key, wearings);
-  return await supabase.from('one_o_one_player').insert({ anon_key, wearings });
+  return supabase.from('one_o_one_player').insert({ anon_key, wearings });
 };
 
 export const getOneOOnePlayerById = async (anon_key: string, allowNotExisting = false) => {
   // allow not existing
-  const { data, error } = await supabase.from('one_o_one_player').select('*').eq('anon_key', anon_key).single();
+  const { data, error } = await supabase
+    .from('one_o_one_player')
+    .select('*')
+    .eq('anon_key', anon_key)
+    .single();
   if (error && !allowNotExisting) throw error;
   return data || null;
 };

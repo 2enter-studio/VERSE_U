@@ -62,7 +62,7 @@
 	src="/images/tube.png"
 	alt="tube"
 	class="
-		w-screen absolute z-[120] left-0 m-auto rotate-180 transition-all duration-500
+		absolute left-0 z-[120] m-auto w-screen rotate-180 transition-all duration-500
 		{animating ? 'top-[-20px]' : 'top-[-50vh]'}
 	"
 />
@@ -97,7 +97,7 @@
 			<div class="center-content h-full">
 				<button
 					class="size-[30vw] rounded-3xl bg-rose-500 text-[15vw] font-bold text-white shadow-inner shadow-white/50"
-					onclick={() => triggerOneOOne({ passcode })}
+					type="submit"
 				>
 					GO
 				</button>
@@ -117,3 +117,4 @@
 		{/if}
 	</div>
 </Form>
+await

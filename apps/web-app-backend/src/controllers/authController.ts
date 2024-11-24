@@ -68,7 +68,7 @@ export const triggerOneOOne = async (anon_key: string, passcode: string, wearing
     await AuthModel.removeOneOOnePlayer(anon_key);
   }
   // insert
-  return await AuthModel.insertOneOOnePlayer(anon_key, wearingIds);
+  return AuthModel.insertOneOOnePlayer(anon_key, wearingIds);
 };
 
 
