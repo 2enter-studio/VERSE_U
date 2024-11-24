@@ -1,46 +1,84 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import * as SystemController from "../controllers/systemController.ts";
+import { Router, Request, Response } from 'express';
+import * as SystemController from '../controllers/systemController.ts';
 
-export const systemRouter = new Router();
+export const systemRouter = Router();
 
-systemRouter.get("/maintenance", async (ctx) => {
-  const data = await SystemController.getMaintenance();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/maintenance', async (req: Request, res: Response) => {
+  console.log('get maintenance');
+  try {
+    const data = await SystemController.getMaintenance();
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.get("/app-version", async (ctx) => {
-  const data = await SystemController.getAppVersion();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/app-version', async (req: Request, res: Response) => {
+  console.log('get app version');
+  try {
+    const data = await SystemController.getAppVersion();
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.get("/sponsors", async (ctx) => {
-  const data = await SystemController.getSponsors();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/sponsors', async (req: Request, res: Response) => {
+  try {
+    const data = await SystemController.getSponsors();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.get("/regions", async (ctx) => {
-  const data = await SystemController.getRegions();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/regions', async (req: Request, res: Response) => {
+  try {
+    const data = await SystemController.getRegions();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.get("/people-near-by", async (ctx) => {
-  const data = await SystemController.getPeopleNearBy();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/people-near-by', async (req: Request, res: Response) => {
+  try {
+    const data = await SystemController.getPeopleNearBy();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.get("/block-users", async (ctx) => {
-  const data = await SystemController.getBlockUsers();
-  ctx.response.body = JSON.stringify(data);
+systemRouter.get('/block-users', async (req: Request, res: Response) => {
+  try {
+    const data = await SystemController.getBlockUsers();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.post("/ml-texts", async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await SystemController.getMLTexts(body.row_ids, body.column_names, body.locale);
-  ctx.response.body = JSON.stringify(data);
+systemRouter.post('/ml-texts', async (req: Request, res: Response) => {
+  try {
+    console.log('getMLTexts', req);
+    const { row_ids, column_names, locale } = req.body || {};
+    console.log('getMLTexts', row_ids, column_names, locale);
+    const data = await SystemController.getMLTexts(row_ids, column_names, locale);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-systemRouter.post('/block-users', async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await SystemController.blockUser(body);
-  ctx.response.body = JSON.stringify(data);
+systemRouter.post('/block-users', async (req: Request, res: Response) => {
+  try {
+    const { userId, blockUserId } = req.body || {};
+    const data = await SystemController.blockUser(userId, blockUserId);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });

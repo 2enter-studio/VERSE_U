@@ -1,17 +1,25 @@
 import { createClient } from "@supabase/supabase-js";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import dotenv from "dotenv";
 
-const { SUPABASE_URL, SUPABASE_ANON_KEY, LOCAL_SUPABASE_URL, LOCAL_SUPABASE_ANON_KEY, DEVELOPING } = config();
+dotenv.config();
+
+const {
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  LOCAL_SUPABASE_URL,
+  LOCAL_SUPABASE_ANON_KEY,
+  DEVELOPING,
+} = process.env;
 
 export function getEnv(key: string): string {
-  const ENVS = {
+  const ENVS: Record<string, string | undefined> = {
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
     LOCAL_SUPABASE_URL,
     LOCAL_SUPABASE_ANON_KEY,
     DEVELOPING,
-  } as Record<string, string>;
-  return ENVS[key];
+  };
+  return ENVS[key] || "";
 }
 
 export function makeSupaClient() {

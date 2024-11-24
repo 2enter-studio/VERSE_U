@@ -7,16 +7,6 @@ export const getPreference = async () => {
 export const getMaintenance = async () => {
   const { data, error } = await SystemModel.getMaintenance();
   if (error) throw new Error(error.message);
-
-  // if (authState.user?.email === 'demodemo@2enter.art' || !authState.loggedIn) throw new Error('USER_FORBIDDEN');
-
-  // 下面要改寫在前端
-  // sysState.maintenance = data;
-  // const { start, end } = data;
-
-  // if (inPeriod(start, end, new Date())) {
-  //   sysState.routeTo('maintain');
-  // }
   return data;
 };
 

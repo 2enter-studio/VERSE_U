@@ -57,6 +57,9 @@ async function getBlockUsers() {
 async function blockUser(args: Record<string, unknown>) {
   try {
     await fetch(apiUrl('system', 'block-users'), {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
       body: JSON.stringify(args)
     });
@@ -68,6 +71,9 @@ async function blockUser(args: Record<string, unknown>) {
 async function getMLTexts(row_ids: string[], column_names: string[], locale: string) {
   try {
     const res = await fetch(apiUrl('system', 'ml-texts'), {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
       body: JSON.stringify({ row_ids, column_names, locale })
     });

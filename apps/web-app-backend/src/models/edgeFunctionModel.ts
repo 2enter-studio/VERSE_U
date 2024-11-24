@@ -11,9 +11,3 @@ export const invokeUseCoupon = async (body: Record<string, unknown>) => {
     body
   });
 };
-
-export const invokeOneOOne = async (body: Record<string, unknown>) => {
-  return await supabase.functions.invoke('one-o-one', {
-    body
-  });
-};

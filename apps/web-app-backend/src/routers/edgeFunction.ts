@@ -1,29 +1,45 @@
-import { Router } from 'https://deno.land/x/oak/mod.ts';
+import { Router, Request, Response } from 'express';
 import * as EdgeFunctionController from '../controllers/edgeFunctionController.ts';
 import * as ProfileController from '../controllers/profileController.ts';
 
-export const edgeFunctionRouter = new Router();
+export const edgeFunctionRouter = Router();
 
-edgeFunctionRouter.post('/set-trip', async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await profileController.setTrip(body);
-  ctx.response.body = JSON.stringify(data);
+edgeFunctionRouter.post('/set-trip', async (req: Request, res: Response) => {
+  const body = req.body;
+  try {
+    const data = await ProfileController.setTrip(body);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
-edgeFunctionRouter.post('/hai-an-road', async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await EdgeFunctionController.triggerHaiAn(body);
-  ctx.response.body = JSON.stringify(data);
+edgeFunctionRouter.post('/hai-an-road', async (req: Request, res: Response) => {
+  const body = req.body;
+  try {
+    const data = await EdgeFunctionController.triggerHaiAn(body);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
-edgeFunctionRouter.post('/use-coupon', async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await edgeFunctionController.useCoupon(body);
-  ctx.response.body = JSON.stringify(data);
+edgeFunctionRouter.post('/use-coupon', async (req: Request, res: Response) => {
+  const body = req.body;
+  try {
+    const data = await EdgeFunctionController.useCoupon(body);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
-edgeFunctionRouter.post('/one-o-one', async (ctx) => {
-  const body = await ctx.request.body.json();
-  const data = await edgeFunctionController.triggerOneOOne(body);
-  ctx.response.body = JSON.stringify(data);
+edgeFunctionRouter.post('/one-o-one', async (req: Request, res: Response) => {
+  const body = req.body;
+  try {
+    const data = await EdgeFunctionController.triggerOneOOne(body);
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });

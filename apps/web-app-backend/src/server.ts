@@ -1,12 +1,18 @@
-// import { serve } from "https://deno.land/std@0.203.0/http/server.ts";
-import { Application } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import { router } from "./routers/index.ts";
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { router } from './routers/index.ts';
 
-const app = new Application();
-app.use(oakCors());
-app.use(router.routes());
-app.use(router.allowedMethods());
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(router);
 
-console.log("Server running at http://localhost:5179");
-await app.listen({ port: 5179 });
+app.set('strict routing', true);
+app.set('strict query parsing', true);
+
+const PORT = 5179;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});

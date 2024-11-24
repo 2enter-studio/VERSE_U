@@ -1,9 +1,9 @@
-import * as AuthModel from "../models/authModel.ts";
-import * as ProfileModel from "../models/profileModel.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
-import { genPasscode } from "../utils/genKey.ts";
+import * as AuthModel from "../models/authModel";
+import * as ProfileModel from "../models/profileModel";
+import { config } from "dotenv";
+import { genPasscode } from "../utils/genKey";
 
-const { HAI_AN_KEY } = config();
+const { HAI_AN_KEY } = config().parsed;
 
 export const login = async (email: string, password: string) => {
   const { data, error } = await AuthModel.signIn(email, password);

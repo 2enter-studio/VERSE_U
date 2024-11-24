@@ -2,6 +2,9 @@ import { apiUrl } from "./apiUrl";
 
 const login = async (email: string, password: string) => {
   const response = await fetch(apiUrl('auth', 'login'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
@@ -17,6 +20,9 @@ const logout = async () => {
 
 const register = async (email: string, password: string, anon_key: string) => {
   const response = await fetch(apiUrl('auth', 'register'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ email, password, anon_key }),
   });
@@ -26,6 +32,9 @@ const register = async (email: string, password: string, anon_key: string) => {
 
 const anonymousLogin = async () => {
   const response = await fetch(apiUrl('auth', 'anonymous'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
   });
   const data = await response.json();
@@ -34,6 +43,9 @@ const anonymousLogin = async () => {
 
 const getSession = async (access_token?: string, refresh_token?: string) => {
   const response = await fetch(apiUrl('auth', 'session'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ access_token, refresh_token }),
   });
@@ -43,6 +55,9 @@ const getSession = async (access_token?: string, refresh_token?: string) => {
 
 const setPassword = async (password: string) => {
   const response = await fetch(apiUrl('auth', 'set-password'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ password }),
   });
@@ -52,6 +67,9 @@ const setPassword = async (password: string) => {
 
 const changePassword = async (old_password: string, new_password: string) => {
   const response = await fetch(apiUrl('auth', 'change-password'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ old_password, new_password }),
   });
@@ -61,6 +79,9 @@ const changePassword = async (old_password: string, new_password: string) => {
 
 const forgetPassword = async (email: string) => {
   const response = await fetch(apiUrl('auth', 'forget-password'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ email }),
   });
@@ -70,6 +91,9 @@ const forgetPassword = async (email: string) => {
 
 const signInWithOAuth = async (provider: OAuthProvider, options?: { redirectTo?: string }) => {
   const response = await fetch(apiUrl('auth', 'signin'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ provider, options }),
   });
@@ -80,6 +104,9 @@ const signInWithOAuth = async (provider: OAuthProvider, options?: { redirectTo?:
 
 const triggerOneOOne = async (anon_key: string, passcode: string, wearings) => {
   const response = await fetch(apiUrl('auth', 'trigger-one-o-one'), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
     method: "POST",
     body: JSON.stringify({ anon_key, passcode, wearings }),
   });

@@ -1,14 +1,14 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import * as StorageController from "../controllers/storageController.ts";
+import { Router } from "express";
+import * as StorageController from "../controllers/storageController";
 
-export const storageRouter = new Router();
+export const storageRouter = Router();
 
-storageRouter.get("/:bucket/:filename", async (ctx) => {
-  const data = await StorageController.downloadFile(ctx.params.bucket, ctx.params.filename);
-  ctx.response.body = JSON.stringify(data);
+storageRouter.get("/:bucket/:filename", async (req, res) => {
+  const data = await StorageController.downloadFile(req.params.bucket, req.params.filename);
+  res.json(data);
 });
 
-storageRouter.get("/public/:bucket/:filename", async (ctx) => {
-  const data = await StorageController.getFilePublicUrl(ctx.params.bucket, ctx.params.filename);
-  ctx.response.body = JSON.stringify(data);
+storageRouter.get("/public/:bucket/:filename", async (req, res) => {
+  const data = await StorageController.getFilePublicUrl(req.params.bucket, req.params.filename);
+  res.json(data);
 });

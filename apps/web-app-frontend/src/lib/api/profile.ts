@@ -3,6 +3,9 @@ import { apiUrl } from './apiUrl';
 const createProfile = async (userId: string, value: Record<string, unknown>) => {
   const response = await fetch(apiUrl('profile', userId), {
     method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(value),
   });
 
@@ -18,6 +21,9 @@ const getProfile = async (userId: string) => {
 const updateProfile = async (userId: string, value: Record<string, unknown>) => {
   const response = await fetch(apiUrl('profile', userId), {
     method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(value),
   });
 
@@ -27,6 +33,9 @@ const updateProfile = async (userId: string, value: Record<string, unknown>) => 
 const updateTrip = async (userId: string, value: Record<string, unknown>) => {
   const response = await fetch(apiUrl('profile', 'trip', userId), {
     method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(value),
   });
 
