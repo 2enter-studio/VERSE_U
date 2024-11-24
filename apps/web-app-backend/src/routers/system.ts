@@ -7,7 +7,6 @@ systemRouter.get('/maintenance', async (req: Request, res: Response) => {
   console.log('get maintenance');
   try {
     const data = await SystemController.getMaintenance();
-    console.log(data);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,7 +17,6 @@ systemRouter.get('/app-version', async (req: Request, res: Response) => {
   console.log('get app version');
   try {
     const data = await SystemController.getAppVersion();
-    console.log(data);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -63,9 +61,7 @@ systemRouter.get('/block-users', async (req: Request, res: Response) => {
 
 systemRouter.post('/ml-texts', async (req: Request, res: Response) => {
   try {
-    console.log('getMLTexts', req);
     const { row_ids, column_names, locale } = req.body || {};
-    console.log('getMLTexts', row_ids, column_names, locale);
     const data = await SystemController.getMLTexts(row_ids, column_names, locale);
     res.json(data);
   } catch (error) {
