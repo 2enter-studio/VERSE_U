@@ -1,5 +1,5 @@
 const APP_LINKS = {
-  '101 特別體驗版': 'https://web.verseu.app',
+  '101 特別體驗版': 'https://101.verseu.app',
   ios: 'https://apps.apple.com/tw/app/verse-u/id6502902450',
   android: 'https://app.verseu.app',
   web: 'https://app.verseu.app'
