@@ -34,7 +34,8 @@ const table: UITextTable = {
 	COUPON_UNIT: 'units',
 	YOU_CAN_HAVE_COUPON: 'You are eligible to receive a coupon',
 	COUPON_INFO: 'Coupon info',
-	HOW_TO_VIEW_COUPON: 'After receiving it, you can go to the menu on the right [Others]->[Coupons] to view the coupons you have.',
+	HOW_TO_VIEW_COUPON:
+		'After receiving it, you can go to the menu on the right [Others]->[Coupons] to view the coupons you have.',
 	REDEEM_CONFIRM:
 		'Attention! Please confirm with the counter staff before pressing the confirmation redeem button. Otherwise, the ticket will be marked as redeemed, resulting in the inability to enjoy the discount.',
 	SIDE_MENU_MINI_GAME_TITLE: 'Mini Games',
@@ -107,9 +108,13 @@ const table: UITextTable = {
 	CAPTCHA: 'Captcha',
 	TELEPORT: 'Teleport',
 	ONE_O_ONE: '101',
-	ONE_O_ONE_TELEPORT_HINT: 'In the highest building in Taiwan, aka One-O-One, there are four LED billboards displaying the world of Verse U.Enter the passcode shown on the billboard to have your character appear inside!',
-	ONE_O_ONE_REGISTER_HINT: 'Enter email, password and register here to get 500 Unergy, after registration, you will be redirected to the download game page.',
+	ONE_O_ONE_TELEPORT_HINT:
+		'In the highest building in Taiwan, aka One-O-One, there are four TV screens displaying the world of Verse U. Enter the passcode shown on the screen to have your character appear inside!',
+	ONE_O_ONE_REGISTER_HINT:
+		'Enter email, password and register here to get 500 Unergy, after registration, you will be redirected to the download game page.',
+	START_EXPERIENCE: 'Start experience',
 	INTRODUCTION: 'Introduction',
+	INTRODUCTION_CONTENT: ''
 };
 
 export { table as en };

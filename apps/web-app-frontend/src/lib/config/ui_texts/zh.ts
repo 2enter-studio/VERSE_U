@@ -78,7 +78,8 @@ const table: UITextTable = {
 	STRANGERS: '過客',
 	COUPON_LIMIT: '限量',
 	COUPON_UNIT: '份',
-	REDEEM_CONFIRM: '注意！請經櫃檯人員確認過後，再按下確認兌換鍵。否則票券將顯示為已兌換，導致無法享有優惠。',
+	REDEEM_CONFIRM:
+		'注意！請經櫃檯人員確認過後，再按下確認兌換鍵。否則票券將顯示為已兌換，導致無法享有優惠。',
 	PEOPLE_NEARBY: '附近的玩家',
 	PROFILE: '個人資料',
 	SYSTEM: '系統',
@@ -106,9 +107,13 @@ const table: UITextTable = {
 	CAPTCHA: '驗證',
 	TELEPORT: '傳送',
 	ONE_O_ONE: '101',
-	ONE_O_ONE_TELEPORT_HINT: '在台灣最高的建築物 -- 101，有四個 LED 看板，展示著Verse U的世界。輸入看板上的通關密碼，讓自己的角色出現在裡面吧！',
-	ONE_O_ONE_REGISTER_HINT: '在這裡輸入 email, 密碼並註冊，可以獲得 500 Unergy，註冊後會開啟下載遊戲頁面。',
+	ONE_O_ONE_TELEPORT_HINT:
+		'在台灣最高的建築物 -- 101，有四個電視螢幕，展示著Verse U的世界。輸入上面的通關密碼，讓自己的角色出現在裡面吧！',
+	ONE_O_ONE_REGISTER_HINT:
+		'在這裡輸入 email, 密碼並註冊，可以獲得 500 Unergy，註冊後會開啟下載遊戲頁面。',
 	INTRODUCTION: '介紹',
+	INTRODUCTION_CONTENT: '',
+	START_EXPERIENCE: '開始體驗'
 } as const;
 
 export { table as zh };
