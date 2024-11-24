@@ -1,7 +1,7 @@
-import { baseUrl } from './utils';
+import { apiUrl } from './apiUrl';
 
-export const createProfile = async (userId: string, value: Record<string, unknown>) => {
-  const response = await fetch(`${baseUrl}/api/profile/${userId}`, {
+const createProfile = async (userId: string, value: Record<string, unknown>) => {
+  const response = await fetch(apiUrl('profile', userId), {
     method: "POST",
     body: JSON.stringify(value),
   });
@@ -9,14 +9,14 @@ export const createProfile = async (userId: string, value: Record<string, unknow
   return response.json();
 };
 
-export const getProfile = async (userId: string) => {
-  const response = await fetch(`${baseUrl}/api/profile/${userId}`);
+const getProfile = async (userId: string) => {
+  const response = await fetch(apiUrl('profile', userId));
 
   return response.json();
 };
 
-export const updateProfile = async (userId: string, value: Record<string, unknown>) => {
-  const response = await fetch(`${baseUrl}/api/profile/${userId}`, {
+const updateProfile = async (userId: string, value: Record<string, unknown>) => {
+  const response = await fetch(apiUrl('profile', userId), {
     method: "PATCH",
     body: JSON.stringify(value),
   });
@@ -24,8 +24,8 @@ export const updateProfile = async (userId: string, value: Record<string, unknow
   return response.json();
 };
 
-export const updateTrip = async (userId: string, value: Record<string, unknown>) => {
-  const response = await fetch(`${baseUrl}/api/profile/trip/${userId}`, {
+const updateTrip = async (userId: string, value: Record<string, unknown>) => {
+  const response = await fetch(apiUrl('profile', 'trip', userId), {
     method: "PATCH",
     body: JSON.stringify(value),
   });
@@ -33,8 +33,10 @@ export const updateTrip = async (userId: string, value: Record<string, unknown>)
   return response.json();
 };
 
-export const getTrip = async (userId: string) => {
-  const response = await fetch(`${baseUrl}/api/profile/trip/${userId}`);
+const getTrip = async (userId: string) => {
+  const response = await fetch(apiUrl('profile', 'trip', userId));
 
   return response.json();
 };
+
+export { createProfile, getProfile, updateProfile, updateTrip, getTrip };

@@ -1,24 +1,18 @@
-import { baseUrl } from './utils';
+import { apiUrl } from './apiUrl';
 
-export function triggerHaiAnRoad(body: Record<string, unknown>) {
-  return fetch(`${baseUrl}/api/edge-function/hai-an-road`, {
+function triggerHaiAnRoad(body: Record<string, unknown>) {
+  return fetch(apiUrl('edge-function', 'hai-an-road'), {
     method: 'POST',
     body: JSON.stringify(body)
   });
 }
 
-export function triggerOneOOne(body: Record<string, unknown>) {
-  return fetch(`${baseUrl}/api/edge-function/one-o-one`, {
+function useCoupon(body: Record<string, unknown>) {
+  return fetch(apiUrl('edge-function', 'use-coupon'), {
     method: 'POST',
     body: JSON.stringify(body)
   });
 }
 
-export function useCoupon(body: Record<string, unknown>) {
-  return fetch(`${baseUrl}/api/edge-function/use-coupon`, {
-    method: 'POST',
-    body: JSON.stringify(body)
-  });
-}
-
+export { triggerHaiAnRoad, triggerOneOOne, useCoupon };
 

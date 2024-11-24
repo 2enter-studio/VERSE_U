@@ -1,9 +1,11 @@
-import { baseUrl } from './utils';
+import { apiUrl } from './apiUrl';
 
-export async function getFilePublicUrl(bucket: BucketName, filename: string) {
-  return `${baseUrl}/api/storage/public/${bucket}/${filename}`;
+async function getFilePublicUrl(bucket: BucketName, filename: string) {
+  return apiUrl('storage', 'public', bucket, filename);
 }
 
-export async function downloadFile(bucket: BucketName, filename: string) {
-  return `${baseUrl}/api/storage/${bucket}/${filename}`;
+async function downloadFile(bucket: BucketName, filename: string) {
+  return apiUrl('storage', bucket, filename);
 }
+
+export { getFilePublicUrl, downloadFile };

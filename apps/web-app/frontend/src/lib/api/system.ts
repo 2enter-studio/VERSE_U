@@ -1,62 +1,62 @@
-import { baseUrl } from "./utils";
+import { apiUrl } from "./apiUrl";
 
-export async function getMaintenance() {
+async function getMaintenance() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/maintenance`);
+    const res = await fetch(apiUrl('system', 'maintenance'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getAppVersion() {
+async function getAppVersion() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/app-version`);
+    const res = await fetch(apiUrl('system', 'app-version'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getSponsors() {
+async function getSponsors() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/sponsors`);
+    const res = await fetch(apiUrl('system', 'sponsors'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getRegions() {
+async function getRegions() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/regions`);
+    const res = await fetch(apiUrl('system', 'regions'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getPeopleNearBy() {
+async function getPeopleNearBy() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/people-near-by`);
+    const res = await fetch(apiUrl('system', 'people-near-by'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getBlockUsers() {
+async function getBlockUsers() {
   try {
-    const res = await fetch(`${baseUrl}/api/system/block-users`);
+    const res = await fetch(apiUrl('system', 'block-users'));
     return await res.json();
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function blockUser(args: Record<string, unknown>) {
+async function blockUser(args: Record<string, unknown>) {
   try {
-    await fetch(`${baseUrl}/api/system/block-users`, {
+    await fetch(apiUrl('system', 'block-users'), {
       method: 'POST',
       body: JSON.stringify(args)
     });
@@ -65,9 +65,9 @@ export async function blockUser(args: Record<string, unknown>) {
   }
 }
 
-export async function getMLTexts(row_ids: string[], column_names: string[], locale: string) {
+async function getMLTexts(row_ids: string[], column_names: string[], locale: string) {
   try {
-    const res = await fetch(`${baseUrl}/api/system/ml-texts`, {
+    const res = await fetch(apiUrl('system', 'ml-texts'), {
       method: 'POST',
       body: JSON.stringify({ row_ids, column_names, locale })
     });
@@ -76,3 +76,5 @@ export async function getMLTexts(row_ids: string[], column_names: string[], loca
     console.error(err);
   }
 }
+
+export { getMaintenance, getAppVersion, getSponsors, getRegions, getPeopleNearBy, getBlockUsers, blockUser, getMLTexts };

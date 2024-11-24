@@ -1,8 +1,8 @@
-import { baseUrl } from './utils';
+import { apiUrl } from './apiUrl';
 
 async function getMeshes() {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/meshes`);
+    const res = await fetch(apiUrl('wearings', 'meshes'));
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -11,7 +11,7 @@ async function getMeshes() {
 
 async function getWearings() {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/wearings`);
+    const res = await fetch(apiUrl('wearings', 'wearings'));
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -20,7 +20,7 @@ async function getWearings() {
 
 async function getOwnedWearings(userId: string) {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/owned-wearings/${userId}`);
+    const res = await fetch(apiUrl('wearings', 'owned-wearings', userId));
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -29,7 +29,7 @@ async function getOwnedWearings(userId: string) {
 
 async function insertOwnedWearings(userId: string, wearingId: string) {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/owned-wearings/${userId}`, {
+    const res = await fetch(apiUrl('wearings', 'owned-wearings', userId), {
       method: 'POST',
       body: JSON.stringify({ wearing_id: wearingId })
     });
@@ -41,7 +41,7 @@ async function insertOwnedWearings(userId: string, wearingId: string) {
 
 async function getStarterPack() {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/starter-pack`);
+    const res = await fetch(apiUrl('wearings', 'starter-pack'));
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -50,7 +50,7 @@ async function getStarterPack() {
 
 async function insertStarterPack(userId: string) {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/owned-wearings/${userId}`, {
+    const res = await fetch(apiUrl('wearings', 'owned-wearings', userId), {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -62,7 +62,7 @@ async function insertStarterPack(userId: string) {
 
 async function equipWearings(userId: string, wearingIds: string[]) {  
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/equip-wearings/${userId}`, {
+    const res = await fetch(apiUrl('wearings', 'equip-wearings', userId), {
       method: 'POST',
       body: JSON.stringify({ wearing_ids: wearingIds })
     });
@@ -74,7 +74,7 @@ async function equipWearings(userId: string, wearingIds: string[]) {
 
 async function unequipWearings(userId: string, wearingIds: string[]) {
   try {
-    const res = await fetch(`${baseUrl}/api/wearings/unequip-wearings/${userId}`, {
+    const res = await fetch(apiUrl('wearings', 'unequip-wearings', userId), {
       method: 'POST',
       body: JSON.stringify({ wearing_ids: wearingIds })
     });
