@@ -1,0 +1,135 @@
+/* 自定義的 Shepherd 主題 */
+.shepherd-theme-custom {
+	background-color: rgb(254 249 195);
+	width: 60%;
+	border-radius: 1rem;
+}
+.shepherd-theme-custom .shepherd-header {
+	height: 2rem;
+}
+
+.shepherd-theme-custom.shepherd-element.shepherd-bottom-aligned {
+	transform: translateY(1rem);
+}
+.shepherd-theme-custom.shepherd-element.shepherd-right-aligned {
+	transform: translateX(1rem);
+}
+.shepherd-theme-custom.shepherd-element.shepherd-left-aligned {
+	transform: translateX(-1rem);
+}
+.shepherd-theme-custom.shepherd-element.shepherd-top-aligned {
+	transform: translateY(-1rem);
+}
+
+.shepherd-theme-custom .shepherd-button-green,
+.shepherd-theme-custom .shepherd-button-red {
+	border-radius: 1rem;
+	font-size: 0.75rem;
+	padding: 0.5rem;
+	width: 5rem;
+}
+
+.shepherd-theme-custom .shepherd-button-green {
+	background-color: #008000;
+}
+
+.shepherd-theme-custom .shepherd-button-red {
+	background-color: #ff0000;
+}
+
+.shepherd-theme-custom.shepherd-footer-flex-end .shepherd-footer {
+	justify-content: flex-end;
+}
+
+.shepherd-theme-custom .shepherd-text {
+	line-height: 1.5;
+}
+
+.shepherd-theme-custom .shepherd-footer {
+	display: flex;
+	justify-content: space-between;
+}
+.shepherd-theme-custom .shepherd-arrow::before {
+	background-color: rgb(254 249 195);
+}
+
+.shepherd-theme-custom.highlight-element .shepherd-target {
+	position: relative;
+	animation: pulse 1.5s infinite;
+	border: 2px solid #ff5722;
+	border-radius: 4px;
+}
+
+.shepherd-target > .pulsing {
+	width: 99%;
+	height: 99%;
+	border-radius: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+
+.shepherd-target > .pulsing:before,
+.shepherd-target > .pulsing:after {
+	opacity: 0;
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: inherit;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	background: #fff;
+	border-radius: 100%;
+	animation: pulsing 2s linear infinite;
+}
+
+.shepherd-enabled.shepherd-target > .pulsing:after {
+	animation: pulsing1 2s linear infinite;
+}
+
+@keyframes pulsing {
+	0% {
+		opacity: 0;
+		transform: scaleY(1) scaleX(1);
+	}
+	20% {
+		opacity: 0.1;
+	}
+	70% {
+		opacity: 0.3;
+		transform: scaleY(1.8) scaleX(1.8);
+	}
+	80% {
+		opacity: 0.1;
+		transform: scaleY(1.4) scaleX(1.4);
+	}
+	90% {
+		opacity: 0;
+		transform: scaleY(1) scaleX(1);
+	}
+}
+
+@keyframes pulsing1 {
+	0% {
+		opacity: 0;
+		transform: scaleY(1) scaleX(1);
+	}
+	20% {
+		opacity: 0.1;
+	}
+	70% {
+		opacity: 0.3;
+		transform: scaleY(1.3) scaleX(1.3);
+	}
+	80% {
+		opacity: 0.1;
+		transform: scaleY(1.15) scaleX(1.15);
+	}
+	90% {
+		opacity: 0;
+		transform: scaleY(1) scaleX(1);
+	}
+}
