@@ -4,15 +4,21 @@ import { broadcastMessage } from '@/server/ws';
 import { genUEPlayer, getPlayerByIds } from './player';
 
 async function getLeaderBoard() {
-	const { data, error } = await db
-		.from('profiles')
-		.select('user')
-		.order('last_active')
-		.limit(10)
-		.returns<{ user: string }[]>();
+	let { data, error } = await db
+		.from('owned_wearings')
+		.select('owner')
+		.eq('equipped', true)
+		.order('created_at')
+		.limit(1000)
+		.returns<{ owner: string }[]>();
 
 	if (!data) return [];
-	const ids = data.map((d) => d.user);
+	let ids: string[] = [];
+	while (ids.length < 10) {
+		data = data.filter(({ owner }) => !ids.includes(owner));
+		const id = data[Math.floor(Math.random() * data.length)].owner;
+		ids.push(id);
+	}
 	return await getPlayerByIds(ids);
 }
 

@@ -75,7 +75,7 @@
 							/>
 						</div>
 						<div class="flex flex-col gap-1">
-							{#each tablesData[tableName].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
+							{#each tablesData[tableName].toSorted((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as row}
 								{@const selected = $editing?.id === row.id}
 								{@const { id } = row}
 								{@const name = getRowName(row)}
