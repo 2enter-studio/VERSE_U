@@ -107,12 +107,12 @@
 				<h1 class="h-fit bg-pink-300 p-1">
 					{sysState.uiTexts.HAI_AN_SUCCESS}
 				</h1>
-				<TridimensionalButton
-					onClick={signup}
-					text={sysState.uiTexts.SIGNUP}
-					disabled={false}
-					style="mt-2"
-				/>
+				<!--				<TridimensionalButton-->
+				<!--					onClick={signup}-->
+				<!--					text={sysState.uiTexts.SIGNUP}-->
+				<!--					disabled={false}-->
+				<!--					style="mt-2"-->
+				<!--				/>-->
 			</div>
 		{/if}
 	</div>
