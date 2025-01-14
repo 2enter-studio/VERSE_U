@@ -1,8 +1,10 @@
-import { db } from '@/server/db';
-import type { Player, UEPlayer, UEPlayerBundle } from '@/config';
-import { broadcastMessage } from '@/server/ws';
-import { genUEPlayer, getPlayerByIds } from './player';
+import type { UEPlayer, UEPlayerBundle } from '@/config';
+
 import { DEFAULT_SKIN_COLOR } from '@repo/shared/config';
+import { db } from '@/server/db';
+import { broadcastMessage } from '@/server/ws';
+import { HAI_AN_CALL_TIMEOUT } from '@/config';
+import { genUEPlayer, getPlayerByIds } from './player';
 
 async function getLeaderBoard() {
 	let { data, error } = await db
@@ -91,13 +93,12 @@ async function callHaiAnPlayer() {
 	const target_id = data.player;
 	console.log(`get player ${target_id}`);
 
-	{
+	setTimeout(async () => {
 		const { error } = await db.from('hai_an_players').delete().eq('player', target_id);
 		if (error) {
-			console.error(error);
-			return;
+			console.log(`cannot delete player ${target_id}`);
 		}
-	}
+	}, HAI_AN_CALL_TIMEOUT);
 
 	const player = await getPlayerByIds([target_id]);
 	const uePlayer = genUEPlayer(player[0]);
